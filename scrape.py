@@ -1,6 +1,7 @@
 import requests
 import cssutils
 from bs4 import BeautifulSoup
+import json
 
 session = requests.Session()
 
@@ -131,9 +132,13 @@ def filter_records(data, blacklist):
     return [record for record in data if record['record_id'] not in blacklist]
 
 if __name__ == "__main__":
-    resources = search("whitby stealing")
+    SEARCH_STR = "whitby"
+    resources = search(SEARCH_STR)
     print("Total matching resources:", len(resources))
     
     blacklist = load_blacklist('id_blacklist.txt')
     filtered_resources = filter_records(resources, blacklist)
     print("Resources remaining after cleaning:", len(filtered_resources))
+    
+    with open(SEARCH_STR + '.json', 'w') as f:
+        json.dump(filtered_resources, f, indent=4)
