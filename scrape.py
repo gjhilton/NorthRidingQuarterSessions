@@ -5,11 +5,6 @@ from bs4 import BeautifulSoup
 
 session = requests.Session()
 
-def current_page_numnber(soup):
-    pager = soup.find(id="ctl00_main_TopPager")
-    current = pager.find(class_="Current")
-    return current.text if current else None
-
 def check_visibility(element):
     if not element:
         return False
@@ -23,10 +18,6 @@ def check_visibility(element):
             if property.name == 'visibility' and property.value == 'visible':
                 return True
     return False
-
-def locate_total(text):
-    match = re.search(r'of (\d+)', text)
-    return int(match.group(1)) if match else None
 
 def value_of_element_by_id(soup, element_id):
     element = soup.find(id=element_id)
@@ -79,8 +70,7 @@ def process_row(row):
     return None
 
 def parse_hits(soup):
-    table = soup.find(id="overviewlist")
-    rows = table.find('tbody').find_all('tr')
+    rows = soup.find(id="overviewlist").find('tbody').find_all('tr')
     return [process_row(row) for row in rows if process_row(row)]
 
 def get_next_page(soup):
