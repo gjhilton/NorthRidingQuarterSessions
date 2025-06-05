@@ -44,6 +44,33 @@ def get_search_page_params(search_term, params):
     })
     return fetch_page_params(SEARCH_PAGE_URL, method='POST', data=params)
 
+def get_num_total_results(soup):
+    pager = soup.find(id="ctl00_main_TopPager")
+    current = pager.find(class_="Current") # "1 to 100 of 11818"
+    return locate_total(current.text)
+
+def process_row(row):
+   #  <tr class="record" onmouseover="this.className='record highlight'" onmouseout="this.className='record'" onclick="document.location='./Record.aspx?src=CalmView.Catalog&amp;id=Q%2fSB%2f1804-Q1%2f1&amp;pos=8'"><td><p><a href="./Record.aspx?src=CalmView.Catalog&amp;id=Q%2fSB%2f1804-Q1%2f1&amp;pos=8">QSB 1804 1/1</a></p></td><td><p>Christmas Quarter Sessions: records relating to attendance at the Sessions</p></td><td><p>This sub-series contains records relating to attendance at the Sessions, and includes:</p><br><p>- call...</p></td><td><p>1803-1804</p></td></tr>
+    cells = row.find_all('td')
+    if cells: 
+        first_cell = cells[0]
+        text = first_cell.text.strip()
+        if text.startswith("QSB "):
+            link = first_cell.find("a")
+            return link["href"]
+        return None
+    return None
+
+def parse_hits(soup):
+    table = soup.find(id="overviewlist")
+    rows = table.find('tbody').find_all('tr')
+    hits = []
+    for row in rows:
+        result = process_row(row)
+        if result:
+            hits.append(result)
+    return hits
+
 def get_extended_search_page(search_term, params):
     params.update({
         '__EVENTTARGET': "ctl00$main$TopPager$ctl15",
@@ -55,13 +82,14 @@ def get_extended_search_page(search_term, params):
     soup = BeautifulSoup(response.text, 'html.parser')
     
     # find total number of results
-    pager = soup.find(id="ctl00_main_TopPager")
-    current = pager.find(class_="Current") # "1 to 100 of 11818"
-    num_results = locate_total(current.text)
-    print(f"Total results: {num_results}")
+    num_results = get_num_total_results(soup)
+    print(f"Total matches for search: {num_results}")
+    
+    # parse this page of results
+    hits = parse_hits(soup)
+    print(hits)
     
     return soup
-    return extract_params(soup)
     
 
 def search(search_term):
@@ -74,7 +102,6 @@ def search(search_term):
         return 
     
     result = get_extended_search_page(search_term, params)
-    #print(result.text)
     if not result:
         return  
 
