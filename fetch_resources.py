@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import re
+import time
 
 pd.set_option("display.max_columns", None)
 
@@ -13,6 +14,8 @@ def clean_html_ids(html_string):
     return re.sub(r'&#x0?[dD];|&#0?13;|&#0?[aA];|&#0?10;', '', cleaned_html)
 
 def fetch_webpage(url):
+    time.sleep(1)
+    print(f'GET: {url}')
     try:
         return requests.get(url)
     except requests.exceptions.RequestException as e:
@@ -49,7 +52,7 @@ def process_json_to_dataframe(json_file):
     return pd.DataFrame(records)
 
 if __name__ == "__main__":
-    FILE_NAME = 'sw'
+    FILE_NAME = 'whitby'
     json_file = FILE_NAME + '.json'
     df = process_json_to_dataframe(json_file)
     print(df)
