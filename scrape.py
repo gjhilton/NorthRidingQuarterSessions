@@ -70,8 +70,8 @@ def process_row(row):
     return None
 
 def parse_hits(soup):
-    rows = soup.find(id="overviewlist").find('tbody').find_all('tr')
-    return [process_row(row) for row in rows if process_row(row)]
+    rows = soup.select('#overviewlist tbody tr')
+    return [processed_row for processed_row in (process_row(row) for row in rows) if processed_row]
 
 def get_next_page(soup):
     next_wrapper = soup.find(id="ctl00_main_TopPager").find(class_="Next") if soup else None
@@ -98,7 +98,7 @@ def fetch_next(params):
         "hits": hits
     }
 
-def get_extended_search_page(search_term, params):
+def fetch_extended_search_page(search_term, params):
     params.update({
         '__EVENTTARGET': "ctl00$main$TopPager$ctl15",
         "ctl00$main$TopPager$ctl15": "100",
@@ -129,7 +129,7 @@ def search(search_term):
     if not params:
         return
 
-    result = get_extended_search_page(search_term, params)
+    result = fetch_extended_search_page(search_term, params)
     if not result:
         return
     
