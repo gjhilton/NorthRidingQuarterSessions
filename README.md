@@ -12,3 +12,7 @@ fetch_resources.py - downloads each reward in the cached json file (with a pause
 process_resourcs.py - clean and filter the resource data to generate a new CSV file of manicured data. Note that a list of blacklisted resource IDs is filtered out here. This will defijnitely be specific to the search youre doing, so if doing multiple searches, you'll likely need multiple blacklitss.
 
 eg: python3 -m process_resources 
+
+## Step 4
+
+Import the cleaned CSV into a spreadheet app.
