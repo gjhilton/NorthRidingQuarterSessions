@@ -2,7 +2,6 @@ import re
 import requests
 import cssutils
 from bs4 import BeautifulSoup
-from pprint import pprint
 
 session = requests.Session()
 
@@ -87,23 +86,21 @@ def parse_hits(soup):
     return [process_row(row) for row in rows if process_row(row)]
 
 def get_next_page(soup):
-    print(current_page_numnber(soup))
     pager = soup.find(id="ctl00_main_TopPager")
     next_wrapper = pager.find(class_="Next")
     if check_visibility(next_wrapper):
         anchor = next_wrapper.find("a")
         link = "https://archivesunlocked.northyorks.gov.uk" + anchor['href']
-        #print(link)
         return link
     return False
 
-def fetch_next(search_term,next_page,params):
+def fetch_next(params):
     params.update({
         "__EVENTTARGET": "ctl00$main$TopPager$ctl22",
         "ctl00$main$TopPager$ctl15": "100",
         "ctl00$main$BottomPager$ctl15": "100"
     })
-    response = fetch_page("https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx", "POST", params)
+    response = fetch_page(SEARCH_PAGE_URL, "POST", params)
     if not response:
         return {}
 
@@ -157,12 +154,13 @@ def search(search_term):
     
     if (next_page):
         while True:
-            result = fetch_next(search_term,next_page,params)
+            result = fetch_next(params)
             resources.extend(result['hits'])
             if result['next_page'] is False:
                 break
             params = result['params']
             next_page = result['next_page']
+
     return(resources)
 
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
