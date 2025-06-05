@@ -1,64 +1,50 @@
 import pandas as pd
 import re
 
-def load_data(input_csv):
-    return pd.read_csv(input_csv)
+def load_data(path):
+    return pd.read_csv(path)
 
-def add_new_properties(row):
-    name = extract_name(row["title"])
-    row['name'] = name
-    return row
+def extract_name(title):
+    title = title.replace("Summary conviction:", "").strip()
+    return re.sub(r"\s+of.*", "", title)
 
-def process_data(df):
-    return df.apply(add_new_properties, axis=1)
-
-def save_data(df, output_csv):
-    df.to_csv(output_csv, index=False)
-    print(f"Updated DataFrame saved to {output_csv}")
-
-def extract_name(text):
-    text = text.replace("Summary conviction:", "").strip()
-    text = re.sub(r"\s+of.*", "", text)
-    return text
+def add_name_column(df):
+    df["name"] = df["title"].apply(extract_name)
+    return df
 
 def filter_titles(df):
-    if 'title' not in df.columns:
-        raise ValueError("DataFrame must contain a 'title' column.")
-    filtered_df = df[df['title'].str.startswith(('Summary conviction:', 'Bill of indictment:'), na=False)]
-    
-    return filtered_df
+    if "title" not in df.columns:
+        raise ValueError("Missing 'title' column.")
+    return df[df["title"].str.startswith(("Summary conviction:", "Bill of indictment:"), na=False)]
 
-def filter_township_rows(df):
-    def should_keep(description):
-        desc = str(description).lower()
-        if "the township of" not in desc:
-            return True
-        return bool(re.search(r"\bthe township of whitby\b", desc))
-    return df[df['description'].apply(should_keep)]
+def conditional_filter(df, column, phrase, town):
+    def keep(text):
+        text = str(text).lower()
+        return phrase not in text or f"{phrase} {town.lower()}" in text
+    return df[df[column].apply(keep)]
 
-def exclude_inhabitants_rows(df):
-    def should_keep(title):
-        desc = str(title).lower()
-        if "the inhabitants of" not in desc:
-            return True
-        return bool(re.search(r"\bthe inhabitats of whitby\b", desc))
-    return df[df['description'].apply(should_keep)]
+def filter_township(df, town):
+    return conditional_filter(df, "description", "the township of", town)
 
-def exclude_comitted_at(df):
-    def should_keep(title):
-        desc = str(title).lower()
-        if "offence committed at" not in desc:
-            return True
-        return bool(re.search(r"\boffence committed at whitby\b", desc))
-    return df[df['description'].apply(should_keep)]
+def exclude_inhabitants(df, town):
+    return conditional_filter(df, "description", "the inhabitants of", town)
+
+def exclude_committed_at(df, town):
+    return conditional_filter(df, "description", "offence committed at", town)
+
+def save_data(df, path):
+    df.to_csv(path, index=False)
+    print(f"Saved to {path}")
 
 if __name__ == "__main__":
-    input_csv = 'data/whitby.csv'
-    output_csv = 'data/whitby_postprocessed.csv'
-    
-    df = load_data(input_csv)
+    town_name = "whitby"
+    input_path = "data/whitby.csv"
+    output_path = "data/whitby_cleaned.csv"
+
+    df = load_data(input_path)
     df = filter_titles(df)
-    df = process_data(df)
-    df = exclude_inhabitants_rows(df)
-    df = exclude_comitted_at(df)
-    save_data(df, output_csv)
+    df = add_name_column(df)
+    df = exclude_inhabitants(df, town_name)
+    df = exclude_committed_at(df, town_name)
+    df = filter_township(df, town_name)
+    save_data(df, output_path)
