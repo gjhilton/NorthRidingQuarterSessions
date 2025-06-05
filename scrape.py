@@ -44,26 +44,24 @@ def fetch_page(url, method='GET', data=None):
         print(f"{method}: {url}")
         response = session.request(method, url, data=data)
         response.raise_for_status()
-        #cookies = session.cookies
-        #print(cookies)
         return response
     except requests.exceptions.RequestException as e:
         print(f"Error fetching page ({url}): {e}")
         return None
 
-def fetch_page_params(url, method='GET', data=None):
+def get_page_params(url, method='GET', data=None):
     response = fetch_page(url, method, data)
     return extract_params(BeautifulSoup(response.text, 'html.parser')) if response else {}
 
 def get_home_page_params():
-    return fetch_page_params(HOME_PAGE_URL)
+    return get_page_params(HOME_PAGE_URL)
 
 def get_search_page_params(search_term, params):
     params.update({
         "ctl00$search_DSCoverySearch1$ctl00_search_DSCoverySearch1_ctl01$SearchText": search_term,
         "ctl00$search_DSCoverySearch1$ctl00_search_DSCoverySearch1_ctl02$discoveryadvancce": ""
     })
-    return fetch_page_params(SEARCH_PAGE_URL, method='POST', data=params)
+    return get_page_params(SEARCH_PAGE_URL, method='POST', data=params)
 
 def get_num_total_results(soup):
     pager = soup.find(id="ctl00_main_TopPager")
