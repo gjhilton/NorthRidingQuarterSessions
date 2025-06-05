@@ -99,9 +99,10 @@ def parse_hits(soup):
 
 def get_next_page(soup):
     pager  = soup.find(id="ctl00_main_TopPager")
-    current = pager.find(class_="Next")
-    if (check_visibility(current)):
-        return True
+    next_wrapper = pager.find(class_="Next")
+    if (check_visibility(next_wrapper)):
+        anchor = next_wrapper.find("a")
+        return anchor["href"]
     return False
 
 def get_extended_search_page(search_term, params):
@@ -124,10 +125,16 @@ def get_extended_search_page(search_term, params):
     
     # is there anpther page after this?
     next_page = get_next_page(soup)
-    print(next_page)
+    params = False
+    if (next_page):
+        params=extract_params(soup)
     
     
-    return soup
+    return {
+        "next_page": next_page,
+        "params": params,
+        "hits": hits
+    }
     
 
 def search(search_term):
@@ -142,6 +149,8 @@ def search(search_term):
     result = get_extended_search_page(search_term, params)
     if not result:
         return  
+    
+    pprint(result)
 
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
