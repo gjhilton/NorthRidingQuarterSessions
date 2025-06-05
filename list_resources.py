@@ -132,7 +132,7 @@ def filter_records(data, blacklist):
     return [record for record in data if record['record_id'] not in blacklist]
 
 if __name__ == "__main__":
-    SEARCH_STR = "whitby"
+    SEARCH_STR = "whitby stealing"
     resources = search(SEARCH_STR)
     print("Total matching resources:", len(resources))
     
