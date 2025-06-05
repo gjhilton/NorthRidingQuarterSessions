@@ -34,7 +34,6 @@ def exclude_committed_at(df, town):
 
 def save_data(df, path):
     df.to_csv(path, index=False)
-    print(f"Saved to {path}")
 
 if __name__ == "__main__":
     town_name = "whitby"
@@ -48,3 +47,4 @@ if __name__ == "__main__":
     df = exclude_committed_at(df, town_name)
     df = filter_township(df, town_name)
     save_data(df, output_path)
+    print(f"{len(df)} rows saved to {output_path}")
