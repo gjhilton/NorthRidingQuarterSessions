@@ -54,11 +54,6 @@ def get_search_page_params(search_term, params):
     })
     return get_page_params(SEARCH_PAGE_URL, method='POST', data=params)
 
-def get_num_total_results(soup):
-    pager = soup.find(id="ctl00_main_TopPager")
-    current = pager.find(class_="Current")
-    return locate_total(current.text) if current else None
-
 def process_row(row):
     cells = row.find_all('td')
     if cells:
