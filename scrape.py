@@ -1,4 +1,3 @@
-import re
 import requests
 import cssutils
 from bs4 import BeautifulSoup
@@ -6,28 +5,17 @@ from bs4 import BeautifulSoup
 session = requests.Session()
 
 def check_visibility(element):
-    if not element:
-        return False
-    style = element.get('style')
-    if not style:
-        return False
-    css_parser = cssutils.CSSParser()
-    css = css_parser.parseString(f'div {{ {style} }}')
-    for rule in css:
-        for property in rule.style:
-            if property.name == 'visibility' and property.value == 'visible':
-                return True
-    return False
+    return element and element.get('style') and any(
+        property.name == 'visibility' and property.value == 'visible'
+        for rule in cssutils.CSSParser().parseString(f'div {{ {element["style"]} }}')
+        for property in rule.style
+    )
 
 def value_of_element_by_id(soup, element_id):
     element = soup.find(id=element_id)
-    return element['value'] if element else ""
+    return element.get('value', '') if element else ''
 
-def extract_params(soup):
-    param_ids = [
-        "__VIEWSTATE", "__EVENTTARGET", "__EVENTARGUMENT", 
-        "__VIEWSTATEGENERATOR", "__PREVIOUSPAGE", "__EVENTVALIDATION"
-    ]
+def extract_params(soup, param_ids):
     return {param_id: value_of_element_by_id(soup, param_id) for param_id in param_ids}
 
 def fetch_page(url, method='GET', data=None):
@@ -38,11 +26,13 @@ def fetch_page(url, method='GET', data=None):
         return response
     except requests.exceptions.RequestException as e:
         print(f"Error fetching page ({url}): {e}")
-        return None
 
 def get_page_params(url, method='GET', data=None):
     response = fetch_page(url, method, data)
-    return extract_params(BeautifulSoup(response.text, 'html.parser')) if response else {}
+    return extract_params(BeautifulSoup(response.text, 'html.parser'), [
+        "__VIEWSTATE", "__EVENTTARGET", "__EVENTARGUMENT", 
+        "__VIEWSTATEGENERATOR", "__PREVIOUSPAGE", "__EVENTVALIDATION"
+    ]) if response else {}
 
 def get_home_page_params():
     return get_page_params(HOME_PAGE_URL)
@@ -56,17 +46,14 @@ def get_search_page_params(search_term, params):
 
 def process_row(row):
     cells = row.find_all('td')
-    if cells:
-        first_cell = cells[0]
-        text = first_cell.text.strip()
-        if text.startswith("QSB "):
-            link = first_cell.find("a")
-            return {"record_id":text,"link":link["href"]}
+    if cells and cells[0].text.strip().startswith("QSB "):
+        link = cells[0].find("a")
+        return {"record_id": cells[0].text.strip(), "link": link["href"]}
     return None
 
 def parse_hits(soup):
-    rows = soup.select('#overviewlist tbody tr')
-    return [processed_row for processed_row in (process_row(row) for row in rows) if processed_row]
+    return [processed_row for row in soup.select('#overviewlist tbody tr') 
+            if (processed_row := process_row(row))]
 
 def get_next_page(soup):
     next_wrapper = soup.find(id="ctl00_main_TopPager").find(class_="Next") if soup else None
@@ -83,14 +70,13 @@ def fetch_next(params):
         return {}
 
     soup = BeautifulSoup(response.text, 'html.parser')
-    hits = parse_hits(soup)
-    next_page = get_next_page(soup)
-    params = extract_params(soup) if next_page else None
-
     return {
-        "next_page": next_page,
-        "params": params,
-        "hits": hits
+        "next_page": get_next_page(soup),
+        "params": extract_params(soup, [
+            "__VIEWSTATE", "__EVENTTARGET", "__EVENTARGUMENT", 
+            "__VIEWSTATEGENERATOR", "__PREVIOUSPAGE", "__EVENTVALIDATION"
+        ]) if get_next_page(soup) else None,
+        "hits": parse_hits(soup)
     }
 
 def fetch_extended_search_page(search_term, params):
@@ -105,41 +91,34 @@ def fetch_extended_search_page(search_term, params):
         return {}
 
     soup = BeautifulSoup(response.text, 'html.parser')
-    hits = parse_hits(soup)
-    next_page = get_next_page(soup)
-    params = extract_params(soup) if next_page else None
-
     return {
-        "next_page": next_page,
-        "params": params,
-        "hits": hits
+        "next_page": get_next_page(soup),
+        "params": extract_params(soup, [
+            "__VIEWSTATE", "__EVENTTARGET", "__EVENTARGUMENT", 
+            "__VIEWSTATEGENERATOR", "__PREVIOUSPAGE", "__EVENTVALIDATION"
+        ]) if get_next_page(soup) else None,
+        "hits": parse_hits(soup)
     }
 
 def search(search_term):
     params = get_home_page_params()
     if not params:
-        return
+        return []
 
     params = get_search_page_params(search_term, params)
     if not params:
-        return
+        return []
 
     result = fetch_extended_search_page(search_term, params)
     if not result:
-        return
+        return []
     
-    resources, next_page, params = result ["hits"], result ["next_page"], result["params"]
-    
-    if (next_page):
-        while True:
-            result = fetch_next(params)
-            resources.extend(result['hits'])
-            if result['next_page'] is False:
-                break
-            params = result['params']
-            next_page = result['next_page']
+    resources = result["hits"]
+    while result["next_page"]:
+        result = fetch_next(result["params"])
+        resources.extend(result['hits'])
 
-    return(resources)
+    return resources
 
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
