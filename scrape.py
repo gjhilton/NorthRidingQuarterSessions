@@ -1,5 +1,12 @@
+import re
 import requests
 from bs4 import BeautifulSoup
+
+def locate_total(text):
+    match = re.search(r'of (\d+)', text)
+    if match:
+        return int(match.group(1))
+    return None
 
 def value_of_element_by_id(soup, element_id):
     element = soup.find(id=element_id)
@@ -16,7 +23,6 @@ def fetch_page_params(url, method='GET', data=None):
     response = fetch_page(url, method, data)
     soup = BeautifulSoup(response.text, 'html.parser')
     return extract_params(soup)
-
     
 def fetch_page(url, method, data):
    try:
@@ -45,7 +51,18 @@ def get_extended_search_page(search_term, params):
         "ctl00$main$BottomPager$ctl15": "5",
         "ctl00$search_DSCoverySearch1$ctl00_search_DSCoverySearch1_ctl01$SearchText": search_term
     })
-    return fetch_page(SEARCH_PAGE_URL, method='POST', data=params)
+    response = fetch_page(SEARCH_PAGE_URL, method='POST', data=params)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # find total number of results
+    pager = soup.find(id="ctl00_main_TopPager")
+    current = pager.find(class_="Current") # "1 to 100 of 11818"
+    num_results = locate_total(current.text)
+    print(f"Total results: {num_results}")
+    
+    return soup
+    return extract_params(soup)
+    
 
 def search(search_term):
     params = get_home_page_params()
@@ -57,7 +74,7 @@ def search(search_term):
         return 
     
     result = get_extended_search_page(search_term, params)
-    print(result.text)
+    #print(result.text)
     if not result:
         return  
 
