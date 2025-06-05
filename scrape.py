@@ -31,13 +31,16 @@ def get_homepage(url):
 def preliminary_search(search_term,params,url):
     params["ctl00$search_DSCoverySearch1$ctl00_search_DSCoverySearch1_ctl01$SearchText"]= search_term
     params["ctl00$search_DSCoverySearch1$ctl00_search_DSCoverySearch1_ctl02$discoveryadvancce"]=""
-    response = requests.post(url, data=params)
-    if response.status_code == 200:
+    try:
+        response = requests.post(url, data=params)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
         print('Request was successful')
         print(response.text) 
-    else:
-        print(f'Failed to send request. Status code: {response.status_code}')
-
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching initial page: {e}")
+    
 if __name__ == "__main__":
     params = get_homepage('https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx')
     preliminary_search("whitby",params,"https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx")
