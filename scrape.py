@@ -8,19 +8,22 @@ def value_of_element_id(soup, id):
         value = element['value']
     return value
 
-def get_iniital_params(url):
+def extract_params(soup):
+    return {
+        "__VIEWSTATE": value_of_element_id(soup, "__VIEWSTATE"),
+        "__EVENTTARGET":  value_of_element_id(soup, "__EVENTTARGET"),
+        "__EVENTARGUMENT":  value_of_element_id(soup, "__EVENTARGUMENT"),
+        "__VIEWSTATEGENERATOR":  value_of_element_id(soup, "__VIEWSTATEGENERATOR"),
+        "__PREVIOUSPAGE":  value_of_element_id(soup, "__PREVIOUSPAGE"),
+        "__EVENTVALIDATION":  value_of_element_id(soup, "__EVENTVALIDATION"),
+    }
+
+def get_homepage(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
-        return {
-            "__VIEWSTATE": value_of_element_id(soup, "__VIEWSTATE"),
-            "__EVENTTARGET":  value_of_element_id(soup, "__EVENTTARGET"),
-            "__EVENTARGUMENT":  value_of_element_id(soup, "__EVENTARGUMENT"),
-            "__VIEWSTATEGENERATOR":  value_of_element_id(soup, "__VIEWSTATEGENERATOR"),
-            "__PREVIOUSPAGE":  value_of_element_id(soup, "__PREVIOUSPAGE"),
-            "__EVENTVALIDATION":  value_of_element_id(soup, "__EVENTVALIDATION"),
-        }
+        return extract_params(soup)
         
     except requests.exceptions.RequestException as e:
         print(f"Error fetching initial page: {e}")
@@ -36,5 +39,5 @@ def preliminary_search(search_term,params,url):
         print(f'Failed to send request. Status code: {response.status_code}')
 
 if __name__ == "__main__":
-    initial_params = get_iniital_params('https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx')
-    preliminary_search("whitby",initial_params,"https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx")
+    params = get_homepage('https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx')
+    preliminary_search("whitby",params,"https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx")
