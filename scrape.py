@@ -1,6 +1,33 @@
 import re
 import requests
+import cssutils
 from bs4 import BeautifulSoup
+from pprint import pprint
+
+def check_visibility(element):
+    if element:
+
+        style = element.get('style')
+        
+        if style:
+            css_parser = cssutils.CSSParser()
+            css = css_parser.parseString('div { ' + style + ' }')  
+            visibility = None
+            for rule in css:
+                for property in rule.style:
+                    if property.name == 'visibility':
+                        visibility = property.value
+                        break
+            
+            if visibility == 'visible':
+                return True
+            else:
+                return False
+        else:
+            return False
+    else:
+        print("Element not found.")
+        return False
 
 def locate_total(text):
     match = re.search(r'of (\d+)', text)
@@ -50,7 +77,6 @@ def get_num_total_results(soup):
     return locate_total(current.text)
 
 def process_row(row):
-   #  <tr class="record" onmouseover="this.className='record highlight'" onmouseout="this.className='record'" onclick="document.location='./Record.aspx?src=CalmView.Catalog&amp;id=Q%2fSB%2f1804-Q1%2f1&amp;pos=8'"><td><p><a href="./Record.aspx?src=CalmView.Catalog&amp;id=Q%2fSB%2f1804-Q1%2f1&amp;pos=8">QSB 1804 1/1</a></p></td><td><p>Christmas Quarter Sessions: records relating to attendance at the Sessions</p></td><td><p>This sub-series contains records relating to attendance at the Sessions, and includes:</p><br><p>- call...</p></td><td><p>1803-1804</p></td></tr>
     cells = row.find_all('td')
     if cells: 
         first_cell = cells[0]
@@ -71,6 +97,13 @@ def parse_hits(soup):
             hits.append(result)
     return hits
 
+def get_next_page(soup):
+    pager  = soup.find(id="ctl00_main_TopPager")
+    current = pager.find(class_="Next")
+    if (check_visibility(current)):
+        return True
+    return False
+
 def get_extended_search_page(search_term, params):
     params.update({
         '__EVENTTARGET': "ctl00$main$TopPager$ctl15",
@@ -87,7 +120,12 @@ def get_extended_search_page(search_term, params):
     
     # parse this page of results
     hits = parse_hits(soup)
-    print(hits)
+    # pprint(hits)
+    
+    # is there anpther page after this?
+    next_page = get_next_page(soup)
+    print(next_page)
+    
     
     return soup
     
@@ -109,4 +147,4 @@ HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.asp
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
 
 if __name__ == "__main__":
-    search("whitby")
+    search("whitby stealing")
