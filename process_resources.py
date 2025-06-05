@@ -5,8 +5,13 @@ def load_data(path):
     return pd.read_csv(path)
 
 def extract_name(title):
-    title = title.replace("Summary conviction:", "").strip()
-    return re.sub(r"\s+of.*", "", title)
+    if title.startswith("Summary conviction:"):
+        title = title.replace("Summary conviction:", "").strip()
+        return re.sub(r"\s+of.*", "", title)
+    if title.startswith("Bill of indictment:"):
+        text = title.split(':', 1)[1].strip()
+        return re.split(r'\ball of\b|\bof\b', text, maxsplit=1)[0].strip()
+    return False
 
 def add_name_column(df):
     df["name"] = df["title"].apply(extract_name)
