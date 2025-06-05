@@ -144,7 +144,17 @@ def search(search_term):
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
 
+def load_blacklist(file_path):
+    with open(file_path, 'r') as file:
+        return set(line.strip() for line in file)
+
+def filter_records(data, blacklist):
+    return [record for record in data if record['record_id'] not in blacklist]
 
 if __name__ == "__main__":
     resources = search("whitby stealing")
-    print("Resources found:", len(resources))
+    print("Total matching resources:", len(resources))
+    
+    blacklist = load_blacklist('id_blacklist.txt')
+    filtered_resources = filter_records(resources, blacklist)
+    print("Resources remaining after cleaning:", len(filtered_resources))
