@@ -136,9 +136,9 @@ if __name__ == "__main__":
     resources = search(SEARCH_STR)
     print("Total matching resources:", len(resources))
     
-    blacklist = load_blacklist('id_blacklist.txt')
+    blacklist = load_blacklist('data/id_blacklist.txt')
     filtered_resources = filter_records(resources, blacklist)
     print("Resources remaining after cleaning:", len(filtered_resources))
     
-    with open(SEARCH_STR + '.json', 'w') as f:
+    with open("data/" + SEARCH_STR + '.json', 'w') as f:
         json.dump(filtered_resources, f, indent=4)
