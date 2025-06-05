@@ -58,12 +58,14 @@ def get_extended_search_page(search_term,params):
         
     except requests.exceptions.RequestException as e:
         print(f"Error fetching extended page: {e}")
-    
+
+def search(search_term):
+    current_params = get_home_page()
+    current_params=get_search_page(search_term,current_params)
+    current_params=get_extended_search_page(search_term,current_params)
 
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
 
 if __name__ == "__main__":
-    current_params = get_home_page()
-    current_params=get_search_page("whitby",current_params)
-    current_params=get_extended_search_page("whitby",current_params)
+    search("whitby")
