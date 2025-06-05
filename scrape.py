@@ -45,6 +45,8 @@ def fetch_page(url, method='GET', data=None):
         print(f"{method}: {url}")
         response = session.request(method, url, data=data)
         response.raise_for_status()
+        #cookies = session.cookies
+        #print(cookies)
         return response
     except requests.exceptions.RequestException as e:
         print(f"Error fetching page ({url}): {e}")
@@ -153,22 +155,20 @@ def search(search_term):
     
     resources, next_page, params = result ["hits"], result ["next_page"], result["params"]
     
-    # if (next_page):
-    #     while True:
-    #         result = fetch_next(search_term,next_page,params)
-    #         resources.extend(result['hits'])
-    #         if result['next_page'] is False:
-    #             break
-    #         params = result['params']
-    #         next_page = result['next_page']
-    
-    num_resources = len(resources)
-    print(f"Total relevant results: {num_resources}")
-    pprint(resources)
+    if (next_page):
+        while True:
+            result = fetch_next(search_term,next_page,params)
+            resources.extend(result['hits'])
+            if result['next_page'] is False:
+                break
+            params = result['params']
+            next_page = result['next_page']
+    return(resources)
 
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
 
 
 if __name__ == "__main__":
-    search("whitby stealing")
+    resources = search("whitby stealing")
+    print("Resources found:", len(resources))
