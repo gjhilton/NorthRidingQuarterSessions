@@ -69,7 +69,7 @@ def process_row(row):
         text = first_cell.text.strip()
         if text.startswith("QSB "):
             link = first_cell.find("a")
-            return link["href"]
+            return {"record_id":text,"link":link["href"]}
     return None
 
 def parse_hits(soup):
@@ -120,8 +120,17 @@ def search(search_term):
         return
 
     result = get_extended_search_page(search_term, params)
-    if result:
-        pprint(result)
+    if not result:
+        return
+    
+    #pprint(result)
+    resources, next_page, params = result ["hits"], result ["next_page"], result["params"]
+    num_resources = len(resources)
+    
+    # TODO if there's a next page get it too and loop
+    
+    print(f"Total relevant results: {num_resources}")
+    pprint(resources)
 
 HOME_PAGE_URL = 'https://archivesunlocked.northyorks.gov.uk/CalmView/default.aspx'
 SEARCH_PAGE_URL = "https://archivesunlocked.northyorks.gov.uk/CalmView/Overview.aspx"
