@@ -84,13 +84,8 @@ def parse_hits(soup):
     return [process_row(row) for row in rows if process_row(row)]
 
 def get_next_page(soup):
-    pager = soup.find(id="ctl00_main_TopPager")
-    next_wrapper = pager.find(class_="Next")
-    if check_visibility(next_wrapper):
-        anchor = next_wrapper.find("a")
-        link = "https://archivesunlocked.northyorks.gov.uk" + anchor['href']
-        return link
-    return False
+    next_wrapper = soup.find(id="ctl00_main_TopPager").find(class_="Next") if soup else None
+    return check_visibility(next_wrapper)
 
 def fetch_next(params):
     params.update({
