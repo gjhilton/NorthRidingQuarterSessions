@@ -28,4 +28,6 @@ def process_dataframe(df):
 if __name__ == "__main__":
     df = load_data('data/whitby.csv')
     df_processed = process_dataframe(df)
+    pd.set_option('display.max\_columns', None)
     print(df_processed)
+    # save_data(df_processed,'data/whitby_processed.csv')
