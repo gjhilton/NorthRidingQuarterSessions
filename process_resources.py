@@ -1,27 +1,12 @@
 import pandas as pd
-import pprint
+from conviction_processor import process_conviction
+from indictment_processor import process_indictment
 
 def load_data(path):
     return pd.read_csv(path)
 
 def save_data(df, path):
     df.to_csv(path, index=False)
-
-# record_types(df,3) will return all the unique three word beginnings of the title field. useful when working out what rows are in the unmodified data which you would like to include.
-# def record_types(df, n):
-#    if 'title' not in df.columns:
-#        raise ValueError("DataFrame must contain a 'title' column")
-#    truncated_titles = df['title'].apply(lambda x: ' '.join(str(x).split()[:n]))
-#    unique_titles = sorted(truncated_titles.unique())
-#    return unique_titles
-
-def process_conviction(row):
-    row['Processed'] = "Conviction"
-    return row
-
-def process_indictment(row):
-    row['Processed'] = "Indictment"
-    return row
 
 ROW_PARSERS = {
     'Summary conviction': process_conviction,

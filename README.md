@@ -5,13 +5,20 @@ list_resources.py - executes a search against the QS Bundles collection, and gen
 
 ## Step 2:
 
-fetch_resources.py - downloads each reward in the cached json file (with a pause so as not to DOS the server), and generates a CSV file of the data.
+fetch_resources.py - downloads each record in the cached json file (with a pause so as not to DOS the server), and generates a CSV file of the data.
 
 ## Step 3:
 
-process_resourcs.py - clean and filter the resource data to generate a new CSV file of manicured data. Note that a list of blacklisted resource IDs is filtered out here. This will defijnitely be specific to the search youre doing, so if doing multiple searches, you'll likely need multiple blacklitss.
-
 eg: python3 -m process_resources 
+
+process_resources.py - clean and filter the resource data to generate a new CSV file of manicured data. 
+
+Based on (beginning of) the title of each row, we apply a processing function from 
+
+- conviction_processor.py
+- indictment_processor.py
+
+Rows which dont begin with a configured prefix are dropped.
 
 ## Step 4
 
