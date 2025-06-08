@@ -1,55 +1,46 @@
 import pandas as pd
-import re
+import pprint
 
 def load_data(path):
     return pd.read_csv(path)
 
-def extract_name(title):
-    if title.startswith("Summary conviction:"):
-        title = title.replace("Summary conviction:", "").strip()
-        return re.sub(r"\s+of.*", "", title)
-    if title.startswith("Bill of indictment:"):
-        text = title.split(':', 1)[1].strip()
-        return re.split(r'\ball of\b|\bof\b', text, maxsplit=1)[0].strip()
-    return False
-
-def add_name_column(df):
-    df["name"] = df["title"].apply(extract_name)
-    return df
-
-def filter_titles(df):
-    if "title" not in df.columns:
-        raise ValueError("Missing 'title' column.")
-    return df[df["title"].str.startswith(("Summary conviction:", "Bill of indictment:"), na=False)]
-
-def conditional_filter(df, column, phrase, town):
-    def keep(text):
-        text = str(text).lower()
-        return phrase not in text or f"{phrase} {town.lower()}" in text
-    return df[df[column].apply(keep)]
-
-def filter_township(df, town):
-    return conditional_filter(df, "description", "the township of", town)
-
-def exclude_inhabitants(df, town):
-    return conditional_filter(df, "description", "the inhabitants of", town)
-
-def exclude_committed_at(df, town):
-    return conditional_filter(df, "description", "offence committed at", town)
-
 def save_data(df, path):
     df.to_csv(path, index=False)
 
-if __name__ == "__main__":
-    town_name = "whitby"
-    input_path = "data/whitby.csv"
-    output_path = "data/whitby_cleaned.csv"
+# record_types(df,3) will return all the unique three word beginnings of the title field. useful when working out what rows are in the unmodified data which you would like to include.
+# def record_types(df, n):
+#    if 'title' not in df.columns:
+#        raise ValueError("DataFrame must contain a 'title' column")
+#    truncated_titles = df['title'].apply(lambda x: ' '.join(str(x).split()[:n]))
+#    unique_titles = sorted(truncated_titles.unique())
+#    return unique_titles
 
-    df = load_data(input_path)
-    df = filter_titles(df)
-    df = add_name_column(df)
-    df = exclude_inhabitants(df, town_name)
-    df = exclude_committed_at(df, town_name)
-    df = filter_township(df, town_name)
-    save_data(df, output_path)
-    print(f"{len(df)} rows saved to {output_path}")
+def process_conviction(row):
+    row['Processed'] = "Conviction"
+    return row
+
+def process_indictment(row):
+    row['Processed'] = "Indictment"
+    return row
+
+ROW_PARSERS = {
+    'Summary conviction': process_conviction,
+    'Bill of indictment': process_indictment
+}
+
+def process_dataframe(df):
+    def process_row(row):
+        title = row['title']
+        for key, fn in ROW_PARSERS.items():
+            if title.startswith(key):
+                return fn(row)
+        return row
+    
+    df = df.apply(process_row, axis=1)
+    df = df[df['Processed'].notnull()]
+    return df
+
+if __name__ == "__main__":
+    df = load_data('data/whitby.csv')
+    df_processed = process_dataframe(df)
+    print(df_processed)
