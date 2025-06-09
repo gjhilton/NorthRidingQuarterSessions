@@ -269,6 +269,15 @@ class Testcases:
                 assert_equal(actual.gender, expected.gender, "involved_person gender", i)
 
     @staticmethod
+    def test_defendant_count(parsing_function):
+        for case in sample_data:
+            result = parsing_function(case["input"])
+            assert result is not None, "parse() returned None"
+            actual_count = len(result.defendants or [])
+            expected_count = len(case["output"].defendants or [])
+            assert actual_count == expected_count, f"defendant count mismatch: got {actual_count}, expected {expected_count}"                
+                
+    @staticmethod
     def samoles():
         return(sample_data)
                 
@@ -288,5 +297,5 @@ class Testcases:
         Testcases.test_involved_person_residence(parsing_function)
         Testcases.test_involved_person_occupation(parsing_function)
         Testcases.test_involved_person_gender(parsing_function)
-        
+        Testcases.test_defendant_count(parsing_function)
         print("All passed")
