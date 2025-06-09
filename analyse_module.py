@@ -1,7 +1,5 @@
 def analyse(input_string: str):
-    """
-    Placeholder analyse function.
-    Takes a string input and returns a data structure.
-    """
-    # TODO: Implement actual analysis logic
-    return {"input_length": len(input_string)}
+    return {
+        "input_length": len(input_string),
+        "first_character": input_string[0] if input_string else None,
+    }
