@@ -139,10 +139,10 @@ nicholson = {
 
 sample_data = [
     waters,
-    # williams,
-    # brown,
-    # adams,
-    # nicholson,
+    williams,
+    brown,
+    adams,
+    nicholson,
 ]
 
 def assert_equal(actual, expected, field, i=None, entity=""):
