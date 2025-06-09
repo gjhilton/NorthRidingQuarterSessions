@@ -21,4 +21,5 @@ def parse(input_str: str) -> Case | None:
     return Case(**result)
 
 if __name__ == "__main__":
-    Testcases.run_all_tests(parse)
+    #Testcases.run_all_tests(parse)
+    Testcases.test_defendant_surnames(parse)
