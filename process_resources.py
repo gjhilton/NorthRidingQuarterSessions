@@ -10,41 +10,50 @@ def save_data(df, path):
 
 ROW_PARSERS = {
     'Summary conviction': process_conviction,
-    #'Bill of indictment': process_indictment
+    # 'Bill of indictment': process_indictment
 }
 
-def process_dataframe(df, start=None, end=None):
-    prefixes = tuple(ROW_PARSERS.keys())
-    mask = df['title'].astype(str).str.startswith(prefixes)
-    df.drop(index=df[~mask].index, inplace=True)
-    df.reset_index(drop=True, inplace=True)
+def filter_rows_by_prefix(df, prefixes):
+    prefixes = tuple(prefixes)
+    mask = df['title'].astype(str).str.startswith(prefixes, na=False)
+    return df.loc[mask]
 
-    total_rows = len(df)
-
+def slice_rows(df, start=None, end=None):
+    total = len(df)
     if start is None:
         start = 0
-    if end is None or end > total_rows:
-        end = total_rows
+    if end is None or end > total:
+        end = total
+    if start < 0 or end < 0 or start > end or start > total:
+        raise ValueError(f"Invalid start ({start}) or end ({end}) range for dataframe of length {total}")
+    return df.iloc[start:end].copy()
 
-    # Keep only rows within the [start, end) range
-    df = df.iloc[start:end].copy()
-    df.reset_index(drop=True, inplace=True)
+def process_dataframe(df, start=None, end=None):
+    filtered_df = filter_rows_by_prefix(df, ROW_PARSERS.keys())
+    sliced_df = slice_rows(filtered_df, start, end)
+    sliced_df.reset_index(drop=True, inplace=True)
+    total_rows = len(sliced_df)
 
-    def process_row(row, idx, total):
-        title = row['title']
-        print(f"Processing row {idx + 1} of {total}: {title}")
-        for key, fn in ROW_PARSERS.items():
-            if title.startswith(key):
-                return fn(row)
+    def process_row(row):
+        title = row.get('title', '')
+        if not isinstance(title, str):
+            title = str(title)
+        idx = row.name
+        print(f"Processing row {idx + 1} of {total_rows}: {title}")
+        try:
+            for key, fn in ROW_PARSERS.items():
+                if title.startswith(key):
+                    return fn(row)
+        except Exception as e:
+            print(f"Error processing row {idx + 1} with title '{title}': {e}")
         return row
 
-    df = df.apply(lambda row: process_row(row, row.name, len(df)), axis=1)
-    return df
+    processed_df = sliced_df.apply(process_row, axis=1)
+    processed_df.reset_index(drop=True, inplace=True)
+    return processed_df
 
 if __name__ == "__main__":
     df = load_data('data/whitby.csv')
-    #df_processed = process_dataframe(df)
-    df_processed = process_dataframe(df, start=10, end=20)
-    #pd.set_option('display.max\_columns', None)
-    #print(df_processed)
-    save_data(df_processed,'data/whitby_processed.csv')
+    #df_processed = process_dataframe(df, start=10, end=20)
+    df_processed = process_dataframe(df)
+    save_data(df_processed, 'data/whitby_processed.csv')
