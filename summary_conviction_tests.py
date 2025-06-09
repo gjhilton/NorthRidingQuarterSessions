@@ -17,9 +17,6 @@ class Case(BaseModel):
     defendants: Optional[conlist(Person, min_items=1)] = None
     involved_persons: Optional[List[Person]] = None
 
-def parse(input_str: str) -> Optional[Case]:
-    return None
-
 all_test_cases = [
     {
         "input": "Summary conviction of William Waters of the township of Whitby jet worker for being drunk and riotous in BaxtergateOffence committed at the township of Whitby on 16 March 1873. Whitby Strand - case heard at Whitby",
@@ -143,125 +140,122 @@ def assert_equal(actual, expected, field, i=None, entity=""):
     prefix = f"{entity} {i} " if i is not None else ""
     assert actual == expected, f"{prefix}{field} mismatch: got {actual}, expected {expected}"
 
-def test_date():
+def test_date(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         assert_equal(result.date, case["output"].date, "date")
 
-def test_offence():
+def test_offence(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         assert_equal(result.offence, case["output"].offence, "offence")
 
-def test_offence_location():
+def test_offence_location(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         assert_equal(result.offence_location, case["output"].offence_location, "offence_location")
 
-def test_court():
+def test_court(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         assert_equal(result.court, case["output"].court, "court")
 
-def test_defendant_surnames():
+def test_defendant_surnames(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
             assert_equal(actual.surname, expected.surname, "defendant surname", i)
 
-def test_defendant_forenames():
+def test_defendant_forenames(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
             assert_equal(actual.forenames, expected.forenames, "defendant forenames", i)
 
-def test_defendant_residence():
+def test_defendant_residence(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
             assert_equal(actual.residence, expected.residence, "defendant residence", i)
 
-def test_defendant_occupation():
+def test_defendant_occupation(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
             assert_equal(actual.occupation, expected.occupation, "defendant occupation", i)
 
-def test_defendant_gender():
+def test_defendant_gender(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
             assert_equal(actual.gender, expected.gender, "defendant gender", i)
 
-def test_involved_person_surnames():
+def test_involved_person_surnames(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         actual_list = result.involved_persons or []
         expected_list = case["output"].involved_persons or []
         for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
             assert_equal(actual.surname, expected.surname, "involved_person surname", i)
 
-def test_involved_person_forenames():
+def test_involved_person_forenames(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         actual_list = result.involved_persons or []
         expected_list = case["output"].involved_persons or []
         for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
             assert_equal(actual.forenames, expected.forenames, "involved_person forenames", i)
 
-def test_involved_person_residence():
+def test_involved_person_residence(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         actual_list = result.involved_persons or []
         expected_list = case["output"].involved_persons or []
         for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
             assert_equal(actual.residence, expected.residence, "involved_person residence", i)
 
-def test_involved_person_occupation():
+def test_involved_person_occupation(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         actual_list = result.involved_persons or []
         expected_list = case["output"].involved_persons or []
         for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
             assert_equal(actual.occupation, expected.occupation, "involved_person occupation", i)
 
-def test_involved_person_gender():
+def test_involved_person_gender(parsing_function):
     for case in all_test_cases:
-        result = parse(case["input"])
+        result = parsing_function(case["input"])
         assert result is not None, "parse() returned None"
         actual_list = result.involved_persons or []
         expected_list = case["output"].involved_persons or []
         for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
             assert_equal(actual.gender, expected.gender, "involved_person gender", i)
 
-def run_all_tests(parsing_function=parse):
-    test_date()
-    test_offence()
-    test_offence_location()
-    test_court()
-    test_defendant_surnames()
-    test_defendant_forenames()
-    test_defendant_residence()
-    test_defendant_occupation()
-    test_defendant_gender()
-    test_involved_person_surnames()
-    test_involved_person_forenames()
-    test_involved_person_residence()
-    test_involved_person_occupation()
-    test_involved_person_gender()
-
-if __name__ == "__main__":
-    run_all_tests()
+def run_all_tests(parsing_function):
+    test_date(parsing_function)
+    test_offence(parsing_function)
+    test_offence_location(parsing_function)
+    test_court(parsing_function)
+    test_defendant_surnames(parsing_function)
+    test_defendant_forenames(parsing_function)
+    test_defendant_residence(parsing_function)
+    test_defendant_occupation(parsing_function)
+    test_defendant_gender(parsing_function)
+    test_involved_person_surnames(parsing_function)
+    test_involved_person_forenames(parsing_function)
+    test_involved_person_residence(parsing_function)
+    test_involved_person_occupation(parsing_function)
+    test_involved_person_gender(parsing_function)
