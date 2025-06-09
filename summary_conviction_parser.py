@@ -220,18 +220,14 @@ def extract_offence_location(doc):
     return " ".join(offence_location_tokens) if offence_location_tokens else None
 
 def extract_court(doc):
-    court_tokens = []
-    collecting = False
-    for i, token in enumerate(doc):
-        if token.text.lower() == "case" and i + 1 < len(doc) and doc[i + 1].text.lower() == "heard":
-            collecting = True
-        if collecting:
-            if token.text.lower() == "at":
-                collecting = False
-                continue
-            if collecting and token.text.isalpha():
-                court_tokens.append(token.text)
-    return " ".join(court_tokens) if court_tokens else None
+    text = " ".join([token.text for token in doc])
+    idx = text.lower().find("case heard at")
+    if idx != -1:
+        after_idx = idx + len("case heard at")
+        after_text = text[after_idx:].strip()
+        court = after_text.split()[0]
+        return court
+    return None
 
 def parse(input_str: str) -> Case | None:
     input_str = re.sub(r'([a-z])([A-Z])', r'\1. \2', input_str)

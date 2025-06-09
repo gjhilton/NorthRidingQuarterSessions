@@ -298,7 +298,7 @@ class Testcases:
         Testcases.test_date(parsing_function)
         Testcases.test_offence(parsing_function)
         #Testcases.test_offence_location(parsing_function)
-        #Testcases.test_court(parsing_function)
+        Testcases.test_court(parsing_function)
         Testcases.test_defendant_surnames(parsing_function)
         Testcases.test_defendant_forenames(parsing_function)
         Testcases.test_defendant_gender(parsing_function)
