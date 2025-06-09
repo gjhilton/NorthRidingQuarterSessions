@@ -33,18 +33,30 @@ def extract_residence(doc, person_ent):
 def extract_occupation(doc, residence):
     if not residence:
         return None
-    residence_token = None
+
+    start_index = None
     for token in doc:
         if token.text == residence:
-            residence_token = token.i
+            start_index = token.i
             break
-    if residence_token is not None:
-        for chunk in doc.noun_chunks:
-            if chunk.start > residence_token:
-                for token in doc[residence_token:chunk.start]:
-                    if token.text.lower() == "for":
-                        return None
-                return chunk.text.strip(" ,")
+
+    if start_index is None or start_index + 1 >= len(doc):
+        return None
+
+    occupation_tokens = []
+    for token in doc[start_index + 1:]:
+        if token.text.lower() == "for":
+            break
+        if token.is_punct and token.text != ",":
+            break
+        if token.text == ",":
+            continue
+        occupation_tokens.append(token.text)
+
+    if occupation_tokens:
+        occupation = " ".join(occupation_tokens).strip(" ,")
+        return occupation if occupation else None
+
     return None
 
 def analyse(text):
