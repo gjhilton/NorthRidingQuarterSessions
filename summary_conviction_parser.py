@@ -206,18 +206,17 @@ def extract_offence(doc):
     return offence.rstrip('. ') if offence else None              
                 
 def extract_offence_location(doc):
-    offence_location_tokens = []
-    collecting = False
-    for token in doc:
-        if token.text.lower() == "at":
-            collecting = True
-            continue
-        if collecting:
-            if token.text.lower() in {"on"}:
-                break
-            if token.text.lower() not in {"offence", "committed"}:
-                offence_location_tokens.append(token.text)
-    return " ".join(offence_location_tokens) if offence_location_tokens else None
+    text = doc.text.lower()
+    idx = text.find("offence committed at")
+    if idx != -1:
+        original_text = doc.text
+        after = original_text[idx + len("offence committed at"):]
+        words = after.split()
+        for word in words:
+            stripped_word = word.strip('.,;:"\'?!()[]{}')
+            if stripped_word and stripped_word[0].isupper():
+                return stripped_word
+    return None
 
 def extract_court(doc):
     text = " ".join([token.text for token in doc])

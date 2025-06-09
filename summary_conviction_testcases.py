@@ -21,7 +21,7 @@ waters = {
     "output": Case(
         date="1873-03-16",
         offence="being drunk and riotous in Baxtergate",
-        offence_location="Baxtergate, Whitby",
+        offence_location="Whitby",
         court="Whitby",
         defendants=[
             Person(
@@ -297,7 +297,7 @@ class Testcases:
         Testcases.test_defendant_count(parsing_function)
         Testcases.test_date(parsing_function)
         Testcases.test_offence(parsing_function)
-        #Testcases.test_offence_location(parsing_function)
+        Testcases.test_offence_location(parsing_function)
         Testcases.test_court(parsing_function)
         Testcases.test_defendant_surnames(parsing_function)
         Testcases.test_defendant_forenames(parsing_function)
