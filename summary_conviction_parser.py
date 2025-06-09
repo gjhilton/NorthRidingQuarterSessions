@@ -1,7 +1,8 @@
 import spacy
 import gender_guesser.detector as gender
 from pydantic import BaseModel
-from summary_conviction_testcases import Testcases, Case
+from summary_conviction_testcases import Testcases, Case, Person
+from datetime import datetime
 
 nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
@@ -12,10 +13,6 @@ def extract_residence(doc, start_idx):
     stop_words = {"for", "on", "offence", "and"}
     leading_phrases = {"of", "from", "at", "in", "the"}
     location_terms = {"village", "township", "town"}
-    occupation_keywords = {
-        "blacksmith", "labourer", "ostler", "waggoner", "postboy", "worker", "farmer",
-        "servant", "miner", "shoemaker", "sailor", "fisherman", "grocer", "mason"
-    }
 
     while i < len(doc):
         token = doc[i]
@@ -23,9 +20,7 @@ def extract_residence(doc, start_idx):
 
         if lower in stop_words:
             break
-        if token.pos_ == "NOUN" and (token.text[0].islower() or lower in occupation_keywords):
-            break
-        if lower in occupation_keywords:
+        if token.pos_ == "NOUN" and token.text[0].islower():
             break
         if token.is_punct:
             i += 1
@@ -40,7 +35,28 @@ def extract_residence(doc, start_idx):
         residence_tokens.pop(0)
 
     return " ".join(residence_tokens) if residence_tokens else None
-    
+
+def extract_occupation(doc, start_idx):
+    occupation_tokens = []
+    i = start_idx
+
+    while i < len(doc):
+        token = doc[i]
+        if token.pos_ == "NOUN" and token.text[0].islower():
+            occupation_tokens.append(token.text)
+            i += 1
+            break
+        i += 1
+
+    while i < len(doc):
+        token = doc[i]
+        if token.pos_ == "NOUN" and token.text[0].islower():
+            break
+        occupation_tokens.append(token.text)
+        i += 1
+
+    return " ".join(occupation_tokens) if occupation_tokens else None
+
 def extract_defendants(doc):
     defendants = []
     collecting = False
@@ -62,9 +78,9 @@ def extract_defendants(doc):
                 break
 
             if token.text.lower() == "all" and i + 1 < len(doc) and doc[i + 1].text.lower() == "of":
-                res_start = i + 1
+                res_start = i + 2
                 collective_residence = extract_residence(doc, res_start)
-                i += 1
+                i += 2
                 i += len(collective_residence.split()) if collective_residence else 1
                 continue
 
@@ -82,13 +98,15 @@ def extract_defendants(doc):
                     if full_name not in seen_names:
                         gender_value = detect_gender(forenames)
                         residence = extract_residence(doc, current_name_end_idx + 1)
+                        occupation = extract_occupation(doc, current_name_end_idx + 1)
                         if not residence:
                             residence = collective_residence
                         defendants.append({
                             "surname": surname,
                             "forenames": forenames,
                             "gender": gender_value,
-                            "residence": residence
+                            "residence": residence,
+                            "occupation": occupation
                         })
                         seen_names.add(full_name)
                 current_name = []
@@ -101,13 +119,15 @@ def extract_defendants(doc):
                     if full_name not in seen_names:
                         gender_value = detect_gender(forenames)
                         residence = extract_residence(doc, current_name_end_idx + 1)
+                        occupation = extract_occupation(doc, current_name_end_idx + 1)
                         if not residence:
                             residence = collective_residence
                         defendants.append({
                             "surname": surname,
                             "forenames": forenames,
                             "gender": gender_value,
-                            "residence": residence
+                            "residence": residence,
+                            "occupation": occupation
                         })
                         seen_names.add(full_name)
                 current_name = []
@@ -122,13 +142,15 @@ def extract_defendants(doc):
             if full_name not in seen_names:
                 gender_value = detect_gender(forenames)
                 residence = extract_residence(doc, current_name_end_idx + 1)
+                occupation = extract_occupation(doc, current_name_end_idx + 1)
                 if not residence:
                     residence = collective_residence
                 defendants.append({
                     "surname": surname,
                     "forenames": forenames,
                     "gender": gender_value,
-                    "residence": residence
+                    "residence": residence,
+                    "occupation": occupation
                 })
 
     return defendants
@@ -143,12 +165,89 @@ def detect_gender(forenames: str) -> str | None:
     else:
         return None
 
+def extract_date(doc):
+    date_tokens = []
+    collecting = False
+    for token in doc:
+        if token.text.lower() == "on":
+            collecting = True
+            continue
+        if collecting:
+            if token.text.isdigit() or token.text in {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}:
+                date_tokens.append(token.text)
+            else:
+                if len(date_tokens) > 0:
+                    break
+
+    if len(date_tokens) == 3:
+        try:
+            date = datetime.strptime(" ".join(date_tokens), "%d %B %Y")
+            return date.strftime("%Y-%m-%d")
+        except ValueError:
+            try:
+                date = datetime.strptime(" ".join(date_tokens), "%d %b %Y")
+                return date.strftime("%Y-%m-%d")
+            except ValueError:
+                pass
+
+def extract_offence(doc):
+    offence_tokens = []
+    collecting = False
+    for token in doc:
+        if token.text.lower() == "for":
+            collecting = True
+            continue
+        if collecting:
+            if token.text.lower() in {"offence", "committed"}:
+                break
+            offence_tokens.append(token.text)
+    return " ".join(offence_tokens) if offence_tokens else None
+
+def extract_offence_location(doc):
+    offence_location_tokens = []
+    collecting = False
+    for token in doc:
+        if token.text.lower() == "at":
+            collecting = True
+            continue
+        if collecting:
+            if token.text.lower() in {"on"}:
+                break
+            if token.text.lower() not in {"offence", "committed"}:
+                offence_location_tokens.append(token.text)
+    return " ".join(offence_location_tokens) if offence_location_tokens else None
+
+def extract_court(doc):
+    court_tokens = []
+    collecting = False
+    for i, token in enumerate(doc):
+        if token.text.lower() == "case" and i + 1 < len(doc) and doc[i + 1].text.lower() == "heard":
+            collecting = True
+        if collecting:
+            if token.text.lower() == "at":
+                collecting = False
+                continue
+            if collecting and token.text.isalpha():
+                court_tokens.append(token.text)
+    return " ".join(court_tokens) if court_tokens else None
+
 def parse(input_str: str) -> Case | None:
     doc = nlp(input_str)
+    defendants = extract_defendants(doc)
+    date = extract_date(doc)
+    offence = extract_offence(doc)
+    offence_location = extract_offence_location(doc)
+    court = extract_court(doc)
+
     result = {
-        "defendants": extract_defendants(doc)
+        "defendants": [Person(**d) for d in defendants],
+        "date": date,
+        "offence": offence,
+        "offence_location": offence_location,
+        "court": court
     }
-    return Case(**result)
+
+    return Case(**{k: v for k, v in result.items() if v is not None})
 
 if __name__ == "__main__":
     Testcases.run_all_tests(parse)
