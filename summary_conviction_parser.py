@@ -32,9 +32,11 @@ def extract_defendants(doc):
                     surname = name_parts[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
+                        gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
-                            "forenames": forenames
+                            "forenames": forenames,
+                            "gender": gender_value
                         })
                         seen_names.add(full_name)
                 current_name = []
@@ -45,9 +47,11 @@ def extract_defendants(doc):
                     surname = name_parts[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
+                        gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
-                            "forenames": forenames
+                            "forenames": forenames,
+                            "gender": gender_value
                         })
                         seen_names.add(full_name)
                 current_name = []
@@ -59,12 +63,25 @@ def extract_defendants(doc):
             surname = name_parts[-1]
             full_name = forenames + " " + surname
             if full_name not in seen_names:
+                gender_value = detect_gender(forenames)
                 defendants.append({
                     "surname": surname,
-                    "forenames": forenames
+                    "forenames": forenames,
+                    "gender": gender_value
                 })
 
     return defendants
+
+
+def detect_gender(forenames: str) -> str | None:
+    first_name = forenames.split()[0]
+    raw_gender = gender_detector.get_gender(first_name)
+    if raw_gender in {"male", "mostly_male"}:
+        return "male"
+    elif raw_gender in {"female", "mostly_female"}:
+        return "female"
+    else:
+        return None
 
 def parse(input_str: str) -> Case | None:
     doc = nlp(input_str)
@@ -78,4 +95,6 @@ if __name__ == "__main__":
     Testcases.test_defendant_count(parse)
     Testcases.test_defendant_surnames(parse)
     Testcases.test_defendant_forenames(parse)
-    
+    #Testcases.test_defendant_residence(parse)
+    #Testcases.test_defendant_occupation(parse)
+    Testcases.test_defendant_gender(parse)
