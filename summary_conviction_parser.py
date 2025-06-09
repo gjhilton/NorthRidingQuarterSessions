@@ -3,6 +3,7 @@ import gender_guesser.detector as gender
 from pydantic import BaseModel
 from summary_conviction_testcases import Testcases, Case, Person
 from datetime import datetime
+import re
 
 nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
@@ -201,8 +202,9 @@ def extract_offence(doc):
             if token.text.lower() in {"offence", "committed"}:
                 break
             offence_tokens.append(token.text)
-    return " ".join(offence_tokens) if offence_tokens else None
-
+    offence = " ".join(offence_tokens) if offence_tokens else None
+    return offence.rstrip('. ') if offence else None              
+                
 def extract_offence_location(doc):
     offence_location_tokens = []
     collecting = False
@@ -232,6 +234,7 @@ def extract_court(doc):
     return " ".join(court_tokens) if court_tokens else None
 
 def parse(input_str: str) -> Case | None:
+    input_str = re.sub(r'([a-z])([A-Z])', r'\1. \2', input_str)
     doc = nlp(input_str)
     defendants = extract_defendants(doc)
     date = extract_date(doc)
@@ -248,6 +251,6 @@ def parse(input_str: str) -> Case | None:
     }
 
     return Case(**{k: v for k, v in result.items() if v is not None})
-
+    
 if __name__ == "__main__":
     Testcases.run_all_tests(parse)

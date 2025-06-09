@@ -296,7 +296,7 @@ class Testcases:
     def run_all_tests(parsing_function):
         Testcases.test_defendant_count(parsing_function)
         Testcases.test_date(parsing_function)
-        #Testcases.test_offence(parsing_function)
+        Testcases.test_offence(parsing_function)
         #Testcases.test_offence_location(parsing_function)
         #Testcases.test_court(parsing_function)
         Testcases.test_defendant_surnames(parsing_function)
