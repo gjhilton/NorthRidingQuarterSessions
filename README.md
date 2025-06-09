@@ -1,5 +1,9 @@
 # NYCRO working papers of the North Riding Quarter Sessions Scraper
 
+## Step 0:
+
+python3 -m spacy download en_core_web_sm
+
 ## Step 1:
 list_resources.py - executes a search against the QS Bundles collection, and generates a json file of matching resource ids and urls. 
 
