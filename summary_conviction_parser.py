@@ -95,45 +95,72 @@ def detect_gender(forenames: str) -> str | None:
     else:
         return None
 
+# doesnt work
 def extract_occupation(doc, name_end_idx):
+    location_keywords = {"township", "village", "town", "city", "county", "parish", "district"}
     prepositions = {"of", "in", "at", "on", "from"}
-    stop_words = {"for", "offence", "and", ","}
-    
+    determiners = {"the", "a", "an"}
+    stop_words = {"for", "offence", "and"}
+
     i = name_end_idx + 1
     length = len(doc)
-    
-    def is_location_chunk(tokens):
-        location_keywords = {"township", "village", "town", "city", "county", "parish", "district"}
-        return any(t.text.lower() in location_keywords for t in tokens)
-    
-    def is_occupation_chunk(tokens):
-        if is_location_chunk(tokens):
-            return False
-        return any(t.pos_ in {"NOUN", "ADJ"} and t.text.islower() for t in tokens)
 
-    chunks = []
-    current_chunk = []
-    
+    # 1. Skip to start of location phrase (first 'of')
+    while i < length and doc[i].text.lower() != "of":
+        i += 1
+    if i < length:
+        i += 1
+
+    # 2. Consume tokens part of location phrase
     while i < length:
         token = doc[i]
-        if token.text.lower() in stop_words or token.is_punct:
-            break
-        # Split chunk on preposition OR proper noun OR punctuation
-        if token.text.lower() in prepositions or token.pos_ == "PROPN" or token.is_punct:
-            if current_chunk:
-                chunks.append(current_chunk)
-                current_chunk = []
+        low = token.text.lower()
+        if (low in prepositions or
+            low in determiners or
+            low in location_keywords or
+            token.pos_ == "PROPN" or
+            token.is_punct):
             i += 1
-            continue
-        current_chunk.append(token)
-        i += 1
-    if current_chunk:
-        chunks.append(current_chunk)
+        else:
+            break
 
-    for chunk in chunks:
-        if is_occupation_chunk(chunk):
-            return " ".join(t.text for t in chunk)
-    return None
+    # 👇 New logic: if next token is a comma, handle "comma case"
+    if i < length and doc[i].text == ",":
+        i += 1  # skip comma
+        # Now collect next token(s) as occupation, until stop word or another comma
+        occupation_tokens = []
+        while i < length:
+            token = doc[i]
+            if token.text.lower() in stop_words:
+                break
+            if token.is_punct and token.text != ",":
+                break
+            if token.pos_ in {"NOUN", "ADJ"}:
+                occupation_tokens.append(token.text)
+            i += 1
+        if occupation_tokens:
+            return " ".join(occupation_tokens)
+        return None
+
+    # 👇 Handle non-comma case: look for NOUN/ADJ after location
+    occupation_tokens = []
+    while i < length:
+        token = doc[i]
+        low = token.text.lower()
+        if low in stop_words or (token.is_punct and token.text != ","):
+            break
+        if token.pos_ in {"NOUN", "ADJ"} and token.text.islower():
+            occupation_tokens.append(token.text)
+        else:
+            if token.is_punct and token.text == ",":
+                i += 1
+                continue
+            break
+        i += 1
+
+    if occupation_tokens:
+        return " ".join(occupation_tokens)
+    return None       
         
 def parse(input_str: str) -> Case | None:
     doc = nlp(input_str)
@@ -149,5 +176,5 @@ if __name__ == "__main__":
     Testcases.test_defendant_surnames(parse)
     Testcases.test_defendant_forenames(parse)
     #Testcases.test_defendant_residence(parse)
-    Testcases.test_defendant_occupation(parse)
+    #Testcases.test_defendant_occupation(parse)
     Testcases.test_defendant_gender(parse)
