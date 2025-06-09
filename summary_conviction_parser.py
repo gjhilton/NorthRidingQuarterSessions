@@ -9,6 +9,9 @@ nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
 
 def extract_residence(doc, start_idx):
+    return 'todo'
+
+def broken_extract_residence(doc, start_idx):
     residence_tokens = []
     i = start_idx
     stop_words = {"for", "on", "offence", "and"}
@@ -230,25 +233,30 @@ def parse(input_str: str) -> Case | None:
     return Case(**{k: v for k, v in result.items() if v is not None})
 
 
-def test_occupation_extraction():
+def test_attribute_extraction(key):
     data = Testcases.samoles()
-    print("\n")
+    print("\n***********************************")
+    print(f"*           {key}")
+    print("***********************************\n")
     for item in data:
         result = None
         if "input" in item:
-            input = item["input"]
-            print(f"Input: {input}")
-            result = parse(input)
+            input_text = item["input"]
+            print(f"Input: {input_text}")
+            result = parse(input_text)
+
         if "output" in item:
-            output = item['output']
-            occupations = [p.occupation for p in output.defendants]
-            print(f"Expected occupations: {occupations}")
+            output = item["output"]
+            expected = [getattr(p, key) for p in output.defendants]
+            print(f"Expected {key}s: {expected}")
+
         if result:
-            hits = [p.occupation for p in result.defendants]
-            print(f"Got occupations: {hits}")
+            actual = [getattr(p, key) for p in result.defendants]
+            print(f"Got {key}s: {actual}")
         print("\n")
 
 
 if __name__ == "__main__":
     #Testcases.run_all_tests(parse)
-    print(test_occupation_extraction())
+    test_attribute_extraction('occupation')
+    test_attribute_extraction('residence')
