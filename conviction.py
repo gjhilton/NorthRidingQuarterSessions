@@ -1,0 +1,18 @@
+from pydantic import BaseModel, conlist
+from typing import List, Literal, Optional
+from datetime import date
+
+class Person(BaseModel):
+    surname: Optional[str] = None
+    forenames: Optional[str] = None
+    residence: Optional[str] = None
+    occupation: Optional[str] = None
+    gender: Optional[Literal['male', 'female']] = None
+
+class Case(BaseModel):
+    date: Optional[date] = None
+    offence: Optional[str] = None
+    offence_location: Optional[str] = None
+    court: Optional[str] = None
+    defendants: Optional[conlist(Person, min_items=1)] = None
+    involved_persons: Optional[List[Person]] = None
