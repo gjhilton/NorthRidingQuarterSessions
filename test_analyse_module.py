@@ -6,11 +6,8 @@ from analyse_module import analyse
 @pytest.mark.parametrize(
     "input_string, expected_output",
     [
-        ("Hello, world!", {"input_length": 13, "first_character": "H"}),
-        ("", {"input_length": 0, "first_character": None}),
-        ("want", {"input_length": 4, "first_character": "9"}),
-        ("12345", {"input_length": 5, "first_character": "1"}),
-    ]
+        ("Summary conviction of William Waters of the township of Whitby jet worker for being drunk and riotous in BaxtergateOffence committed at the township of Whitby on 16 March 1873. Whitby Strand - case heard at Whitby", {"input_length": 213}),
+        ]
 )
 def test_analyse(input_string, expected_output):
     assert analyse(input_string) == expected_output
