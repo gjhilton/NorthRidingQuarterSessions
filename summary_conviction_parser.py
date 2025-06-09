@@ -1,15 +1,12 @@
 import re
 from datetime import datetime
-
 import spacy
 import gender_guesser.detector as gender
 from pydantic import BaseModel
 from summary_conviction_testcases import Testcases, Case, Person
 
-# Load spaCy model and gender detector
 nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
-
 
 def extract_residence(doc, start_idx):
     residence_tokens = []
@@ -190,8 +187,6 @@ def extract_offence(doc):
             offence_tokens.append(token.text)
     return " ".join(offence_tokens).rstrip('. ') if offence_tokens else None
 
-
-# YOUR ORIGINAL VERSION RESTORED BELOW
 def extract_offence_location(doc):
     text = doc.text.lower()
     idx = text.find("offence committed at")
