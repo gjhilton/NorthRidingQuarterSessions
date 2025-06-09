@@ -6,9 +6,10 @@ nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector()
 
 def process_conviction(row):
+    result = extract_case_details(row['description'])
+    for key, value in result.items():
+        row[key] = value
     return row
-    #result=extract_case_details(row['description'])
-    #return(result)
 
 def extract_case_details(text):
     case_data = defaultdict(list)

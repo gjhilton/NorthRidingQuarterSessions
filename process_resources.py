@@ -14,9 +14,9 @@ ROW_PARSERS = {
 }
 
 def process_dataframe(df):
-    def process_row(row):
+    def process_row(row, idx, total):
         title = row['title']
-        print(f"Processing: {title}")
+        print(f"Processing row {idx + 1} of {total}: {title}")
         for key, fn in ROW_PARSERS.items():
             if title.startswith(key):
                 return fn(row)
@@ -26,8 +26,11 @@ def process_dataframe(df):
     mask = df['title'].astype(str).str.startswith(prefixes)
     df.drop(index=df[~mask].index, inplace=True)
     df.reset_index(drop=True, inplace=True)
-    df = df.apply(process_row, axis=1)
+    total_rows = len(df)
+    df = df.apply(lambda row: process_row(row, row.name, total_rows), axis=1)
     return df
+
+
 
 if __name__ == "__main__":
     df = load_data('data/whitby.csv')
