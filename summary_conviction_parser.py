@@ -1,7 +1,7 @@
-from summary_conviction_tests import run_all_tests, Case
+from summary_conviction_testcases import Testcases, Case
 
 def parse(input_str: str) -> Case | None:
     return None
 
 if __name__ == "__main__":
-    run_all_tests(parse)
+    Testcases.run_all_tests(parse)
