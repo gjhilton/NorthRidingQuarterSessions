@@ -54,13 +54,11 @@ def extract_defendants(doc):
                     surname = current_name[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
-                        occupation = extract_occupation(doc, current_name_end_idx + 1)
                         gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
                             "forenames": forenames,
-                            "gender": gender_value,
-                            "occupation": occupation
+                            "gender": gender_value
                         })
                         seen_names.add(full_name)
                 current_name = []
@@ -73,13 +71,11 @@ def extract_defendants(doc):
             surname = current_name[-1]
             full_name = forenames + " " + surname
             if full_name not in seen_names:
-                occupation = extract_occupation(doc, current_name_end_idx + 1)
                 gender_value = detect_gender(forenames)
                 defendants.append({
                     "surname": surname,
                     "forenames": forenames,
-                    "gender": gender_value,
-                    "occupation": occupation
+                    "gender": gender_value
                 })
 
     return defendants
@@ -95,55 +91,12 @@ def detect_gender(forenames: str) -> str | None:
     else:
         return None
 
-# doesnt work
-def extract_occupation(doc, name_end_idx):
-    stop_words = {"for", "offence", "and"}
-    i = name_end_idx + 1
-    length = len(doc)
+#TODO
+def extract_occupation(doc):
+    return None
 
-    # Step 1: Skip "of the [location]" block
-    while i < length:
-        token = doc[i]
-        if token.text == ",":
-            i += 1  # move past comma
-            break
-        i += 1
-
-    # Step 2a: Pattern A — if comma-separated occupation
-    if i < length and doc[i].pos_ in {"NOUN", "ADJ"}:
-        occupation_tokens = []
-        while i < length:
-            token = doc[i]
-            if token.text.lower() in stop_words:
-                break
-            if token.is_punct and token.text != ",":
-                break
-            if token.pos_ in {"NOUN", "ADJ"}:
-                occupation_tokens.append(token.text)
-                i += 1
-            elif token.is_punct and token.text == ",":
-                i += 1
-            else:
-                break
-        if occupation_tokens:
-            return " ".join(occupation_tokens)
-
-    # Step 2b: Pattern B — no comma, collect until "for" or "offence"
-    i = name_end_idx + 1
-    while i < length and doc[i].text.lower() != "for":
-        i += 1
-    back = i - 1
-    occupation_tokens = []
-    while back > name_end_idx:
-        token = doc[back]
-        if token.pos_ in {"NOUN", "ADJ"} and token.text[0].islower():
-            occupation_tokens.insert(0, token.text)
-            back -= 1
-        else:
-            break
-    if occupation_tokens:
-        return " ".join(occupation_tokens)
-
+#TODO
+def extract_residence(doc):
     return None
         
 def parse(input_str: str) -> Case | None:
@@ -155,10 +108,4 @@ def parse(input_str: str) -> Case | None:
 
 
 if __name__ == "__main__":
-    #Testcases.run_all_tests(parse)
-    Testcases.test_defendant_count(parse)
-    Testcases.test_defendant_surnames(parse)
-    Testcases.test_defendant_forenames(parse)
-    #Testcases.test_defendant_residence(parse)
-    Testcases.test_defendant_occupation(parse)
-    Testcases.test_defendant_gender(parse)
+    Testcases.run_all_tests(parse)
