@@ -10,8 +10,8 @@ def extract_defendants(doc):
     defendants = []
     collecting = False
     current_name = []
+    current_name_end_idx = None
     seen_names = set()
-    pending_occupation = None
     i = 0
 
     while i < len(doc):
@@ -27,15 +27,17 @@ def extract_defendants(doc):
 
             if token.ent_type_ == "PERSON":
                 current_name.append(token.text)
+                current_name_end_idx = i
             elif token.pos_ in {"PROPN", "NOUN"} and token.text.istitle():
                 current_name.append(token.text)
+                current_name_end_idx = i
             elif token.text.lower() in {"and", ","}:
                 if len(current_name) >= 2:
                     forenames = " ".join(current_name[:-1])
                     surname = current_name[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
-                        occupation = extract_occupation(doc, i)
+                        occupation = extract_occupation(doc, current_name_end_idx + 1)
                         gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
@@ -45,13 +47,14 @@ def extract_defendants(doc):
                         })
                         seen_names.add(full_name)
                 current_name = []
+                current_name_end_idx = None
             elif current_name:
                 if len(current_name) >= 2:
                     forenames = " ".join(current_name[:-1])
                     surname = current_name[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
-                        occupation = extract_occupation(doc, i)
+                        occupation = extract_occupation(doc, current_name_end_idx + 1)
                         gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
@@ -61,6 +64,7 @@ def extract_defendants(doc):
                         })
                         seen_names.add(full_name)
                 current_name = []
+                current_name_end_idx = None
         i += 1
 
     if current_name:
@@ -69,7 +73,7 @@ def extract_defendants(doc):
             surname = current_name[-1]
             full_name = forenames + " " + surname
             if full_name not in seen_names:
-                occupation = extract_occupation(doc, i)
+                occupation = extract_occupation(doc, current_name_end_idx + 1)
                 gender_value = detect_gender(forenames)
                 defendants.append({
                     "surname": surname,
@@ -91,27 +95,53 @@ def detect_gender(forenames: str) -> str | None:
     else:
         return None
 
+def extract_occupation(doc, name_end_idx):
+    prepositions = {"of", "in", "at", "on", "from"}
+    stop_words = {"for", "offence", "and", ","}
+    
+    i = name_end_idx + 1
+    length = len(doc)
+    
+    def is_location_chunk(tokens):
+        location_keywords = {"township", "village", "town", "city", "county", "parish", "district"}
+        return any(t.text.lower() in location_keywords for t in tokens)
+    
+    def is_occupation_chunk(tokens):
+        if is_location_chunk(tokens):
+            return False
+        return any(t.pos_ in {"NOUN", "ADJ"} and t.text.islower() for t in tokens)
 
-def extract_occupation(doc, start_index):
-    occupation_tokens = []
-    for j in range(start_index, min(start_index + 5, len(doc))):
-        t = doc[j]
-        if t.pos_ == "NOUN" and not t.ent_type_:
-            if t.text.islower() or (t.text[0].islower() and t.text[1:].isalpha()):
-                occupation_tokens.append(t.text)
-            else:
-                break
-        elif occupation_tokens:
+    chunks = []
+    current_chunk = []
+    
+    while i < length:
+        token = doc[i]
+        if token.text.lower() in stop_words or token.is_punct:
             break
-    occupation = " ".join(occupation_tokens) if occupation_tokens else None
-    return occupation
+        # Split chunk on preposition OR proper noun OR punctuation
+        if token.text.lower() in prepositions or token.pos_ == "PROPN" or token.is_punct:
+            if current_chunk:
+                chunks.append(current_chunk)
+                current_chunk = []
+            i += 1
+            continue
+        current_chunk.append(token)
+        i += 1
+    if current_chunk:
+        chunks.append(current_chunk)
 
+    for chunk in chunks:
+        if is_occupation_chunk(chunk):
+            return " ".join(t.text for t in chunk)
+    return None
+        
 def parse(input_str: str) -> Case | None:
     doc = nlp(input_str)
     result = {
         "defendants": extract_defendants(doc)
     }
     return Case(**result)
+
 
 if __name__ == "__main__":
     #Testcases.run_all_tests(parse)
