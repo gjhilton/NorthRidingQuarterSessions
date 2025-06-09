@@ -1,6 +1,5 @@
-from pydantic import BaseModel
 from typing import List, Optional, Literal
-from datetime import date
+from pydantic import BaseModel, Field
 
 class Person(BaseModel):
     surname: Optional[str] = None
@@ -10,7 +9,7 @@ class Person(BaseModel):
     gender: Optional[Literal['male', 'female', 'other']] = None
 
 class Case(BaseModel):
-    date: Optional[date] = None
+    date: Optional[str] = Field(default=None)  # date as string
     offence: Optional[str] = None
     offence_location: Optional[str] = None
     court: Optional[str] = None
@@ -20,7 +19,7 @@ class Case(BaseModel):
 waters = {
     "input": "Summary conviction of William Waters of the township of Whitby jet worker for being drunk and riotous in BaxtergateOffence committed at the township of Whitby on 16 March 1873. Whitby Strand - case heard at Whitby",
     "output": Case(
-        date=date(1873, 3, 16),
+        date="1873-03-16",
         offence="being drunk and riotous in Baxtergate",
         offence_location="Baxtergate, Whitby",
         court="Whitby",
@@ -40,7 +39,7 @@ waters = {
 williams = {
     "input": "Summary conviction of Sarah Jane Williams of the township of Whitby seamstress for theft of a coat from the local shop. Offence committed at the township of Whitby on 5 March 1893. Whitby Strand Petty Sessional division - case heard at Whitby.",
     "output": Case(
-        date=date(1893, 3, 5),
+        date="1893-03-05",
         offence="theft of a coat from the local shop",
         offence_location="Whitby",
         court="Whitby",
@@ -60,7 +59,7 @@ williams = {
 brown = {
     "input": "Summary conviction of Thomas Brown of the village of Pickering, blacksmith, for assaulting a police officer on duty. Offence committed at the village of Pickering on 7 November 1905. Pickering Strand Petty Sessional division - case heard at Pickering.",
     "output": Case(
-        date=date(1905, 11, 7),
+        date="1905-11-07",
         offence="assaulting a police officer on duty",
         offence_location="Pickering",
         court="Pickering",
@@ -80,7 +79,7 @@ brown = {
 adams = {
     "input": "Summary conviction of Mary Elizabeth Adams of Whitby housewife for gambling in a public place. Offence committed at the township of Whitby on 12 July 1880. Whitby Strand Petty Sessional division - case heard at Whitby.",
     "output": Case(
-        date=date(1880, 7, 12),
+        date="1880-07-12",
         offence="gambling in a public place",
         offence_location="Whitby",
         court="Whitby",
@@ -100,7 +99,7 @@ adams = {
 nicholson = {
     "input": "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble. Offence committed at the township of Sneaton on 30 August 1868. Whitby Strand - case heard at Whitby.",
     "output": Case(
-        date=date(1868, 8, 30),
+        date="1868-08-30",
         offence="trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble",
         offence_location="Sneaton",
         court="Whitby",
@@ -269,6 +268,10 @@ class Testcases:
             for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
                 assert_equal(actual.gender, expected.gender, "involved_person gender", i)
 
+    @staticmethod
+    def samoles():
+        return(sample_data)
+                
     @staticmethod
     def run_all_tests(parsing_function):
         Testcases.test_date(parsing_function)
