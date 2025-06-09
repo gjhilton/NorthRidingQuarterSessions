@@ -11,10 +11,14 @@ def extract_defendants(doc):
     collecting = False
     current_name = []
     seen_names = set()
+    pending_occupation = None
+    i = 0
 
-    for token in doc:
+    while i < len(doc):
+        token = doc[i]
         if token.text.lower() == "conviction":
             collecting = True
+            i += 1
             continue
 
         if collecting:
@@ -27,47 +31,51 @@ def extract_defendants(doc):
                 current_name.append(token.text)
             elif token.text.lower() in {"and", ","}:
                 if len(current_name) >= 2:
-                    name_parts = current_name[:]
-                    forenames = " ".join(name_parts[:-1])
-                    surname = name_parts[-1]
+                    forenames = " ".join(current_name[:-1])
+                    surname = current_name[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
+                        occupation = extract_occupation(doc, i)
                         gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
                             "forenames": forenames,
-                            "gender": gender_value
+                            "gender": gender_value,
+                            "occupation": occupation
                         })
                         seen_names.add(full_name)
                 current_name = []
             elif current_name:
                 if len(current_name) >= 2:
-                    name_parts = current_name[:]
-                    forenames = " ".join(name_parts[:-1])
-                    surname = name_parts[-1]
+                    forenames = " ".join(current_name[:-1])
+                    surname = current_name[-1]
                     full_name = forenames + " " + surname
                     if full_name not in seen_names:
+                        occupation = extract_occupation(doc, i)
                         gender_value = detect_gender(forenames)
                         defendants.append({
                             "surname": surname,
                             "forenames": forenames,
-                            "gender": gender_value
+                            "gender": gender_value,
+                            "occupation": occupation
                         })
                         seen_names.add(full_name)
                 current_name = []
+        i += 1
 
     if current_name:
         if len(current_name) >= 2:
-            name_parts = current_name
-            forenames = " ".join(name_parts[:-1])
-            surname = name_parts[-1]
+            forenames = " ".join(current_name[:-1])
+            surname = current_name[-1]
             full_name = forenames + " " + surname
             if full_name not in seen_names:
+                occupation = extract_occupation(doc, i)
                 gender_value = detect_gender(forenames)
                 defendants.append({
                     "surname": surname,
                     "forenames": forenames,
-                    "gender": gender_value
+                    "gender": gender_value,
+                    "occupation": occupation
                 })
 
     return defendants
@@ -83,6 +91,21 @@ def detect_gender(forenames: str) -> str | None:
     else:
         return None
 
+
+def extract_occupation(doc, start_index):
+    occupation_tokens = []
+    for j in range(start_index, min(start_index + 5, len(doc))):
+        t = doc[j]
+        if t.pos_ == "NOUN" and not t.ent_type_:
+            if t.text.islower() or (t.text[0].islower() and t.text[1:].isalpha()):
+                occupation_tokens.append(t.text)
+            else:
+                break
+        elif occupation_tokens:
+            break
+    occupation = " ".join(occupation_tokens) if occupation_tokens else None
+    return occupation
+
 def parse(input_str: str) -> Case | None:
     doc = nlp(input_str)
     result = {
@@ -96,5 +119,5 @@ if __name__ == "__main__":
     Testcases.test_defendant_surnames(parse)
     Testcases.test_defendant_forenames(parse)
     #Testcases.test_defendant_residence(parse)
-    #Testcases.test_defendant_occupation(parse)
+    Testcases.test_defendant_occupation(parse)
     Testcases.test_defendant_gender(parse)

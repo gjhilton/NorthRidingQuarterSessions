@@ -145,9 +145,15 @@ sample_data = [
     nicholson,
 ]
 
-def assert_equal(actual, expected, field, i=None, entity=""):
+def assert_equal(actual, expected, field, i=None, entity="", input_text=""):
     prefix = f"{entity} {i} " if i is not None else ""
-    assert actual == expected, f"{prefix}{field} mismatch: got {actual}, expected {expected}"
+    snippet = input_text[:80].replace("\n", " ") + ("..." if len(input_text) > 80 else "")
+    assert actual == expected, (
+        f"\n[FAIL] {prefix}{field} mismatch:\n"
+        f"  - Input:    \"{snippet}\"\n"
+        f"  - Expected: {expected}\n"
+        f"  - Got:      {actual}"
+    )
 
 class Testcases:
     @staticmethod
@@ -155,28 +161,28 @@ class Testcases:
         for case in sample_data:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
-            assert_equal(result.date, case["output"].date, "date")
+            assert_equal(result.date, case["output"].date, "date", input_text=case["input"])
 
     @staticmethod
     def test_offence(parsing_function):
         for case in sample_data:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
-            assert_equal(result.offence, case["output"].offence, "offence")
+            assert_equal(result.offence, case["output"].offence, "offence", input_text=case["input"])
 
     @staticmethod
     def test_offence_location(parsing_function):
         for case in sample_data:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
-            assert_equal(result.offence_location, case["output"].offence_location, "offence_location")
+            assert_equal(result.offence_location, case["output"].offence_location, "offence_location", input_text=case["input"])
 
     @staticmethod
     def test_court(parsing_function):
         for case in sample_data:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
-            assert_equal(result.court, case["output"].court, "court")
+            assert_equal(result.court, case["output"].court, "court", input_text=case["input"])
 
     @staticmethod
     def test_defendant_surnames(parsing_function):
@@ -184,7 +190,7 @@ class Testcases:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
             for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
-                assert_equal(actual.surname, expected.surname, "defendant surname", i)
+                assert_equal(actual.surname, expected.surname, "defendant surname", i, "Defendant", input_text=case["input"])
 
     @staticmethod
     def test_defendant_forenames(parsing_function):
@@ -192,7 +198,7 @@ class Testcases:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
             for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
-                assert_equal(actual.forenames, expected.forenames, "defendant forenames", i)
+                assert_equal(actual.forenames, expected.forenames, "defendant forenames", i, "Defendant", input_text=case["input"])
 
     @staticmethod
     def test_defendant_residence(parsing_function):
@@ -200,7 +206,7 @@ class Testcases:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
             for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
-                assert_equal(actual.residence, expected.residence, "defendant residence", i)
+                assert_equal(actual.residence, expected.residence, "defendant residence", i, "Defendant", input_text=case["input"])
 
     @staticmethod
     def test_defendant_occupation(parsing_function):
@@ -208,7 +214,7 @@ class Testcases:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
             for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
-                assert_equal(actual.occupation, expected.occupation, "defendant occupation", i)
+                assert_equal(actual.occupation, expected.occupation, "defendant occupation", i, "Defendant", input_text=case["input"])
 
     @staticmethod
     def test_defendant_gender(parsing_function):
@@ -216,7 +222,7 @@ class Testcases:
             result = parsing_function(case["input"])
             assert result is not None, "parse() returned None"
             for i, (actual, expected) in enumerate(zip(result.defendants, case["output"].defendants)):
-                assert_equal(actual.gender, expected.gender, "defendant gender", i)
+                assert_equal(actual.gender, expected.gender, "defendant gender", i, "Defendant", input_text=case["input"])
 
     @staticmethod
     def test_involved_person_surnames(parsing_function):
@@ -226,7 +232,7 @@ class Testcases:
             actual_list = result.involved_persons or []
             expected_list = case["output"].involved_persons or []
             for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.surname, expected.surname, "involved_person surname", i)
+                assert_equal(actual.surname, expected.surname, "involved_person surname", i, "Involved person", input_text=case["input"])
 
     @staticmethod
     def test_involved_person_forenames(parsing_function):
@@ -236,7 +242,7 @@ class Testcases:
             actual_list = result.involved_persons or []
             expected_list = case["output"].involved_persons or []
             for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.forenames, expected.forenames, "involved_person forenames", i)
+                assert_equal(actual.forenames, expected.forenames, "involved_person forenames", i, "Involved person", input_text=case["input"])
 
     @staticmethod
     def test_involved_person_residence(parsing_function):
@@ -246,7 +252,7 @@ class Testcases:
             actual_list = result.involved_persons or []
             expected_list = case["output"].involved_persons or []
             for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.residence, expected.residence, "involved_person residence", i)
+                assert_equal(actual.residence, expected.residence, "involved_person residence", i, "Involved person", input_text=case["input"])
 
     @staticmethod
     def test_involved_person_occupation(parsing_function):
@@ -256,7 +262,7 @@ class Testcases:
             actual_list = result.involved_persons or []
             expected_list = case["output"].involved_persons or []
             for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.occupation, expected.occupation, "involved_person occupation", i)
+                assert_equal(actual.occupation, expected.occupation, "involved_person occupation", i, "Involved person", input_text=case["input"])
 
     @staticmethod
     def test_involved_person_gender(parsing_function):
@@ -266,7 +272,7 @@ class Testcases:
             actual_list = result.involved_persons or []
             expected_list = case["output"].involved_persons or []
             for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.gender, expected.gender, "involved_person gender", i)
+                assert_equal(actual.gender, expected.gender, "involved_person gender", i, "Involved person", input_text=case["input"])
 
     @staticmethod
     def test_defendant_count(parsing_function):
@@ -275,12 +281,17 @@ class Testcases:
             assert result is not None, "parse() returned None"
             actual_count = len(result.defendants or [])
             expected_count = len(case["output"].defendants or [])
-            assert actual_count == expected_count, f"defendant count mismatch: got {actual_count}, expected {expected_count}"                
-                
+            assert actual_count == expected_count, (
+                f"\n[FAIL] defendant count mismatch:\n"
+                f"  - Input:    \"{case['input'][:80].replace(chr(10), ' ')}{'...' if len(case['input']) > 80 else ''}\"\n"
+                f"  - Expected: {expected_count}\n"
+                f"  - Got:      {actual_count}"
+            )
+
     @staticmethod
     def samoles():
         return(sample_data)
-                
+
     @staticmethod
     def run_all_tests(parsing_function):
         Testcases.test_date(parsing_function)
