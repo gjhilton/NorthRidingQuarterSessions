@@ -38,26 +38,29 @@ def extract_residence(doc, start_idx):
 
     return " ".join(residence_tokens) if residence_tokens else None
 
-
 def extract_occupation(doc, start_idx):
+    return "todo"
+    
+def brokem_extract_occupation(doc, start_idx):
     occupation_tokens = []
+    stop_words = {"for", "on", "offence", "and"}
     i = start_idx
 
-    # Start with lowercase NOUN
     while i < len(doc):
         token = doc[i]
-        if token.pos_ == "NOUN" and token.text[0].islower():
-            occupation_tokens.append(token.text)
-            i += 1
-            break
-        i += 1
+        lower = token.text.lower()
 
-    # Continue collecting until next lowercase NOUN
-    while i < len(doc):
-        token = doc[i]
-        if token.pos_ == "NOUN" and token.text[0].islower():
+        if lower in stop_words or token.is_punct:
             break
-        occupation_tokens.append(token.text)
+
+        if token.ent_type_ in {"GPE", "LOC"}:
+            break
+
+        if token.pos_ in {"NOUN", "ADJ"} or token.text[0].islower():
+            occupation_tokens.append(token.text)
+        elif occupation_tokens:
+            break
+
         i += 1
 
     return " ".join(occupation_tokens) if occupation_tokens else None
@@ -187,6 +190,7 @@ def extract_offence(doc):
             offence_tokens.append(token.text)
     return " ".join(offence_tokens).rstrip('. ') if offence_tokens else None
 
+
 def extract_offence_location(doc):
     text = doc.text.lower()
     idx = text.find("offence committed at")
@@ -226,5 +230,25 @@ def parse(input_str: str) -> Case | None:
     return Case(**{k: v for k, v in result.items() if v is not None})
 
 
+def test_occupation_extraction():
+    data = Testcases.samoles()
+    print("\n")
+    for item in data:
+        result = None
+        if "input" in item:
+            input = item["input"]
+            print(f"Input: {input}")
+            result = parse(input)
+        if "output" in item:
+            output = item['output']
+            occupations = [p.occupation for p in output.defendants]
+            print(f"Expected occupations: {occupations}")
+        if result:
+            hits = [p.occupation for p in result.defendants]
+            print(f"Got occupations: {hits}")
+        print("\n")
+
+
 if __name__ == "__main__":
-    Testcases.run_all_tests(parse)
+    #Testcases.run_all_tests(parse)
+    print(test_occupation_extraction())
