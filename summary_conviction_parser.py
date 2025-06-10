@@ -45,62 +45,47 @@ def truncate_span_before_and(span):
     return next((span[:i] for i, token in enumerate(span) if token.text.lower() == "and"), span)
 
 def truncate_from_offset(span, offset_list):
-    if len(offset_list) < 1:
-        return span.text 
-
-    end_char = offset_list[0]["end"]
-
-    return span.text[end_char:]
+    if not offset_list:
+        return span.text
+    return span.text[offset_list[0]["end"]:]
     
 def extract_occupation(doc, start_idx):
-    interesting_bit = get_first_sentence(doc)
-    interesting_bit = interesting_bit[start_idx:]
-    interesting_bit = get_span_up_to_first_for(interesting_bit)
-    places = find_place_names(interesting_bit)
+    span = get_first_sentence(doc)[start_idx:]
+    span = get_span_up_to_first_for(span)
+    places = find_place_names(span)
     if len(places) > 1:
-        interesting_bit = get_span_to_first_comma(interesting_bit)
-        interesting_bit = truncate_span_before_and(interesting_bit)
-    interesting_bit = nlp(interesting_bit.text)
-    places = find_place_names(interesting_bit)
-    interesting_str = truncate_from_offset(interesting_bit, places)
-    interesting_str = interesting_str.strip(" ,")
-    return interesting_str
+        span = get_span_to_first_comma(span)
+        span = truncate_span_before_and(span)
+    span = nlp(span.text)
+    places = find_place_names(span)
+    result = truncate_from_offset(span, places).strip(" ,")
+    return result
 
 def detect_gender(forenames: str) -> str | None:
     first_name = forenames.split()[0]
-    raw_gender = gender_detector.get_gender(first_name)
-    if raw_gender in {"male", "mostly_male"}:
-        return "male"
-    elif raw_gender in {"female", "mostly_female"}:
-        return "female"
-    else:
-        return None
-
+    gender_map = {"male": "male", "mostly_male": "male", "female": "female", "mostly_female": "female"}
+    return gender_map.get(gender_detector.get_gender(first_name))
 
 def create_defendant(name_tokens, doc, end_idx, seen_names):
     if len(name_tokens) < 2:
         return None
 
-    forenames = " ".join(name_tokens[:-1])
-    surname = name_tokens[-1]
+    forenames, surname = " ".join(name_tokens[:-1]), name_tokens[-1]
     full_name = f"{forenames} {surname}"
 
     if full_name in seen_names:
         return None
 
     seen_names.add(full_name)
-    residence = extract_residence(doc, end_idx + 1)
-    occupation = extract_occupation(doc, end_idx + 1)
-    gender = detect_gender(forenames)
 
+    start_idx = end_idx + 1
     return {
         "forenames": forenames,
         "surname": surname,
-        "gender": gender,
-        "residence": residence,
-        "occupation": occupation
+        "gender": detect_gender(forenames),
+        "residence": extract_residence(doc, start_idx),
+        "occupation": extract_occupation(doc, start_idx)
     }
-
 
 def extract_defendants(doc):
     defendants = []
@@ -109,8 +94,9 @@ def extract_defendants(doc):
     end_idx = None
     seen_names = set()
     i = 0
+    length = len(doc)
 
-    while i < len(doc):
+    while i < length:
         token = doc[i]
         lower = token.text.lower()
 
@@ -123,56 +109,60 @@ def extract_defendants(doc):
             if lower in {"for", "on", "offence"}:
                 break
 
-            if lower == "all" and i + 1 < len(doc) and doc[i + 1].text.lower() == "of":
+            if lower == "all" and i + 1 < length and doc[i + 1].text.lower() == "of":
                 i += 2
-                
+                continue
 
             if token.ent_type_ == "PERSON" or (token.pos_ in {"PROPN", "NOUN"} and token.text.istitle()):
                 name_tokens.append(token.text)
                 end_idx = i
             elif lower in {"and", ","}:
-                if (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
+                if def_data := create_defendant(name_tokens, doc, end_idx, seen_names):
                     defendants.append(def_data)
-                name_tokens = []
+                name_tokens.clear()
                 end_idx = None
             elif name_tokens:
-                if (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
+                if def_data := create_defendant(name_tokens, doc, end_idx, seen_names):
                     defendants.append(def_data)
-                name_tokens = []
+                name_tokens.clear()
                 end_idx = None
+
         i += 1
 
-    if name_tokens:
-        if (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
-            defendants.append(def_data)
+    if name_tokens and (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
+        defendants.append(def_data)
 
     return defendants
 
-
 def extract_date(doc):
+    months = {
+        "january", "february", "march", "april", "may", "june", "july",
+        "august", "september", "october", "november", "december",
+        "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec"
+    }
+
     date_tokens = []
     collecting = False
+
     for token in doc:
-        if token.text.lower() == "on":
+        lower_text = token.text.lower()
+        if lower_text == "on":
             collecting = True
             continue
         if collecting:
-            if token.text.isdigit() or token.text in {
-                "January", "February", "March", "April", "May", "June", "July",
-                "August", "September", "October", "November", "December",
-                "Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-            }:
+            if token.text.isdigit() or lower_text in months:
                 date_tokens.append(token.text)
             elif date_tokens:
                 break
 
+    date_str = " ".join(date_tokens)
     for fmt in ("%d %B %Y", "%d %b %Y"):
         try:
-            return datetime.strptime(" ".join(date_tokens), fmt).strftime("%Y-%m-%d")
+            return datetime.strptime(date_str, fmt).strftime("%Y-%m-%d")
         except ValueError:
-            continue
-    return None
+            pass
 
+    return None
 
 def extract_offence(doc):
     offence_tokens = []
