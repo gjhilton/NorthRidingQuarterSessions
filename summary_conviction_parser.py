@@ -49,7 +49,7 @@ def broken_extract_residence(doc, start_idx):
 def get_first_sentence(doc):
     return next(doc.sents, None)
 
-def get_text_up_to_first_for(doc):
+def get_span_up_to_first_for(doc):
     for_index = -1
     for i, token in enumerate(doc):
         if token.text.lower() == "for":
@@ -57,20 +57,55 @@ def get_text_up_to_first_for(doc):
             break
 
     if for_index == -1:
-        return doc.text  
+        return doc
     return doc[:for_index]
 
 def find_place_names(doc):
-    place_labels = {"GPE", "LOC", "FAC", "ORG"}
-    return [ent.text for ent in doc.ents if ent.label_ in place_labels]
+    place_labels = {"GPE", "LOC", "FAC", "ORG"} 
+    return [
+        {"text": ent.text, "start": ent.start_char, "end": ent.end_char}
+        for ent in doc.ents
+        if ent.label_ in place_labels
+    ]
+
+def remove_spans_from_text(doc, spans):
+    spans_sorted = sorted(spans, key=lambda x: x["start"], reverse=True)
+    text = doc.text
+    for span in spans_sorted:
+        text = text[:span["start"]] + text[span["end"]:]
+    return text
+
+def get_span_to_first_comma(doc):
+    for i, token in enumerate(doc):
+        if token.text == ",":
+            return doc[:i]  # Span from start up to (but not including) the comma
+    return doc  # No comma found, return the full doc
+ 
+def truncate_span_before_and(span):
+    for i, token in enumerate(span):
+        if token.text.lower() == "and":
+            return span[:i]  # Everything before 'and'
+    return span  # 'and' not found, return full span
+
     
 def extract_occupation(doc, start_idx):
     interesting_bit = get_first_sentence(doc)
     interesting_bit = interesting_bit[start_idx:]
-    interesting_bit = get_text_up_to_first_for(interesting_bit)
+    #interesting_bit = get_span_to_first_comma(interesting_bit)
+    interesting_bit = get_span_up_to_first_for(interesting_bit)
     places = find_place_names(interesting_bit)
-    result = f"{places}"
-    return result
+    if len(places) > 1:
+        interesting_bit = get_span_to_first_comma(interesting_bit)
+        interesting_bit = truncate_span_before_and(interesting_bit)
+        places = find_place_names(interesting_bit)
+    #interesting_str = remove_places_from_span(interesting_bit,places)
+    #interesting_str = remove_spans_from_text(interesting_bit,places)
+    #result = interesting_bit.text
+    print()
+    #print(start_idx)
+    #print(places)
+    print(interesting_bit)
+    return interesting_bit.text
     
 def brokem_extract_occupation(doc, start_idx):
     occupation_tokens = []
@@ -296,7 +331,7 @@ if __name__ == "__main__":
     #Testcases.run_all_tests(parse)
     test_attribute_extraction('occupation', True)
     #test_attribute_extraction('residence')
-    #text = "He lives in the village of Pickering."
+    #text = "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble."
     #doc = nlp(text)
     #for ent in doc.ents:
-        #print(ent.text, ent.label_)
+     #   print(ent.text, ent.label_)
