@@ -303,7 +303,7 @@ class Testcases:
         Testcases.test_defendant_forenames(parsing_function)
         Testcases.test_defendant_gender(parsing_function)
         # Testcases.test_defendant_residence(parsing_function)
-        #Testcases.test_defendant_occupation(parsing_function)
+        Testcases.test_defendant_occupation(parsing_function)
         #Testcases.test_involved_person_surnames(parsing_function)
         #Testcases.test_involved_person_forenames(parsing_function)
         #Testcases.test_involved_person_residence(parsing_function)
