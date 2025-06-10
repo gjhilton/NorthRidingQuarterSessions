@@ -8,12 +8,19 @@ from summary_conviction_testcases import Testcases, Case, Person
 nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
 
+def find_place_text(name_idx, places):
+    for place in places:
+        if name_idx < place["end"]:
+            return place["text"]
+    return None
+
 def extract_residence(doc, start_idx):
-    # find all the instnaces of a place, wherea place is 
-    # of [tagged] 
-    # all,the names before that substring will belong to that olace.
-    print('todo')
-    return 'todo'
+    interesting_bit = get_first_sentence(doc)
+    interesting_bit = interesting_bit[start_idx:]
+    interesting_bit = nlp(interesting_bit.text)
+    places = find_place_names(interesting_bit)
+    residence = places[0]["text"]
+    return residence
 
 def broken_extract_residence(doc, start_idx):
     residence_tokens = []
@@ -39,7 +46,6 @@ def broken_extract_residence(doc, start_idx):
             continue
         break
 
-    # Remove leading location prepositions
     while residence_tokens and residence_tokens[0].lower() in (leading_phrases | location_terms):
         residence_tokens.pop(0)
 
@@ -77,20 +83,19 @@ def remove_spans_from_text(doc, spans):
 def get_span_to_first_comma(doc):
     for i, token in enumerate(doc):
         if token.text == ",":
-            return doc[:i]  # Span from start up to (but not including) the comma
-    return doc  # No comma found, return the full doc
+            return doc[:i]
+    return doc 
  
 def truncate_span_before_and(span):
     for i, token in enumerate(span):
         if token.text.lower() == "and":
-            return span[:i]  # Everything before 'and'
-    return span  # 'and' not found, return full span
+            return span[:i]
+    return span 
 
 def truncate_from_offset(span, offset_list):
     if len(offset_list) < 1:
-        return span.text  # Return original span if no offsets
+        return span.text 
 
-    # Get the end offset from the first offset dict
     end_char = offset_list[0]["end"]
 
     return span.text[end_char:]
@@ -107,7 +112,6 @@ def extract_occupation(doc, start_idx):
     places = find_place_names(interesting_bit)
     interesting_str = truncate_from_offset(interesting_bit, places)
     interesting_str = interesting_str.strip(" ,")
-    #print(interesting_str)
     return interesting_str
 
 def detect_gender(forenames: str) -> str | None:
@@ -152,7 +156,6 @@ def extract_defendants(doc):
     name_tokens = []
     end_idx = None
     seen_names = set()
-    collective_residence = None
     i = 0
 
     while i < len(doc):
@@ -304,9 +307,9 @@ def test_attribute_extraction(key, mute=False):
 
     
 if __name__ == "__main__":
-    #Testcases.run_all_tests(parse)
+    Testcases.run_all_tests(parse)
     # test_attribute_extraction('occupation')
-    test_attribute_extraction('residence',True)
+    #test_attribute_extraction('residence',True)
     #text = "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble."
     #text = "of Whitby housewife"
     #doc = nlp(text)
