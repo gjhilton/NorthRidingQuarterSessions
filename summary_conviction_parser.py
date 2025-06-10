@@ -204,7 +204,7 @@ def extract_court(doc):
         return court
     return None
 
-def parse(input_str: str) -> Case | None:
+def parse_conviction(input_str: str) -> Case | None:
     input_str = re.sub(r'([a-z])([A-Z])', r'\1. \2', input_str)
     doc = nlp(input_str)
 
@@ -249,9 +249,9 @@ def test_attribute_extraction(key, mute=False):
         if not mute:
             print("\n")
 
-    
+## python3 -m summary_conviction_parser
 if __name__ == "__main__":
-    Testcases.run_all_tests(parse)
+    Testcases.run_all_tests(parse_conviction)
     # test_attribute_extraction('occupation')
     #test_attribute_extraction('residence',True)
     #text = "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble."

@@ -1,6 +1,10 @@
 import pandas as pd
-from conviction_processor import process_conviction
-from indictment_processor import process_indictment
+import os
+from datetime import datetime
+from summary_conviction_parser import parse_conviction
+# from indictment_processor import process_indictment
+
+INPUT_FILE = "data/whitby.csv"
 
 def load_data(path):
     return pd.read_csv(path)
@@ -9,7 +13,7 @@ def save_data(df, path):
     df.to_csv(path, index=False)
 
 ROW_PARSERS = {
-    'Summary conviction': process_conviction,
+    'Summary conviction':parse_conviction,
     # 'Bill of indictment': process_indictment
 }
 
@@ -36,6 +40,7 @@ def process_dataframe(df, start=None, end=None):
 
     def process_row(row):
         title = row.get('title', '')
+        description= row.get('description', '')
         if not isinstance(title, str):
             title = str(title)
         idx = row.name
@@ -43,7 +48,7 @@ def process_dataframe(df, start=None, end=None):
         try:
             for key, fn in ROW_PARSERS.items():
                 if title.startswith(key):
-                    return fn(row)
+                    return fn(description)
         except Exception as e:
             print(f"Error processing row {idx + 1} with title '{title}': {e}")
         return row
@@ -52,8 +57,13 @@ def process_dataframe(df, start=None, end=None):
     processed_df.reset_index(drop=True, inplace=True)
     return processed_df
 
+# 
 if __name__ == "__main__":
-    df = load_data('data/whitby.csv')
-    #df_processed = process_dataframe(df, start=10, end=20)
-    df_processed = process_dataframe(df)
-    save_data(df_processed, 'data/whitby_processed.csv')
+    df = pd.read_csv(INPUT_FILE)
+    processed_df = process_dataframe(df,start=1,end=10)
+    filepath = os.path.dirname(INPUT_FILE)
+    filename = os.path.splitext(os.path.basename(INPUT_FILE))[0]
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = f"{filepath}/{filename}_processed_{timestamp}.csv"
+    #processed_df.to_csv(output_file, index=False)
+    #print(f"wrote {output_file}")
