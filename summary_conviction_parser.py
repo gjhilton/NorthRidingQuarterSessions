@@ -20,42 +20,29 @@ def get_first_sentence(doc):
     return next(doc.sents, None)
 
 def get_span_up_to_first_for(doc):
-    for_index = -1
     for i, token in enumerate(doc):
         if token.text.lower() == "for":
-            for_index = i
-            break
-
-    if for_index == -1:
-        return doc
-    return doc[:for_index]
+            return doc[:i]
+    return doc
 
 def find_place_names(doc):
-    place_labels = {"GPE", "LOC", "FAC", "ORG"} 
     return [
         {"text": ent.text, "start": ent.start_char, "end": ent.end_char}
         for ent in doc.ents
-        if ent.label_ in place_labels
+        if ent.label_ in {"GPE", "LOC", "FAC", "ORG"}
     ]
 
 def remove_spans_from_text(doc, spans):
-    spans_sorted = sorted(spans, key=lambda x: x["start"], reverse=True)
     text = doc.text
-    for span in spans_sorted:
+    for span in sorted(spans, key=lambda x: x["start"], reverse=True):
         text = text[:span["start"]] + text[span["end"]:]
     return text
 
 def get_span_to_first_comma(doc):
-    for i, token in enumerate(doc):
-        if token.text == ",":
-            return doc[:i]
-    return doc 
+    return next((doc[:i] for i, token in enumerate(doc) if token.text == ","), doc)
  
 def truncate_span_before_and(span):
-    for i, token in enumerate(span):
-        if token.text.lower() == "and":
-            return span[:i]
-    return span 
+    return next((span[:i] for i, token in enumerate(span) if token.text.lower() == "and"), span)
 
 def truncate_from_offset(span, offset_list):
     if len(offset_list) < 1:
