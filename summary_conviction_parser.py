@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from summary_conviction_testcases import Testcases, Case, Person
 
 nlp = spacy.load("en_core_web_sm")
-nlp.add_pipe("sentencizer")
+
 doc = nlp("This is the first sentence. This is the second one.")
 gender_detector = gender.Detector(case_sensitive=False)
 
