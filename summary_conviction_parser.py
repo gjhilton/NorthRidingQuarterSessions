@@ -6,9 +6,14 @@ from pydantic import BaseModel
 from summary_conviction_testcases import Testcases, Case, Person
 
 nlp = spacy.load("en_core_web_sm")
+nlp.add_pipe("sentencizer")
+doc = nlp("This is the first sentence. This is the second one.")
 gender_detector = gender.Detector(case_sensitive=False)
 
 def extract_residence(doc, start_idx):
+    # find all the instnaces of a place, wherea place is 
+    # of [tagged] 
+    # all,the names before that substring will belong to that olace.
     return 'todo'
 
 def broken_extract_residence(doc, start_idx):
@@ -41,8 +46,31 @@ def broken_extract_residence(doc, start_idx):
 
     return " ".join(residence_tokens) if residence_tokens else None
 
+def get_first_sentence(doc):
+    return next(doc.sents, None)
+
+def get_text_up_to_first_for(doc):
+    for_index = -1
+    for i, token in enumerate(doc):
+        if token.text.lower() == "for":
+            for_index = i
+            break
+
+    if for_index == -1:
+        return doc.text  
+    return doc[:for_index]
+
+def find_place_names(doc):
+    place_labels = {"GPE", "LOC", "FAC", "ORG"}
+    return [ent.text for ent in doc.ents if ent.label_ in place_labels]
+    
 def extract_occupation(doc, start_idx):
-    return "todo"
+    interesting_bit = get_first_sentence(doc)
+    interesting_bit = interesting_bit[start_idx:]
+    interesting_bit = get_text_up_to_first_for(interesting_bit)
+    places = find_place_names(interesting_bit)
+    result = f"{places}"
+    return result
     
 def brokem_extract_occupation(doc, start_idx):
     occupation_tokens = []
@@ -233,30 +261,42 @@ def parse(input_str: str) -> Case | None:
     return Case(**{k: v for k, v in result.items() if v is not None})
 
 
-def test_attribute_extraction(key):
+def test_attribute_extraction(key, mute=False):
     data = Testcases.samoles()
-    print("\n***********************************")
-    print(f"*           {key}")
-    print("***********************************\n")
+    
+    if not mute:
+        print("\n***********************************")
+        print(f"*           {key}")
+        print("***********************************\n")
+    
     for item in data:
         result = None
         if "input" in item:
             input_text = item["input"]
-            print(f"Input: {input_text}")
+            if not mute:
+                print(f"Input: {input_text}")
             result = parse(input_text)
 
         if "output" in item:
             output = item["output"]
             expected = [getattr(p, key) for p in output.defendants]
-            print(f"Expected {key}s: {expected}")
+            if not mute:
+                print(f"Expected {key}s: {expected}")
 
         if result:
             actual = [getattr(p, key) for p in result.defendants]
-            print(f"Got {key}s: {actual}")
-        print("\n")
+            if not mute:
+                print(f"Got {key}s: {actual}")
 
+        if not mute:
+            print("\n")
 
+    
 if __name__ == "__main__":
     #Testcases.run_all_tests(parse)
-    test_attribute_extraction('occupation')
-    test_attribute_extraction('residence')
+    test_attribute_extraction('occupation', True)
+    #test_attribute_extraction('residence')
+    #text = "He lives in the village of Pickering."
+    #doc = nlp(text)
+    #for ent in doc.ents:
+        #print(ent.text, ent.label_)
