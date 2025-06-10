@@ -87,50 +87,29 @@ def truncate_span_before_and(span):
             return span[:i]  # Everything before 'and'
     return span  # 'and' not found, return full span
 
+def truncate_from_offset(span, offset_list):
+    if len(offset_list) < 1:
+        return span.text  # Return original span if no offsets
+
+    # Get the end offset from the first offset dict
+    end_char = offset_list[0]["end"]
+
+    return span.text[end_char:]
     
 def extract_occupation(doc, start_idx):
     interesting_bit = get_first_sentence(doc)
     interesting_bit = interesting_bit[start_idx:]
-    #interesting_bit = get_span_to_first_comma(interesting_bit)
     interesting_bit = get_span_up_to_first_for(interesting_bit)
     places = find_place_names(interesting_bit)
     if len(places) > 1:
         interesting_bit = get_span_to_first_comma(interesting_bit)
         interesting_bit = truncate_span_before_and(interesting_bit)
-        places = find_place_names(interesting_bit)
-    #interesting_str = remove_places_from_span(interesting_bit,places)
-    #interesting_str = remove_spans_from_text(interesting_bit,places)
-    #result = interesting_bit.text
-    print()
-    #print(start_idx)
-    #print(places)
-    print(interesting_bit)
-    return interesting_bit.text
-    
-def brokem_extract_occupation(doc, start_idx):
-    occupation_tokens = []
-    stop_words = {"for", "on", "offence", "and"}
-    i = start_idx
-
-    while i < len(doc):
-        token = doc[i]
-        lower = token.text.lower()
-
-        if lower in stop_words or token.is_punct:
-            break
-
-        if token.ent_type_ in {"GPE", "LOC"}:
-            break
-
-        if token.pos_ in {"NOUN", "ADJ"} or token.text[0].islower():
-            occupation_tokens.append(token.text)
-        elif occupation_tokens:
-            break
-
-        i += 1
-
-    return " ".join(occupation_tokens) if occupation_tokens else None
-
+    interesting_bit = nlp(interesting_bit.text)
+    places = find_place_names(interesting_bit)
+    interesting_str = truncate_from_offset(interesting_bit, places)
+    interesting_str = interesting_str.strip(" ,")
+    #print(interesting_str)
+    return interesting_str
 
 def detect_gender(forenames: str) -> str | None:
     first_name = forenames.split()[0]
@@ -328,10 +307,11 @@ def test_attribute_extraction(key, mute=False):
 
     
 if __name__ == "__main__":
-    #Testcases.run_all_tests(parse)
-    test_attribute_extraction('occupation', True)
+    Testcases.run_all_tests(parse)
+    # test_attribute_extraction('occupation')
     #test_attribute_extraction('residence')
     #text = "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble."
+    #text = "of Whitby housewife"
     #doc = nlp(text)
     #for ent in doc.ents:
-     #   print(ent.text, ent.label_)
+     #    print(ent.text, ent.label_)
