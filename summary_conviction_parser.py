@@ -8,47 +8,13 @@ nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
 
 def find_place_text(name_idx, places):
-    for place in places:
-        if name_idx < place["end"]:
-            return place["text"]
-    return None
+    return next((place["text"] for place in places if name_idx < place["end"]), None)
 
 def extract_residence(doc, start_idx):
-    interesting_bit = get_first_sentence(doc)
-    interesting_bit = interesting_bit[start_idx:]
-    interesting_bit = nlp(interesting_bit.text)
-    places = find_place_names(interesting_bit)
-    residence = places[0]["text"]
-    return residence
-
-def broken_extract_residence(doc, start_idx):
-    residence_tokens = []
-    i = start_idx
-    stop_words = {"for", "on", "offence", "and"}
-    leading_phrases = {"of", "from", "at", "in", "the"}
-    location_terms = {"village", "township", "town"}
-
-    while i < len(doc):
-        token = doc[i]
-        lower = token.text.lower()
-
-        if lower in stop_words or (token.pos_ == "NOUN" and token.text[0].islower()):
-            break
-        if token.is_punct:
-            i += 1
-            continue
-        if (lower in leading_phrases | location_terms or
-            token.ent_type_ in {"GPE", "LOC"} or
-            token.pos_ == "PROPN"):
-            residence_tokens.append(token.text)
-            i += 1
-            continue
-        break
-
-    while residence_tokens and residence_tokens[0].lower() in (leading_phrases | location_terms):
-        residence_tokens.pop(0)
-
-    return " ".join(residence_tokens) if residence_tokens else None
+    first_sentence = get_first_sentence(doc)
+    trimmed_text = first_sentence[start_idx:].text
+    parsed = nlp(trimmed_text)
+    return find_place_names(parsed)[0]["text"]
 
 def get_first_sentence(doc):
     return next(doc.sents, None)
