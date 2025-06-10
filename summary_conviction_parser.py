@@ -14,6 +14,7 @@ def extract_residence(doc, start_idx):
     # find all the instnaces of a place, wherea place is 
     # of [tagged] 
     # all,the names before that substring will belong to that olace.
+    print('todo')
     return 'todo'
 
 def broken_extract_residence(doc, start_idx):
@@ -122,7 +123,7 @@ def detect_gender(forenames: str) -> str | None:
         return None
 
 
-def create_defendant(name_tokens, doc, end_idx, collective_residence, seen_names):
+def create_defendant(name_tokens, doc, end_idx, seen_names):
     if len(name_tokens) < 2:
         return None
 
@@ -134,7 +135,7 @@ def create_defendant(name_tokens, doc, end_idx, collective_residence, seen_names
         return None
 
     seen_names.add(full_name)
-    residence = extract_residence(doc, end_idx + 1) or collective_residence
+    residence = extract_residence(doc, end_idx + 1)
     occupation = extract_occupation(doc, end_idx + 1)
     gender = detect_gender(forenames)
 
@@ -171,27 +172,25 @@ def extract_defendants(doc):
 
             if lower == "all" and i + 1 < len(doc) and doc[i + 1].text.lower() == "of":
                 i += 2
-                collective_residence = extract_residence(doc, i)
-                i += len(collective_residence.split()) if collective_residence else 1
-                continue
+                
 
             if token.ent_type_ == "PERSON" or (token.pos_ in {"PROPN", "NOUN"} and token.text.istitle()):
                 name_tokens.append(token.text)
                 end_idx = i
             elif lower in {"and", ","}:
-                if (def_data := create_defendant(name_tokens, doc, end_idx, collective_residence, seen_names)):
+                if (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
                     defendants.append(def_data)
                 name_tokens = []
                 end_idx = None
             elif name_tokens:
-                if (def_data := create_defendant(name_tokens, doc, end_idx, collective_residence, seen_names)):
+                if (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
                     defendants.append(def_data)
                 name_tokens = []
                 end_idx = None
         i += 1
 
     if name_tokens:
-        if (def_data := create_defendant(name_tokens, doc, end_idx, collective_residence, seen_names)):
+        if (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
             defendants.append(def_data)
 
     return defendants
@@ -307,9 +306,9 @@ def test_attribute_extraction(key, mute=False):
 
     
 if __name__ == "__main__":
-    Testcases.run_all_tests(parse)
+    #Testcases.run_all_tests(parse)
     # test_attribute_extraction('occupation')
-    #test_attribute_extraction('residence')
+    test_attribute_extraction('residence',True)
     #text = "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble."
     #text = "of Whitby housewife"
     #doc = nlp(text)
