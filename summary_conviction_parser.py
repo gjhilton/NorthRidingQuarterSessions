@@ -2,7 +2,8 @@ import re
 from datetime import datetime
 import spacy
 import gender_guesser.detector as gender
-from summary_conviction_testcases import Testcases, Case, Person
+from data_models import Case, Person
+from summary_conviction_testcases import Testcases
 
 nlp = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
@@ -167,30 +168,32 @@ def extract_date(doc):
 def extract_offence(doc):
     offence_tokens = []
     collecting = False
+
     for token in doc:
-        if token.text.lower() == "for":
+        lower = token.text.lower()
+        if lower == "for":
             collecting = True
             continue
         if collecting:
-            if token.text.lower() in {"offence", "committed"}:
+            if lower in {"offence", "committed"}:
                 break
             offence_tokens.append(token.text)
-    return " ".join(offence_tokens).rstrip('. ') if offence_tokens else None
 
+    return " ".join(offence_tokens).rstrip('. ') or None
 
 def extract_offence_location(doc):
-    text = doc.text.lower()
-    idx = text.find("offence committed at")
-    if idx != -1:
-        original_text = doc.text
-        after = original_text[idx + len("offence committed at"):]
-        words = after.split()
-        for word in words:
-            stripped_word = word.strip('.,;:"\'?!()[]{}')
-            if stripped_word and stripped_word[0].isupper():
-                return stripped_word
-    return None
+    phrase = "offence committed at"
+    text_lower = doc.text.lower()
+    idx = text_lower.find(phrase)
+    if idx == -1:
+        return None
 
+    after = doc.text[idx + len(phrase):].lstrip()
+    for word in after.split():
+        stripped = word.strip('.,;:"\'?!()[]{}')
+        if stripped and stripped[0].isupper():
+            return stripped
+    return None
 
 def extract_court(doc):
     text = " ".join([token.text for token in doc])
@@ -200,7 +203,6 @@ def extract_court(doc):
         court = after_text.split()[0]
         return court
     return None
-
 
 def parse(input_str: str) -> Case | None:
     input_str = re.sub(r'([a-z])([A-Z])', r'\1. \2', input_str)
@@ -214,8 +216,8 @@ def parse(input_str: str) -> Case | None:
         "court": extract_court(doc),
     }
 
-    return Case(**{k: v for k, v in result.items() if v is not None})
-
+    filtered_result = {k: v for k, v in result.items() if v}
+    return Case(**filtered_result) if filtered_result else None
 
 def test_attribute_extraction(key, mute=False):
     data = Testcases.samoles()

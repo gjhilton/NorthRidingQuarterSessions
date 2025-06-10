@@ -1,19 +1,4 @@
-from typing import List, Optional, Literal
-from pydantic import BaseModel, Field
-
-class Person(BaseModel):
-    surname: Optional[str] = None
-    forenames: Optional[str] = None
-    residence: Optional[str] = None
-    occupation: Optional[str] = None
-    gender: Optional[Literal['male', 'female', 'other']] = None
-
-class Case(BaseModel):
-    date: Optional[str] = Field(default=None)  # date as string
-    offence: Optional[str] = None
-    offence_location: Optional[str] = None
-    court: Optional[str] = None
-    defendants: Optional[List[Person]] = None
+from data_models import Case, Person
 
 waters = {
     "input": "Summary conviction of William Waters of the township of Whitby jet worker for being drunk and riotous in BaxtergateOffence committed at the township of Whitby on 16 March 1873. Whitby Strand - case heard at Whitby",
