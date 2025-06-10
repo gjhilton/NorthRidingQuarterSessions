@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 import spacy
 import gender_guesser.detector as gender
-from pydantic import BaseModel
 from summary_conviction_testcases import Testcases, Case, Person
 
 nlp = spacy.load("en_core_web_sm")
