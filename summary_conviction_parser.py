@@ -5,6 +5,25 @@ import gender_guesser.detector as gender
 from data_models import Case, Person
 from summary_conviction_testcases import Testcases
 import pprint
+ADDITIONAL_PERSON_NAMES= [
+    "Blanche Wellburn",
+    "Caroline Long",
+    "Charles Mason",
+    "Dorothy Gaines",
+    "Edward Cargill",
+    "Edward Jameson Ayre",
+    "Eleanor Riley",
+    "Eli Parkin",
+    "George Cross",
+    "Isabella Riley",
+    "Katherine Mc. Laughlan",
+    "Moses Thompson",
+    "Pearson Campion",
+    "Rees Jones",
+    "Robinson Groves",
+    "Rosannah Turner",
+    "Thomas Gaines"
+]
 
 ADDITIONAL_PLACE_NAMES = [
     #"Aislaby",
@@ -37,24 +56,23 @@ gender_detector = gender.Detector(case_sensitive=False)
 def nlp(str):
     doc = nlp_processor(str)
     doc=tag_additional_places(doc)
+    doc=tag_additional_people(doc)
     return(doc)
 
-def tag_additional_places(doc):
+def tag_additional_entities(doc, names, label):
     new_spans = []
     spans_to_remove = set()
 
-    for place in ADDITIONAL_PLACE_NAMES:
+    for name in names:
         start = 0
         while True:
-            start = doc.text.find(place, start)
+            start = doc.text.find(name, start)
             if start == -1:
                 break
-            end = start + len(place)
+            end = start + len(name)
 
-            # Create a new span with label "LOC"
-            span = doc.char_span(start, end, label="LOC", alignment_mode="contract")
+            span = doc.char_span(start, end, label=label, alignment_mode="contract")
             if span:
-                # Mark existing entities that overlap with this span for removal
                 for ent in doc.ents:
                     if ent.start < span.end and span.start < ent.end:
                         spans_to_remove.add(ent)
@@ -62,14 +80,14 @@ def tag_additional_places(doc):
 
             start = end
 
-    # Remove overlapping entities
-    filtered_ents = [ent for ent in doc.ents if ent not in spans_to_remove]
-
-    # Add new spans (places)
-    doc.ents = filtered_ents + new_spans
-
+    doc.ents = [ent for ent in doc.ents if ent not in spans_to_remove] + new_spans
     return doc
 
+def tag_additional_people(doc):
+    return tag_additional_entities(doc, ADDITIONAL_PERSON_NAMES, "PERSON")
+
+def tag_additional_places(doc):
+    return tag_additional_entities(doc, ADDITIONAL_PLACE_NAMES, "LOC")
 
 def find_place_text(name_idx, places):
     return next((place["text"] for place in places if name_idx < place["end"]), None)
@@ -97,8 +115,8 @@ def extract_residence(doc, start_idx,verbose=False):
     if(verbose):
         print(f"4) residence: {residence}")
         
-    if not(residence):
-        print(f"\nWARNING: NO residence for {doc.text}\n")
+    #if not(residence):
+     #   print(f"\nWARNING: NO residence for {doc.text}\n")
     return(residence)
 
 def get_first_sentence(doc):
@@ -354,9 +372,9 @@ if __name__ == "__main__":
     Testcases.run_all_tests(parse_conviction)
     # test_attribute_extraction('occupation')
     #test_attribute_extraction('residence',True)
-    #text = "Summary conviction of William Tooley of Liverton Mines miner for trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark PalmerOffence committed at the township of Roxby on 26 September 1888Whitby Strand Petty Sessional division - case heard at Whitby"
+    text = "Summary conviction of Edward Jameson Ayre of the township of Whitby jet worker for being drunk and disorderly in Grape Lane. Offence committed at the township of Whitby on 29 September 1888. Whitby Strand Petty Sessional division - case heard at Whitby"
     #pprint.pp(parse_conviction(text))
     #text = "of Whitby housewife"
-    #doc = nlp(text)
-    #for ent in doc.ents:
-    #     print(ent.text, ent.label_)
+    doc = nlp(text)
+    for ent in doc.ents:
+         print(ent.text, ent.label_)
