@@ -13,8 +13,9 @@ ADDITIONAL_PLACE_NAMES = [
     #"Danby",
     #"Danby End",
     "Eskdaleside",
-    #"Glaisdale",
+    "Glaisdale",
     "Hartlepool",
+    "Hawsker cum Stainsacre",
     #"Hutton Mulgrave",
     #"Kirby Moorside",
     #"Levisham",
@@ -23,8 +24,11 @@ ADDITIONAL_PLACE_NAMES = [
     #"Mickleby",
     #"Newholm cum Dunsley",
     #"Old Malton",
+    #"Rosedale",
+    #"Robin Hood's Bay",
     "Roxby",
-    #"Ugglebarnby"
+    #"Ugglebarnby",
+   #"Victoria Road"
 ]
 
 nlp_processor = spacy.load("en_core_web_sm")
@@ -92,6 +96,9 @@ def extract_residence(doc, start_idx,verbose=False):
         residence = places[0]["text"]
     if(verbose):
         print(f"4) residence: {residence}")
+        
+    if not(residence):
+        print(f"\nWARNING: NO residence for {doc.text}\n")
     return(residence)
 
 def get_first_sentence(doc):
@@ -166,6 +173,7 @@ def create_defendant(name_tokens, doc, end_idx, seen_names):
     }
 
 def extract_defendants(doc):
+    original_doc = doc.copy()
     defendants = []
     collecting = False
     name_tokens = []
@@ -213,6 +221,9 @@ def extract_defendants(doc):
     if name_tokens and (def_data := create_defendant(name_tokens, doc, end_idx, seen_names)):
         defendants.append(def_data)
 
+    if(len(defendants)<1):
+        print(f"ERROR: No defendants for '{original_doc.text}'")
+        
     return defendants
 
 def extract_date(doc):

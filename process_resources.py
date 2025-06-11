@@ -51,6 +51,7 @@ def process_dataframe(df, start=None, end=None):
 
                     for k, v in dumped.items():
                         df.at[idx, k] = v
+                    # df.at[idx, "idx"] = idx
                     break  # assuming one match per row
         except Exception as e:
             print(f'Error processing row {idx + 1} (title="{row["title"]}"): {e}')
@@ -83,15 +84,32 @@ def debug_parse_conviction_row(df, row_num):
     df = subset_data(df, ["Summary conviction"])
     print(f"{row_num}: {get_description(df, row_num)}")
 
+def explode_defendants(df):
+    # Step 1: Explode the 'defendants' list so each row gets one defendant
+    df_exploded = df.explode('defendants', ignore_index=True)
+
+    # Step 2: Normalize the list of dicts into separate columns
+    defendants_df = pd.json_normalize(df_exploded['defendants'])
+
+    # Step 3: Drop the old 'defendants' column and concatenate the new one
+    df_exploded = df_exploded.drop(columns=['defendants']).reset_index(drop=True)
+    result_df = pd.concat([df_exploded, defendants_df], axis=1)
+
+    return result_df
+
 ## python3 -m process_resources        
 if __name__ == "__main__":
     df = load_data(INPUT_FILE)
+
     #debug_parse_conviction_row(df, 2)
 
     #processed_df = process_dataframe(df,1,2)
-    #print(processed_df)
+    processed_df = process_dataframe(df,0,500)
+    #processed_df = process_dataframe(df)
+    processed_df = explode_defendants(processed_df)
+    print(processed_df)
 
-    processed_df = process_dataframe(df)
+
 
     base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
     folder = os.path.dirname(INPUT_FILE)
