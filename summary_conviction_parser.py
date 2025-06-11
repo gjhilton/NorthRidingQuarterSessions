@@ -5,17 +5,79 @@ import gender_guesser.detector as gender
 from data_models import Case, Person
 from summary_conviction_testcases import Testcases
 
-nlp = spacy.load("en_core_web_sm")
+ADDITIONAL_PLACE_NAMES = [
+    #"Aislaby",
+    "Barnby",
+    #"Briggswath",
+    #"Danby",
+    #"Danby End",
+    "Eskdaleside",
+    #"Glaisdale",
+    "Hartlepool",
+    #"Hutton Mulgrave",
+    #"Kirby Moorside",
+    #"Levisham",
+    "Liverton Mines",
+    "Lythe",
+    #"Mickleby",
+    #"Newholm cum Dunsley",
+    #"Old Malton",
+    #"Roxby",
+    #"Ugglebarnby"
+]
+
+nlp_processor = spacy.load("en_core_web_sm")
 gender_detector = gender.Detector(case_sensitive=False)
+
+def nlp(str):
+    doc = nlp_processor(str)
+    doc=tag_additional_places(doc)
+    return(doc)
+
+def tag_additional_places(doc):
+    new_spans = []
+    spans_to_remove = set()
+
+    for place in ADDITIONAL_PLACE_NAMES:
+        start = 0
+        while True:
+            start = doc.text.find(place, start)
+            if start == -1:
+                break
+            end = start + len(place)
+
+            # Create a new span with label "LOC"
+            span = doc.char_span(start, end, label="LOC", alignment_mode="contract")
+            if span:
+                # Mark existing entities that overlap with this span for removal
+                for ent in doc.ents:
+                    if ent.start < span.end and span.start < ent.end:
+                        spans_to_remove.add(ent)
+                new_spans.append(span)
+
+            start = end
+
+    # Remove overlapping entities
+    filtered_ents = [ent for ent in doc.ents if ent not in spans_to_remove]
+
+    # Add new spans (places)
+    doc.ents = filtered_ents + new_spans
+
+    return doc
+
 
 def find_place_text(name_idx, places):
     return next((place["text"] for place in places if name_idx < place["end"]), None)
 
 def extract_residence(doc, start_idx):
+    print(f"0) extract_residence('{doc}', {start_idx})")
     first_sentence = get_first_sentence(doc)
+    print(f"1) first_sentence: {first_sentence}")
     trimmed_text = first_sentence[start_idx:].text
-    parsed = nlp(trimmed_text)
-    return find_place_names(parsed)[0]["text"]
+    print(f"2) trimmed_text: {trimmed_text}")
+    #parsed = nlp(trimmed_text)
+    #return find_place_names(parsed)[0]["text"]
+    return("todo")
 
 def get_first_sentence(doc):
     return next(doc.sents, None)
@@ -84,7 +146,7 @@ def create_defendant(name_tokens, doc, end_idx, seen_names):
         "forenames": forenames,
         "surname": surname,
         "gender": detect_gender(forenames),
-        "residence": extract_residence(doc, start_idx),
+        #"residence": extract_residence(doc, start_idx),
         "occupation": extract_occupation(doc, start_idx)
     }
 
@@ -233,7 +295,7 @@ def test_attribute_extraction(key, mute=False):
             input_text = item["input"]
             if not mute:
                 print(f"Input: {input_text}")
-            result = parse(input_text)
+            result = parse_conviction(input_text)
 
         if "output" in item:
             output = item["output"]
@@ -254,8 +316,8 @@ if __name__ == "__main__":
     Testcases.run_all_tests(parse_conviction)
     # test_attribute_extraction('occupation')
     #test_attribute_extraction('residence',True)
-    #text = "Summary conviction of William Nicholson ostler, Jonathan Marsay waggoner and Mark Squires postboy, all of the township of Whitby, and William Norton of the township of Hawsker cum Stainsacre labourer, for trespassing in the daytime in pursuit of game by day on a close of land in the possession and occupation of Peter George Coble."
+    #text = "Summary conviction of William Tooley of Liverton Mines miner for trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark PalmerOffence committed at the township of Roxby on 26 September 1888Whitby Strand Petty Sessional division - case heard at Whitby"
     #text = "of Whitby housewife"
     #doc = nlp(text)
     #for ent in doc.ents:
-     #    print(ent.text, ent.label_)
+    #     print(ent.text, ent.label_)

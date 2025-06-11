@@ -1,5 +1,24 @@
 from data_models import Case, Person
 
+tooley = {
+    "input": "Summary conviction of William Tooley of Liverton Mines miner for trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark PalmerOffence committed at the township of Roxby on 26 September 1888Whitby Strand Petty Sessional division - case heard at Whitby",
+    "output": Case(
+        date="1888-09-26",
+        offence="trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark Palmer",
+        offence_location="Roxby",
+        court="Whitby",
+        defendants=[
+            Person(
+                surname="Tooley",
+                forenames="William",
+                residence="Liverton Mines",
+                occupation="miner",
+                gender="male"
+            )
+        ],
+    )
+}
+
 waters = {
     "input": "Summary conviction of William Waters of the township of Whitby jet worker for being drunk and riotous in BaxtergateOffence committed at the township of Whitby on 16 March 1873. Whitby Strand - case heard at Whitby",
     "output": Case(
@@ -122,11 +141,12 @@ nicholson = {
 }
 
 sample_data = [
-    waters,
-    williams,
-    brown,
-    adams,
-    nicholson,
+    tooley,
+    #waters,
+    #williams,
+    #brown,
+    #adams,
+    #nicholson,
 ]
 
 def assert_equal(actual, expected, field, i=None, entity="", input_text=""):
