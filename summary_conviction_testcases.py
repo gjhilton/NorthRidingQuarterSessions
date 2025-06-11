@@ -142,11 +142,11 @@ nicholson = {
 
 sample_data = [
     tooley,
-    #waters,
-    #williams,
-    #brown,
-    #adams,
-    #nicholson,
+    waters,
+    williams,
+    brown,
+    adams,
+    nicholson,
 ]
 
 def assert_equal(actual, expected, field, i=None, entity="", input_text=""):
@@ -243,7 +243,7 @@ class Testcases:
             )
 
     @staticmethod
-    def samoles():
+    def samples():
         return(sample_data)
 
     @staticmethod

@@ -44,7 +44,7 @@ def process_dataframe(df, start=None, end=None):
         title = str(row.get("title", ""))
         description = row.get("description", "")
         idx = row.name
-        #print(f"Processing row {idx + 1} of {total_rows}: {title}")
+        print(f"Processing row {idx + 1} of {total_rows}: {title}")
         try:
             for prefix, fn in ROW_PARSERS.items():
                 if title.startswith(prefix):
@@ -70,16 +70,17 @@ def debug_parse_conviction_row(df, row_num):
     df = subset_data(df, ["Summary conviction"])
     print(f"{row_num}: {get_description(df, row_num)}")
 
+## python3 -m process_resources        
 if __name__ == "__main__":
     df = load_data(INPUT_FILE)
     #debug_parse_conviction_row(df, 2)
 
-    processed_df = process_dataframe(df,100,200)
+    processed_df = process_dataframe(df)
 
-    # base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
-    # folder = os.path.dirname(INPUT_FILE)
-    # timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # output_path = os.path.join(folder, f"{base}_processed_{timestamp}.csv")
+    base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
+    folder = os.path.dirname(INPUT_FILE)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_path = os.path.join(folder, f"{base}_processed_{timestamp}.csv")
 
-    # save_data(processed_df, output_path)
-    # print(f"wrote {output_path}")
+    save_data(processed_df, output_path)
+    print(f"wrote {output_path}")

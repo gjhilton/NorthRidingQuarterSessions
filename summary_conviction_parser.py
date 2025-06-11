@@ -4,6 +4,7 @@ import spacy
 import gender_guesser.detector as gender
 from data_models import Case, Person
 from summary_conviction_testcases import Testcases
+import pprint
 
 ADDITIONAL_PLACE_NAMES = [
     #"Aislaby",
@@ -22,7 +23,7 @@ ADDITIONAL_PLACE_NAMES = [
     #"Mickleby",
     #"Newholm cum Dunsley",
     #"Old Malton",
-    #"Roxby",
+    "Roxby",
     #"Ugglebarnby"
 ]
 
@@ -69,15 +70,29 @@ def tag_additional_places(doc):
 def find_place_text(name_idx, places):
     return next((place["text"] for place in places if name_idx < place["end"]), None)
 
-def extract_residence(doc, start_idx):
-    print(f"0) extract_residence('{doc}', {start_idx})")
+def extract_residence(doc, start_idx,verbose=False):
+    if(verbose):
+        print(f"0) extract_residence('{doc}', {start_idx})")
+        
     first_sentence = get_first_sentence(doc)
-    print(f"1) first_sentence: {first_sentence}")
+    if(verbose):
+        print(f"1) first_sentence: {first_sentence}")
+    
     trimmed_text = first_sentence[start_idx:].text
-    print(f"2) trimmed_text: {trimmed_text}")
-    #parsed = nlp(trimmed_text)
-    #return find_place_names(parsed)[0]["text"]
-    return("todo")
+    if(verbose):
+        print(f"2) trimmed_text: {trimmed_text}")
+        
+    parsed = nlp(trimmed_text)
+    places = find_place_names(parsed)
+    if(verbose):
+        print(f"3) places: {places}")
+    
+    residence = None 
+    if places:
+        residence = places[0]["text"]
+    if(verbose):
+        print(f"4) residence: {residence}")
+    return(residence)
 
 def get_first_sentence(doc):
     return next(doc.sents, None)
@@ -146,7 +161,7 @@ def create_defendant(name_tokens, doc, end_idx, seen_names):
         "forenames": forenames,
         "surname": surname,
         "gender": detect_gender(forenames),
-        #"residence": extract_residence(doc, start_idx),
+        "residence": extract_residence(doc, start_idx),
         "occupation": extract_occupation(doc, start_idx)
     }
 
@@ -158,6 +173,8 @@ def extract_defendants(doc):
     seen_names = set()
     i = 0
     length = len(doc)
+
+    #debug_tags(doc)
 
     while i < length:
         token = doc[i]
@@ -176,7 +193,8 @@ def extract_defendants(doc):
                 i += 2
                 continue
 
-            if token.ent_type_ == "PERSON" or (token.pos_ in {"PROPN", "NOUN"} and token.text.istitle()):
+            if token.ent_type_ == "PERSON":
+            # previuously: if token.ent_type_ == "PERSON" or (token.pos_ in {"PROPN", "NOUN"} and token.text.istitle()):
                 name_tokens.append(token.text)
                 end_idx = i
             elif lower in {"and", ","}:
@@ -266,8 +284,13 @@ def extract_court(doc):
         return court
     return None
 
+def insert_dot_space_after_numbers(text):
+    pattern = r'(\d+)([A-Z])'
+    return re.sub(pattern, r'\1. \2', text)
+
 def parse_conviction(input_str: str) -> Case | None:
     input_str = re.sub(r'([a-z])([A-Z])', r'\1. \2', input_str)
+    input_str = insert_dot_space_after_numbers(input_str)
     doc = nlp(input_str)
 
     result = {
@@ -282,7 +305,7 @@ def parse_conviction(input_str: str) -> Case | None:
     return Case(**filtered_result) if filtered_result else None
 
 def test_attribute_extraction(key, mute=False):
-    data = Testcases.samoles()
+    data = Testcases.samples()
     
     if not mute:
         print("\n***********************************")
@@ -311,12 +334,17 @@ def test_attribute_extraction(key, mute=False):
         if not mute:
             print("\n")
 
+def debug_tags(doc):
+    for ent in doc.ents:
+        print(ent.text, ent.label_)
+
 ## python3 -m summary_conviction_parser
 if __name__ == "__main__":
     Testcases.run_all_tests(parse_conviction)
     # test_attribute_extraction('occupation')
     #test_attribute_extraction('residence',True)
     #text = "Summary conviction of William Tooley of Liverton Mines miner for trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark PalmerOffence committed at the township of Roxby on 26 September 1888Whitby Strand Petty Sessional division - case heard at Whitby"
+    #pprint.pp(parse_conviction(text))
     #text = "of Whitby housewife"
     #doc = nlp(text)
     #for ent in doc.ents:
