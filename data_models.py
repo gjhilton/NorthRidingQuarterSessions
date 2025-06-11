@@ -14,3 +14,9 @@ class Case(BaseModel):
     offence_location: Optional[str] = None
     court: Optional[str] = None
     defendants: Optional[List[Person]] = None
+    
+def person_to_dict(person_instance: Person) -> dict:
+    return person_instance.dict()
+
+def case_to_dict(case_instance: Case) -> dict:
+    return case_instance.dict()

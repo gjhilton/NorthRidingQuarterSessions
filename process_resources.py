@@ -46,11 +46,12 @@ def process_dataframe(df, start=None, end=None):
         try:
             for prefix, func in ROW_PARSERS.items():
                 if row['title'].startswith(prefix):
-                    case_obj = func(row['description'])
-                    props = {k: v for k, v in vars(case_obj).items() if not k.startswith('_')}
-                    for k, v in props.items():
+                    pydantic_obj = func(row['description'])
+                    dumped = pydantic_obj.model_dump()  # Pydantic v2 method
+
+                    for k, v in dumped.items():
                         df.at[idx, k] = v
-                    break
+                    break  # assuming one match per row
         except Exception as e:
             print(f'Error processing row {idx + 1} (title="{row["title"]}"): {e}')
             error_count += 1
@@ -71,8 +72,9 @@ if __name__ == "__main__":
     df = load_data(INPUT_FILE)
     #debug_parse_conviction_row(df, 2)
 
-    processed_df = process_dataframe(df,1,10)
-    #print(processed_df)
+    #processed_df = process_dataframe(df,1,2)
+    processed_df = process_dataframe(df)
+    print(processed_df)
 
     base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
     folder = os.path.dirname(INPUT_FILE)
