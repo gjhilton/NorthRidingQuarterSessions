@@ -35,32 +35,43 @@ def subset_data(df, prefixes, start=None, end=None):
     return df
 
 def process_dataframe(df, start=None, end=None):
+    df = df.copy()
     df = subset_data(df, ROW_PARSERS.keys(), start, end)
-    total_rows = len(df)
     num_errors = 0
 
-    def process_row(row):
-        nonlocal num_errors
-        title = str(row.get("title", ""))
-        description = row.get("description", "")
-        idx = row.name
-        print(f"Processing row {idx + 1} of {total_rows}: {title}")
-        try:
-            for prefix, fn in ROW_PARSERS.items():
-                if title.startswith(prefix):
-                    return fn(description)
-        except Exception as e:
-            num_errors += 1
-            print()
-            print(f"> Error processing row {idx + 1} ('{title}'): {e}")
-            print(f"> {description}")
-            print()
-        return row
+    for idx, row in df.iterrows():
+        for prefix, func in ROW_PARSERS.items():
+            if row['title'].startswith(prefix):
+                case_obj = func(row['description'])
+                props = {k: v for k, v in vars(case_obj).items() if not k.startswith('_')}
+                for k, v in props.items():
+                    df.at[idx, k] = v
+                break 
+    return df
 
-    result = df.apply(process_row, axis=1)
-    result.reset_index(drop=True, inplace=True)
-    print(f"{num_errors} errors occurred")
-    return result
+
+    # def process_row(row):
+    #     nonlocal num_errors
+    #     title = str(row.get("title", ""))
+    #     description = row.get("description", "")
+    #     idx = row.name
+    #     print(f"Processing row {idx + 1} of {total_rows}: {title}")
+    #     try:
+    #         for prefix, fn in ROW_PARSERS.items():
+    #             if title.startswith(prefix):
+    #                 return fn(description)
+    #     except Exception as e:
+    #         num_errors += 1
+    #         print()
+    #         print(f"> Error processing row {idx + 1} ('{title}'): {e}")
+    #         print(f"> {description}")
+    #         print()
+    #     return row
+
+    # result = df.apply(process_row, axis=1)
+    # result.reset_index(drop=True, inplace=True)
+    # print(f"{num_errors} errors occurred")
+    # return result
 
 
 def get_description(df, row_num):
@@ -75,12 +86,13 @@ if __name__ == "__main__":
     df = load_data(INPUT_FILE)
     #debug_parse_conviction_row(df, 2)
 
-    processed_df = process_dataframe(df)
+    processed_df = process_dataframe(df,1,2)
+    print(processed_df)
 
-    base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
-    folder = os.path.dirname(INPUT_FILE)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_path = os.path.join(folder, f"{base}_processed_{timestamp}.csv")
+    #base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
+    #folder = os.path.dirname(INPUT_FILE)
+    #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #output_path = os.path.join(folder, f"{base}_processed_{timestamp}.csv")
 
-    save_data(processed_df, output_path)
-    print(f"wrote {output_path}")
+    #save_data(processed_df, output_path)
+    #print(f"wrote {output_path}")
