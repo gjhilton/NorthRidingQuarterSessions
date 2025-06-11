@@ -56,9 +56,25 @@ def process_dataframe(df, start=None, end=None):
             print(f'Error processing row {idx + 1} (title="{row["title"]}"): {e}')
             error_count += 1
 
+    df = split_date_column(df)
+
     print(f'Processing complete. Total errors: {error_count}')
     return df
 
+
+def split_date_column(df):
+    # Ensure the 'date' column is in datetime format
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    
+    # Extract year, month, and day into new columns
+    df['year'] = df['date'].dt.year
+    df['month'] = df['date'].dt.month
+    df['day'] = df['date'].dt.day
+    
+    # Drop the original 'date' column
+    df = df.drop(columns=['date'])
+    
+    return df
 
 def get_description(df, row_num):
     return df.at[row_num, 'description']
@@ -73,8 +89,9 @@ if __name__ == "__main__":
     #debug_parse_conviction_row(df, 2)
 
     #processed_df = process_dataframe(df,1,2)
+    #print(processed_df)
+
     processed_df = process_dataframe(df)
-    print(processed_df)
 
     base = os.path.splitext(os.path.basename(INPUT_FILE))[0]
     folder = os.path.dirname(INPUT_FILE)
