@@ -5,11 +5,13 @@ import gender_guesser.detector as gender
 from data_models import Case, Person
 from summary_conviction_testcases import Testcases
 import pprint
+from spacy.util import filter_spans
 
 ADDITIONAL_PERSON_NAMES= [
     "Agnes Kilpatrick",
     "Alfred Ellis",
     "Alexander Slaven",
+    "Alexander Young Stewart",
     "Ambrosina French",
     "Amelia Dixon",
     "Amos Major",
@@ -163,6 +165,7 @@ ADDITIONAL_PERSON_NAMES= [
     "Warner Coleman",
     "William Christmas Bean",
     "Willian Ruehorne",
+    "William Poulter",
     "Yeoman Readman",
     "Zachariah Hall"
 ]
@@ -201,9 +204,10 @@ def nlp(str):
     doc=tag_additional_people(doc)
     return(doc)
 
+from spacy.util import filter_spans
+
 def tag_additional_entities(doc, names, label):
     new_spans = []
-    spans_to_remove = set()
 
     for name in names:
         start = 0
@@ -215,15 +219,27 @@ def tag_additional_entities(doc, names, label):
 
             span = doc.char_span(start, end, label=label, alignment_mode="contract")
             if span:
-                for ent in doc.ents:
-                    if ent.start < span.end and span.start < ent.end:
-                        spans_to_remove.add(ent)
                 new_spans.append(span)
 
             start = end
 
-    doc.ents = [ent for ent in doc.ents if ent not in spans_to_remove] + new_spans
+    # Remove any existing entities that overlap with new ones (by token range)
+    def overlaps(ent1, ent2):
+        return ent1.start < ent2.end and ent2.start < ent1.end
+
+    filtered_existing = [
+        ent for ent in doc.ents
+        if not any(overlaps(ent, new) for new in new_spans)
+    ]
+
+    # Combine and filter to remove overlaps
+    all_spans = filtered_existing + new_spans
+    doc.ents = filter_spans(all_spans)  # ensures no token overlaps
+
     return doc
+
+
+
 
 def tag_additional_people(doc):
     return tag_additional_entities(doc, ADDITIONAL_PERSON_NAMES, "PERSON")
