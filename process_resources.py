@@ -104,7 +104,7 @@ if __name__ == "__main__":
     #debug_parse_conviction_row(df, 2)
 
     #processed_df = process_dataframe(df,1,2)
-    processed_df = process_dataframe(df,1000,1500)
+    processed_df = process_dataframe(df,1500,2000)
     #processed_df = process_dataframe(df)
     processed_df = explode_defendants(processed_df)
     print(processed_df)
