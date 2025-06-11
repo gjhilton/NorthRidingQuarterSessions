@@ -32,10 +32,14 @@ def slice_rows(df, start=None, end=None):
         raise ValueError(f"Invalid start ({start}) or end ({end}) range for dataframe of length {total}")
     return df.iloc[start:end].copy()
 
-def process_dataframe(df, start=None, end=None):
-    filtered_df = filter_rows_by_prefix(df, ROW_PARSERS.keys())
+def subset_data (df, prefixes, start=None, end=None):
+    filtered_df = filter_rows_by_prefix(df, prefixes)
     sliced_df = slice_rows(filtered_df, start, end)
     sliced_df.reset_index(drop=True, inplace=True)
+    return sliced_df
+
+def process_dataframe(df, start=None, end=None):
+    sliced_df = subset_data (df, ROW_PARSERS.keys(), start, end)
     total_rows = len(sliced_df)
 
     def process_row(row):
@@ -57,13 +61,22 @@ def process_dataframe(df, start=None, end=None):
     processed_df.reset_index(drop=True, inplace=True)
     return processed_df
 
-# 
+def get_description(df, row_num):
+    return df.at[row_num, 'description']
+
+def debug_parse_conviction_row(df, row_num):
+    sliced_df = subset_data (df, ["Summary conviction"])
+    desc = get_description(sliced_df, row_num)
+    print(f"{row_num}: {desc}")
+
 if __name__ == "__main__":
     df = pd.read_csv(INPUT_FILE)
-    processed_df = process_dataframe(df,start=1,end=10)
-    filepath = os.path.dirname(INPUT_FILE)
-    filename = os.path.splitext(os.path.basename(INPUT_FILE))[0]
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = f"{filepath}/{filename}_processed_{timestamp}.csv"
+    sliced_df = subset_data (df, ["Summary conviction"])
+    debug_parse_conviction_row(df,2)
+    #processed_df = process_dataframe(df,start=1,end=10)
+    #filepath = os.path.dirname(INPUT_FILE)
+    #filename = os.path.splitext(os.path.basename(INPUT_FILE))[0]
+    #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #output_file = f"{filepath}/{filename}_processed_{timestamp}.csv"
     #processed_df.to_csv(output_file, index=False)
     #print(f"wrote {output_file}")
