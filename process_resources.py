@@ -116,5 +116,5 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = os.path.join(folder, f"{base}_processed_{timestamp}.csv")
 
-    #save_data(processed_df, output_path)
+    save_data(processed_df, output_path)
     print(f"wrote {output_path}")
