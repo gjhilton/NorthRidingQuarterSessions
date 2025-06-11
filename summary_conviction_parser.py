@@ -6,23 +6,42 @@ from data_models import Case, Person
 from summary_conviction_testcases import Testcases
 import pprint
 ADDITIONAL_PERSON_NAMES= [
+    "Agnes Kilpatrick",
+    "Barnard Campion",
     "Blanche Wellburn",
+    "[blank] Conowski",
     "Caroline Long",
     "Charles Mason",
+    "Charlotte Constable",
+    "Dawson Hunter",
     "Dorothy Gaines",
     "Edward Cargill",
+    "Edward Doughty",
+    "Edward Dykes",
     "Edward Jameson Ayre",
+    "Eliza Jane Frankland",
+    "Edward Raw",
     "Eleanor Riley",
     "Eli Parkin",
+    "Elijah Vennis",
+    "Eliza Smith",
+    "Eliza Weatherstone",
     "George Cross",
+    "Henry Cockfield",
     "Isabella Riley",
+    "Johnson Cross",
     "Katherine Mc. Laughlan",
+    "Lavinia Jameson",
+    "Marley Brown",
+    "Matilda Mc. Garry",
     "Moses Thompson",
     "Pearson Campion",
     "Rees Jones",
     "Robinson Groves",
     "Rosannah Turner",
-    "Thomas Gaines"
+    "Thomas Davies",
+    "Thomas Gaines",
+    "Thomas Saunders"
 ]
 
 ADDITIONAL_PLACE_NAMES = [
@@ -240,6 +259,7 @@ def extract_defendants(doc):
         defendants.append(def_data)
 
     if(len(defendants)<1):
+        print('\a')
         print(f"ERROR: No defendants for '{original_doc.text}'")
         
     return defendants

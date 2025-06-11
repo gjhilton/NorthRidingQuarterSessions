@@ -104,7 +104,7 @@ if __name__ == "__main__":
     #debug_parse_conviction_row(df, 2)
 
     #processed_df = process_dataframe(df,1,2)
-    processed_df = process_dataframe(df,0,500)
+    processed_df = process_dataframe(df,1000,1500)
     #processed_df = process_dataframe(df)
     processed_df = explode_defendants(processed_df)
     print(processed_df)
@@ -116,5 +116,5 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = os.path.join(folder, f"{base}_processed_{timestamp}.csv")
 
-    save_data(processed_df, output_path)
+    #save_data(processed_df, output_path)
     print(f"wrote {output_path}")
