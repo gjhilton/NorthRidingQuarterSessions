@@ -1,14 +1,24 @@
-## python3 -m  include_tool
+## python3 -m  include_tool --file data.csv --reset
+## python3 -m  include_tool --file data.csv
+## python3 -m  include_tool 
 
 import pandas as pd
 import os
+import argparse
+from datetime import datetime
+from colorama import init, Fore, Style
+
+init(autoreset=True)
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def timestamp():
+    return f"{Style.DIM}[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"
+
 def load_csv(filepath):
     if not os.path.exists(filepath):
-        print(f"File not found: {filepath}")
+        print(f"{timestamp()} {Fore.RED}❌ File not found: {filepath}")
         return None
     return pd.read_csv(filepath)
 
@@ -16,33 +26,25 @@ def save_csv(df, filepath):
     df.to_csv(filepath, index=False)
 
 def ask_user(row, current_num, total_remaining, global_index):
-    print(f"📄 Processing row {current_num} of {total_remaining} (CSV index {global_index})\n")
+    print(f"{Fore.CYAN}📄 Processing row {current_num} of {total_remaining} (CSV index {global_index})\n")
     print(row.drop(labels='include', errors='ignore'))
     while True:
-        decision = input("\nInclude this row? (y/n or 'undo'): ").strip().lower()
+        decision = input(f"\n{Fore.CYAN}Include this row? (y/n or 'undo'): ").strip().lower()
         if decision in ['y', 'n', 'undo']:
             return decision
         else:
-            print("Invalid input. Please enter 'y', 'n', or 'undo'.")
+            print(f"{Fore.RED}Invalid input. Please enter 'y', 'n', or 'undo'.")
 
 def reset_include_column(df):
-    while True:
-        response = input("Do you want to clear all existing 'include' values? (y/n): ").strip().lower()
-        if response == 'y':
-            df['include'] = None
-            print("'include' column has been cleared.")
-            return
-        elif response == 'n':
-            return
-        else:
-            print("Please enter 'y' or 'n'.")
+    df['include'] = None
+    print(f"{timestamp()} {Fore.YELLOW}🔄 'include' column has been reset.")
 
-def process_rows(df, filepath):
+def process_rows(df, filepath, do_reset=False):
     if 'include' not in df.columns:
         df['include'] = None
-    else:
+    elif do_reset:
         reset_include_column(df)
-        save_csv(df, filepath)  # Save immediately after reset
+        save_csv(df, filepath)
 
     history = []
     index = 0
@@ -60,32 +62,36 @@ def process_rows(df, filepath):
 
         if decision == 'undo':
             if not history:
-                print("Nothing to undo.")
-                input("Press Enter to continue...")
+                print(f"{Fore.YELLOW}Nothing to undo.")
+                input(f"{Style.DIM}Press Enter to continue...")
                 continue
             last_idx, previous_value = history.pop()
             df.at[last_idx, 'include'] = previous_value
             save_csv(df, filepath)
-            print(f"\nUndo successful. Reverted row {last_idx}.")
-            input("Press Enter to continue...")
+            print(f"\n{timestamp()} {Fore.YELLOW}🔙 Undo successful. Reverted row {last_idx}.")
+            input(f"{Style.DIM}Press Enter to continue...")
             index = pending.index(last_idx)
             continue
 
         history.append((row_idx, df.at[row_idx, 'include']))
         df.at[row_idx, 'include'] = 'yes' if decision == 'y' else 'no'
         save_csv(df, filepath)
-        print(f"\n✅ Row {row_idx} updated and saved.")
-        input("Press Enter to continue...")
+        print(f"\n{timestamp()} {Fore.GREEN}✅ Row {row_idx} updated and saved.")
+        input(f"{Style.DIM}Press Enter to continue...")
         index += 1
 
     clear_screen()
-    print("🎉 All rows have been processed.")
+    print(f"{timestamp()} {Fore.GREEN}🎉 All rows have been processed.")
 
 def main():
-    filepath = input("Enter the path to your CSV file: ").strip()
-    df = load_csv(filepath)
+    parser = argparse.ArgumentParser(description="Interactive CSV row inclusion tool.")
+    parser.add_argument('--file', required=True, help="Path to the CSV file.")
+    parser.add_argument('--reset', action='store_true', help="Reset all 'include' values.")
+
+    args = parser.parse_args()
+    df = load_csv(args.file)
     if df is not None:
-        process_rows(df, filepath)
+        process_rows(df, args.file, do_reset=args.reset)
 
 if __name__ == "__main__":
     main()
