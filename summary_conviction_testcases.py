@@ -1,20 +1,23 @@
-from typing import List, Optional, Literal
-from pydantic import BaseModel, Field
+from data_models import Case, Person
 
-class Person(BaseModel):
-    surname: Optional[str] = None
-    forenames: Optional[str] = None
-    residence: Optional[str] = None
-    occupation: Optional[str] = None
-    gender: Optional[Literal['male', 'female', 'other']] = None
-
-class Case(BaseModel):
-    date: Optional[str] = Field(default=None)  # date as string
-    offence: Optional[str] = None
-    offence_location: Optional[str] = None
-    court: Optional[str] = None
-    defendants: Optional[List[Person]] = None
-    involved_persons: Optional[List[Person]] = None
+tooley = {
+    "input": "Summary conviction of William Tooley of Liverton Mines miner for trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark PalmerOffence committed at the township of Roxby on 26 September 1888Whitby Strand Petty Sessional division - case heard at Whitby",
+    "output": Case(
+        date="1888-09-26",
+        offence="trespassing in the daytime in search of conies on a piece of land in the possession and occupation of Sir Charles Mark Palmer",
+        offence_location="Roxby",
+        court="Whitby",
+        defendants=[
+            Person(
+                surname="Tooley",
+                forenames="William",
+                residence="Liverton Mines",
+                occupation="miner",
+                gender="male"
+            )
+        ],
+    )
+}
 
 waters = {
     "input": "Summary conviction of William Waters of the township of Whitby jet worker for being drunk and riotous in BaxtergateOffence committed at the township of Whitby on 16 March 1873. Whitby Strand - case heard at Whitby",
@@ -32,7 +35,7 @@ waters = {
                 gender="male"
             )
         ],
-        involved_persons=None
+        
     )
 }
 
@@ -52,7 +55,7 @@ williams = {
                 gender="female"
             )
         ],
-        involved_persons=None
+        
     )
 }
 
@@ -72,7 +75,7 @@ brown = {
                 gender="male"
             )
         ],
-        involved_persons=None
+        
     )
 }
 
@@ -92,7 +95,7 @@ adams = {
                 gender="female"
             )
         ],
-        involved_persons=None
+        
     )
 }
 
@@ -133,11 +136,12 @@ nicholson = {
                 gender="male"
             )
         ],
-        involved_persons=None
+        
     )
 }
 
 sample_data = [
+    tooley,
     waters,
     williams,
     brown,
@@ -225,56 +229,6 @@ class Testcases:
                 assert_equal(actual.gender, expected.gender, "defendant gender", i, "Defendant", input_text=case["input"])
 
     @staticmethod
-    def test_involved_person_surnames(parsing_function):
-        for case in sample_data:
-            result = parsing_function(case["input"])
-            assert result is not None, "parse() returned None"
-            actual_list = result.involved_persons or []
-            expected_list = case["output"].involved_persons or []
-            for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.surname, expected.surname, "involved_person surname", i, "Involved person", input_text=case["input"])
-
-    @staticmethod
-    def test_involved_person_forenames(parsing_function):
-        for case in sample_data:
-            result = parsing_function(case["input"])
-            assert result is not None, "parse() returned None"
-            actual_list = result.involved_persons or []
-            expected_list = case["output"].involved_persons or []
-            for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.forenames, expected.forenames, "involved_person forenames", i, "Involved person", input_text=case["input"])
-
-    @staticmethod
-    def test_involved_person_residence(parsing_function):
-        for case in sample_data:
-            result = parsing_function(case["input"])
-            assert result is not None, "parse() returned None"
-            actual_list = result.involved_persons or []
-            expected_list = case["output"].involved_persons or []
-            for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.residence, expected.residence, "involved_person residence", i, "Involved person", input_text=case["input"])
-
-    @staticmethod
-    def test_involved_person_occupation(parsing_function):
-        for case in sample_data:
-            result = parsing_function(case["input"])
-            assert result is not None, "parse() returned None"
-            actual_list = result.involved_persons or []
-            expected_list = case["output"].involved_persons or []
-            for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.occupation, expected.occupation, "involved_person occupation", i, "Involved person", input_text=case["input"])
-
-    @staticmethod
-    def test_involved_person_gender(parsing_function):
-        for case in sample_data:
-            result = parsing_function(case["input"])
-            assert result is not None, "parse() returned None"
-            actual_list = result.involved_persons or []
-            expected_list = case["output"].involved_persons or []
-            for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
-                assert_equal(actual.gender, expected.gender, "involved_person gender", i, "Involved person", input_text=case["input"])
-
-    @staticmethod
     def test_defendant_count(parsing_function):
         for case in sample_data:
             result = parsing_function(case["input"])
@@ -289,7 +243,7 @@ class Testcases:
             )
 
     @staticmethod
-    def samoles():
+    def samples():
         return(sample_data)
 
     @staticmethod
@@ -304,11 +258,6 @@ class Testcases:
         Testcases.test_defendant_gender(parsing_function)
         Testcases.test_defendant_residence(parsing_function)
         Testcases.test_defendant_occupation(parsing_function)
-        #Testcases.test_involved_person_surnames(parsing_function)
-        #Testcases.test_involved_person_forenames(parsing_function)
-        #Testcases.test_involved_person_residence(parsing_function)
-        #Testcases.test_involved_person_occupation(parsing_function)
-        #Testcases.test_involved_person_gender(parsing_function)
         print("All passed")
         
     
