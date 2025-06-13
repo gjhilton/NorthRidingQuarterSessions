@@ -36,6 +36,8 @@ class TouchUp:
             'r': self.redo,
             'go': self.go_to_row,
             'g': self.go_to_row,
+            'find': self.find_value,
+            'f': self.find_value,
         }
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
@@ -186,6 +188,26 @@ class TouchUp:
         self.current_row = row_num - 1
         self.display_row()
 
+    def find_value(self, *args):
+        if len(args) == 2:
+            column_name, search_term = args
+        else:
+            column_name = input(f"{Fore.CYAN}Enter column name to search: {Fore.WHITE}").strip()
+            search_term = input(f"{Fore.CYAN}Enter search value: {Fore.WHITE}").strip()
+
+        if column_name not in self.df.columns:
+            print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
+            return
+
+        matches = self.df[self.df[column_name].astype(str).str.contains(search_term, case=False, na=False)]
+
+        if not matches.empty:
+            self.current_row = matches.index[0]
+            self.display_row()
+            print(f"{Fore.GREEN}Found match in row {self.current_row + 1}.")
+        else:
+            print(f"{Fore.YELLOW}No match found for '{search_term}' in column '{column_name}'.")
+
     def completer(self, text, state):
         options = [cmd for cmd in self.command_map.keys() if cmd.startswith(text)]
         if state < len(options):
@@ -217,7 +239,8 @@ class TouchUp:
                 f"{Fore.RED}q{Fore.WHITE}:quit, "
                 f"{Fore.GREEN}u{Fore.WHITE}:undo, "
                 f"{Fore.GREEN}r{Fore.WHITE}:redo, "
-                f"{Fore.GREEN}g{Fore.WHITE}:go"
+                f"{Fore.GREEN}g{Fore.WHITE}:go, "
+                f"{Fore.GREEN}f{Fore.WHITE}:find"
                 f"{Fore.WHITE}): "
             )
             try:
