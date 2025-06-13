@@ -1,3 +1,92 @@
+"""
+touchup.py - Command-Line CSV Data Viewer and Editor with Undo/Redo and Search
+
+--------------------------------------------------------------------------------
+Overview:
+--------------------------------------------------------------------------------
+This script implements an interactive command-line CSV viewer and editor tool
+called "TouchUp". It enables users to navigate through CSV rows, view and edit
+data fields, search for entries, and manage changes with undo/redo functionality.
+
+--------------------------------------------------------------------------------
+Key Features:
+--------------------------------------------------------------------------------
+- Loads CSV files and displays data row-by-row with optional "hero" column shown
+  prominently at the top.
+- Navigation commands: next, prev, go to row.
+- Edit commands: edit a specific cell either via command args or interactive prompt.
+- Undo/redo support for changes.
+- Save changes with timestamped backup filenames.
+- Search for values within columns.
+- Color-coded CLI output for improved readability.
+- Graceful handling of invalid inputs and commands.
+
+--------------------------------------------------------------------------------
+Usage:
+--------------------------------------------------------------------------------
+$ python touchup.py <filename.csv> [--hero ColumnName]
+
+Interactive commands once running:
+- n / next       : Move to next row
+- p / prev       : Move to previous row
+- e / edit       : Edit cell (prompts if no args)
+- s / save       : Save changes
+- q / quit       : Exit program (prompts to save if modified)
+- g / go         : Jump to row number
+- f / find       : Search for text in column
+- undo          : Undo last edit
+- redo          : Redo last undone edit
+
+Run tests with:
+$ python touchup.py --test
+
+--------------------------------------------------------------------------------
+Testing:
+--------------------------------------------------------------------------------
+- Pytest-based suite included at bottom of this file.
+- Mocks input() properly, capturing stdout with capsys.
+- Covers loading files, editing, undo/redo, navigation, searching, and error cases.
+- Input mocking accounts for colored prompts by checking substrings.
+
+--------------------------------------------------------------------------------
+Current State:
+--------------------------------------------------------------------------------
+- Fully functional core features implemented.
+- Tests pass but may be extended with more edge cases in future.
+- Colorama used for cross-platform color support.
+- Handles CSV files robustly but requires valid CSV with data.
+- Modular class design for future expansion or integration.
+
+--------------------------------------------------------------------------------
+Next Steps / To-Do:
+--------------------------------------------------------------------------------
+- Improve input validation and user feedback further.
+- Add batch editing or multi-row operations.
+- Integrate with pandas better for type safety.
+- Enhance undo/redo stack management.
+- Consider adding a command history and help screen.
+- Improve error handling for I/O operations.
+- Possibly add CSV export formats and filters.
+
+--------------------------------------------------------------------------------
+Context for Future Sessions:
+--------------------------------------------------------------------------------
+- The class TouchUp encapsulates all logic and state.
+- Command map dispatches commands to methods.
+- Undo/redo store deep copies of DataFrame states.
+- Colorama color codes require substring matching in input mocks.
+- Tests are integrated but isolated via fixtures.
+- The main() function parses CLI args and runs interactive loop or tests.
+- Use pytest or manual runs for development.
+- Clear_screen() adapts to OS.
+- File saves append timestamp suffix.
+- Prompts and outputs are richly colored.
+- Interactive mode loops endlessly until quit.
+- All code is contained in this single file for easy deployment.
+
+Please refer back to this block before continuing development or troubleshooting.  
+"""
+
 import argparse
 import pandas as pd
 import os
