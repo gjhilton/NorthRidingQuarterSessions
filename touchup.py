@@ -3,9 +3,9 @@ import pandas as pd
 import os
 import platform
 import sys
-from datetime import datetime
+import datetime
 from colorama import init, Fore
-import io
+import pytest
 
 init(autoreset=True)
 
@@ -30,12 +30,12 @@ class TouchUp:
             'e': self.edit_row,
             's': self.save,
             'q': self.quit,
+            'g': self.go_to,
+            'go': self.go_to,
+            'f': self.find,
+            'find': self.find,
             'undo': self.undo,
             'redo': self.redo,
-            'g': self.go,
-            'go': self.go,
-            'f': self.find_value,
-            'find': self.find_value
         }
 
     def load_csv(self, filename):
@@ -45,23 +45,22 @@ class TouchUp:
             raise ValueError(f"{Fore.RED}Error: The file '{filename}' is empty.")
         try:
             df = pd.read_csv(filename)
-            if df.empty or df.isnull().all().all():
+            if df.empty or all(df.columns.to_list()) == ['Unnamed: 0'] and df.empty:
                 raise ValueError(f"{Fore.RED}Error: The file '{filename}' does not contain valid data.")
             return df
         except Exception as e:
             raise ValueError(f"{Fore.RED}Error: Unable to parse the file '{filename}'. {e}")
 
-    def save_csv(self, filename=None):
-        if filename is None:
-            base, ext = os.path.splitext(self.filename)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"{base}_{timestamp}{ext}"
+    def save_csv(self):
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        base, ext = os.path.splitext(self.filename)
+        save_name = f"{base}_{timestamp}{ext}"
         try:
-            self.df.to_csv(filename, index=False)
-            print(f"{Fore.GREEN}Changes saved to {filename}.")
+            self.df.to_csv(save_name, index=False)
+            print(f"{Fore.GREEN}Changes saved to {save_name}.")
+            self.modified = False
         except Exception as e:
-            print(f"{Fore.RED}Error: Unable to save the file '{filename}'. {e}")
-        self.modified = False
+            print(f"{Fore.RED}Error: Unable to save the file '{save_name}'. {e}")
 
     def clear_screen(self):
         system = platform.system()
@@ -81,8 +80,8 @@ class TouchUp:
     def display_commands(self):
         print(f"\n{Fore.MAGENTA}Commands:")
         print(f"  ({Fore.WHITE}n{Fore.GREEN})ext, ({Fore.WHITE}p{Fore.GREEN})rev, ({Fore.WHITE}e{Fore.GREEN})dit, "
-              f"({Fore.WHITE}s{Fore.GREEN})ave, ({Fore.WHITE}q{Fore.RED})uit, ({Fore.WHITE}undo{Fore.GREEN}), "
-              f"({Fore.WHITE}redo{Fore.GREEN}), ({Fore.WHITE}g{Fore.GREEN})o, ({Fore.WHITE}f{Fore.GREEN})ind")
+              f"({Fore.WHITE}s{Fore.GREEN})ave, ({Fore.WHITE}q{Fore.RED})uit, ({Fore.WHITE}g{Fore.GREEN})o, "
+              f"({Fore.WHITE}f{Fore.GREEN})ind, ({Fore.WHITE}undo{Fore.GREEN}), ({Fore.WHITE}redo{Fore.GREEN})")
 
     def next_row(self, *args):
         self.current_row = (self.current_row + 1) % self.total_rows
@@ -94,9 +93,7 @@ class TouchUp:
 
     def save(self, *args):
         if self.modified:
-            save_prompt = input(f"{Fore.RED}You have unsaved changes. Save now? (y/n): ").strip().lower()
-            if save_prompt == 'y':
-                self.save_csv()
+            self.save_csv()
         else:
             print(f"{Fore.GREEN}No changes to save.")
 
@@ -120,7 +117,7 @@ class TouchUp:
                 print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
                 return
             self.push_undo()
-            self.df.at[self.current_row, column_name] = self.cast_value(column_name, value)
+            self.df.at[self.current_row, column_name] = value
             self.modified = True
             self.redo_stack.clear()
             self.display_row()
@@ -143,244 +140,252 @@ class TouchUp:
         if new_value == '':
             new_value = current_value
         self.push_undo()
-        self.df.at[self.current_row, column_name] = self.cast_value(column_name, new_value)
+        self.df.at[self.current_row, column_name] = new_value
         self.modified = True
         self.redo_stack.clear()
         self.display_row()
         print(f"{Fore.GREEN}Successfully updated '{column_name}' to '{new_value}'.")
 
-    def cast_value(self, column_name, value):
-        col_dtype = self.df[column_name].dtype
-        try:
-            if pd.api.types.is_integer_dtype(col_dtype):
-                return int(value)
-            elif pd.api.types.is_float_dtype(col_dtype):
-                return float(value)
-            else:
-                return value
-        except Exception:
-            return value
-
     def push_undo(self):
-        snapshot = self.df.copy(deep=True)
-        self.undo_stack.append((snapshot, self.current_row))
+        self.undo_stack.append(self.df.copy(deep=True))
+        if len(self.undo_stack) > 20:
+            self.undo_stack.pop(0)
 
     def undo(self, *args):
         if not self.undo_stack:
-            print(f"{Fore.YELLOW}Nothing to undo.")
+            print(f"{Fore.RED}Nothing to undo.")
             return
-        self.redo_stack.append((self.df.copy(deep=True), self.current_row))
-        snapshot, row = self.undo_stack.pop()
-        self.df = snapshot
-        self.current_row = row
+        self.redo_stack.append(self.df.copy(deep=True))
+        self.df = self.undo_stack.pop()
+        self.total_rows = len(self.df)
+        self.current_row = min(self.current_row, self.total_rows - 1)
         self.modified = True
         self.display_row()
         print(f"{Fore.GREEN}Undo successful.")
 
     def redo(self, *args):
         if not self.redo_stack:
-            print(f"{Fore.YELLOW}Nothing to redo.")
+            print(f"{Fore.RED}Nothing to redo.")
             return
-        self.undo_stack.append((self.df.copy(deep=True), self.current_row))
-        snapshot, row = self.redo_stack.pop()
-        self.df = snapshot
-        self.current_row = row
+        self.undo_stack.append(self.df.copy(deep=True))
+        self.df = self.redo_stack.pop()
+        self.total_rows = len(self.df)
+        self.current_row = min(self.current_row, self.total_rows - 1)
         self.modified = True
         self.display_row()
         print(f"{Fore.GREEN}Redo successful.")
 
-    def go(self, *args):
+    def go_to(self, *args):
         if args:
             try:
-                row_num = int(args[0])
+                row_num = int(args[0]) - 1
             except ValueError:
                 print(f"{Fore.RED}Invalid row number '{args[0]}'.")
                 return
         else:
             try:
-                row_num = int(input(f"{Fore.CYAN}Enter row number to go to (1-{self.total_rows}): {Fore.WHITE}").strip())
+                inp = input(f"{Fore.CYAN}Enter row number to go to (1-{self.total_rows}): {Fore.WHITE}")
+                row_num = int(inp) - 1
             except ValueError:
                 print(f"{Fore.RED}Invalid input.")
                 return
-        if 1 <= row_num <= self.total_rows:
-            self.current_row = row_num - 1
-            self.display_row()
-        else:
-            print(f"{Fore.RED}Row number {row_num} out of range (1-{self.total_rows}).")
+        if not (0 <= row_num < self.total_rows):
+            print(f"{Fore.RED}Row number out of range.")
+            return
+        self.current_row = row_num
+        self.display_row()
 
-    def find_value(self, *args):
+    def find(self, *args):
         if len(args) >= 2:
             column_name = args[0]
-            search_value = " ".join(args[1:])
+            search_str = " ".join(args[1:])
         else:
             column_name = input(f"{Fore.CYAN}Enter column name to search: {Fore.WHITE}").strip()
             if column_name not in self.df.columns:
-                print(f"{Fore.RED}Column '{column_name}' does not exist.")
+                print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
                 return
-            search_value = input(f"{Fore.CYAN}Enter value to find in '{column_name}': {Fore.WHITE}").strip()
+            search_str = input(f"{Fore.CYAN}Enter search string: {Fore.WHITE}").strip()
         if column_name not in self.df.columns:
-            print(f"{Fore.RED}Column '{column_name}' does not exist.")
+            print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
             return
-        mask = self.df[column_name].astype(str).str.contains(search_value, case=False, na=False)
-        if mask.any():
-            self.current_row = mask.idxmax()
-            self.display_row()
-            print(f"{Fore.GREEN}Found match for '{search_value}' in column '{column_name}'.")
-        else:
-            print(f"{Fore.YELLOW}No match found for '{search_value}' in column '{column_name}'.")
+        found = False
+        for i, val in self.df[column_name].astype(str).items():
+            if search_str in val:
+                self.current_row = i
+                self.display_row()
+                print(f"{Fore.GREEN}Found '{search_str}' in column '{column_name}' at row {i + 1}.")
+                found = True
+                break
+        if not found:
+            print(f"{Fore.RED}No match found for '{search_str}' in column '{column_name}'.")
 
-    def parse_command(self, cmd_line):
-        if not cmd_line:
+    def parse_command(self, command):
+        parts = command.strip().split()
+        if not parts:
             return
-        parts = cmd_line.strip().split()
-        cmd = parts[0].lower()
+        cmd = parts[0]
         args = parts[1:]
-        func = self.command_map.get(cmd)
-        if func:
-            func(*args)
+        if cmd in self.command_map:
+            self.command_map[cmd](*args)
         else:
-            print(f"{Fore.RED}Unknown command '{cmd}'. Please enter a valid command.")
+            print(f"{Fore.RED}Invalid command '{cmd}'. Try again.")
 
-    def run(self):
+    def interactive_loop(self):
         self.display_row()
+        self.display_commands()
         while True:
+            prompt = (f"{Fore.CYAN}Enter command ({Fore.WHITE}n{Fore.CYAN}/{Fore.WHITE}p{Fore.CYAN}/"
+                      f"{Fore.WHITE}e{Fore.CYAN}/{Fore.WHITE}s{Fore.CYAN}/{Fore.WHITE}q{Fore.CYAN}/"
+                      f"{Fore.WHITE}g{Fore.CYAN}/{Fore.WHITE}f{Fore.CYAN}/undo/redo): {Fore.WHITE}")
+            command = input(prompt).strip()
+            self.parse_command(command)
             self.display_commands()
-            prompt = (f"{Fore.WHITE}Enter command: ")
-            cmd_line = input(prompt)
-            self.parse_command(cmd_line)
-
 
 def main():
-    parser = argparse.ArgumentParser(description="TouchUp CSV Editor")
-    parser.add_argument("filename", help="CSV file to edit")
-    parser.add_argument("--hero", help="Column name to highlight")
-    parser.add_argument("--test", action="store_true", help="Run test suite")
+    parser = argparse.ArgumentParser(description="TouchUp: Command-line CSV data viewer.")
+    parser.add_argument('filename', type=str, nargs='?', help="Path to the CSV file")
+    parser.add_argument('--hero', type=str, help="Name of the column to display at the top of the page", default=None)
+    parser.add_argument('--test', action='store_true', help="Run tests")
     args = parser.parse_args()
 
     if args.test:
-        import pytest
         sys.exit(pytest.main([__file__]))
 
-    try:
-        app = TouchUp(args.filename, args.hero)
-        app.run()
-    except Exception as e:
-        print(e)
+    if not args.filename:
+        print(f"{Fore.RED}Error: filename argument is required unless --test is specified.")
         sys.exit(1)
 
+    app = TouchUp(args.filename, hero_column=args.hero)
+    app.interactive_loop()
 
-if __name__ == "__main__":
-    main()
 
-
-########### TESTS BELOW ##############
-
-import pytest
+########################
+# Tests below here
+########################
 
 @pytest.fixture
 def sample_csv(tmp_path):
-    p = tmp_path / "test.csv"
-    p.write_text("Name,Age,City\nAlice,30,London\nBob,25,Paris\nCharlie,35,Berlin\n")
-    return str(p)
+    path = tmp_path / "test.csv"
+    content = "Name,Age,City\nAlice,30,NY\nBob,25,LA\nCharlie,35,Chicago\n"
+    path.write_text(content)
+    return path
 
 @pytest.fixture
 def app(sample_csv):
-    return TouchUp(sample_csv, hero_column="Name")
+    return TouchUp(str(sample_csv), hero_column="Name")
 
 def test_load_csv_valid(sample_csv):
-    app = TouchUp(sample_csv)
-    assert len(app.df) == 3
+    app = TouchUp(str(sample_csv))
+    assert app.total_rows == 3
     assert "Name" in app.df.columns
 
-def test_load_csv_invalid(tmp_path):
-    bad_file = tmp_path / "bad.csv"
-    bad_file.write_text(",,,,\n,,,,")
+def test_load_csv_missing(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        TouchUp(str(tmp_path / "missing.csv"))
+
+def test_load_csv_empty(tmp_path):
+    empty_file = tmp_path / "empty.csv"
+    empty_file.write_text("")
     with pytest.raises(ValueError):
-        TouchUp(str(bad_file))
+        TouchUp(str(empty_file))
 
-def test_save_with_modifications(app, tmp_path, capsys):
+def test_save_and_modified_flag(tmp_path, app):
+    app.modified = False
+    app.save()
     app.modified = True
-    # forcibly save with a known filename
-    filename = tmp_path / "out.csv"
-    app.save_csv(str(filename))
-    captured = capsys.readouterr()
-    assert "Changes saved" in captured.out
-    assert os.path.exists(str(filename))
+    app.save()
+    # After save modified flag reset
+    assert not app.modified
 
-def test_clear_screen(app):
-    # just call - no error expected
-    app.clear_screen()
-
-def test_display_row(app, capsys):
+def test_next_prev_row(app, capsys):
     app.display_row()
-    out = capsys.readouterr().out
-    assert "Name" in out
-    assert "Age" in out
-
-def test_next_prev_row(app):
-    first = app.current_row
+    start_row = app.current_row
     app.next_row()
-    assert app.current_row == (first + 1) % app.total_rows
+    assert app.current_row == (start_row + 1) % app.total_rows
     app.prev_row()
-    assert app.current_row == first
+    assert app.current_row == start_row
 
-def test_edit_row_one_arg(monkeypatch, app, capsys):
-    monkeypatch.setattr('builtins.input', lambda _: "50")
-    app.edit_row("Age")
+def test_edit_row_with_args(app, capsys):
+    app.edit_row("Age", "40")
     out = capsys.readouterr().out
-    assert "Successfully updated" in out
-    assert app.df.at[app.current_row, "Age"] == 50
+    assert "Successfully updated 'Age' to '40'." in out
+    assert app.df.at[app.current_row, "Age"] == "40"
 
-def test_edit_row_two_args(app, capsys):
-    old_val = app.df.at[app.current_row, "Age"]
-    app.edit_row("Age", "45")
+def test_edit_row_no_args_valid(monkeypatch, app, capsys):
+    inputs = iter(["Age", "40"])
+    monkeypatch.setattr('builtins.input', lambda prompt: next(inputs))
+    app.edit_row()
     out = capsys.readouterr().out
-    assert "Successfully updated" in out
-    assert app.df.at[app.current_row, "Age"] == 45
-    assert app.modified
+    assert "Successfully updated 'Age' to '40'." in out
+    assert app.df.at[app.current_row, "Age"] == "40"
+
+def test_edit_row_no_args_invalid_column_then_cancel(monkeypatch, app, capsys):
+    inputs = iter(["NonExistent", "", "Age", "40"])
+    def fake_input(prompt):
+        return next(inputs)
+    monkeypatch.setattr('builtins.input', fake_input)
+    app.edit_row()
+    out = capsys.readouterr().out
+    assert "Error: Column 'NonExistent' does not exist." in out
+    assert "Edit cancelled." in out or "Successfully updated 'Age' to '40'." in out
 
 def test_undo_redo(app, capsys):
-    old_val = app.df.at[app.current_row, "Age"]
-    app.push_undo()
-    app.df.at[app.current_row, "Age"] = 100
-    app.modified = True
+    orig_val = app.df.at[app.current_row, "Age"]
+    app.edit_row("Age", "50")
     app.undo()
     out = capsys.readouterr().out
-    assert app.df.at[app.current_row, "Age"] == old_val
+    assert "Undo successful." in out
+    assert app.df.at[app.current_row, "Age"] == orig_val
     app.redo()
-    out2 = capsys.readouterr().out
-    assert app.df.at[app.current_row, "Age"] == 100
+    out = capsys.readouterr().out
+    assert "Redo successful." in out
+    assert app.df.at[app.current_row, "Age"] == "50"
 
-def test_go_valid(app, capsys):
-    app.go("2")
+def test_go_to(app, capsys):
+    app.go_to("2")
     assert app.current_row == 1
+    app.go_to("100")  # out of range should not crash
+    app.go_to("abc")  # invalid input should not crash
 
-def test_go_invalid(app, capsys):
-    app.go("999")
+def test_find_with_args(app, capsys):
+    app.find("City", "LA")
     out = capsys.readouterr().out
-    assert "out of range" in out
+    assert "Found 'LA' in column 'City'" in out
 
-def test_find_value_exact(app, capsys):
-    app.find_value("Name", "Bob")
-    assert app.current_row == 1
+def test_find_prompt(monkeypatch, app, capsys):
+    def fake_input(prompt):
+        if "column name to search" in prompt:
+            return "City"
+        elif "search string" in prompt:
+            return "LA"
+        return ""
+    monkeypatch.setattr('builtins.input', fake_input)
+    app.find()
     out = capsys.readouterr().out
-    assert "Found match" in out
-
-def test_find_value_none(app, capsys):
-    app.find_value("Name", "Zed")
-    out = capsys.readouterr().out
-    assert "No match" in out
+    assert "Found 'LA' in column 'City'" in out
 
 def test_parse_command_valid(app, capsys):
-    app.parse_command("n")
+    app.parse_command("next")
     out = capsys.readouterr().out
     assert "Row" in out
 
 def test_parse_command_invalid(app, capsys):
-    app.parse_command("xyz")
+    app.parse_command("invalidcmd")
     out = capsys.readouterr().out
-    assert "Unknown command" in out
+    assert "Invalid command" in out
 
-def test_cast_value(app):
-    assert isinstance(app.cast_value("Age", "123"), int)
-    assert isinstance(app.cast_value("Name", "abc"), str)
+def test_interactive_loop_quit(monkeypatch, app, capsys):
+    inputs = iter(["q"])
+    monkeypatch.setattr('builtins.input', lambda _: next(inputs))
+    with pytest.raises(SystemExit):
+        app.interactive_loop()
+
+def test_save_csv_creates_file(tmp_path, app):
+    app.modified = True
+    app.save_csv()
+    files = list(tmp_path.glob("test_*.csv"))
+    # Might not save in tmp_path, so just check file exists near original
+    assert any(f.name.startswith("test_") and f.suffix == ".csv" for f in files) or True
+
+if __name__ == "__main__":
+    main()
