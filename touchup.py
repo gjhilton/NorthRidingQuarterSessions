@@ -5,6 +5,7 @@ import platform
 import sys
 from colorama import init, Fore
 import readline
+import datetime
 
 init(autoreset=True)
 
@@ -33,10 +34,9 @@ class TouchUp:
             'u': self.undo,
             'redo': self.redo,
             'r': self.redo,
-            'help': self.show_help,
-            '?': self.show_help
+            'go': self.go_to_row,
+            'g': self.go_to_row,
         }
-        self.commands = list(self.command_map.keys())
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
 
@@ -53,13 +53,22 @@ class TouchUp:
         except Exception as e:
             raise ValueError(f"{Fore.RED}Error: Unable to parse the file '{filename}'. {e}")
 
-    def save_csv(self):
+    def save_csv(self, filename):
         try:
-            self.df.to_csv(self.filename, index=False)
-            print(f"{Fore.GREEN}Changes saved to {self.filename}.")
+            self.df.to_csv(filename, index=False)
+            print(f"{Fore.GREEN}Changes saved to {filename}.")
         except Exception as e:
-            print(f"{Fore.RED}Error: Unable to save the file '{self.filename}'. {e}")
+            print(f"{Fore.RED}Error: Unable to save the file '{filename}'. {e}")
         self.modified = False
+
+    def save(self):
+        if self.modified:
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            base, ext = os.path.splitext(self.filename)
+            new_filename = f"{base}_{timestamp}{ext}"
+            self.save_csv(new_filename)
+        else:
+            print(f"{Fore.GREEN}No changes to save.")
 
     def clear_screen(self):
         system = platform.system()
@@ -84,19 +93,11 @@ class TouchUp:
         self.current_row = (self.current_row - 1) % self.total_rows
         self.display_row()
 
-    def save(self):
-        if self.modified:
-            save_prompt = input(f"{Fore.RED}You have unsaved changes. Save before quitting? (y/n): ").strip().lower()
-            if save_prompt == 'y':
-                self.save_csv()
-        else:
-            print(f"{Fore.GREEN}No changes to save.")
-
     def quit(self):
         if self.modified:
             save_prompt = input(f"{Fore.RED}You have unsaved changes. Save before quitting? (y/n): ").strip().lower()
             if save_prompt == 'y':
-                self.save_csv()
+                self.save()
         print(f"{Fore.GREEN}Goodbye!")
         sys.exit(0)
 
@@ -111,8 +112,7 @@ class TouchUp:
             if column_name not in self.df.columns:
                 print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
                 return
-            old_value = self.df.at[self.current_row, column_name]
-            self.push_undo(self.current_row, column_name, old_value)
+            self.record_undo(column_name)
             self.df.at[self.current_row, column_name] = value
             self.modified = True
             self.redo_stack.clear()
@@ -135,58 +135,63 @@ class TouchUp:
         new_value = input(f"{Fore.CYAN}Enter new value for '{column_name}' (current value: '{current_value}'): {Fore.WHITE}").strip()
         if new_value == '':
             new_value = current_value
-        self.push_undo(self.current_row, column_name, current_value)
+        self.record_undo(column_name)
         self.df.at[self.current_row, column_name] = new_value
         self.modified = True
         self.redo_stack.clear()
         self.display_row()
         print(f"{Fore.GREEN}Successfully updated '{column_name}' to '{new_value}'.")
 
-    def push_undo(self, row, column, old_value):
-        self.undo_stack.append((row, column, old_value))
-        if len(self.undo_stack) > 100:
-            self.undo_stack.pop(0)
+    def record_undo(self, column_name):
+        old_value = self.df.at[self.current_row, column_name]
+        self.undo_stack.append((self.current_row, column_name, old_value))
 
     def undo(self):
         if not self.undo_stack:
             print(f"{Fore.YELLOW}Nothing to undo.")
             return
-        row, column, old_value = self.undo_stack.pop()
-        current_value = self.df.at[row, column]
-        self.redo_stack.append((row, column, current_value))
-        self.df.at[row, column] = old_value
+        row_idx, column_name, old_value = self.undo_stack.pop()
+        current_value = self.df.at[row_idx, column_name]
+        self.redo_stack.append((row_idx, column_name, current_value))
+        self.df.at[row_idx, column_name] = old_value
         self.modified = True
-        self.current_row = row
+        self.current_row = row_idx
         self.display_row()
-        print(f"{Fore.GREEN}Undo: Restored '{column}' to '{old_value}' in row {row + 1}.")
+        print(f"{Fore.GREEN}Undo: Restored '{column_name}' to '{old_value}'.")
 
     def redo(self):
         if not self.redo_stack:
             print(f"{Fore.YELLOW}Nothing to redo.")
             return
-        row, column, value = self.redo_stack.pop()
-        old_value = self.df.at[row, column]
-        self.undo_stack.append((row, column, old_value))
-        self.df.at[row, column] = value
+        row_idx, column_name, value = self.redo_stack.pop()
+        self.record_undo(column_name)
+        self.df.at[row_idx, column_name] = value
         self.modified = True
-        self.current_row = row
+        self.current_row = row_idx
         self.display_row()
-        print(f"{Fore.GREEN}Redo: Reapplied '{column}' to '{value}' in row {row + 1}.")
+        print(f"{Fore.GREEN}Redo: Reapplied '{column_name}' with '{value}'.")
 
-    def show_help(self):
-        print(f"\n{Fore.MAGENTA}Available Commands:")
-        print(f"  {Fore.GREEN}n{Fore.WHITE} or {Fore.GREEN}next{Fore.WHITE}     - Go to next row")
-        print(f"  {Fore.GREEN}p{Fore.WHITE} or {Fore.GREEN}prev{Fore.WHITE}     - Go to previous row")
-        print(f"  {Fore.GREEN}e{Fore.WHITE} or {Fore.GREEN}edit{Fore.WHITE}     - Edit current row")
-        print(f"  {Fore.GREEN}s{Fore.WHITE} or {Fore.GREEN}save{Fore.WHITE}     - Save changes to file")
-        print(f"  {Fore.RED}q{Fore.WHITE} or {Fore.RED}quit{Fore.WHITE}     - Quit the application")
-        print(f"  {Fore.GREEN}u{Fore.WHITE} or {Fore.GREEN}undo{Fore.WHITE}     - Undo last edit")
-        print(f"  {Fore.GREEN}r{Fore.WHITE} or {Fore.GREEN}redo{Fore.WHITE}     - Redo last undo")
-        print(f"  {Fore.GREEN}help{Fore.WHITE} or {Fore.GREEN}?{Fore.WHITE}     - Show this help menu")
+    def go_to_row(self, *args):
+        if args:
+            row_str = args[0]
+        else:
+            row_str = input(f"{Fore.CYAN}Enter row number to go to (1-{self.total_rows}): {Fore.WHITE}").strip()
+        if not row_str.isdigit():
+            print(f"{Fore.RED}Invalid row number '{row_str}'. Please enter a positive integer between 1 and {self.total_rows}.")
+            return
+        row_num = int(row_str)
+        if not (1 <= row_num <= self.total_rows):
+            print(f"{Fore.RED}Row number {row_num} is out of range. Must be between 1 and {self.total_rows}.")
+            return
+        self.current_row = row_num - 1
+        self.display_row()
 
     def completer(self, text, state):
-        matches = [cmd for cmd in self.commands if cmd.startswith(text)]
-        return matches[state] if state < len(matches) else None
+        options = [cmd for cmd in self.command_map.keys() if cmd.startswith(text)]
+        if state < len(options):
+            return options[state]
+        else:
+            return None
 
     def parse_command(self, command):
         parts = command.strip().split()
@@ -212,7 +217,7 @@ class TouchUp:
                 f"{Fore.RED}q{Fore.WHITE}:quit, "
                 f"{Fore.GREEN}u{Fore.WHITE}:undo, "
                 f"{Fore.GREEN}r{Fore.WHITE}:redo, "
-                f"{Fore.GREEN}?{Fore.WHITE}:help"
+                f"{Fore.GREEN}g{Fore.WHITE}:go"
                 f"{Fore.WHITE}): "
             )
             try:
