@@ -1,76 +1,10 @@
-"""
-TouchUp CLI CSV Editor - Private Developer Notes and Context
-
-PROJECT OVERVIEW:
-- Interactive command-line app to view and edit CSV files row-by-row.
-- Supports paging, editing, saving, and quitting with unsaved changes warnings.
-- Optional 'hero' column to highlight at the top of each row display.
-- Clean, concise UI with colored output for usability.
-
-KEY FEATURES IMPLEMENTED:
-- Load CSV with error handling for file existence, emptiness, and parse errors.
-- Page forward/backward through rows, looping around edges.
-- Clear screen between views (cross-platform).
-- Display current row number and total rows, plus hero column if specified.
-- Show only column names and values (no Pandas metadata clutter).
-- Commands: next (n), prev (p), edit (e), save (s), quit (q).
-- Flexible edit command syntax handling:
-    1) edit                   -> prompt for field, then value
-    2) edit <field>           -> prompt for value
-    3) edit <field> <value>   -> update immediately, multi-word value supported
-- Track if data has been modified since last save.
-- Prompt to save before quitting if there are unsaved changes.
-
-CODE ARCHITECTURE NOTES:
-- Encapsulated in a TouchUp class holding DataFrame, filename, current index, and state flags.
-- Command map dictionary maps command strings to methods.
-- Modular command methods for maintainability and extensibility.
-- Uses colorama for color output; platform-agnostic screen clearing.
-- Input parsing carefully handles edit command's unique argument structure.
-- No external dependencies besides pandas and colorama.
-
-FUTURE WORK / EXTENSIONS:
-- Add more commands (filter, search, batch edit, undo/redo).
-- Better input validation for types/formats.
-- Richer CLI UI frameworks for improved UX.
-- Comprehensive automated tests.
-- Possibly refactor display logic into a separate class/module.
-
-IMPORTANT TECH DETAILS:
-- Use os.path.getsize() correctly to check file size.
-- Validate column names on edits to prevent crashes.
-- On edit prompts, default to current value if user enters nothing.
-- Always sync DataFrame updates with on-screen display immediately.
-- Save overwrites original CSV file without backup.
-- Command parsing treats everything after fieldname as a single value for 'edit'.
-- Colorama auto-resets colors after each print.
-- Case sensitivity of commands is exact (can consider improving later).
-
-KNOWN THINGS TO WATCH:
-- Avoid showing Pandas Series metadata in display.
-- Handle empty or invalid user inputs gracefully.
-- The 'edit' command is a multi-stage state machine:
-    * If no field specified, prompt for it.
-    * If field specified but no value, prompt for value.
-    * If both given, update directly.
-- Confirm modified flag is set properly whenever an edit happens.
-
-HOW TO RESUME WORK:
-- Focus on making the edit command bulletproof with flexible inputs.
-- Add new commands to command_map following existing patterns.
-- Improve input validation and UX polish.
-- Add automated tests covering all edge cases.
-
-This comment block should provide all the context needed to pick up development quickly and maintain code quality.
-
-"""
-
 import argparse
 import pandas as pd
 import os
 import platform
 import sys
 from colorama import init, Fore
+import readline
 
 init(autoreset=True)
 
@@ -82,6 +16,8 @@ class TouchUp:
         self.df = self.load_csv(filename)
         self.current_row = 0
         self.total_rows = len(self.df)
+        self.undo_stack = []
+        self.redo_stack = []
         self.command_map = {
             'next': self.next_row,
             'prev': self.prev_row,
@@ -92,8 +28,17 @@ class TouchUp:
             'p': self.prev_row,
             'e': self.edit_row,
             's': self.save,
-            'q': self.quit
+            'q': self.quit,
+            'undo': self.undo,
+            'u': self.undo,
+            'redo': self.redo,
+            'r': self.redo,
+            'help': self.show_help,
+            '?': self.show_help
         }
+        self.commands = list(self.command_map.keys())
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
 
     def load_csv(self, filename):
         if not os.path.exists(filename):
@@ -130,15 +75,11 @@ class TouchUp:
         print(f"{Fore.YELLOW}\nRow {self.current_row + 1}/{self.total_rows}")
         for col in self.df.columns:
             print(f"{col}: {self.df.iloc[self.current_row][col]}")
-    
-    def display_commands(self):
-        print(f"\n{Fore.MAGENTA}Commands:")
-        print(f"  ({Fore.WHITE}n{Fore.GREEN})ext, ({Fore.WHITE}p{Fore.GREEN})rev, ({Fore.WHITE}e{Fore.GREEN})dit, ({Fore.WHITE}s{Fore.GREEN})ave, ({Fore.WHITE}q{Fore.RED})uit")
 
     def next_row(self):
         self.current_row = (self.current_row + 1) % self.total_rows
         self.display_row()
-    
+
     def prev_row(self):
         self.current_row = (self.current_row - 1) % self.total_rows
         self.display_row()
@@ -170,8 +111,11 @@ class TouchUp:
             if column_name not in self.df.columns:
                 print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
                 return
+            old_value = self.df.at[self.current_row, column_name]
+            self.push_undo(self.current_row, column_name, old_value)
             self.df.at[self.current_row, column_name] = value
             self.modified = True
+            self.redo_stack.clear()
             self.display_row()
             print(f"{Fore.GREEN}Successfully updated '{column_name}' to '{value}'.")
 
@@ -191,10 +135,58 @@ class TouchUp:
         new_value = input(f"{Fore.CYAN}Enter new value for '{column_name}' (current value: '{current_value}'): {Fore.WHITE}").strip()
         if new_value == '':
             new_value = current_value
+        self.push_undo(self.current_row, column_name, current_value)
         self.df.at[self.current_row, column_name] = new_value
         self.modified = True
+        self.redo_stack.clear()
         self.display_row()
         print(f"{Fore.GREEN}Successfully updated '{column_name}' to '{new_value}'.")
+
+    def push_undo(self, row, column, old_value):
+        self.undo_stack.append((row, column, old_value))
+        if len(self.undo_stack) > 100:
+            self.undo_stack.pop(0)
+
+    def undo(self):
+        if not self.undo_stack:
+            print(f"{Fore.YELLOW}Nothing to undo.")
+            return
+        row, column, old_value = self.undo_stack.pop()
+        current_value = self.df.at[row, column]
+        self.redo_stack.append((row, column, current_value))
+        self.df.at[row, column] = old_value
+        self.modified = True
+        self.current_row = row
+        self.display_row()
+        print(f"{Fore.GREEN}Undo: Restored '{column}' to '{old_value}' in row {row + 1}.")
+
+    def redo(self):
+        if not self.redo_stack:
+            print(f"{Fore.YELLOW}Nothing to redo.")
+            return
+        row, column, value = self.redo_stack.pop()
+        old_value = self.df.at[row, column]
+        self.undo_stack.append((row, column, old_value))
+        self.df.at[row, column] = value
+        self.modified = True
+        self.current_row = row
+        self.display_row()
+        print(f"{Fore.GREEN}Redo: Reapplied '{column}' to '{value}' in row {row + 1}.")
+
+    def show_help(self):
+        print(f"\n{Fore.MAGENTA}Available Commands:")
+        print(f"  {Fore.GREEN}n{Fore.WHITE} or {Fore.GREEN}next{Fore.WHITE}     - Go to next row")
+        print(f"  {Fore.GREEN}p{Fore.WHITE} or {Fore.GREEN}prev{Fore.WHITE}     - Go to previous row")
+        print(f"  {Fore.GREEN}e{Fore.WHITE} or {Fore.GREEN}edit{Fore.WHITE}     - Edit current row")
+        print(f"  {Fore.GREEN}s{Fore.WHITE} or {Fore.GREEN}save{Fore.WHITE}     - Save changes to file")
+        print(f"  {Fore.RED}q{Fore.WHITE} or {Fore.RED}quit{Fore.WHITE}     - Quit the application")
+        print(f"  {Fore.GREEN}u{Fore.WHITE} or {Fore.GREEN}undo{Fore.WHITE}     - Undo last edit")
+        print(f"  {Fore.GREEN}r{Fore.WHITE} or {Fore.GREEN}redo{Fore.WHITE}     - Redo last undo")
+        print(f"  {Fore.GREEN}help{Fore.WHITE} or {Fore.GREEN}?{Fore.WHITE}     - Show this help menu")
+
+    def completer(self, text, state):
+        matches = [cmd for cmd in self.commands if cmd.startswith(text)]
+        return matches[state] if state < len(matches) else None
 
     def parse_command(self, command):
         parts = command.strip().split()
@@ -209,11 +201,25 @@ class TouchUp:
 
     def interactive_loop(self):
         self.display_row()
-        self.display_commands()
         while True:
-            command = input(f"{Fore.CYAN}Enter command: {Fore.WHITE}").strip()
-            self.parse_command(command)
-
+            prompt = (
+                f"{Fore.CYAN}Enter command "
+                f"{Fore.WHITE}("
+                f"{Fore.GREEN}n{Fore.WHITE}:next, "
+                f"{Fore.GREEN}p{Fore.WHITE}:prev, "
+                f"{Fore.GREEN}e{Fore.WHITE}:edit, "
+                f"{Fore.GREEN}s{Fore.WHITE}:save, "
+                f"{Fore.RED}q{Fore.WHITE}:quit, "
+                f"{Fore.GREEN}u{Fore.WHITE}:undo, "
+                f"{Fore.GREEN}r{Fore.WHITE}:redo, "
+                f"{Fore.GREEN}?{Fore.WHITE}:help"
+                f"{Fore.WHITE}): "
+            )
+            try:
+                command = input(prompt).strip()
+                self.parse_command(command)
+            except (EOFError, KeyboardInterrupt):
+                print(f"\n{Fore.RED}Interrupted. Type 'q' to quit safely.")
 
 def main():
     parser = argparse.ArgumentParser(description="TouchUp: Command-line CSV data viewer.")
