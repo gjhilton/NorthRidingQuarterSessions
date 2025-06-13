@@ -3,9 +3,9 @@ import pandas as pd
 import os
 import platform
 import sys
+from datetime import datetime
 from colorama import init, Fore
-import readline
-import datetime
+import io
 
 init(autoreset=True)
 
@@ -31,16 +31,12 @@ class TouchUp:
             's': self.save,
             'q': self.quit,
             'undo': self.undo,
-            'u': self.undo,
             'redo': self.redo,
-            'r': self.redo,
-            'go': self.go_to_row,
-            'g': self.go_to_row,
-            'find': self.find_value,
+            'g': self.go,
+            'go': self.go,
             'f': self.find_value,
+            'find': self.find_value
         }
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
 
     def load_csv(self, filename):
         if not os.path.exists(filename):
@@ -49,28 +45,23 @@ class TouchUp:
             raise ValueError(f"{Fore.RED}Error: The file '{filename}' is empty.")
         try:
             df = pd.read_csv(filename)
-            if df.empty:
+            if df.empty or df.isnull().all().all():
                 raise ValueError(f"{Fore.RED}Error: The file '{filename}' does not contain valid data.")
             return df
         except Exception as e:
             raise ValueError(f"{Fore.RED}Error: Unable to parse the file '{filename}'. {e}")
 
-    def save_csv(self, filename):
+    def save_csv(self, filename=None):
+        if filename is None:
+            base, ext = os.path.splitext(self.filename)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{base}_{timestamp}{ext}"
         try:
             self.df.to_csv(filename, index=False)
             print(f"{Fore.GREEN}Changes saved to {filename}.")
         except Exception as e:
             print(f"{Fore.RED}Error: Unable to save the file '{filename}'. {e}")
         self.modified = False
-
-    def save(self):
-        if self.modified:
-            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            base, ext = os.path.splitext(self.filename)
-            new_filename = f"{base}_{timestamp}{ext}"
-            self.save_csv(new_filename)
-        else:
-            print(f"{Fore.GREEN}No changes to save.")
 
     def clear_screen(self):
         system = platform.system()
@@ -87,19 +78,33 @@ class TouchUp:
         for col in self.df.columns:
             print(f"{col}: {self.df.iloc[self.current_row][col]}")
 
-    def next_row(self):
+    def display_commands(self):
+        print(f"\n{Fore.MAGENTA}Commands:")
+        print(f"  ({Fore.WHITE}n{Fore.GREEN})ext, ({Fore.WHITE}p{Fore.GREEN})rev, ({Fore.WHITE}e{Fore.GREEN})dit, "
+              f"({Fore.WHITE}s{Fore.GREEN})ave, ({Fore.WHITE}q{Fore.RED})uit, ({Fore.WHITE}undo{Fore.GREEN}), "
+              f"({Fore.WHITE}redo{Fore.GREEN}), ({Fore.WHITE}g{Fore.GREEN})o, ({Fore.WHITE}f{Fore.GREEN})ind")
+
+    def next_row(self, *args):
         self.current_row = (self.current_row + 1) % self.total_rows
         self.display_row()
 
-    def prev_row(self):
+    def prev_row(self, *args):
         self.current_row = (self.current_row - 1) % self.total_rows
         self.display_row()
 
-    def quit(self):
+    def save(self, *args):
+        if self.modified:
+            save_prompt = input(f"{Fore.RED}You have unsaved changes. Save now? (y/n): ").strip().lower()
+            if save_prompt == 'y':
+                self.save_csv()
+        else:
+            print(f"{Fore.GREEN}No changes to save.")
+
+    def quit(self, *args):
         if self.modified:
             save_prompt = input(f"{Fore.RED}You have unsaved changes. Save before quitting? (y/n): ").strip().lower()
             if save_prompt == 'y':
-                self.save()
+                self.save_csv()
         print(f"{Fore.GREEN}Goodbye!")
         sys.exit(0)
 
@@ -108,14 +113,14 @@ class TouchUp:
             self.handle_edit_column()
         elif len(args) == 1:
             self.handle_edit_value(args[0])
-        elif len(args) >= 2:
+        else:
             column_name = args[0]
             value = " ".join(args[1:])
             if column_name not in self.df.columns:
                 print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
                 return
-            self.record_undo(column_name)
-            self.df.at[self.current_row, column_name] = value
+            self.push_undo()
+            self.df.at[self.current_row, column_name] = self.cast_value(column_name, value)
             self.modified = True
             self.redo_stack.clear()
             self.display_row()
@@ -137,126 +142,245 @@ class TouchUp:
         new_value = input(f"{Fore.CYAN}Enter new value for '{column_name}' (current value: '{current_value}'): {Fore.WHITE}").strip()
         if new_value == '':
             new_value = current_value
-        self.record_undo(column_name)
-        self.df.at[self.current_row, column_name] = new_value
+        self.push_undo()
+        self.df.at[self.current_row, column_name] = self.cast_value(column_name, new_value)
         self.modified = True
         self.redo_stack.clear()
         self.display_row()
         print(f"{Fore.GREEN}Successfully updated '{column_name}' to '{new_value}'.")
 
-    def record_undo(self, column_name):
-        old_value = self.df.at[self.current_row, column_name]
-        self.undo_stack.append((self.current_row, column_name, old_value))
+    def cast_value(self, column_name, value):
+        col_dtype = self.df[column_name].dtype
+        try:
+            if pd.api.types.is_integer_dtype(col_dtype):
+                return int(value)
+            elif pd.api.types.is_float_dtype(col_dtype):
+                return float(value)
+            else:
+                return value
+        except Exception:
+            return value
 
-    def undo(self):
+    def push_undo(self):
+        snapshot = self.df.copy(deep=True)
+        self.undo_stack.append((snapshot, self.current_row))
+
+    def undo(self, *args):
         if not self.undo_stack:
             print(f"{Fore.YELLOW}Nothing to undo.")
             return
-        row_idx, column_name, old_value = self.undo_stack.pop()
-        current_value = self.df.at[row_idx, column_name]
-        self.redo_stack.append((row_idx, column_name, current_value))
-        self.df.at[row_idx, column_name] = old_value
+        self.redo_stack.append((self.df.copy(deep=True), self.current_row))
+        snapshot, row = self.undo_stack.pop()
+        self.df = snapshot
+        self.current_row = row
         self.modified = True
-        self.current_row = row_idx
         self.display_row()
-        print(f"{Fore.GREEN}Undo: Restored '{column_name}' to '{old_value}'.")
+        print(f"{Fore.GREEN}Undo successful.")
 
-    def redo(self):
+    def redo(self, *args):
         if not self.redo_stack:
             print(f"{Fore.YELLOW}Nothing to redo.")
             return
-        row_idx, column_name, value = self.redo_stack.pop()
-        self.record_undo(column_name)
-        self.df.at[row_idx, column_name] = value
+        self.undo_stack.append((self.df.copy(deep=True), self.current_row))
+        snapshot, row = self.redo_stack.pop()
+        self.df = snapshot
+        self.current_row = row
         self.modified = True
-        self.current_row = row_idx
         self.display_row()
-        print(f"{Fore.GREEN}Redo: Reapplied '{column_name}' with '{value}'.")
+        print(f"{Fore.GREEN}Redo successful.")
 
-    def go_to_row(self, *args):
+    def go(self, *args):
         if args:
-            row_str = args[0]
+            try:
+                row_num = int(args[0])
+            except ValueError:
+                print(f"{Fore.RED}Invalid row number '{args[0]}'.")
+                return
         else:
-            row_str = input(f"{Fore.CYAN}Enter row number to go to (1-{self.total_rows}): {Fore.WHITE}").strip()
-        if not row_str.isdigit():
-            print(f"{Fore.RED}Invalid row number '{row_str}'. Please enter a positive integer between 1 and {self.total_rows}.")
-            return
-        row_num = int(row_str)
-        if not (1 <= row_num <= self.total_rows):
-            print(f"{Fore.RED}Row number {row_num} is out of range. Must be between 1 and {self.total_rows}.")
-            return
-        self.current_row = row_num - 1
-        self.display_row()
+            try:
+                row_num = int(input(f"{Fore.CYAN}Enter row number to go to (1-{self.total_rows}): {Fore.WHITE}").strip())
+            except ValueError:
+                print(f"{Fore.RED}Invalid input.")
+                return
+        if 1 <= row_num <= self.total_rows:
+            self.current_row = row_num - 1
+            self.display_row()
+        else:
+            print(f"{Fore.RED}Row number {row_num} out of range (1-{self.total_rows}).")
 
     def find_value(self, *args):
-        if len(args) == 2:
-            column_name, search_term = args
+        if len(args) >= 2:
+            column_name = args[0]
+            search_value = " ".join(args[1:])
         else:
             column_name = input(f"{Fore.CYAN}Enter column name to search: {Fore.WHITE}").strip()
-            search_term = input(f"{Fore.CYAN}Enter search value: {Fore.WHITE}").strip()
-
+            if column_name not in self.df.columns:
+                print(f"{Fore.RED}Column '{column_name}' does not exist.")
+                return
+            search_value = input(f"{Fore.CYAN}Enter value to find in '{column_name}': {Fore.WHITE}").strip()
         if column_name not in self.df.columns:
-            print(f"{Fore.RED}Error: Column '{column_name}' does not exist.")
+            print(f"{Fore.RED}Column '{column_name}' does not exist.")
             return
-
-        matches = self.df[self.df[column_name].astype(str).str.contains(search_term, case=False, na=False)]
-
-        if not matches.empty:
-            self.current_row = matches.index[0]
+        mask = self.df[column_name].astype(str).str.contains(search_value, case=False, na=False)
+        if mask.any():
+            self.current_row = mask.idxmax()
             self.display_row()
-            print(f"{Fore.GREEN}Found match in row {self.current_row + 1}.")
+            print(f"{Fore.GREEN}Found match for '{search_value}' in column '{column_name}'.")
         else:
-            print(f"{Fore.YELLOW}No match found for '{search_term}' in column '{column_name}'.")
+            print(f"{Fore.YELLOW}No match found for '{search_value}' in column '{column_name}'.")
 
-    def completer(self, text, state):
-        options = [cmd for cmd in self.command_map.keys() if cmd.startswith(text)]
-        if state < len(options):
-            return options[state]
-        else:
-            return None
-
-    def parse_command(self, command):
-        parts = command.strip().split()
-        if not parts:
+    def parse_command(self, cmd_line):
+        if not cmd_line:
             return
-        cmd = parts[0]
+        parts = cmd_line.strip().split()
+        cmd = parts[0].lower()
         args = parts[1:]
-        if cmd in self.command_map:
-            self.command_map[cmd](*args)
+        func = self.command_map.get(cmd)
+        if func:
+            func(*args)
         else:
-            print(f"{Fore.RED}Invalid command '{cmd}'. Try again.")
+            print(f"{Fore.RED}Unknown command '{cmd}'. Please enter a valid command.")
 
-    def interactive_loop(self):
+    def run(self):
         self.display_row()
         while True:
-            prompt = (
-                f"{Fore.CYAN}Enter command "
-                f"{Fore.WHITE}("
-                f"{Fore.GREEN}n{Fore.WHITE}:next, "
-                f"{Fore.GREEN}p{Fore.WHITE}:prev, "
-                f"{Fore.GREEN}e{Fore.WHITE}:edit, "
-                f"{Fore.GREEN}s{Fore.WHITE}:save, "
-                f"{Fore.RED}q{Fore.WHITE}:quit, "
-                f"{Fore.GREEN}u{Fore.WHITE}:undo, "
-                f"{Fore.GREEN}r{Fore.WHITE}:redo, "
-                f"{Fore.GREEN}g{Fore.WHITE}:go, "
-                f"{Fore.GREEN}f{Fore.WHITE}:find"
-                f"{Fore.WHITE}): "
-            )
-            try:
-                command = input(prompt).strip()
-                self.parse_command(command)
-            except (EOFError, KeyboardInterrupt):
-                print(f"\n{Fore.RED}Interrupted. Type 'q' to quit safely.")
+            self.display_commands()
+            prompt = (f"{Fore.WHITE}Enter command: ")
+            cmd_line = input(prompt)
+            self.parse_command(cmd_line)
+
 
 def main():
-    parser = argparse.ArgumentParser(description="TouchUp: Command-line CSV data viewer.")
-    parser.add_argument('filename', type=str, help="Path to the CSV file")
-    parser.add_argument('--hero', type=str, help="Name of the column to display at the top of the page", default=None)
+    parser = argparse.ArgumentParser(description="TouchUp CSV Editor")
+    parser.add_argument("filename", help="CSV file to edit")
+    parser.add_argument("--hero", help="Column name to highlight")
+    parser.add_argument("--test", action="store_true", help="Run test suite")
     args = parser.parse_args()
 
-    app = TouchUp(args.filename, hero_column=args.hero)
-    app.interactive_loop()
+    if args.test:
+        import pytest
+        sys.exit(pytest.main([__file__]))
 
-if __name__ == '__main__':
+    try:
+        app = TouchUp(args.filename, args.hero)
+        app.run()
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
     main()
+
+
+########### TESTS BELOW ##############
+
+import pytest
+
+@pytest.fixture
+def sample_csv(tmp_path):
+    p = tmp_path / "test.csv"
+    p.write_text("Name,Age,City\nAlice,30,London\nBob,25,Paris\nCharlie,35,Berlin\n")
+    return str(p)
+
+@pytest.fixture
+def app(sample_csv):
+    return TouchUp(sample_csv, hero_column="Name")
+
+def test_load_csv_valid(sample_csv):
+    app = TouchUp(sample_csv)
+    assert len(app.df) == 3
+    assert "Name" in app.df.columns
+
+def test_load_csv_invalid(tmp_path):
+    bad_file = tmp_path / "bad.csv"
+    bad_file.write_text(",,,,\n,,,,")
+    with pytest.raises(ValueError):
+        TouchUp(str(bad_file))
+
+def test_save_with_modifications(app, tmp_path, capsys):
+    app.modified = True
+    # forcibly save with a known filename
+    filename = tmp_path / "out.csv"
+    app.save_csv(str(filename))
+    captured = capsys.readouterr()
+    assert "Changes saved" in captured.out
+    assert os.path.exists(str(filename))
+
+def test_clear_screen(app):
+    # just call - no error expected
+    app.clear_screen()
+
+def test_display_row(app, capsys):
+    app.display_row()
+    out = capsys.readouterr().out
+    assert "Name" in out
+    assert "Age" in out
+
+def test_next_prev_row(app):
+    first = app.current_row
+    app.next_row()
+    assert app.current_row == (first + 1) % app.total_rows
+    app.prev_row()
+    assert app.current_row == first
+
+def test_edit_row_one_arg(monkeypatch, app, capsys):
+    monkeypatch.setattr('builtins.input', lambda _: "50")
+    app.edit_row("Age")
+    out = capsys.readouterr().out
+    assert "Successfully updated" in out
+    assert app.df.at[app.current_row, "Age"] == 50
+
+def test_edit_row_two_args(app, capsys):
+    old_val = app.df.at[app.current_row, "Age"]
+    app.edit_row("Age", "45")
+    out = capsys.readouterr().out
+    assert "Successfully updated" in out
+    assert app.df.at[app.current_row, "Age"] == 45
+    assert app.modified
+
+def test_undo_redo(app, capsys):
+    old_val = app.df.at[app.current_row, "Age"]
+    app.push_undo()
+    app.df.at[app.current_row, "Age"] = 100
+    app.modified = True
+    app.undo()
+    out = capsys.readouterr().out
+    assert app.df.at[app.current_row, "Age"] == old_val
+    app.redo()
+    out2 = capsys.readouterr().out
+    assert app.df.at[app.current_row, "Age"] == 100
+
+def test_go_valid(app, capsys):
+    app.go("2")
+    assert app.current_row == 1
+
+def test_go_invalid(app, capsys):
+    app.go("999")
+    out = capsys.readouterr().out
+    assert "out of range" in out
+
+def test_find_value_exact(app, capsys):
+    app.find_value("Name", "Bob")
+    assert app.current_row == 1
+    out = capsys.readouterr().out
+    assert "Found match" in out
+
+def test_find_value_none(app, capsys):
+    app.find_value("Name", "Zed")
+    out = capsys.readouterr().out
+    assert "No match" in out
+
+def test_parse_command_valid(app, capsys):
+    app.parse_command("n")
+    out = capsys.readouterr().out
+    assert "Row" in out
+
+def test_parse_command_invalid(app, capsys):
+    app.parse_command("xyz")
+    out = capsys.readouterr().out
+    assert "Unknown command" in out
+
+def test_cast_value(app):
+    assert isinstance(app.cast_value("Age", "123"), int)
+    assert isinstance(app.cast_value("Name", "abc"), str)
