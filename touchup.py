@@ -162,15 +162,15 @@ class TouchUp:
         self.clear_screen()
         if self.hero_column and self.hero_column in self.df.columns:
             print(f"{Fore.CYAN}\n{self.hero_column}: {self.df.iloc[self.current_row][self.hero_column]}")
-        print(f"{Fore.YELLOW}\nRow {self.current_row + 1}/{self.total_rows}")
+        print(f"{Fore.YELLOW}\nRow {self.current_row + 1}/{self.total_rows}\n")
         for col in self.df.columns:
             print(f"{col}: {self.df.iloc[self.current_row][col]}")
 
     def display_commands(self):
-        print(f"\n{Fore.MAGENTA}Commands:")
+        print(f"\n{Fore.BLUE}Commands:")
         print(f"  ({Fore.WHITE}n{Fore.GREEN})ext, ({Fore.WHITE}p{Fore.GREEN})rev, ({Fore.WHITE}e{Fore.GREEN})dit, "
-              f"({Fore.WHITE}s{Fore.GREEN})ave, ({Fore.WHITE}q{Fore.RED})uit, ({Fore.WHITE}g{Fore.GREEN})o, "
-              f"({Fore.WHITE}f{Fore.GREEN})ind, ({Fore.WHITE}undo{Fore.GREEN}), ({Fore.WHITE}redo{Fore.GREEN})")
+              f"({Fore.WHITE}s{Fore.GREEN})ave, ({Fore.WHITE}q{Fore.GREEN})uit, ({Fore.WHITE}g{Fore.GREEN})o, "
+              f"({Fore.WHITE}f{Fore.GREEN})ind, {Fore.GREEN}undo, redo")
 
     def next_row(self, *args):
         self.current_row = (self.current_row + 1) % self.total_rows
@@ -323,9 +323,7 @@ class TouchUp:
         self.display_row()
         self.display_commands()
         while True:
-            prompt = (f"{Fore.CYAN}Enter command ({Fore.WHITE}n{Fore.CYAN}/{Fore.WHITE}p{Fore.CYAN}/"
-                      f"{Fore.WHITE}e{Fore.CYAN}/{Fore.WHITE}s{Fore.CYAN}/{Fore.WHITE}q{Fore.CYAN}/"
-                      f"{Fore.WHITE}g{Fore.CYAN}/{Fore.WHITE}f{Fore.CYAN}/undo/redo): {Fore.WHITE}")
+            prompt = (f"{Fore.CYAN}Enter command: {Fore.WHITE}")
             command = input(prompt).strip()
             self.parse_command(command)
             self.display_commands()
