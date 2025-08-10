@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1835 4/10/17",
+  "conviction_date": "1 Aug 1835",
+  "offence_date": "19 July 1835",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 19,
+  "offence_year": 1835,
+  "offence_time": "morning",
+  "charge_description": "Assaulting Thomas Skerry of Whitby flaxdresser by striking him several blows over the head and arms",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Stonehouse for assaulting Thomas Skerry of Whitby flaxdresser, by striking him several blows over the head and arms. Offence committed at the township of Whitby on the morning of Sunday 19 July 1835. Division of Whitby Strand - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q4%2f10%2f17&pos=10734",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Stonehouse",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Skerry",
+      "occupation": "flaxdresser",
+      "other_details": null,
+      "role": "Assault victim",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

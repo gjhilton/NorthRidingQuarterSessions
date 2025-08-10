@@ -1,0 +1,45 @@
+{
+  "reference_number": "QSB 1810 1/10/1",
+  "conviction_date": "1/10/1810",
+  "offence_date": "14 Sep 1809",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 14,
+  "offence_year": 1809,
+  "offence_time": null,
+  "charge_description": "Summary conviction of William Burkit of Glasgow in North Britain for distributing hand bills or advertisements for selling drapery goods at the King's Head Inn in Church Street in Whitby under the name of John Spark and Co from Glasgow without the words \"Licensed Hawker\" and the number on his licence being inserted in the advertisements; on the information of Joseph Thornhill",
+  "sentencing": null,
+  "raw_record": "Summary conviction: William Burkit of Glasgow,14 Sep 1809,Summary conviction of William Burkit of Glasgow in North Britain for distributing hand bills or advertisements for selling drapery goods at the King's Head Inn in Church Street in Whitby under the name of John Spark and Co from Glasgow without the words \"Licensed Hawker\" and the number on his licence being inserted in the advertisements; on the information of Joseph Thornhill",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1810-Q1%2f10%2f1&pos=2415",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Burkit",
+      "occupation": null,
+      "other_details": "of Glasgow in North Britain",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": "Church Street",
+      "aliases": [
+        "John Spark and Co"
+      ],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Joseph",
+      "last_name": "Thornhill",
+      "occupation": null,
+      "other_details": null,
+      "role": "Informant",
+      "town": null,
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "Church Street",
+  "offence_type": "Distributing hand bills or advertisements without required information",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

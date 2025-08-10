@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1836 2/10/52",
+  "conviction_date": "21 Mar 1836",
+  "offence_date": "13 Mar 1836",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 13,
+  "offence_year": 1836,
+  "offence_time": "between 10.30am and 12 noon",
+  "charge_description": "Summary conviction of John Frank of Whitby innkeeper for opening his house during the hours of divine service in the parish church",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction: John Frank of Whitby,21 Mar 1836,Summary conviction of John Frank of Whitby innkeeper for opening his house during the hours of divine service in the parish church between 10.30am and 12 noonOffence committed on Sunday 13 March 1836",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q2%2f10%2f52&pos=11002",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Frank",
+      "occupation": "innkeeper",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Opening house during divine service",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

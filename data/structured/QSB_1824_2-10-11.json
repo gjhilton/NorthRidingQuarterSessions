@@ -1,0 +1,88 @@
+{
+  "reference_number": "QSB 1824 2/10/11",
+  "conviction_date": "3 Feb 1824",
+  "offence_date": "1 February 1824",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 1,
+  "offence_year": 1824,
+  "offence_time": null,
+  "charge_description": "Playing marbles on a Sunday",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of George Wright, John Dring, Thomas Easton, George Hardy, Daniel Johnson and John Turnbull for playing marbles on a Sunday. Offence committed at the dock end in the parish of Whitby on 1 February 1824",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q2%2f10%2f11&pos=9185",
+  "defendants": [
+    {
+      "first_name": "George",
+      "last_name": "Wright",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Dring",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "Thomas",
+      "last_name": "Easton",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "George",
+      "last_name": "Hardy",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "Daniel",
+      "last_name": "Johnson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Turnbull",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "dock end",
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

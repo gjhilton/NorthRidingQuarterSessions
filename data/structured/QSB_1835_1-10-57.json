@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1835 1/10/57",
+  "conviction_date": "6 Nov 1834",
+  "offence_date": "5 October 1834",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 5,
+  "offence_year": 1834,
+  "offence_time": null,
+  "charge_description": "Hawking braces without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Patrick Machannow late of the township of Whitby for hawking braces without a licence; on the information of Robert Kirby of the township of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q1%2f10%2f57&pos=10790",
+  "defendants": [
+    {
+      "first_name": "Patrick",
+      "last_name": "Machannow",
+      "occupation": null,
+      "other_details": "late of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "Informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Egton",
+  "offence_street": null,
+  "offence_type": "Hawking without a licence",
+  "court": {
+    "location_town": "Egton"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1820 1/10/2",
+  "conviction_date": "21 Dec 1819",
+  "offence_date": "4 October 1819",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 4,
+  "offence_year": 1819,
+  "offence_time": null,
+  "charge_description": "using a gun to kill game",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of James Lovatt of Whitby gunsmith for using a gun to kill game",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1820-Q1%2f10%2f2&pos=9973",
+  "defendants": [
+    {
+      "first_name": "James",
+      "last_name": "Lovatt",
+      "occupation": "gunsmith",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Guisborough",
+  "offence_street": "",
+  "offence_type": "using a gun to kill game",
+  "court": {
+    "location_town": "Guisborough"
+  }
+}

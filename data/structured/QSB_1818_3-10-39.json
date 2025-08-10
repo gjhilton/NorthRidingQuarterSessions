@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 3/10/39",
+  "conviction_date": "27 Jun 1818",
+  "offence_date": "18 June 1818",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 18,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "having in her possession a one-stone weight and one three-and-a-half-pound weight, both of which were deficient in weight",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Jane Watson of the township of Fylingdales for having in her possession a one-stone weight and one three-and-a-half-pound weight, both of which were deficient in weight",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q3%2f10%2f39&pos=10232",
+  "defendants": [
+    {
+      "first_name": "Jane",
+      "last_name": "Watson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Fylingdales",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Fylingdales",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby Strand"
+  }
+}

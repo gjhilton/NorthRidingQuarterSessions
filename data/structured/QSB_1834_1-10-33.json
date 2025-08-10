@@ -1,0 +1,65 @@
+{
+  "reference_number": "QSB 1834 1/10/33",
+  "conviction_date": "2 Nov 1833",
+  "offence_date": "1 November 1833",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 1,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "Assaulting Jeffrey Holmes of the township of Ruswarp gentleman",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Hannah Cail wife of Richard Cail of Whitby currier, and Hannah Cail and Helina Cail, for assaulting Jeffrey Holmes of the township of Ruswarp gentleman. Offence committed at the township of Ruswarp on Saturday 1 November 1833. Case heard at Whitby in the division of Whitby Strand.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q1%2f10%2f33&pos=11168",
+  "defendants": [
+    {
+      "first_name": "Hannah",
+      "last_name": "Cail",
+      "occupation": "Wife of Richard Cail of Whitby currier",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    },
+    {
+      "first_name": "Hannah",
+      "last_name": "Cail",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    },
+    {
+      "first_name": "Helina",
+      "last_name": "Cail",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Jeffrey",
+      "last_name": "Holmes",
+      "occupation": "Gentleman",
+      "other_details": "of the township of Ruswarp",
+      "role": "Assault victim",
+      "town": "Ruswarp",
+      "street": null
+    }
+  ],
+  "offence_town": "Ruswarp",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

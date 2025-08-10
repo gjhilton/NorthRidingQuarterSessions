@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1835 2/10/41",
+  "conviction_date": "10 Mar 1835",
+  "offence_date": "8 Mar 1835",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 8,
+  "offence_year": 1835,
+  "offence_time": "morning",
+  "charge_description": "assaulting Mary Plowman of Whitby spinster",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Plowman of Whitby the township of Whitby mariner for assaulting Mary Plowman of Whitby spinster",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q2%2f10%2f41&pos=10531",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Plowman",
+      "occupation": "mariner",
+      "other_details": "of Whitby",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Mary",
+      "last_name": "Plowman",
+      "occupation": "spinster",
+      "other_details": "of Whitby",
+      "role": "victim",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

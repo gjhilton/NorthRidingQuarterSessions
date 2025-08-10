@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 1/10/30",
+  "conviction_date": "7 Nov 1835",
+  "offence_date": "5 November 1835",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 5,
+  "offence_year": 1835,
+  "offence_time": null,
+  "charge_description": "Attempting to gather alms by exposing wounds or deformities",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Hayes for attempting to gather alms by exposing wounds or deformities; on the oath of Robert Hunt of the township of Whitby special constable",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q1%2f10%2f30&pos=10955",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Hayes",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Hunt",
+      "occupation": "special constable",
+      "other_details": null,
+      "role": "Complainant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Egton",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1824 3/10/16",
+  "conviction_date": "6 Jul 1824",
+  "offence_date": "5 July 1824",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 5,
+  "offence_year": 1824,
+  "offence_time": null,
+  "charge_description": "having in his mill a four-stone weight that was three ounces short, another four-stone weight that was an ounce and a half short, and a half-stone weight that was six drams short",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Anderson of the township of Ruswarp for having in his mill a four-stone weight that was three ounces short, another four-stone weight that was an ounce and a half short, and a half-stone weight that was six drams shortOffence committed at Ruswarp on 5 July 1824Whitby Strand Petty Sessional division- case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q3%2f10%2f16&pos=10034",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Anderson",
+      "occupation": null,
+      "other_details": "of the township of Ruswarp",
+      "prior_convictions": null,
+      "town": "Ruswarp",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Ruswarp",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

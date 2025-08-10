@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 2/10/51",
+  "conviction_date": "2/10/51",
+  "offence_date": "9 Mar 1836",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 9,
+  "offence_year": 1836,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Elizabeth Rafferty late of Cumberland hawker for selling cotton lace or edging without a licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction: Elizabeth Rafferty late of Cumberland,9 Mar 1836,Summary conviction of Elizabeth Rafferty late of Cumberland hawker for selling cotton lace or edging without a licence; on the information of Robert Kirby of Whitby sub-distributor of stampsOffence committed at Whitby on 9 March 1836Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q2%2f10%2f51&pos=11001",
+  "defendants": [
+    {
+      "first_name": "Elizabeth",
+      "last_name": "Rafferty",
+      "occupation": "hawker",
+      "other_details": "late of Cumberland",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "selling cotton lace or edging without a licence",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 2/10/47",
+  "conviction_date": "19 Jan 1836",
+  "offence_date": "13 January 1836",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 13,
+  "offence_year": 1836,
+  "offence_time": "daytime",
+  "charge_description": "Trespassing in search or pursuit of game on lands belonging to Edmund Turton esquire",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Havelock of the township of Ruswarp esquire for trespassing in the daytime in search or pursuit of game on lands belonging to Edmund Turton esquire",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q2%2f10%2f47&pos=10997",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Havelock",
+      "occupation": "esquire",
+      "other_details": "of the township of Ruswarp",
+      "prior_convictions": "",
+      "town": "Ruswarp",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Edmund",
+      "last_name": "Turton",
+      "occupation": "esquire",
+      "other_details": "",
+      "role": "landowner",
+      "town": "",
+      "street": ""
+    }
+  ],
+  "offence_town": "Hawsker cum Stainsacre",
+  "offence_street": "Rigg Hill",
+  "offence_type": "Trespassing in search or pursuit of game",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

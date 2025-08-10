@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1833 3/10/17",
+  "conviction_date": "25 May 1833",
+  "offence_date": "24 May 1833",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 24,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "Selling unstamped medicine without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Edward Morris hawker for selling unstamped medicine without a licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1833-Q3%2f10%2f17&pos=10146",
+  "defendants": [
+    {
+      "first_name": "Edward",
+      "last_name": "Morris",
+      "occupation": "hawker",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "Informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1834 2/10/30",
+  "conviction_date": "15 Feb 1834",
+  "offence_date": "8 Feb 1834",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 8,
+  "offence_year": 1834,
+  "offence_time": "between 10 p.m. and 4 a.m.",
+  "charge_description": "selling beer between 10 p.m. and 4 a.m.",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Taylor Clemett of Lythe retailer of beer for selling beer between 10 p.m. and 4 a.m.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q2%2f10%2f30&pos=9923",
+  "defendants": [
+    {
+      "first_name": "Taylor",
+      "last_name": "Clemett",
+      "occupation": "retailer of beer",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Lythe",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Lythe",
+  "offence_street": "",
+  "offence_type": "selling beer between 10 p.m. and 4 a.m.",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

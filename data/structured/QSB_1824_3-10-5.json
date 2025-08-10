@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1824 3/10/5",
+  "conviction_date": "12 Jun 1824",
+  "offence_date": "10 June 1824",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 10,
+  "offence_year": 1824,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Ann Devers for vagrancy and not giving a good account of herself",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Ann Devers for vagrancy and not giving a good account of herself",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q3%2f10%2f5&pos=10029",
+  "defendants": [
+    {
+      "first_name": "Ann",
+      "last_name": "Devers",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "vagrancy",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

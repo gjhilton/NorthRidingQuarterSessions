@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1822 2/10/23",
+  "conviction_date": "2/10/23",
+  "offence_date": "8 Apr 1822",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 8,
+  "offence_year": 1822,
+  "offence_time": null,
+  "charge_description": "having false weights in his possession, namely a one-pound weight, a half-pound weight, a quarter-pound weight, a two-ounce weight, and a one-ounce weight",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Vickers of the township of Whitby for having false weights in his possession, namely a one-pound weight, a half-pound weight, a quarter-pound weight, a two-ounce weight, and a one-ounce weightOffence committed at Whitby on 28 March 1822Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q2%2f10%2f23&pos=4907",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Vickers",
+      "occupation": null,
+      "other_details": "of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

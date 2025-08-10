@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1822 2/10/22",
+  "conviction_date": "8 Apr 1822",
+  "offence_date": "28 March 1822",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 28,
+  "offence_year": 1822,
+  "offence_time": null,
+  "charge_description": "having false weights in his possession, namely a half-pound weight, a quarter-pound weight, a two-ounce weight, two one-ounce weights, a half-ounce weight, and two quarter-ounce weights",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Benjamin Day for having false weights in his possession, namely a half-pound weight, a quarter-pound weight, a two-ounce weight, two one-ounce weights, a half-ounce weight, and two quarter-ounce weightsOffence committed at Whitby on 28 March 1822Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q2%2f10%2f22&pos=4906",
+  "defendants": [
+    {
+      "first_name": "Benjamin",
+      "last_name": "Day",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

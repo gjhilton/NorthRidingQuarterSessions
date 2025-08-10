@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1835 1/10/61",
+  "conviction_date": "9 Dec 1834",
+  "offence_date": "8 December 1834",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 8,
+  "offence_year": 1834,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Thomas Carter for begging",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction: Thomas Carter,9 Dec 1834,Summary conviction of Thomas Carter for beggingOffence committed at the parish of Whitby on 8 December 1834",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q1%2f10%2f61&pos=10792",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Carter",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "begging",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "reference_number": "QSB 1822 2/10/6",
+  "conviction_date": "2/10/6",
+  "offence_date": "9 Jan 1822",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 9,
+  "offence_year": 1822,
+  "offence_time": null,
+  "charge_description": "using dogs and guns to kill game",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Francis Wrightson labourer and Isaac Harrison labourer, both of the parish of Sneaton, for using dogs and guns to kill game. Offence committed at the parish of Sneaton on 26 December 1821. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q2%2f10%2f6&pos=4899",
+  "defendants": [
+    {
+      "first_name": "Francis",
+      "last_name": "Wrightson",
+      "occupation": "labourer",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Sneaton",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Isaac",
+      "last_name": "Harrison",
+      "occupation": "labourer",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Sneaton",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Sneaton",
+  "offence_street": "",
+  "offence_type": "using dogs and guns to kill game",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

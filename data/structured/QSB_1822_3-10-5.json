@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1822 3/10/5",
+  "conviction_date": "17 Jun 1822",
+  "offence_date": "15 Jun 1822",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 15,
+  "offence_year": 1822,
+  "offence_time": "midnight",
+  "charge_description": "breaking three squares of glass value 5s in the window of Elen Stirling's house",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of David Watson of Whitby hatter for breaking three squares of glass value 5s in the window of Elen Stirling's house",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q3%2f10%2f5&pos=4990",
+  "defendants": [
+    {
+      "first_name": "David",
+      "last_name": "Watson",
+      "occupation": "hatter",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Elen",
+      "last_name": "Stirling",
+      "occupation": "",
+      "other_details": "",
+      "role": "house owner",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "breaking",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

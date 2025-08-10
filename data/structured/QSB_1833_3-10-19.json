@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1833 3/10/19",
+  "conviction_date": "4 Jun 1833",
+  "offence_date": "4 June 1833",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 4,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "selling watch seals, spectacles and printing types without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Edward Jacobs hawker for selling watch seals, spectacles and printing types without a licence; on the information of Robert Kirby of Whitby sub-distributor of stampsOffence committed at Whitby on 4 June 1833Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1833-Q3%2f10%2f19&pos=10148",
+  "defendants": [
+    {
+      "first_name": "Edward",
+      "last_name": "Jacobs",
+      "occupation": "hawker",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1824 3/10/15",
+  "conviction_date": "3 Jul 1824",
+  "offence_date": "25 June 1824",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 25,
+  "offence_year": 1824,
+  "offence_time": null,
+  "charge_description": "having a one-stone weight that was one and a half ounces short on his stall in the market place",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Pickering of Saltersgate butcher for having a one-stone weight that was one and a half ounces short on his stall in the market place",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q3%2f10%2f15&pos=10033",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Pickering",
+      "occupation": "butcher",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Saltersgate",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

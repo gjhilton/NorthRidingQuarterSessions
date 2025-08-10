@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1834 2/10/32",
+  "conviction_date": "15 Feb 1834",
+  "offence_date": "14 February 1834",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 14,
+  "offence_year": 1834,
+  "offence_time": null,
+  "charge_description": "selling tea trays without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Hodgson late of the township of Whitby hawker for selling tea trays without a licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q2%2f10%2f32&pos=9925",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Hodgson",
+      "occupation": "hawker",
+      "other_details": "late of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Fylingdales",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "reference_number": "QSB 1822 2/10/2",
+  "conviction_date": "11 Feb 1822",
+  "offence_date": "February 1822",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": 1822,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Mary Egins, Peter Kelley, James Coil, John Camble and John Thompson for vagrancy",
+  "sentencing": "Case heard at Whitby",
+  "raw_record": "Summary conviction of Mary Egins, Peter Kelley, James Coil, John Camble and John Thompson for vagrancy; on the information of John Morley constable of the township of WhitbyOffence committed at the township of Whitby in February 1822Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q2%2f10%2f2&pos=4898",
+  "defendants": [
+    {
+      "first_name": "Mary",
+      "last_name": "Egins",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "female"
+    },
+    {
+      "first_name": "Peter",
+      "last_name": "Kelley",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "James",
+      "last_name": "Coil",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Camble",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Thompson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "John",
+      "last_name": "Morley",
+      "occupation": "constable",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "vagrancy",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 4/10/40",
+  "conviction_date": "2 Sep 1818",
+  "offence_date": "29 August 1818",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 29,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "using one seven-pound defective weight and one two-pound defective weight",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Hansill of the township of Danby for using one seven-pound defective weight and one two-pound defective weight",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q4%2f10%2f40&pos=10453",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Hansill",
+      "occupation": null,
+      "other_details": "of Danby",
+      "prior_convictions": null,
+      "town": "Danby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby at a Petty Sessions for the division of Whitby Strand"
+  }
+}

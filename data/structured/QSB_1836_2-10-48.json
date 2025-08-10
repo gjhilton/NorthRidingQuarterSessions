@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 2/10/48",
+  "conviction_date": "13 Feb 1836",
+  "offence_date": "16 January 1836",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 16,
+  "offence_year": 1836,
+  "offence_time": null,
+  "charge_description": "Using a cart on the public highway without having his name and place of abode painted on it",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Handysides of the township of Egton farmer for using a cart on the public highway without having his name and place of abode painted on it; on the information of William Wilkinson",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q2%2f10%2f48&pos=10998",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Handysides",
+      "occupation": "farmer",
+      "other_details": "of the township of Egton",
+      "prior_convictions": null,
+      "town": "Egton",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Wilkinson",
+      "occupation": null,
+      "other_details": null,
+      "role": "Informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "reference_number": "QSB 1824 3/10/4",
+  "conviction_date": "12 Jun 1824",
+  "offence_date": "10 June 1824",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 10,
+  "offence_year": 1824,
+  "offence_time": null,
+  "charge_description": "Vagrancy and acting as pedlars without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Neal Devers, Hugh Gallorhu and William Stevenson for vagrancy and acting as pedlars without a licenceOffence committed at the township of Whitby on 10 June 1824",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q3%2f10%2f4&pos=10028",
+  "defendants": [
+    {
+      "first_name": "Neal",
+      "last_name": "Devers",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Hugh",
+      "last_name": "Gallorhu",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "William",
+      "last_name": "Stevenson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

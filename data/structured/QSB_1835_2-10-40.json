@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1835 2/10/40",
+  "conviction_date": "6 Mar 1835",
+  "offence_date": "5 March 1835",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 5,
+  "offence_year": 1835,
+  "offence_time": null,
+  "charge_description": "selling spectacles from house to house without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Cunningham late of Kirby Moorside for selling spectacles from house to house without a licence; on the information of Robert Kirby of the township of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q2%2f10%2f40&pos=10530",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Cunningham",
+      "occupation": null,
+      "other_details": "late of Kirby Moorside",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Sneaton",
+  "offence_street": null,
+  "offence_type": "selling spectacles without a licence",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

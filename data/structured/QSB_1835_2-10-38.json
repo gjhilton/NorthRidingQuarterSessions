@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1835 2/10/38",
+  "conviction_date": "7 Feb 1835",
+  "offence_date": "1 Feb 1835",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 1,
+  "offence_year": 1835,
+  "offence_time": "between 10.30 a.m. and 12 o'clock",
+  "charge_description": "keeping his house open during the hours of divine service",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Nathaniel Gardiner of Whitby innkeeper for keeping his house open during the hours of divine service between 10.30 a.m. and 12 o'clock",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q2%2f10%2f38&pos=10528",
+  "defendants": [
+    {
+      "first_name": "Nathaniel",
+      "last_name": "Gardiner",
+      "occupation": "innkeeper",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

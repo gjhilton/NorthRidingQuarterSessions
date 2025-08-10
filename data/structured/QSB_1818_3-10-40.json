@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 3/10/40",
+  "conviction_date": "27 Jun 1818",
+  "offence_date": "18 June 1818",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 18,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "Having in possession deficient weights",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Rebecca Harrison of the township of Fylingdales having in her possession a one-stone weight, a seven-pound weight, and a three-and-a-half-pound weight, all of which were deficient in weight",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q3%2f10%2f40&pos=10233",
+  "defendants": [
+    {
+      "first_name": "Rebecca",
+      "last_name": "Harrison",
+      "occupation": null,
+      "other_details": "of the township of Fylingdales",
+      "prior_convictions": null,
+      "town": "Fylingdales",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Fylingdales",
+  "offence_street": null,
+  "offence_type": "Possession of deficient weights",
+  "court": {
+    "location_town": "Whitby Strand"
+  }
+}

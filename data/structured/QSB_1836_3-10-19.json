@@ -1,0 +1,54 @@
+{
+  "reference_number": "QSB 1836 3/10/19",
+  "conviction_date": "3/10/1836",
+  "offence_date": "16 Apr 1836",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 16,
+  "offence_year": 1836,
+  "offence_time": null,
+  "charge_description": "Refusing to take on the office of surveyors of the highways of the township of Fylingdales, or to provide deputies, after they had been elected",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Watson and Matthew Fawcett, both of the township of Fylingdales farmers, for refusing to take on the office of surveyors of the highways of the township of Fylingdales, or to provide deputies, after they had been elected; on the information of William Gray of the township of Fylingdales in the parish of Whitby farmerCase heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q3%2f10%2f19&pos=11222",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Watson",
+      "occupation": "farmer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Fylingdales",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Matthew",
+      "last_name": "Fawcett",
+      "occupation": "farmer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Fylingdales",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Gray",
+      "occupation": "farmer",
+      "other_details": null,
+      "role": "informant",
+      "town": "Fylingdales",
+      "street": null
+    }
+  ],
+  "offence_town": "Fylingdales",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

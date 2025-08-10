@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1834 1/10/39",
+  "conviction_date": "1/10/39",
+  "offence_date": "26 Dec 1833",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 26,
+  "offence_year": 1833,
+  "offence_time": "",
+  "charge_description": "Hawking unstamped almanacs",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Reuben Raybold of Whitby for hawking a number of almanacs that were unstamped; on the information of Robert Hunt of the township of Whitby special constable",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q1%2f10%2f39&pos=11174",
+  "defendants": [
+    {
+      "first_name": "Reuben",
+      "last_name": "Raybold",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Hunt",
+      "occupation": "special constable",
+      "other_details": "",
+      "role": "Informant",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

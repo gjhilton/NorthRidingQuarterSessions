@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1835 4/10/21",
+  "conviction_date": "4/10/21",
+  "offence_date": "19 Sep 1835",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 19,
+  "offence_year": 1835,
+  "offence_time": null,
+  "charge_description": "selling spoons, razors and braces without having a hawker's licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Collins late of Cumberland labourer for selling spoons, razors and braces without having a hawker's licence; on the information of Robert Kirby of Whitby sub-distributor of stampsOffence committed at the township of Whitby on 19 September 1835Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q4%2f10%2f21&pos=10738",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Collins",
+      "occupation": "labourer",
+      "other_details": "late of Cumberland",
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

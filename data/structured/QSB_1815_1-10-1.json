@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1815 1/10/1",
+  "conviction_date": "13 Aug 1814",
+  "offence_date": "13 Aug 1814",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 13,
+  "offence_year": 1814,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Harris Lyon for trading as a hawker without a certificate, selling six silver teaspoons to William Bell of the parish of Whitby excise officer; on the information of John Meek",
+  "sentencing": "Offence committed at Whitby. With bill of prosecution expenses dated 24 September 1814 and an undated note relating to Lyon's fine.",
+  "raw_record": "Summary conviction of Harris Lyon for trading as a hawker without a certificate, selling six silver teaspoons to William Bell of the parish of Whitby excise officer; on the information of John Meek. Offence committed at Whitby. With bill of prosecution expenses dated 24 September 1814 and an undated note relating to Lyon's fine.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1815-Q1%2f10%2f1&pos=7593",
+  "defendants": [
+    {
+      "first_name": "Harris",
+      "last_name": "Lyon",
+      "occupation": "hawker",
+      "other_details": "trading without a certificate, selling six silver teaspoons",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Bell",
+      "occupation": "excise officer",
+      "other_details": null,
+      "role": "victim",
+      "town": "Whitby",
+      "street": null
+    },
+    {
+      "first_name": "John",
+      "last_name": "Meek",
+      "occupation": null,
+      "other_details": null,
+      "role": "informant",
+      "town": null,
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "trading without a certificate",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1834 4/10/40",
+  "conviction_date": "25 September 1834",
+  "offence_date": "21 September 1834",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 21,
+  "offence_year": 1834,
+  "offence_time": null,
+  "charge_description": "Assaulting Ann Holliday",
+  "sentencing": "\u00a31 fine",
+  "raw_record": "Summary conviction dated 25 September 1834 of Johnson Whitby of the township of Scarborough labourer for assaulting Ann Holliday of the township of Scarborough widow. Offence committed at the township of Newby on 21 September 1834. Case heard at Scarborough. With receipt dated 2 October 1834 for a \u00a31 fine paid by Johnson Whitby to John Smallwood one of the overseers of the poor of the township of Newby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q4%2f10%2f40&pos=10253",
+  "defendants": [
+    {
+      "first_name": "Johnson",
+      "last_name": "Whitby",
+      "occupation": "labourer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Scarborough",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Ann",
+      "last_name": "Holliday",
+      "occupation": "widow",
+      "other_details": null,
+      "role": "victim",
+      "town": "Scarborough",
+      "street": null
+    },
+    {
+      "first_name": "John",
+      "last_name": "Smallwood",
+      "occupation": "overseer of the poor",
+      "other_details": null,
+      "role": "recipient of fine",
+      "town": "Newby",
+      "street": null
+    }
+  ],
+  "offence_town": "Newby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Scarborough"
+  }
+}

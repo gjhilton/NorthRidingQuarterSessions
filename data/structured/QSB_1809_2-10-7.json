@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/7",
+  "conviction_date": "12 Jan 1809",
+  "offence_date": "21 December 1808",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 21,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "having in his possession one twenty-pound weight which was short by three ounces and two drams, one fourteen-pound weight which was short by one ounce and five drams, one fourteen-pound weight which was short by 11 drams and a two-pound weight which was short by six drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Dale of Whitby grocer for having in his possession one twenty-pound weight which was short by three ounces and two drams, one fourteen-pound weight which was short by one ounce and five drams, one fourteen-pound weight which was short by 11 drams and a two-pound weight which was short by six dramsOffence committed at Whitby on 21 December 1808Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f7&pos=1399",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Dale",
+      "occupation": "grocer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

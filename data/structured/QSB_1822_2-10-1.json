@@ -1,0 +1,98 @@
+{
+  "reference_number": "QSB 1822 2/10/1",
+  "conviction_date": "29 Jan 1822",
+  "offence_date": "26 January 1822",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 26,
+  "offence_year": 1822,
+  "offence_time": null,
+  "charge_description": "vagrancy",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of James Benson, John Barker, James Robinson and Margaret his wife, and Joseph Grotes and Mary his wife, for vagrancy; on the information of John Morley constable of the township of Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q2%2f10%2f1&pos=4897",
+  "defendants": [
+    {
+      "first_name": "James",
+      "last_name": "Benson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Barker",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "James",
+      "last_name": "Robinson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Margaret",
+      "last_name": "Robinson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    },
+    {
+      "first_name": "Joseph",
+      "last_name": "Grotes",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Mary",
+      "last_name": "Grotes",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "John",
+      "last_name": "Morley",
+      "occupation": "constable",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

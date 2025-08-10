@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1822 2/10/7",
+  "conviction_date": "19 Jan 1822",
+  "offence_date": "15 January 1822",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 15,
+  "offence_year": 1822,
+  "offence_time": null,
+  "charge_description": "having four pheasants for sale which he was not authorised to have or sell",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Taylor of the township of Loftus labourer for having four pheasants for sale which he was not authorised to have or sell",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1822-Q2%2f10%2f7&pos=4900",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Taylor",
+      "occupation": "labourer",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Loftus",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

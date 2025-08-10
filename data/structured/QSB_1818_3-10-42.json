@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 3/10/42",
+  "conviction_date": "27 Jun 1818",
+  "offence_date": "18 June 1818",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 18,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "having in his possession one two-pound weight and two half-ounce weights, all of which were deficient in weight",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Newton of the township of Fylingdales for having in his possession one two-pound weight and two half-ounce weights, all of which were deficient in weight. Offence committed at Fylingdales on 18 June 1818. Case heard at a Petty Sessions for the division of Whitby Strand.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q3%2f10%2f42&pos=10235",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Newton",
+      "occupation": null,
+      "other_details": "of the township of Fylingdales",
+      "prior_convictions": null,
+      "town": "Fylingdales",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Fylingdales",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby Strand"
+  }
+}

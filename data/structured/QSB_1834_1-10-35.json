@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1834 1/10/35",
+  "conviction_date": "1/10/35",
+  "offence_date": "9 Nov 1833",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 1,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "using two greyhounds to kill game on the lands of Thomas Peirson and Job Allison",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Stephenson of Whitby labourer for using two greyhounds to kill game on the lands of Thomas Peirson and Job Allison. Offence committed at the township of Sneaton on Friday 1 November 1833. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q1%2f10%2f35&pos=11170",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Stephenson",
+      "occupation": "labourer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Sneaton",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

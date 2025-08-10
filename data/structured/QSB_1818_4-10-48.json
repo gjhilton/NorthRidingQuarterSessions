@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 4/10/48",
+  "conviction_date": "4/10/48",
+  "offence_date": "26 Sep 1818",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 26,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "using an unequal balance or steelyard",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Michael Trowsdale of the township of Ellerby for using an unequal balance or steelyard",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q4%2f10%2f48&pos=10461",
+  "defendants": [
+    {
+      "first_name": "Michael",
+      "last_name": "Trowsdale",
+      "occupation": null,
+      "other_details": "of the township of Ellerby",
+      "prior_convictions": null,
+      "town": "Ellerby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby at a Petty Sessions for the division of Whitby Strand"
+  }
+}

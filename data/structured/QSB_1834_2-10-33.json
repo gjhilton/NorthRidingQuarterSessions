@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1834 2/10/33",
+  "conviction_date": "3 Mar 1834",
+  "offence_date": "1 March 1834",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 1,
+  "offence_year": 1834,
+  "offence_time": null,
+  "charge_description": "selling spectacles without a licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Hobson of Whitby hawker and pedlar for selling spectacles without a licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q2%2f10%2f33&pos=9926",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Hobson",
+      "occupation": "hawker and pedlar",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "selling spectacles without a licence",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 4/10/44",
+  "conviction_date": "5 Sep 1818",
+  "offence_date": "29 August 1818",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 29,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "Using defective weights",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Potts of the township of Whitby for using one three-and-a-half-pound weight, a one-pound weight, a half-pound weight, and a half-ounce weight that were all defective",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q4%2f10%2f44&pos=10457",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Potts",
+      "occupation": null,
+      "other_details": "of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Using defective weights",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

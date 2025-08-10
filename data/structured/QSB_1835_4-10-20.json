@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1835 4/10/20",
+  "conviction_date": "15 Sep 1835",
+  "offence_date": "10 September 1835",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 10,
+  "offence_year": 1835,
+  "offence_time": null,
+  "charge_description": "selling needles without having a hawker's licence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Millighan for selling needles without having a hawker's licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q4%2f10%2f20&pos=10737",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Millighan",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": "sub-distributor of stamps",
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Scarborough",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

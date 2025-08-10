@@ -1,0 +1,45 @@
+{
+  "reference_number": "QSB 1824 2/10/10",
+  "conviction_date": "25 Feb 1824",
+  "offence_date": "18 February 1824",
+  "offence_day_of_week": "Unknown",
+  "offence_day_of_month": 18,
+  "offence_year": 1824,
+  "offence_time": "Unknown",
+  "charge_description": "Obtaining money and clothes from Lars Kiersta of Whitby tailor by falsely pretending to be a shipwrecked sailor",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Caral otherwise Charles Anderson for obtaining money and clothes from Lars Kiersta of Whitby tailor by falsely pretending to be a shipwrecked sailor",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q2%2f10%2f10&pos=9184",
+  "defendants": [
+    {
+      "first_name": "Caral",
+      "last_name": "Anderson",
+      "occupation": "Unknown",
+      "other_details": "otherwise Charles",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [
+        "Charles"
+      ],
+      "sex": "Male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Lars",
+      "last_name": "Kiersta",
+      "occupation": "Tailor",
+      "other_details": "",
+      "role": "Victim",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Fraud",
+  "court": {
+    "location_town": "Unknown"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1836 1/10/25",
+  "conviction_date": "28 Oct 1835",
+  "offence_date": "27 October 1835",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 27,
+  "offence_year": 1835,
+  "offence_time": null,
+  "charge_description": "Attempting to get charitable contributions by falsely pretending to be a shipwrecked sailor",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Robison for attempting to get charitable contributions by falsely pretending to be a shipwrecked sailor; on the oath of Mary Pawley wife of Richard Pawley of Whitby officer in the Preventive Service",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q1%2f10%2f25&pos=10951",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Robison",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Mary",
+      "last_name": "Pawley",
+      "occupation": "wife of Richard Pawley of Whitby officer in the Preventive Service",
+      "other_details": null,
+      "role": "witness",
+      "town": "Whitby",
+      "street": null
+    },
+    {
+      "first_name": "Richard",
+      "last_name": "Pawley",
+      "occupation": "officer in the Preventive Service",
+      "other_details": null,
+      "role": "witness",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Fraud",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1835 1/10/54",
+  "conviction_date": "28 Oct 1834",
+  "offence_date": "12 October 1834",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 12,
+  "offence_year": 1834,
+  "offence_time": "between 10.30 and 12 o'clock",
+  "charge_description": "Opening premises during divine service",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Richard Sweeting of Whitby innkeeper for opening his premises between 10.30 and 12 o'clock on a Sunday morning during the time of divine service in church. Offence committed at the parish of Whitby on 12 October 1834. Endorsed '8 October 1834'.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q1%2f10%2f54&pos=10787",
+  "defendants": [
+    {
+      "first_name": "Richard",
+      "last_name": "Sweeting",
+      "occupation": "Innkeeper",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Opening premises during divine service",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

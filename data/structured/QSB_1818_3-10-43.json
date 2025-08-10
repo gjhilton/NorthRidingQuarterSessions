@@ -1,0 +1,61 @@
+{
+  "reference_number": "QSB 1818 3/10/43",
+  "conviction_date": "14 May 1818",
+  "offence_date": "14-18 May 1818",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "Distributing handbills advertising a sale by auction without including all required information",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction dated 14 May 1818 of John Gardner of Hexham for distributing handbills advertising a sale by auction, at the house of William Harland at the sign of the Butchers Arms near the Fish Market at Whitby, of broad and narrow cloths, ladies' habits and pelisse cloths of superior quality and fashionable colours, kerseymeres, corduroys and muslins. The words \"Licensed Hawker\" etc, which are written on his licence, had not been inserted in the advertisements. Information given by Henderson Skaife and John Bulmer. Case heard at Whitby. Information dated 18 May 1818 of David Hartley of Whitby pawnbroker, witness in the case against John Gardner",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q3%2f10%2f43&pos=10236",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Gardner",
+      "occupation": null,
+      "other_details": "of Hexham",
+      "prior_convictions": null,
+      "town": "Hexham",
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Henderson",
+      "last_name": "Skaife",
+      "occupation": null,
+      "other_details": null,
+      "role": "Informant",
+      "town": "Whitby",
+      "street": null
+    },
+    {
+      "first_name": "John",
+      "last_name": "Bulmer",
+      "occupation": null,
+      "other_details": null,
+      "role": "Informant",
+      "town": null,
+      "street": null
+    },
+    {
+      "first_name": "David",
+      "last_name": "Hartley",
+      "occupation": "pawnbroker",
+      "other_details": "witness in the case against John Gardner",
+      "role": "Informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "near the Fish Market",
+  "offence_type": "Advertising violation",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

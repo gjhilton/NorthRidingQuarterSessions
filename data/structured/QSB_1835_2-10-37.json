@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1835 2/10/37",
+  "conviction_date": "3 Feb 1835",
+  "offence_date": "1 February 1835",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 1,
+  "offence_year": 1835,
+  "offence_time": "morning",
+  "charge_description": "Assaulting Robert Howard, apprentice to Thomas Yeoman of Whitby druggist",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Campion of the township of Ruswarp mariner for assaulting Robert Howard apprentice to Thomas Yeoman of Whitby druggist",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q2%2f10%2f37&pos=10527",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Campion",
+      "occupation": "mariner",
+      "other_details": "of the township of Ruswarp",
+      "prior_convictions": "",
+      "town": "Ruswarp",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Howard",
+      "occupation": "apprentice to Thomas Yeoman of Whitby druggist",
+      "other_details": "",
+      "role": "victim",
+      "town": "Whitby",
+      "street": ""
+    },
+    {
+      "first_name": "Thomas",
+      "last_name": "Yeoman",
+      "occupation": "druggist",
+      "other_details": "",
+      "role": "employer",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -175,5 +175,5 @@ def process_all_files(max_files: Optional[int] = None):
 
 
 if __name__ == "__main__":
-    process_all_files(max_files=20)
+    process_all_files(max_files=100)
     #process_single_file("QSB_1889_4-10-11-14.txt")

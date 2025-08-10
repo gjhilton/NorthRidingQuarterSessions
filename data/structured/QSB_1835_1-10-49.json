@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1835 1/10/49",
+  "conviction_date": "1/10/49",
+  "offence_date": "19 October 1834",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 19,
+  "offence_year": 1834,
+  "offence_time": "between 10.30 and 12 o'clock",
+  "charge_description": "Opening premises during divine service",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Henry Atley of Whitby innkeeper for opening his premises between 10.30 and 12 o'clock on a Sunday morning during the time of divine service in church. Offence committed at the parish of Whitby on 19 October 1834. Endorsed '8 October 1834'.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q1%2f10%2f49&pos=10782",
+  "defendants": [
+    {
+      "first_name": "Henry",
+      "last_name": "Atley",
+      "occupation": "Innkeeper",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

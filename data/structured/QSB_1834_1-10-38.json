@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1834 1/10/38",
+  "conviction_date": "1/10/38",
+  "offence_date": "30 Nov 1833",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 30,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "Disobeying instructions from harbour master and running a brig under sail through a temporary wooden bridge",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Douglass of Whitby pilot for disobeying the instruction he had received from George Willis harbour master of the port of Whitby, by running a brig called the \"Mary of Newcastle\" under sail through the temporary wooden bridge erected across Whitby harbour. Offence committed on 29 November 1833.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q1%2f10%2f38&pos=11173",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Douglass",
+      "occupation": "Pilot",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "George",
+      "last_name": "Willis",
+      "occupation": "Harbour Master",
+      "other_details": null,
+      "role": "Complainant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Disobeying instructions from harbour master and running a brig under sail through a temporary wooden bridge",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

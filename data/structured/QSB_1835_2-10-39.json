@@ -1,0 +1,105 @@
+{
+  "reference_number": "QSB 1835 2/10/39",
+  "conviction_date": "28 Feb 1835",
+  "offence_date": "22 Feb 1835",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 22,
+  "offence_year": 1835,
+  "offence_time": "night",
+  "charge_description": "Assaulting Robert Stevenson, Jonathan Harrison and Margaret Short",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Dixon, Thomas Graham, Joseph Gath, Thomas Storr and William Storr, all of the township of Whitby, for assaulting Robert Stevenson, Jonathan Harrison and Margaret Short, all of the township of Hawsker cum Stainsacre. Offence committed at the township of Whitby on the night of Sunday 22 February 1835. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q2%2f10%2f39&pos=10529",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Dixon",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Thomas",
+      "last_name": "Graham",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Joseph",
+      "last_name": "Gath",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "Thomas",
+      "last_name": "Storr",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "William",
+      "last_name": "Storr",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Stevenson",
+      "occupation": "",
+      "other_details": "",
+      "role": "Assaulted",
+      "town": "Hawsker cum Stainsacre",
+      "street": ""
+    },
+    {
+      "first_name": "Jonathan",
+      "last_name": "Harrison",
+      "occupation": "",
+      "other_details": "",
+      "role": "Assaulted",
+      "town": "Hawsker cum Stainsacre",
+      "street": ""
+    },
+    {
+      "first_name": "Margaret",
+      "last_name": "Short",
+      "occupation": "",
+      "other_details": "",
+      "role": "Assaulted",
+      "town": "Hawsker cum Stainsacre",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

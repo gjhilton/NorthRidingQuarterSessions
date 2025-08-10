@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 3/10/37",
+  "conviction_date": "13 May 1818",
+  "offence_date": "26 April 1818",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 26,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "Having deficient weights in their custody",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Messrs Holt and Company of the township of Whitby for having in their custody 13 x 56-pound weights, five 28-pound weights, one 14-pound weight, two seven-pound weights, and one three-and-a-half-pound weight, all of which were deficient in weight. Offence committed at Whitby on 26 April 1818. Case heard at a Petty Sessions for the division of Whitby Strand.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q3%2f10%2f37&pos=10230",
+  "defendants": [
+    {
+      "first_name": "Messrs",
+      "last_name": "Holt and Company",
+      "occupation": null,
+      "other_details": "of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

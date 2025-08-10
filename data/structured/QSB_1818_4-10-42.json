@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1818 4/10/42",
+  "conviction_date": "2 Sep 1818",
+  "offence_date": "29 August 1818",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 29,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "using an unequal balance or steelyard",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Jackson of the township of Ugthorpe for using an unequal balance or steelyard",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q4%2f10%2f42&pos=10455",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Jackson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Ugthorpe",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby at a Petty Sessions for the division of Whitby Strand"
+  }
+}

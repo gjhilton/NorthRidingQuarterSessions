@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1833 3/10/15",
+  "conviction_date": "27 Apr 1833",
+  "offence_date": "26 April 1833",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 26,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "begging",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Brown for begging",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1833-Q3%2f10%2f15&pos=10144",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Brown",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

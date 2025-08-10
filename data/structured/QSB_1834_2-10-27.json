@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1834 2/10/27",
+  "conviction_date": "21 Jan 1834",
+  "offence_date": "19 Jan 1834",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 19,
+  "offence_year": 1834,
+  "offence_time": "evening",
+  "charge_description": "assaulting William Lynass, grocer",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Charles Goldsmith for assaulting William Lynass of [Whitby] grocer",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q2%2f10%2f27&pos=9922",
+  "defendants": [
+    {
+      "first_name": "Charles",
+      "last_name": "Goldsmith",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Lynass",
+      "occupation": "grocer",
+      "other_details": null,
+      "role": "victim",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

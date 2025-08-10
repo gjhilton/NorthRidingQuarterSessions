@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1818 2/10/14",
+  "conviction_date": "24 Feb 1818",
+  "offence_date": "21 January 1818",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 21,
+  "offence_year": 1818,
+  "offence_time": null,
+  "charge_description": "Summary conviction of William Holdsworth driver and waggoner of the common carrier waggon from Whitby to the city of York for purchasing nine pheasants from John Nicholson",
+  "sentencing": null,
+  "raw_record": "Summary conviction of William Holdsworth driver and waggoner of the common carrier waggon from Whitby to the city of York for purchasing nine pheasants from John Nicholson; on the information of John Steel of Winteringham servant to George Strickland esquire, and witnessed by John NicholsonOffence committed at the parish of St Michael in New Malton on 21 January 1818",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q2%2f10%2f14&pos=7615",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Holdsworth",
+      "occupation": "driver and waggoner",
+      "other_details": "of the common carrier waggon from Whitby to the city of York",
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "John",
+      "last_name": "Steel",
+      "occupation": "servant",
+      "other_details": "to George Strickland esquire",
+      "role": "informant",
+      "town": "Winteringham",
+      "street": null
+    },
+    {
+      "first_name": "John",
+      "last_name": "Nicholson",
+      "occupation": null,
+      "other_details": null,
+      "role": "witness",
+      "town": null,
+      "street": null
+    }
+  ],
+  "offence_town": "St Michael in New Malton",
+  "offence_street": null,
+  "offence_type": "purchasing nine pheasants",
+  "court": {
+    "location_town": "York"
+  }
+}

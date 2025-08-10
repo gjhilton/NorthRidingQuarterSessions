@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1835 4/10/18",
+  "conviction_date": "4 Oct 1835",
+  "offence_date": "4 Aug 1835",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 4,
+  "offence_year": 1835,
+  "offence_time": null,
+  "charge_description": "Assaulting Eleanor Law of Whitby singlewoman",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Fanny Mackey for assaulting Eleanor Law of Whitby singlewoman. Offence committed at the township of Whitby on 1 August 1835. Costs paid to William Wilkinson constable of Whitby. Division of Whitby Strand - case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q4%2f10%2f18&pos=10735",
+  "defendants": [
+    {
+      "first_name": "Fanny",
+      "last_name": "Mackey",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Eleanor",
+      "last_name": "Law",
+      "occupation": "singlewoman",
+      "other_details": null,
+      "role": "Assaulted",
+      "town": "Whitby",
+      "street": null
+    },
+    {
+      "first_name": "William",
+      "last_name": "Wilkinson",
+      "occupation": "constable",
+      "other_details": null,
+      "role": "Received costs",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

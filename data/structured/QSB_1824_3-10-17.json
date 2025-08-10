@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1824 3/10/17",
+  "conviction_date": "10 Jul 1824",
+  "offence_date": "1 July 1824",
+  "offence_day_of_week": "Unknown",
+  "offence_day_of_month": 1,
+  "offence_year": 1824,
+  "offence_time": "Unknown",
+  "charge_description": "Summary conviction of Jane Holland of the township of Robin Hood's Bay in the parish of Fylingdales widow for having defective balances in a cellar under her dwelling house",
+  "sentencing": "Unknown",
+  "raw_record": "Summary conviction: Jane Holland of Robin Hood's Bay,10 Jul 1824,Summary conviction of Jane Holland of the township of Robin Hood's Bay in the parish of Fylingdales widow for having defective balances in a cellar under her dwelling houseOffence committed at the township of Robin Hood's Bay on 1 July 1824Whitby Strand Petty Sessional division- case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q3%2f10%2f17&pos=10035",
+  "defendants": [
+    {
+      "first_name": "Jane",
+      "last_name": "Holland",
+      "occupation": "Unknown",
+      "other_details": "Widow",
+      "prior_convictions": "",
+      "town": "Robin Hood's Bay",
+      "street": "",
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Robin Hood's Bay",
+  "offence_street": "",
+  "offence_type": "Unknown",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

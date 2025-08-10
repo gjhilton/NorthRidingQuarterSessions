@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1833 3/10/18",
+  "conviction_date": "28 May 1833",
+  "offence_date": "25 May 1833",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 25,
+  "offence_year": 1833,
+  "offence_time": null,
+  "charge_description": "Wilfully disobeying the orders of the harbour master of the port of Whitby",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Henry Hodgson of Whitby pilot for wilfully disobeying the orders of the harbour master of the port of Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1833-Q3%2f10%2f18&pos=10147",
+  "defendants": [
+    {
+      "first_name": "Henry",
+      "last_name": "Hodgson",
+      "occupation": "Pilot",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

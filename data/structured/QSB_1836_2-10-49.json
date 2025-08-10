@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 2/10/49",
+  "conviction_date": "20 Feb 1836",
+  "offence_date": "11 December 1835",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 11,
+  "offence_year": 1835,
+  "offence_time": "",
+  "charge_description": "Assaulting Robert Steel",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Wyley of Guisborough common carrier for assaulting Robert Steel of the township of Whitby carpenter",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q2%2f10%2f49&pos=10999",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Wyley",
+      "occupation": "common carrier",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Guisborough",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Steel",
+      "occupation": "carpenter",
+      "other_details": "",
+      "role": "victim",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

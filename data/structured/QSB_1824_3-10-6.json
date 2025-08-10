@@ -1,0 +1,66 @@
+{
+  "reference_number": "QSB 1824 3/10/6",
+  "conviction_date": "12 Jun 1824",
+  "offence_date": "10 June 1824",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 10,
+  "offence_year": 1824,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Robert Kirby, Lucy Kirby, Mary Ann Kirby and Harriett Kirby for vagrancy and acting as pedlars without a licence",
+  "sentencing": null,
+  "raw_record": "Summary conviction: Robert Kirby, Lucy Kirby, Mary Ann Kirby and Harriett Kirby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q3%2f10%2f6&pos=10030",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "male"
+    },
+    {
+      "first_name": "Lucy",
+      "last_name": "Kirby",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "female"
+    },
+    {
+      "first_name": "Mary Ann",
+      "last_name": "Kirby",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "female"
+    },
+    {
+      "first_name": "Harriett",
+      "last_name": "Kirby",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "vagrancy and acting as pedlars without a licence",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

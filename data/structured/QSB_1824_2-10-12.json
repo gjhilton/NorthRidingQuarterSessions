@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1824 2/10/12",
+  "conviction_date": "6 Mar 1824",
+  "offence_date": "2 Oct 1812",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 2,
+  "offence_year": 1812,
+  "offence_time": null,
+  "charge_description": "being drunk",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of George Lockey of the township of Whitby for being drunk; on the information of William Wilkinson of the township of Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1824-Q2%2f10%2f12&pos=9186",
+  "defendants": [
+    {
+      "first_name": "George",
+      "last_name": "Lockey",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Wilkinson",
+      "occupation": null,
+      "other_details": null,
+      "role": "informant",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}
