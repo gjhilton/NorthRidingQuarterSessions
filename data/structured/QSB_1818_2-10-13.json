@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1818 2/10/13",
+  "conviction_date": "24 Feb 1818",
+  "offence_date": "3 February 1818",
+  "offence_day_of_week": "Unknown",
+  "offence_day_of_month": 3,
+  "offence_year": 1818,
+  "offence_time": "Unknown",
+  "charge_description": "Summary conviction of James Wilson extra guard of the mail from Whitby to the city of York for receiving a pheasant from John Nicholson",
+  "sentencing": "Unknown",
+  "raw_record": "Summary conviction of James Wilson extra guard of the mail from Whitby to the city of York for receiving a pheasant from John Nicholson; on the information of John Steel of Winteringham servant to George Strickland esquire, and witnessed by John NicholsonOffence committed at the parish of St Michael in New Malton on 3 February 1818",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1818-Q2%2f10%2f13&pos=7614",
+  "defendants": [
+    {
+      "first_name": "James",
+      "last_name": "Wilson",
+      "occupation": "extra guard of the mail",
+      "other_details": "None",
+      "prior_convictions": "Unknown",
+      "town": "Whitby",
+      "street": "Unknown",
+      "aliases": [],
+      "sex": "Male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "John",
+      "last_name": "Nicholson",
+      "occupation": "Unknown",
+      "other_details": "None",
+      "role": "Accuser",
+      "town": "Unknown",
+      "street": "Unknown"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Steel",
+      "occupation": "servant to George Strickland esquire",
+      "other_details": "None",
+      "role": "Witness",
+      "town": "Winteringham",
+      "street": "Unknown"
+    }
+  ],
+  "offence_town": "New Malton",
+  "offence_street": "St Michael",
+  "offence_type": "Receiving stolen property",
+  "court": {
+    "location_town": "Unknown"
+  }
+}

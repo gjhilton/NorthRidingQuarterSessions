@@ -1,43 +1,18 @@
-
-
 import os
 import json
 from typing import Optional, List
 from pydantic import BaseModel, ValidationError
-from openai import OpenAI
+from openai import OpenAI, pydantic_function_tool
 
-# === Config ===
+# === Configuration ===
 openai_api_key = os.getenv("OPENAI_KEY")
 client = OpenAI(api_key=openai_api_key)
 
 INPUT_DIR = "./data/summary_convictions"
 OUTPUT_DIR = "./data/structured"
-
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-SYSTEM_PROMPT = """
-You will be given a historical court record. Extract structured data from it in JSON format using the following keys:
-
-- reference_number
-- conviction_date
-- offence_date
-- offence_day_of_week
-- offence_day_of_month
-- offence_year
-- offence_time
-- charge_description
-- sentencing
-- raw_record
-- archive_url
-- defendants: list of { first_name, last_name, occupation, other_details, prior_convictions, town, street, aliases, sex (inferred from first_name) }
-- involved_persons: list of { first_name, last_name, occupation, other_details, role, town, street }
-- offence_type
-- offence_town
-- offence_street
-- court: { location_town }
-
-Return only the JSON.
-"""
+# === Pydantic Models ===
 
 class Defendant(BaseModel):
     first_name: str
@@ -59,7 +34,6 @@ class InvolvedPerson(BaseModel):
     town: Optional[str] = None
     street: Optional[str] = None
 
-
 class Court(BaseModel):
     location_town: str
 
@@ -77,103 +51,84 @@ class RecordSchema(BaseModel):
     archive_url: str
     defendants: List[Defendant]
     involved_persons: List[InvolvedPerson]
+    offence_type: Optional[str] = None
     offence_town: Optional[str] = None
     offence_street: Optional[str] = None
-    offence_type: Optional[str] = None
     court: Court
 
-def call_openai_model(content: str, model: str) -> Optional[str]:
-    try:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT.strip()},
-                {"role": "user", "content": content}
-            ],
-            temperature=0,
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        print(f"OpenAI API error ({model}): {e}")
-        return None
+# Create the structured function tool
+tools = [pydantic_function_tool(RecordSchema)]
 
-def write_json(filepath: str, data):
-    with open(filepath, "w", encoding="utf-8") as f:
+SYSTEM_PROMPT = (
+    "You are an assistant that extracts court record data. "
+    "Return exactly one structured JSON matching the schema."
+)
+
+MODEL_FALLBACKS = ["gpt-3.5-turbo-0613", "gpt-4-0613"]
+
+def extract_structured(content: str):
+    for model in MODEL_FALLBACKS:
+        try:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": content}
+                ],
+                tools=tools,
+                function_call="auto"
+            )
+            call = resp.choices[0].message.tool_calls[0]
+            return call.function.parsed_arguments
+        except Exception as e:
+            print(f"[{model}] call failed: {e}; trying next model...")
+    raise RuntimeError("All models failed to extract structured output")
+
+def write_json(path: str, data):
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-def process_single_file(filename: str) -> bool:
-    """
-    Process a single input file (filename is relative to INPUT_DIR).
-    Saves output JSON or failed JSON in OUTPUT_DIR.
-    Returns True on success, False on failure.
-    """
-    input_path = os.path.join(INPUT_DIR, filename)
-    base_name = filename.rsplit(".", 1)[0]
+def process_file(filename: str) -> bool:
+    base = filename.rsplit(".", 1)[0]
+    in_path = os.path.join(INPUT_DIR, filename)
+    success_path = os.path.join(OUTPUT_DIR, f"{base}.json")
+    failed_path = os.path.join(OUTPUT_DIR, f"{base}__FAILED.json")
 
-    success_path = os.path.join(OUTPUT_DIR, f"{base_name}.json")
-    failed_path = os.path.join(OUTPUT_DIR, f"{base_name}__FAILED.json")
-
-    # Skip if output already exists
     if os.path.exists(success_path) or os.path.exists(failed_path):
-        print(f"Skipping {filename}, output already exists.")
+        print(f"Skipping {filename}, already processed.")
         return True
 
-    with open(input_path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    print(f"Processing {filename} with GPT-3.5...")
-    result = call_openai_model(content, "gpt-3.5-turbo")
-
-    if not result:
-        print("↪️ GPT-3.5 failed, retrying with GPT-4...")
-        result = call_openai_model(content, "gpt-4")
-
-    if not result:
-        print(f"Both GPT-3.5 and GPT-4 calls failed for {filename}")
-        write_json(failed_path, {"error": "API failure", "raw_output": ""})
-        return False
+    content = open(in_path, encoding="utf-8").read()
+    print(f"Processing {filename}...")
 
     try:
-        parsed = json.loads(result)
-        validated = RecordSchema(**parsed)
-        write_json(success_path, validated.model_dump())
-        print(f"Successfully processed {filename}")
+        args = extract_structured(content)
+        record = RecordSchema.parse_obj(args)
+        write_json(success_path, record.model_dump())
+        print(f"Success: {filename}")
         return True
-    except (json.JSONDecodeError, ValidationError) as e:
-        print(f"Validation error for {filename}: {e}")
-        write_json(failed_path, {"error": "Validation error", "raw_output": result})
+    except (ValidationError, RuntimeError) as e:
+        print(f"Failed {filename}: {e}")
+        write_json(failed_path, {"error": str(e), "content": content})
         return False
 
-def process_all_files(max_files: Optional[int] = None):
-    input_files = sorted(f for f in os.listdir(INPUT_DIR) if f.endswith(".txt"))
-    total = len(input_files)
+def process_all(max_files: Optional[int] = None):
+    files = [f for f in sorted(os.listdir(INPUT_DIR)) if f.endswith(".txt")]
+    total = len(files)
     processed = success = failed = 0
 
-    for idx, filename in enumerate(input_files, start=1):
-        if max_files is not None and processed >= max_files:
-            print(f"Reached max_files limit: {max_files}. Stopping.")
+    for idx, fname in enumerate(files, start=1):
+        if max_files and processed >= max_files:
             break
-
-        # Skip if output exists
-        base_name = filename.rsplit(".", 1)[0]
-        success_path = os.path.join(OUTPUT_DIR, f"{base_name}.json")
-        failed_path = os.path.join(OUTPUT_DIR, f"{base_name}__FAILED.json")
-        if os.path.exists(success_path) or os.path.exists(failed_path):
-            print(f"Skipping {filename}, output already exists.")
-            continue
-
-        print(f"[{idx}/{total}] Processing {filename}")
-        result = process_single_file(filename)
-        processed += 1
-        if result:
+        print(f"[{idx}/{total}] {fname}")
+        if process_file(fname):
             success += 1
         else:
             failed += 1
-        print(f"Progress: {processed}/{total} | Success: {success} | Failed: {failed}\n")
+        processed += 1
+        print(f"Progress: {processed}/{total}, Success: {success}, Failed: {failed}\n")
 
-    print(f"Finished processing. Success: {success}, Failed: {failed}, Total processed: {processed}")
-
+    print(f"Done. {success} passed, {failed} failed, out of {processed}.")
 
 if __name__ == "__main__":
-    process_all_files(max_files=100)
-    #process_single_file("QSB_1889_4-10-11-14.txt")
+    process_all(max_files=5)
