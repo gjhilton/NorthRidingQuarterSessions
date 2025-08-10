@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 1/10/29",
+  "conviction_date": "7 Nov 1835",
+  "offence_date": "5 November 1835",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Arthur Donnely late of Ireland hawker and pedlar for selling stockings and gloves without a licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "sentencing": null,
+  "raw_record": "Summary conviction of Arthur Donnely late of Ireland hawker and pedlar for selling stockings and gloves without a licence; on the information of Robert Kirby of Whitby sub-distributor of stamps",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q1%2f10%2f29&pos=10954",
+  "defendants": [
+    {
+      "first_name": "Arthur",
+      "last_name": "Donnely",
+      "occupation": "hawker and pedlar",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Ireland",
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Robert",
+      "last_name": "Kirby",
+      "occupation": null,
+      "other_details": null,
+      "role": "sub-distributor of stamps",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Egton"
+  }
+}

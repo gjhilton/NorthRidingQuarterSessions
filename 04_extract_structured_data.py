@@ -2,7 +2,7 @@ import os
 import json
 from typing import Optional, List
 from pydantic import BaseModel, ValidationError
-from openai import OpenAI, pydantic_function_tool
+from openai import OpenAI
 
 # === Configuration ===
 openai_api_key = os.getenv("OPENAI_KEY")
@@ -13,7 +13,6 @@ OUTPUT_DIR = "./data/structured"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # === Pydantic Models ===
-
 class Defendant(BaseModel):
     first_name: str
     last_name: str
@@ -56,15 +55,19 @@ class RecordSchema(BaseModel):
     offence_street: Optional[str] = None
     court: Court
 
-# Create the structured function tool
-tools = [pydantic_function_tool(RecordSchema)]
+# Create function schema for RecordSchema
+function_schema = {
+    "name": "extract_record",
+    "description": "Extract structured court record data",
+    "parameters": RecordSchema.model_json_schema(),
+}
 
 SYSTEM_PROMPT = (
     "You are an assistant that extracts court record data. "
     "Return exactly one structured JSON matching the schema."
 )
 
-MODEL_FALLBACKS = ["gpt-3.5-turbo-0613", "gpt-4-0613"]
+MODEL_FALLBACKS = ["gpt-3.5-turbo", "gpt-4"]
 
 def extract_structured(content: str):
     for model in MODEL_FALLBACKS:
@@ -75,11 +78,12 @@ def extract_structured(content: str):
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": content}
                 ],
-                tools=tools,
+                functions=[function_schema],
                 function_call="auto"
             )
-            call = resp.choices[0].message.tool_calls[0]
-            return call.function.parsed_arguments
+            fn_call = resp.choices[0].message.function_call
+            args = json.loads(fn_call.arguments)
+            return args
         except Exception as e:
             print(f"[{model}] call failed: {e}; trying next model...")
     raise RuntimeError("All models failed to extract structured output")
@@ -131,4 +135,4 @@ def process_all(max_files: Optional[int] = None):
     print(f"Done. {success} passed, {failed} failed, out of {processed}.")
 
 if __name__ == "__main__":
-    process_all(max_files=5)
+    process_all(max_files=160)
