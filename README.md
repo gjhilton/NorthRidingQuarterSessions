@@ -41,7 +41,12 @@ python3 -m pip install requests
 
 ### Step 3:
 
-eg: python3 -m 03_preprocess_resources.py
+eg: python3 -m 03_preprocess_resources - splits out the summary convictions into separate text files
+
+### Step 4:
+
+eg: python3 -m 04_extract_structured_data - uses an llm to parse the unstructured data into JSON
+
 
 ## DATABASE SCHEMA
 
