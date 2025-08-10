@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/6",
+  "conviction_date": "10 Jan 1809",
+  "offence_date": "14 December 1808",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 14,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "having in his possession one twenty-eight pound weight which was short by 14 drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Robert Dickinson of Whitby grocer for having in his possession one twenty-eight pound weight which was short by 14 drams",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f6&pos=1398",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Dickinson",
+      "occupation": "grocer",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "possession of short-weighted item",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

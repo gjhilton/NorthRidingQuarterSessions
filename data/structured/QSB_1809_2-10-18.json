@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/18",
+  "conviction_date": "12 Jan 1809",
+  "offence_date": "20 December 1808",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 20,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "having in his possession one seven-pound weight which was short by one dram and eight ounces, one four-pound weight which was short by one ounce, another four--pound weight which was short by six drams, and one two--pound weight which was short by ten drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Marwood of Whitby butter seller for having in his possession one seven-pound weight which was short by one dram and eight ounces, one four-pound weight which was short by one ounce, another four--pound weight which was short by six drams, and one two--pound weight which was short by ten dramsOffence committed at Whitby on the 20 December 1808Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f18&pos=1410",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Marwood",
+      "occupation": "butter seller",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

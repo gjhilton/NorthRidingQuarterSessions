@@ -8,36 +8,35 @@
   "offence_time": null,
   "charge_description": "Assaulting Alfred Lait",
   "sentencing": "Summary conviction",
-  "raw_record": "Summary conviction of Walter Adam of the township of Whitby iron worker for assaulting Alfred Lait Offence committed at the township of Whitby on 22 June 1889",
+  "raw_record": "Summary conviction of Walter Adam of the township of Whitby iron worker for assaulting Alfred Lait",
   "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1889-Q4%2f10%2f11-14&pos=3794",
   "defendants": [
     {
       "first_name": "Walter",
       "last_name": "Adam",
       "occupation": "Iron worker",
-      "relationships_and_details": null,
-      "prior_convictions": null,
+      "other_details": "",
+      "prior_convictions": "",
       "town": "Whitby",
-      "street": null,
-      "aliases": []
+      "street": "",
+      "aliases": [],
+      "sex": "male"
     }
   ],
   "involved_persons": [
     {
       "first_name": "Alfred",
       "last_name": "Lait",
-      "occupation": null,
-      "relationships_and_details": null,
-      "role": null,
+      "occupation": "",
+      "other_details": "",
+      "role": "Assault victim",
       "town": "Whitby",
-      "street": null
+      "street": ""
     }
   ],
-  "offence": {
-    "type": "Assault",
-    "location_town": "Whitby",
-    "location_street": null
-  },
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Assault",
   "court": {
     "location_town": "Whitby"
   }

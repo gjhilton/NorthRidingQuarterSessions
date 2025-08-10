@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1803 1/10/3/6",
+  "conviction_date": "1 Dec 1802",
+  "offence_date": "24 August 1802",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 24,
+  "offence_year": 1802,
+  "offence_time": null,
+  "charge_description": "having in his possession one false and defective two-pound weight",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Whitby of Old Malton for having in his possession one false and defective two-pound weight. Offence committed at New Malton on 24 August 1802. Case heard at a Petty Sessions held at Kirby Moorside for the wapentake of Ryedale.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1803-Q1%2f10%2f3-6&pos=1317",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Whitby",
+      "occupation": null,
+      "other_details": "of Old Malton",
+      "prior_convictions": null,
+      "town": "Old Malton",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "New Malton",
+  "offence_street": null,
+  "offence_type": "possession of false and defective weight",
+  "court": {
+    "location_town": "Kirby Moorside"
+  }
+}

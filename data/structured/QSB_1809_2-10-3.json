@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/3",
+  "conviction_date": "2/10/3",
+  "offence_date": "9 Jan 1809",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 14,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Ralph Speedy of Whitby baker for having in his possession one seven-pound weight which was short by 14 drams and one three-pound eight-ounce weight which was short by 11 drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction: Ralph Speedy of Whitby,9 Jan 1809,Summary conviction of Ralph Speedy of Whitby baker for having in his possession one seven-pound weight which was short by 14 drams and one three-pound eight-ounce weight which was short by 11 dramsOffence committed at Whitby on 14 December 1808",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f3&pos=1395",
+  "defendants": [
+    {
+      "first_name": "Ralph",
+      "last_name": "Speedy",
+      "occupation": "baker",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "possession of short weights",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

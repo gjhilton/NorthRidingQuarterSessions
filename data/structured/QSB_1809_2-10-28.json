@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/28",
+  "conviction_date": "2/10/28",
+  "offence_date": "12 Jan 1809",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 12,
+  "offence_year": 1809,
+  "offence_time": null,
+  "charge_description": "having in his possession two twenty-eight pound weights both of which were short by two ounces",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Oxley of Whitby bacon seller for having in his possession two twenty-eight pound weights both of which were short by two ounces",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f28&pos=1420",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Oxley",
+      "occupation": "bacon seller",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

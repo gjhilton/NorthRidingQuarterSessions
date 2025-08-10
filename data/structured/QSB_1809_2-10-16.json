@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/16",
+  "conviction_date": "12 Jan 1809",
+  "offence_date": "17 December 1808",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 17,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "having in his possession a pair of steelyards deficient in weight",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Richard Harding, 12 Jan 1809, Summary conviction of Richard Harding butcher for having in his possession a pair of steelyards deficient in weight. Offence committed at Whitby on 17 December 1808. Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f16&pos=1408",
+  "defendants": [
+    {
+      "first_name": "Richard",
+      "last_name": "Harding",
+      "occupation": "butcher",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "possession of steelyards deficient in weight",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

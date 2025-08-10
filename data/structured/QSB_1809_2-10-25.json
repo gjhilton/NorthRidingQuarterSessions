@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/25",
+  "conviction_date": "2/10/25",
+  "offence_date": "12 Jan 1809",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 12,
+  "offence_year": 1809,
+  "offence_time": null,
+  "charge_description": "having in his possession one eight-ounce weight which was short by three drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of George Croft of Whitby painter for having in his possession one eight-ounce weight which was short by three drams. Offence committed at Whitby on 14 December 1808. Whitby Strand Petty Sessional division - case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f25&pos=1417",
+  "defendants": [
+    {
+      "first_name": "George",
+      "last_name": "Croft",
+      "occupation": "painter",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "possession of short-weighted item",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

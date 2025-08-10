@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/2",
+  "conviction_date": "2 October 1809",
+  "offence_date": "9 January 1809",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 9,
+  "offence_year": 1809,
+  "offence_time": null,
+  "charge_description": "having in her possession one fourteen-pound weight which was short by 12 drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Mary Pattinson of Whitby meal seller for having in her possession one fourteen-pound weight which was short by 12 drams",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f2&pos=1394",
+  "defendants": [
+    {
+      "first_name": "Mary",
+      "last_name": "Pattinson",
+      "occupation": "meal seller",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

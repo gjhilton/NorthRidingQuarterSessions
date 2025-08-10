@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/19",
+  "conviction_date": "2/10/19",
+  "offence_date": "12 Jan 1809",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 12,
+  "offence_year": 1809,
+  "offence_time": "",
+  "charge_description": "Summary conviction of William Allon of Whitby bacon seller for having in his possession one three-pound eight-ounce weight and one two-pound weight both of which were short by eight drams, one one-pound weight which was short by three drams, and one eight-ounce weight which was short by two drams",
+  "sentencing": "",
+  "raw_record": "Summary conviction of William Allon of Whitby bacon seller for having in his possession one three-pound eight-ounce weight and one two-pound weight both of which were short by eight drams, one one-pound weight which was short by three drams, and one eight-ounce weight which was short by two dramsOffence committed at Whitby on 22 December 1808Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f19&pos=1411",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Allon",
+      "occupation": "bacon seller",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

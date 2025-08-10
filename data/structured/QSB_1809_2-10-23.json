@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/23",
+  "conviction_date": "2/10/23",
+  "offence_date": "12 Jan 1809",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 12,
+  "offence_year": 1809,
+  "offence_time": "",
+  "charge_description": "having in his possession one eight-ounce weight which was short by seven drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Atkinson of Whitby baker for having in his possession one eight-ounce weight which was short by seven drams",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f23&pos=1415",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Atkinson",
+      "occupation": "baker",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

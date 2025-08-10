@@ -155,6 +155,9 @@ QSB 1864 4/10/16/1,"Summary conviction: William Thompson, George Peart, Joseph L
   "offence_day_of_month": 16,
   "offence_year": 1864,
   "offence_time": null,
+  "offence_type": "property damage",
+  "offence_town": "Whitby",
+  "offence_street": null,
   "charge_description": "wilfully damaging a boat and a mooring chain belonging to George Sutherland, by leaping on the boat and forcing the chain from its fastenings, and causing one-shillingsworth of damage",
   "sentencing": null,
   "raw_record": "Summary conviction of William Thompson, George Peart, Joseph Lyth and Francis Walker for wilfully damaging a boat and a mooring chain belonging to George Sutherland, by leaping on the boat and forcing the chain from its fastenings, and causing one-shillingsworth of damage. Offence committed at the township of Whitby on 16 June 1864. Case heard at Whitby",
@@ -168,7 +171,8 @@ QSB 1864 4/10/16/1,"Summary conviction: William Thompson, George Peart, Joseph L
       "prior_convictions": null,
       "town": null,
       "street": null,
-      "aliases": []
+      "aliases": [],
+      "sex": "Male"
     },
     {
       "first_name": "George",
@@ -178,7 +182,8 @@ QSB 1864 4/10/16/1,"Summary conviction: William Thompson, George Peart, Joseph L
       "prior_convictions": null,
       "town": null,
       "street": null,
-      "aliases": []
+      "aliases": [],
+      "sex": "male"
     },
     {
       "first_name": "Joseph",
@@ -188,7 +193,8 @@ QSB 1864 4/10/16/1,"Summary conviction: William Thompson, George Peart, Joseph L
       "prior_convictions": null,
       "town": null,
       "street": null,
-      "aliases": []
+      "aliases": [],
+      "sex": "male"
     },
     {
       "first_name": "Francis",
@@ -198,7 +204,8 @@ QSB 1864 4/10/16/1,"Summary conviction: William Thompson, George Peart, Joseph L
       "prior_convictions": null,
       "town": null,
       "street": null,
-      "aliases": []
+      "aliases": [],
+      "sex": "male"
     }
   ],
   "involved_persons": [
@@ -212,88 +219,8 @@ QSB 1864 4/10/16/1,"Summary conviction: William Thompson, George Peart, Joseph L
       "street": null
     }
   ],
-  "offence": {
-    "type": "property damage",
-    "location_town": "Whitby",
-    "location_street": null
-  },
   "court": {
     "location_town": "Whitby"
   }
 }
 ```
-
-**Additional Example - More Complex Record:**
-Based on `QSB 1866 1/10/15/1`:
-```
-QSB 1866 1/10/15/1,Summary conviction: William Stewart of Ruswarp,3 Oct 1865,Summary conviction of William Stewart of the township of Ruswarp innkeeper for opening his premises for the sale of beer on a Sunday before 12.30 p.m.; on the oath of John Wheat of the township of Whitby police constable Offence committed at the township of Ruswarp at 11 a.m. on 1 October 1865Case heard at Whitby
-```
-
-```json
-{
-  "reference_number": "QSB 1866 1/10/15/1",
-  "conviction_date": "1865-10-03",
-  "offence_date": "1865-10-01",
-  "offence_day_of_week": "Sunday",
-  "offence_day_of_month": 1,
-  "offence_year": 1865,
-  "offence_time": "11:00",
-  "charge_description": "opening his premises for the sale of beer on a Sunday before 12.30 p.m.",
-  "sentencing": null,
-  "raw_record": "Summary conviction of William Stewart of the township of Ruswarp innkeeper for opening his premises for the sale of beer on a Sunday before 12.30 p.m.; on the oath of John Wheat of the township of Whitby police constable Offence committed at the township of Ruswarp at 11 a.m. on 1 October 1865Case heard at Whitby",
-  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1866-Q1%2f10%2f15-1&pos=6867",
-  "defendants": [
-    {
-      "first_name": "William",
-      "last_name": "Stewart",
-      "occupation": "innkeeper",
-      "relationships_and_details": null,
-      "prior_convictions": null,
-      "town": "Ruswarp",
-      "street": null,
-      "aliases": []
-    }
-  ],
-  "involved_persons": [
-    {
-      "first_name": "John",
-      "last_name": "Wheat",
-      "occupation": "police constable",
-      "relationships_and_details": null,
-      "role": "informant",
-      "town": "Whitby",
-      "street": null
-    }
-  ],
-  "offence": {
-    "type": "licensing violation",
-    "location_town": "Ruswarp",
-    "location_street": null
-  },
-  "court": {
-    "location_town": "Whitby"
-  }
-}
-```
-
-### LLM Processing Approach
-1. **Batch Processing**: Process files in batches to manage API costs and rate limits
-2. **Prompt Engineering**: Design prompts that reliably extract structured data from historical text
-3. **Validation**: Implement validation to catch parsing errors and inconsistencies
-4. **Error Handling**: Log failures and retry mechanisms for problematic records
-5. **Progress Tracking**: Monitor processing status across the 6,256 records
-
-### Key Parsing Challenges
-- **Historical Language**: 19th century legal terminology and phrasing
-- **Inconsistent Formatting**: Variations in record structure across decades
-- **Multiple Defendants**: Some cases have multiple accused individuals
-- **Date Parsing**: Various date formats (e.g., "24 August 1802", "16 June 1864")
-- **Location Extraction**: Township names, street addresses, court locations
-- **Offense Classification**: Mapping historical charges to standardized categories
-
-## Data Files
-- `data/whitby.csv` - Main processed records file (source for text file extraction)
-- `data/whitby.json` - Cached resource list from initial search
-- `data/db.sqlite` - SQLite database with full relational schema
-- `data/summary_convictions/` - 6,256 individual text files, one per Summary conviction record
-- `data/id_blacklist.txt` - List of problematic record IDs to exclude during processing

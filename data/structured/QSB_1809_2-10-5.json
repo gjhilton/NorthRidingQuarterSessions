@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/5",
+  "conviction_date": "9 Jan 1809",
+  "offence_date": "14 December 1808",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 14,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "having in his possession one seven-pound weight which was short by 13 drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Edward Carving of Whitby smith for having in his possession one seven-pound weight which was short by 13 drams",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f5&pos=1397",
+  "defendants": [
+    {
+      "first_name": "Edward",
+      "last_name": "Carving",
+      "occupation": "smith",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "possession of short-weighted item",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

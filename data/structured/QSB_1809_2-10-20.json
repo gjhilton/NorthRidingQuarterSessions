@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/20",
+  "conviction_date": "2/10/20",
+  "offence_date": "12 Jan 1809",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 12,
+  "offence_year": 1809,
+  "offence_time": "",
+  "charge_description": "Summary conviction of Elizabeth Craven of Whitby grocer for having in her possession two one-pound weights which were both short by three drams, one eight-ounce weight which was short by two drams, another eight-ounce weight which was short by three drams, and a small brass weight which was also deficient",
+  "sentencing": "Offence committed at Whitby on 24 December 1808",
+  "raw_record": "Summary conviction of Elizabeth Craven of Whitby grocer for having in her possession two one-pound weights which were both short by three drams, one eight-ounce weight which was short by two drams, another eight-ounce weight which was short by three drams, and a small brass weight which was also deficientOffence committed at Whitby on 24 December 1808Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f20&pos=1412",
+  "defendants": [
+    {
+      "first_name": "Elizabeth",
+      "last_name": "Craven",
+      "occupation": "grocer",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "possession of inaccurate weights",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -29,9 +29,11 @@ You will be given a historical court record. Extract structured data from it in 
 - sentencing
 - raw_record
 - archive_url
-- defendants: list of { first_name, last_name, occupation, relationships_and_details, prior_convictions, town, street, aliases }
-- involved_persons: list of { first_name, last_name, occupation, relationships_and_details, role, town, street }
-- offence: { type, location_town, location_street }
+- defendants: list of { first_name, last_name, occupation, other_details, prior_convictions, town, street, aliases, sex (inferred from first_name) }
+- involved_persons: list of { first_name, last_name, occupation, other_details, role, town, street }
+- offence_type
+- offence_town
+- offence_street
 - court: { location_town }
 
 Return only the JSON.
@@ -41,25 +43,22 @@ class Defendant(BaseModel):
     first_name: str
     last_name: str
     occupation: Optional[str] = None
-    relationships_and_details: Optional[str] = None
+    other_details: Optional[str] = None
     prior_convictions: Optional[str] = None
     town: Optional[str] = None
     street: Optional[str] = None
     aliases: Optional[List[str]] = None
+    sex: Optional[str] = None
 
 class InvolvedPerson(BaseModel):
     first_name: str
     last_name: str
     occupation: Optional[str] = None
-    relationships_and_details: Optional[str] = None
+    other_details: Optional[str] = None
     role: Optional[str] = None
     town: Optional[str] = None
     street: Optional[str] = None
 
-class Offence(BaseModel):
-    type: str
-    location_town: Optional[str] = None
-    location_street: Optional[str] = None
 
 class Court(BaseModel):
     location_town: str
@@ -78,7 +77,9 @@ class RecordSchema(BaseModel):
     archive_url: str
     defendants: List[Defendant]
     involved_persons: List[InvolvedPerson]
-    offence: Optional[Offence] = None
+    offence_town: Optional[str] = None
+    offence_street: Optional[str] = None
+    offence_type: Optional[str] = None
     court: Court
 
 def call_openai_model(content: str, model: str) -> Optional[str]:
@@ -128,18 +129,18 @@ def process_single_file(filename: str) -> bool:
         result = call_openai_model(content, "gpt-4")
 
     if not result:
-        print(f"❌ Both GPT-3.5 and GPT-4 calls failed for {filename}")
+        print(f"Both GPT-3.5 and GPT-4 calls failed for {filename}")
         write_json(failed_path, {"error": "API failure", "raw_output": ""})
         return False
 
     try:
         parsed = json.loads(result)
         validated = RecordSchema(**parsed)
-        write_json(success_path, validated.dict())
-        print(f"✅ Successfully processed {filename}")
+        write_json(success_path, validated.model_dump())
+        print(f"Successfully processed {filename}")
         return True
     except (json.JSONDecodeError, ValidationError) as e:
-        print(f"❌ Validation error for {filename}: {e}")
+        print(f"Validation error for {filename}: {e}")
         write_json(failed_path, {"error": "Validation error", "raw_output": result})
         return False
 
@@ -174,18 +175,5 @@ def process_all_files(max_files: Optional[int] = None):
 
 
 if __name__ == "__main__":
-    # Example usage: process all files
-    # process_all_files()
-    #print(os.getenv("OPENAI_KEY"))
-    # Or for quick testing, uncomment and use:
-    process_single_file("QSB_1889_4-10-11-14.txt")
-    #client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
-#
-    #response = client.chat.completions.create(
-   #     model="gpt-3.5-turbo",
-   #     messages=[
-  #          {"role": "system", "content": "Say hello"},
- #           {"role": "user", "content": "Hi there!"}
-  #      ],
- #   )
-  #  print(response.choices[0].message.content)
+    process_all_files(max_files=20)
+    #process_single_file("QSB_1889_4-10-11-14.txt")

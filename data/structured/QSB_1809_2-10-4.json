@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/4",
+  "conviction_date": "2/10/4",
+  "offence_date": "9 Jan 1809",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 9,
+  "offence_year": 1809,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Robert Cowlson of Whitby meal seller for having in his possession one fourteen-pound weight which was short by 14 drams, one fourteen-pound weight which was short by eight drams and one seven-pound weight which was short by four drams",
+  "sentencing": null,
+  "raw_record": "Summary conviction of Robert Cowlson of Whitby meal seller for having in his possession one fourteen-pound weight which was short by 14 drams, one fourteen-pound weight which was short by eight drams and one seven-pound weight which was short by four dramsOffence committed at Whitby on 14 December 1808Whitby Strand Petty Sessional division - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f4&pos=1396",
+  "defendants": [
+    {
+      "first_name": "Robert",
+      "last_name": "Cowlson",
+      "occupation": "meal seller",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

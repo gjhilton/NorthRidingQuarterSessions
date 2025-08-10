@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1809 2/10/27",
+  "conviction_date": "12 Jan 1809",
+  "offence_date": "14 December 1808",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 14,
+  "offence_year": 1808,
+  "offence_time": null,
+  "charge_description": "having in his possession one one-pound weight and one eight-ounce weight both of which were short by two drams",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Cockburn of Whitby tobacco dealer for having in his possession one one-pound weight and one eight-ounce weight both of which were short by two drams",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1809-Q2%2f10%2f27&pos=1419",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Cockburn",
+      "occupation": "tobacco dealer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

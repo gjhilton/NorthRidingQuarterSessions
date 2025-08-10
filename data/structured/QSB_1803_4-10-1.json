@@ -1,0 +1,63 @@
+{
+  "reference_number": "QSB 1803 4/10/1",
+  "conviction_date": "8 Jun 1803",
+  "offence_date": "7 June 1803",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 7,
+  "offence_year": 1803,
+  "offence_time": null,
+  "charge_description": "Taking fish in a stream called Thornton Beck above the town of Thornton",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Law of Grosmont Haggs in the parish of Egton farmer and John Watson of Aislaby near Whitby gardener for taking fish in a stream called Thornton Beck above the town of Thornton in the parish of Thornton, which stream and fishery were the property of John Gilby of Thornton clerk and John Ward of Yedingham in the East Riding clerk",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1803-Q4%2f10%2f1&pos=1334",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Law",
+      "occupation": "farmer",
+      "other_details": "of Grosmont Haggs in the parish of Egton",
+      "prior_convictions": null,
+      "town": "Egton",
+      "street": "Grosmont Haggs",
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Watson",
+      "occupation": "gardener",
+      "other_details": "of Aislaby near Whitby",
+      "prior_convictions": null,
+      "town": "Aislaby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "John",
+      "last_name": "Gilby",
+      "occupation": "clerk",
+      "other_details": "of Thornton",
+      "role": "Owner of the stream and fishery",
+      "town": "Thornton",
+      "street": null
+    },
+    {
+      "first_name": "John",
+      "last_name": "Ward",
+      "occupation": "clerk",
+      "other_details": "of Yedingham in the East Riding",
+      "role": "Co-owner of the stream and fishery",
+      "town": "Yedingham",
+      "street": null
+    }
+  ],
+  "offence_town": "Thornton",
+  "offence_street": "Thornton Beck",
+  "offence_type": "Taking fish without permission",
+  "court": {
+    "location_town": "Unknown"
+  }
+}
