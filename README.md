@@ -47,6 +47,9 @@ eg: python3 -m 03_preprocess_resources - splits out the summary convictions into
 
 eg: python3 -m 04_extract_structured_data - uses an llm to parse the unstructured data into JSON
 
+### Step 5:
+
+eg: python3 -m 05_load_data - ingests the JSON files into SQLite
 
 ## DATABASE SCHEMA
 
@@ -74,6 +77,7 @@ erDiagram
         int defendant_id PK
         string first_name
         string last_name
+        string sex
         string occupation
         text relationships_and_details
         text prior_convictions
@@ -160,6 +164,5 @@ Location entities for tracking addresses and case locations.
 - **INVOLVED_PERSONS**: Links other persons to cases with their roles
 
 ## Notes
-- Future entities (RECOGNIZANCE, INDICTMENT) to be added later
 - Offence dates are decomposed into separate fields for analysis
 - Raw historical records preserved in `raw_record` field
