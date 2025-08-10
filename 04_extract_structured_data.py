@@ -1,7 +1,7 @@
 import os
 import json
 from typing import Optional, List
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 from openai import OpenAI
 
 # === Configuration ===
@@ -49,13 +49,13 @@ class RecordSchema(BaseModel):
     raw_record: str
     archive_url: str
     defendants: List[Defendant]
-    involved_persons: List[InvolvedPerson]
+    involved_persons: Optional[List[InvolvedPerson]] = Field(default_factory=list)
     offence_type: Optional[str] = None
     offence_town: Optional[str] = None
     offence_street: Optional[str] = None
     court: Court
 
-# Create function schema for RecordSchema
+# Build function schema for function-calling
 function_schema = {
     "name": "extract_record",
     "description": "Extract structured court record data",
@@ -64,7 +64,8 @@ function_schema = {
 
 SYSTEM_PROMPT = (
     "You are an assistant that extracts court record data. "
-    "Return exactly one structured JSON matching the schema."
+    "Return exactly one structured JSON matching the schema. "
+    "Always include 'involved_persons' (empty list if none)."
 )
 
 MODEL_FALLBACKS = ["gpt-3.5-turbo", "gpt-4"]
@@ -76,7 +77,7 @@ def extract_structured(content: str):
                 model=model,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": content}
+                    {"role": "user", "content": content},
                 ],
                 functions=[function_schema],
                 function_call="auto"
@@ -107,7 +108,7 @@ def process_file(filename: str) -> bool:
 
     try:
         args = extract_structured(content)
-        record = RecordSchema.parse_obj(args)
+        record = RecordSchema.model_validate(args)
         write_json(success_path, record.model_dump())
         print(f"Success: {filename}")
         return True

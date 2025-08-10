@@ -1,0 +1,44 @@
+{
+  "reference_number": "QSB 1834 1/10/32",
+  "conviction_date": "2 Nov 1833",
+  "offence_date": "30 October 1833",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of William Bell and Joseph Newton for trespassing in the daytime in search of game on the lands of the Earl of Mulgrave",
+  "sentencing": null,
+  "raw_record": "Summary conviction: William Bell and Joseph Newton,2 Nov 1833,Summary conviction of William Bell and Joseph Newton for trespassing in the daytime in search of game on the lands of the Earl of MulgraveOffence committed at the township of Lythe on 30 October 1833Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q1%2f10%2f32&pos=11167",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Bell",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    },
+    {
+      "first_name": "Joseph",
+      "last_name": "Newton",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": "Lythe",
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

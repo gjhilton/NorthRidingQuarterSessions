@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1834 1/10/34",
+  "conviction_date": "5 Nov 1833",
+  "offence_date": "1 November 1833",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Assaulting Isabella Jolly of the township of Whitby spinster",
+  "sentencing": null,
+  "raw_record": "Summary conviction of Sarah Anderson wife of Enock Anderson of Whitby tailor for assaulting Isabella Jolly of the township of Whitby spinster",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1834-Q1%2f10%2f34&pos=11169",
+  "defendants": [
+    {
+      "first_name": "Sarah",
+      "last_name": "Anderson",
+      "occupation": "Wife of Enock Anderson",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Isabella",
+      "last_name": "Jolly",
+      "occupation": null,
+      "other_details": null,
+      "role": null,
+      "town": "Township of Whitby",
+      "street": null
+    }
+  ],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}
