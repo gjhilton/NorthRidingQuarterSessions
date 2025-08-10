@@ -1,13 +1,18 @@
+
+
 import os
 import json
-import openai
 from typing import Optional, List
 from pydantic import BaseModel, ValidationError
+from openai import OpenAI
 
-# === Configuration ===
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# === Config ===
+openai_api_key = os.getenv("OPENAI_KEY")
+client = OpenAI(api_key=openai_api_key)
+
 INPUT_DIR = "./data/summary_convictions"
 OUTPUT_DIR = "./data/structured"
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 SYSTEM_PROMPT = """
@@ -78,7 +83,7 @@ class RecordSchema(BaseModel):
 
 def call_openai_model(content: str, model: str) -> Optional[str]:
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT.strip()},
@@ -86,7 +91,7 @@ def call_openai_model(content: str, model: str) -> Optional[str]:
             ],
             temperature=0,
         )
-        return response.choices[0].message["content"]
+        return response.choices[0].message.content
     except Exception as e:
         print(f"OpenAI API error ({model}): {e}")
         return None
@@ -120,7 +125,7 @@ def process_single_file(filename: str) -> bool:
 
     if not result:
         print("↪️ GPT-3.5 failed, retrying with GPT-4...")
-        result = call_openai_model(content, "gpt-4-turbo")
+        result = call_openai_model(content, "gpt-4")
 
     if not result:
         print(f"❌ Both GPT-3.5 and GPT-4 calls failed for {filename}")
@@ -158,6 +163,16 @@ def process_all_files():
 if __name__ == "__main__":
     # Example usage: process all files
     # process_all_files()
-
+    #print(os.getenv("OPENAI_KEY"))
     # Or for quick testing, uncomment and use:
     process_single_file("QSB_1864_4-10-16-1.txt")
+    #client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
+#
+    #response = client.chat.completions.create(
+   #     model="gpt-3.5-turbo",
+   #     messages=[
+  #          {"role": "system", "content": "Say hello"},
+ #           {"role": "user", "content": "Hi there!"}
+  #      ],
+ #   )
+  #  print(response.choices[0].message.content)
