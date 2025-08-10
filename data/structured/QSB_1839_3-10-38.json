@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1839 3/10/38",
+  "conviction_date": "8 Jun 1839",
+  "offence_date": null,
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Isaac Leadley Tose apprentice to William Burn of the township of Whitby cabinet maker for absenting himself without leave for three days",
+  "sentencing": null,
+  "raw_record": "Summary conviction of Isaac Leadley Tose apprentice to William Burn of the township of Whitby cabinet maker for absenting himself without leave for three days",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q3%2f10%2f38&pos=8580",
+  "defendants": [
+    {
+      "first_name": "Isaac",
+      "last_name": "Tose",
+      "occupation": "apprentice",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

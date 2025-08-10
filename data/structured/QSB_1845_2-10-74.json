@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1845 2/10/74",
+  "conviction_date": "10 Sep 1844",
+  "offence_date": "6 September 1844",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of John Reed of the township of Whitby blacksmith for assaulting Jane Reed his wife, by striking her several times on the head with great force and violence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Reed of the township of Whitby blacksmith for assaulting Jane Reed his wife, by striking her several times on the head with great force and violenceOffence committed at the township of Whitby on 6 September 1844Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q2%2f10%2f74&pos=5295",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Reed",
+      "occupation": "blacksmith",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Jane",
+      "last_name": "Reed",
+      "occupation": null,
+      "other_details": null,
+      "role": "wife",
+      "town": null,
+      "street": null
+    }
+  ],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

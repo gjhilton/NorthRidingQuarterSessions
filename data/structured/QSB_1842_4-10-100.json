@@ -1,0 +1,44 @@
+{
+  "reference_number": "QSB 1842 4/10/100",
+  "conviction_date": "16 Jul 1842",
+  "offence_date": "15 July 1842",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Charles Bradley and Catherine Bradley for begging",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction: Charles Bradley and Catherine Bradley,16 Jul 1842,Summary conviction of Charles Bradley and Catherine Bradley for beggingOffence committed at the township of Whitby on 15 July 1842Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f100&pos=7278",
+  "defendants": [
+    {
+      "first_name": "Charles",
+      "last_name": "Bradley",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    },
+    {
+      "first_name": "Catherine",
+      "last_name": "Bradley",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1835 1/10/62",
+  "conviction_date": "9 Dec 1834",
+  "offence_date": null,
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of George Williams for being a vagrant, he having been previously convicted of being an idle and disorderly person",
+  "sentencing": null,
+  "raw_record": "Summary conviction: George Williams,9 Dec 1834,Summary conviction of George Williams for being a vagrant, he having been previously convicted of being an idle and disorderly personOffence committed at the parish of Whitby on 8 December 1834",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1835-Q1%2f10%2f62&pos=10793",
+  "defendants": [
+    {
+      "first_name": "George",
+      "last_name": "Williams",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

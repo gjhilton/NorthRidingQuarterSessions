@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1845 2/10/78",
+  "conviction_date": "19 Feb 1845",
+  "offence_date": "19 February 1845",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of William Ainger for lodging in a barn with no visible means of subsistence and not giving a good account of himself",
+  "sentencing": null,
+  "raw_record": "Summary conviction: William Ainger,19 Feb 1845,Summary conviction of William Ainger for lodging in a barn with no visible means of subsistence and not giving a good account of himselfOffence committed at the township of Barnby on 19 February 1845",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q2%2f10%2f78&pos=5299",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Ainger",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -53,7 +53,7 @@ class RecordSchema(BaseModel):
     offence_type: Optional[str] = None
     offence_town: Optional[str] = None
     offence_street: Optional[str] = None
-    court: Court
+    court: Optional[Court] = None  # Now optional with default None
 
 # Build function schema for function-calling
 function_schema = {
@@ -65,7 +65,8 @@ function_schema = {
 SYSTEM_PROMPT = (
     "You are an assistant that extracts court record data. "
     "Return exactly one structured JSON matching the schema. "
-    "Always include 'involved_persons' (empty list if none)."
+    "Always include 'involved_persons' (empty list if none). "
+    "If 'court' is missing, it's okay to omit or return None."
 )
 
 MODEL_FALLBACKS = ["gpt-3.5-turbo", "gpt-4"]

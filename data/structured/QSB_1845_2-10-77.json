@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1845 2/10/77",
+  "conviction_date": "29 Jan 1845",
+  "offence_date": "2 Oct 1877",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Wardale Harland for refusing to maintain his family whereby his two children became chargeable to the township of Whitby. Harland already had been convicted as an idle and disorderly person on 21 December 1839",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Wardale Harland for refusing to maintain his family whereby his two children became chargeable to the township of Whitby. Harland already had been convicted as an idle and disorderly person on 21 December 1839",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q2%2f10%2f77&pos=5298",
+  "defendants": [
+    {
+      "first_name": "Wardale",
+      "last_name": "Harland",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": "Idle and disorderly person on 21 December 1839",
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1845 2/10/75",
+  "conviction_date": "18 Jan 1845",
+  "offence_date": "2 January 1845",
+  "offence_day_of_week": null,
+  "offence_day_of_month": null,
+  "offence_year": null,
+  "offence_time": null,
+  "charge_description": "Summary conviction of Edward Genning for begging",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Edward Genning for begging",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q2%2f10%2f75&pos=5296",
+  "defendants": [
+    {
+      "first_name": "Edward",
+      "last_name": "Genning",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": null,
+      "sex": null
+    }
+  ],
+  "involved_persons": [],
+  "offence_type": null,
+  "offence_town": null,
+  "offence_street": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}
