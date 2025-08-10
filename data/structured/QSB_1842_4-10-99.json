@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1842 4/10/99",
+  "conviction_date": "12 Jul 1842",
+  "offence_date": "7 July 1842",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 7,
+  "offence_year": 1842,
+  "offence_time": null,
+  "charge_description": "lodging in the open air with no visible means of subsistence and not giving a good account of himself",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Foxton for lodging in the open air with no visible means of subsistence and not giving a good account of himself",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f99&pos=7277",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Foxton",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Hinderwell",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

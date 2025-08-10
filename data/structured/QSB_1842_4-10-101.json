@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1842 4/10/101",
+  "conviction_date": "23 Jul 1842",
+  "offence_date": "19 July 1842",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 19,
+  "offence_year": 1842,
+  "offence_time": null,
+  "charge_description": "Assaulting Elizabeth Trueman by striking her on the face and body with his hands",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of David Storrey of the township of Whitby blacksmith for assaulting Elizabeth Trueman wife of Charles Trueman of the township of Whitby mariner by striking her on the face and body with his hands",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f101&pos=7279",
+  "defendants": [
+    {
+      "first_name": "David",
+      "last_name": "Storrey",
+      "occupation": "blacksmith",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Elizabeth",
+      "last_name": "Trueman",
+      "occupation": "wife of Charles Trueman",
+      "other_details": null,
+      "role": "victim",
+      "town": "Whitby",
+      "street": null
+    },
+    {
+      "first_name": "Charles",
+      "last_name": "Trueman",
+      "occupation": "mariner",
+      "other_details": null,
+      "role": "victim's husband",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

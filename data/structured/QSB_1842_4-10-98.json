@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1842 4/10/98",
+  "conviction_date": "6 Jul 1842",
+  "offence_date": "1 July 1842",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 1,
+  "offence_year": 1842,
+  "offence_time": null,
+  "charge_description": "Assaulting William Wilkinson, a police officer, by striking him on the head with his hands and kicking him on the body with his feet",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Patrick Caulder Cawney of the city of Limerick coachmaker for assaulting William Wilkinson of the township of Whitby police officer by striking him on the head with his hands and kicking him on the body with his feet",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f98&pos=7276",
+  "defendants": [
+    {
+      "first_name": "Patrick",
+      "last_name": "Caulder Cawney",
+      "occupation": "Coachmaker",
+      "other_details": "City of Limerick",
+      "prior_convictions": null,
+      "town": "Limerick",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Wilkinson",
+      "occupation": "Police Officer",
+      "other_details": "Township of Whitby",
+      "role": "Victim",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Egton",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

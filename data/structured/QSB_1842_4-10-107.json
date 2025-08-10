@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1842 4/10/107",
+  "conviction_date": "4/10/1842",
+  "offence_date": "17 Sep 1842",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 15,
+  "offence_year": 1842,
+  "offence_time": null,
+  "charge_description": "Assaulting James Pearson by striking him on the arm and body",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Swales of the township of Whitby labourer for assaulting James Pearson of the township of Hawsker cum Stainsacre labourer by striking him on the arm and body",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f107&pos=7285",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Swales",
+      "occupation": "labourer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "James",
+      "last_name": "Pearson",
+      "occupation": "labourer",
+      "other_details": null,
+      "role": "victim",
+      "town": "Hawsker cum Stainsacre",
+      "street": null
+    }
+  ],
+  "offence_town": "Hawsker cum Stainsacre",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

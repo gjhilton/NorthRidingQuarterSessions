@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1842 4/10/109",
+  "conviction_date": "4 Oct 1842",
+  "offence_date": "29 September 1842",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 29,
+  "offence_year": 1842,
+  "offence_time": "",
+  "charge_description": "Assaulting William Brunton by striking him several times on the body and kicking him with great force and violence",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Thompson of the township of Whitby butcher for assaulting William Brunton of the township of Whitby butcher by striking him several times on the body and kicking him with his feet with great force and violence",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f109&pos=7287",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Thompson",
+      "occupation": "butcher",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Brunton",
+      "occupation": "butcher",
+      "other_details": "",
+      "role": "Assaulted",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

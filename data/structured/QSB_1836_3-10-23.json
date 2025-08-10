@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 3/10/23",
+  "conviction_date": "3 May 1836",
+  "offence_date": "1 May 1836",
+  "offence_day_of_week": "Sunday",
+  "offence_day_of_month": 1,
+  "offence_year": 1836,
+  "offence_time": "between 10.30 a.m. and 12.30 p.m.",
+  "charge_description": "Summary conviction of William Wormald of Whitby innkeeper for opening his house during the usual hours of divine service",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Wormald of Whitby innkeeper for opening his house during the usual hours of divine service between 10.30 a.m. and 12.30 p.m.; on the information of William Wilkinson",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q3%2f10%2f23&pos=11226",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Wormald",
+      "occupation": "innkeeper",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Wilkinson",
+      "occupation": "",
+      "other_details": "",
+      "role": "informant",
+      "town": "",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Opening house during divine service",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1842 4/10/97",
+  "conviction_date": "29 Jun 1842",
+  "offence_date": "28 June 1842",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 28,
+  "offence_year": 1842,
+  "offence_time": "",
+  "charge_description": "Summary conviction of Elizabeth Wilson for begging",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Elizabeth Wilson,29 Jun 1842,Summary conviction of Elizabeth Wilson for beggingOffence committed at the township of Ruswarp on 28 June 1842Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f97&pos=7275",
+  "defendants": [
+    {
+      "first_name": "Elizabeth",
+      "last_name": "Wilson",
+      "occupation": "",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "",
+      "street": "",
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Ruswarp",
+  "offence_street": "",
+  "offence_type": "Begging",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

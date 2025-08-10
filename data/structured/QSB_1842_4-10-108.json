@@ -1,0 +1,52 @@
+{
+  "reference_number": "QSB 1842 4/10/108",
+  "conviction_date": "4 Oct 1842",
+  "offence_date": "1 October 1842",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 1,
+  "offence_year": 1842,
+  "offence_time": "",
+  "charge_description": "Assaulting Sarah Hudson by striking her on the head with hands",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Elizabeth Wood of the township of Whitby singlewoman for assaulting Sarah Hudson wife of John Hudson of the township of Whitby labourer by striking her on the head with his hands",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f108&pos=7286",
+  "defendants": [
+    {
+      "first_name": "Elizabeth",
+      "last_name": "Wood",
+      "occupation": "singlewoman",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Sarah",
+      "last_name": "Hudson",
+      "occupation": "wife of John Hudson",
+      "other_details": "",
+      "role": "victim",
+      "town": "Whitby",
+      "street": ""
+    },
+    {
+      "first_name": "John",
+      "last_name": "Hudson",
+      "occupation": "labourer",
+      "other_details": "",
+      "role": "victim's husband",
+      "town": "Whitby",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

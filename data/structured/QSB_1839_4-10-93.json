@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1839 4/10/93",
+  "conviction_date": "9 Jul 1839",
+  "offence_date": "8 July 1839",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 8,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Playing a game of chance",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Hamilton Irvin for playing a game of chance in Ruswarp Street",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q4%2f10%2f93&pos=7529",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Irvin",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": "Ruswarp Street",
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Ruswarp",
+  "offence_street": "Ruswarp Street",
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

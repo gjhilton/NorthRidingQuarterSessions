@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1845 1/10/73",
+  "conviction_date": "24 Nov 1844",
+  "offence_date": "1 November 1844",
+  "offence_day_of_week": "Friday",
+  "offence_day_of_month": 1,
+  "offence_year": 1844,
+  "offence_time": null,
+  "charge_description": "Misconduct and ill-behaviour towards his master - absented himself from his master's service without leave",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of John Humphrey apprentice to Harrison Waller of the township of Lythe shoemaker for misconduct and ill-behaviour towards his master.  In particular, on 1 November 1844 Humphrey absented himself from his master's service without leave, and continued absent for a week. Case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q1%2f10%2f73&pos=5164",
+  "defendants": [
+    {
+      "first_name": "John",
+      "last_name": "Humphrey",
+      "occupation": "Apprentice",
+      "other_details": "Apprentice to Harrison Waller of the township of Lythe shoemaker",
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Harrison",
+      "last_name": "Waller",
+      "occupation": "Shoemaker",
+      "other_details": null,
+      "role": "Master",
+      "town": "Lythe",
+      "street": null
+    }
+  ],
+  "offence_town": "Lythe",
+  "offence_street": null,
+  "offence_type": "Misconduct and ill-behaviour towards master",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

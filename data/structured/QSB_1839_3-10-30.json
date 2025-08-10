@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1839 3/10/30",
+  "conviction_date": "20 Apr 1839",
+  "offence_date": "15 April 1839",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 15,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Refusing to unmoor the vessel called the Canegrove of Whitby when directed to do so by William Clark harbour master",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of David Elders of the township of Whitby pilot for refusing to unmoor the vessel called the Canegrove of Whitby when directed to do so by William Clark harbour master",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q3%2f10%2f30&pos=8576",
+  "defendants": [
+    {
+      "first_name": "David",
+      "last_name": "Elders",
+      "occupation": "pilot",
+      "other_details": "of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Clark",
+      "occupation": "harbour master",
+      "other_details": null,
+      "role": "directed to unmoor the vessel",
+      "town": null,
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

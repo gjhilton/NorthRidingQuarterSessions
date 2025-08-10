@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1836 3/10/20",
+  "conviction_date": "26 April 1836",
+  "offence_date": "23 April 1836",
+  "offence_day_of_week": "Unknown",
+  "offence_day_of_month": 23,
+  "offence_year": 1836,
+  "offence_time": "After dark",
+  "charge_description": "Leaving mahogany logs outside shop after dark",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Cavallier of Whitby cabinet maker for leaving mahogany logs outside his shop in Flowergate after dark",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q3%2f10%2f20&pos=11223",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Cavallier",
+      "occupation": "Cabinet maker",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "Flowergate",
+      "aliases": [],
+      "sex": "Male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "Flowergate",
+  "offence_type": "Leaving mahogany logs outside shop after dark",
+  "court": {
+    "location_town": "Unknown"
+  }
+}

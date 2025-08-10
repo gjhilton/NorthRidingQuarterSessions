@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1839 3/10/36",
+  "conviction_date": "11 May 1839",
+  "offence_date": "8 May 1839",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 8,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Assaulting Ralph Dowson by striking him on the face with his fist several times",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of James Ward of the township of Aislaby for assaulting Ralph Dowson of the township of Goathland labourer by striking him on the face with his fist several times",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q3%2f10%2f36&pos=8578",
+  "defendants": [
+    {
+      "first_name": "James",
+      "last_name": "Ward",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Aislaby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Ralph",
+      "last_name": "Dowson",
+      "occupation": "labourer",
+      "other_details": null,
+      "role": "victim",
+      "town": "Goathland",
+      "street": null
+    }
+  ],
+  "offence_town": "Aislaby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

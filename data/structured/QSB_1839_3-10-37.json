@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1839 3/10/37",
+  "conviction_date": "8 Jun 1839",
+  "offence_date": "3 June 1839",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 3,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "absenting himself without leave for three days",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Pearson, apprentice to William Burn of the township of Whitby, cabinet maker, for absenting himself without leave for three days. Offence committed on 3 June 1839. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q3%2f10%2f37&pos=8579",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Pearson",
+      "occupation": "apprentice to William Burn",
+      "other_details": "of the township of Whitby, cabinet maker",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Burn",
+      "occupation": "cabinet maker",
+      "other_details": null,
+      "role": "employer",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "absence without leave",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

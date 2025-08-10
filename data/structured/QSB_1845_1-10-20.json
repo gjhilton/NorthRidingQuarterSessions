@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1845 1/10/20",
+  "conviction_date": "1/10/20",
+  "offence_date": "30 Sep 1844",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 28,
+  "offence_year": 1844,
+  "offence_time": null,
+  "charge_description": "Encamping on the public highway",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Thomas Argument of the township of Whitby hawker for encamping on the public highway; on the information of William Barton",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q1%2f10%2f20&pos=5160",
+  "defendants": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Argument",
+      "occupation": "Hawker",
+      "other_details": "of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Barton",
+      "occupation": null,
+      "other_details": null,
+      "role": "Informant",
+      "town": null,
+      "street": null
+    }
+  ],
+  "offence_town": "Sand Hutton",
+  "offence_street": null,
+  "offence_type": "Encamping on the public highway",
+  "court": {
+    "location_town": "Claxton"
+  }
+}

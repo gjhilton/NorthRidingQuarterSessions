@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1842 4/10/105",
+  "conviction_date": "4/10/1842",
+  "offence_date": "13 Aug 1842",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 13,
+  "offence_year": 1842,
+  "offence_time": null,
+  "charge_description": "Assaulting Ann Scott",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Jeremiah Eskdale of the township of Whitby block and mast maker for assaulting Ann Scott of the township of Ruswarp singlewoman",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f105&pos=7283",
+  "defendants": [
+    {
+      "first_name": "Jeremiah",
+      "last_name": "Eskdale",
+      "occupation": "block and mast maker",
+      "other_details": "of the township of Whitby",
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Ann",
+      "last_name": "Scott",
+      "occupation": "singlewoman",
+      "other_details": "of the township of Ruswarp",
+      "role": "victim",
+      "town": "Ruswarp",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

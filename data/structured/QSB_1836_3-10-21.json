@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1836 3/10/21",
+  "conviction_date": "3 October 1836",
+  "offence_date": "3 May 1836",
+  "offence_day_of_week": "Tuesday",
+  "offence_day_of_month": 3,
+  "offence_year": 1836,
+  "offence_time": "between 10:30 a.m. and 12:30 p.m.",
+  "charge_description": "Summary conviction of Eleanor Creaser of Whitby innkeeper for opening her house during the usual hours of divine service",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Eleanor Creaser of Whitby innkeeper for opening her house during the usual hours of divine service between 10.30 a.m. and 12.30 p.m.; on the information of William Wilkinson",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1836-Q3%2f10%2f21&pos=11224",
+  "defendants": [
+    {
+      "first_name": "Eleanor",
+      "last_name": "Creaser",
+      "occupation": "innkeeper",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Wilkinson",
+      "occupation": "",
+      "other_details": "",
+      "role": "informant",
+      "town": "",
+      "street": ""
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": "",
+  "offence_type": "Opening premises during divine service",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

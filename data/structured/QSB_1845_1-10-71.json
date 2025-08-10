@@ -1,0 +1,44 @@
+{
+  "reference_number": "QSB 1845 1/10/71",
+  "conviction_date": "1/10/71",
+  "offence_date": "16 Nov 1844",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 15,
+  "offence_year": 1844,
+  "offence_time": null,
+  "charge_description": "begging",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of James Guy and George Orton for begging",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q1%2f10%2f71&pos=5162",
+  "defendants": [
+    {
+      "first_name": "James",
+      "last_name": "Guy",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "George",
+      "last_name": "Orton",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Ruswarp",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

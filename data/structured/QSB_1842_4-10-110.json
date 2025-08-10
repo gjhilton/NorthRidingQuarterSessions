@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1842 4/10/110",
+  "conviction_date": "4 Oct 1842",
+  "offence_date": "2 October 1842",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 2,
+  "offence_year": 1842,
+  "offence_time": "",
+  "charge_description": "behaving riotously and indecently in Grape Lane",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Margaret Gathsides, common prostitute, for behaving riotously and indecently in Grape Lane. Offence committed at the township of Whitby on 2 October 1842. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f110&pos=7288",
+  "defendants": [
+    {
+      "first_name": "Margaret",
+      "last_name": "Gathsides",
+      "occupation": "common prostitute",
+      "other_details": "",
+      "prior_convictions": "",
+      "town": "Whitby",
+      "street": "",
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": "Grape Lane",
+  "offence_type": "behaving riotously and indecently",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

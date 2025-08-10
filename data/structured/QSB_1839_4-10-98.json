@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1839 4/10/98",
+  "conviction_date": "26 Sep 1839",
+  "offence_date": "25 September 1839",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 25,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Absenting himself from his master's service",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Charles Alcrow apprentice to Thomas Marwood the younger of the township of Ruswarp shipowner for absenting himself from his master's service",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q4%2f10%2f98&pos=7534",
+  "defendants": [
+    {
+      "first_name": "Charles",
+      "last_name": "Alcrow",
+      "occupation": "apprentice",
+      "other_details": "apprentice to Thomas Marwood the younger of the township of Ruswarp shipowner",
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Thomas",
+      "last_name": "Marwood",
+      "occupation": "shipowner",
+      "other_details": "the younger",
+      "role": "master",
+      "town": "Ruswarp",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Summary conviction",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

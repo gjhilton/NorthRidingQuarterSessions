@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1842 4/10/106",
+  "conviction_date": "27 Aug 1842",
+  "offence_date": "3 August 1842",
+  "offence_day_of_week": "Wednesday",
+  "offence_day_of_month": 3,
+  "offence_year": 1842,
+  "offence_time": null,
+  "charge_description": "Refusing to maintain himself and his family",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Joseph Williamson for refusing to maintain himself and his family, whereby his wife and five children became chargeable to the township of Fylingdales",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1842-Q4%2f10%2f106&pos=7284",
+  "defendants": [
+    {
+      "first_name": "Joseph",
+      "last_name": "Williamson",
+      "occupation": null,
+      "other_details": null,
+      "prior_convictions": null,
+      "town": null,
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Fylingdales",
+  "offence_street": null,
+  "offence_type": null,
+  "court": {
+    "location_town": "Whitby"
+  }
+}

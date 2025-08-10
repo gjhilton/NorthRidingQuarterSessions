@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1839 4/10/89",
+  "conviction_date": "4/10/89",
+  "offence_date": "2 Jul 1839",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 1,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Driving two horses on the Whitby and Pickering railway",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Francis Thompson of the township of Hawsker cum Stainsacre farmer for driving two horses on the Whitby and Pickering railway; on the information of Alfred Jefferson of the township of Ruswarp collector of tolls on the Whitby and Pickering railway",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q4%2f10%2f89&pos=7525",
+  "defendants": [
+    {
+      "first_name": "Francis",
+      "last_name": "Thompson",
+      "occupation": "farmer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Hawsker cum Stainsacre",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "Alfred",
+      "last_name": "Jefferson",
+      "occupation": "collector of tolls on the Whitby and Pickering railway",
+      "other_details": null,
+      "role": "Informant",
+      "town": "Ruswarp",
+      "street": null
+    }
+  ],
+  "offence_town": "Hawsker cum Stainsacre",
+  "offence_street": null,
+  "offence_type": "Driving on railway",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

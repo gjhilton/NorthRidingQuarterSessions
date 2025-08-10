@@ -1,0 +1,33 @@
+{
+  "reference_number": "QSB 1845 1/10/70",
+  "conviction_date": "8 Nov 1844",
+  "offence_date": "6 April 1844",
+  "offence_day_of_week": "Saturday",
+  "offence_day_of_month": 6,
+  "offence_year": 1844,
+  "offence_time": null,
+  "charge_description": "not maintaining her three bastard children, namely Dorothy aged 10 years, William aged 7 years, and Jane aged 5 years, whereby they became chargeable to the township of Whitby",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Jane Harrison of the township of Whitby singlewoman for not maintaining her three bastard children, namely Dorothy aged 10 years, William aged 7 years, and Jane aged 5 years, whereby they became chargeable to the township of Whitby. Offence committed at the township of Whitby on 6 April 1844. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1845-Q1%2f10%2f70&pos=5161",
+  "defendants": [
+    {
+      "first_name": "Jane",
+      "last_name": "Harrison",
+      "occupation": "singlewoman",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "female"
+    }
+  ],
+  "involved_persons": [],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Failure to maintain children",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

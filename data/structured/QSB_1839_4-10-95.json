@@ -1,0 +1,43 @@
+{
+  "reference_number": "QSB 1839 4/10/95",
+  "conviction_date": "20 Aug 1839",
+  "offence_date": "16 August 1839",
+  "offence_day_of_week": "Thursday",
+  "offence_day_of_month": 16,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Assaulting William Thompson by striking him several times on the arms and shoulders with a stick",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of Edward Smith Wormald of the township of Newholm cum Dunsley farmer for assaulting William Thompson of the township of Whitby butcher, by striking him several times on the arms and shoulders with a stickOffence committed at the township of Whitby on 16 August 1839Division of Whitby Strand - case heard at Whitby",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q4%2f10%2f95&pos=7531",
+  "defendants": [
+    {
+      "first_name": "Edward",
+      "last_name": "Wormald",
+      "occupation": "farmer",
+      "other_details": "of the township of Newholm cum Dunsley",
+      "prior_convictions": null,
+      "town": "Newholm cum Dunsley",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "William",
+      "last_name": "Thompson",
+      "occupation": "butcher",
+      "other_details": "",
+      "role": "Assaulted",
+      "town": "Whitby",
+      "street": null
+    }
+  ],
+  "offence_town": "Whitby",
+  "offence_street": null,
+  "offence_type": "Assault",
+  "court": {
+    "location_town": "Whitby"
+  }
+}

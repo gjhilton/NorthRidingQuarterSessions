@@ -1,0 +1,54 @@
+{
+  "reference_number": "QSB 1839 4/10/96",
+  "conviction_date": "4/10/96",
+  "offence_date": "20 Aug 1839",
+  "offence_day_of_week": "Monday",
+  "offence_day_of_month": 20,
+  "offence_year": 1839,
+  "offence_time": null,
+  "charge_description": "Taking other than by angling five salmon trout value 5s, from the river Esk where John Elgie of the township of Ruswarp miller had a private right of fishing",
+  "sentencing": "Summary conviction",
+  "raw_record": "Summary conviction of William Pinkney Whitby shipwright and John Young sawyer, both of Whitby, for taking other than by angling five salmon trout value 5s, from the river Esk where John Elgie of the township of Ruswarp miller had a private right of fishing. Offence committed at the township of Sneaton on 10 August 1839. Case heard at Whitby.",
+  "archive_url": "https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1839-Q4%2f10%2f96&pos=7532",
+  "defendants": [
+    {
+      "first_name": "William",
+      "last_name": "Pinkney",
+      "occupation": "shipwright",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Young",
+      "occupation": "sawyer",
+      "other_details": null,
+      "prior_convictions": null,
+      "town": "Whitby",
+      "street": null,
+      "aliases": [],
+      "sex": "male"
+    }
+  ],
+  "involved_persons": [
+    {
+      "first_name": "John",
+      "last_name": "Elgie",
+      "occupation": "miller",
+      "other_details": null,
+      "role": "Owner of private fishing right",
+      "town": "Ruswarp",
+      "street": null
+    }
+  ],
+  "offence_town": "Sneaton",
+  "offence_street": null,
+  "offence_type": "Taking fish without permission",
+  "court": {
+    "location_town": "Whitby"
+  }
+}
