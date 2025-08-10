@@ -143,12 +143,24 @@ def process_single_file(filename: str) -> bool:
         write_json(failed_path, {"error": "Validation error", "raw_output": result})
         return False
 
-def process_all_files():
+def process_all_files(max_files: Optional[int] = None):
     input_files = sorted(f for f in os.listdir(INPUT_DIR) if f.endswith(".txt"))
     total = len(input_files)
     processed = success = failed = 0
 
     for idx, filename in enumerate(input_files, start=1):
+        if max_files is not None and processed >= max_files:
+            print(f"Reached max_files limit: {max_files}. Stopping.")
+            break
+
+        # Skip if output exists
+        base_name = filename.rsplit(".", 1)[0]
+        success_path = os.path.join(OUTPUT_DIR, f"{base_name}.json")
+        failed_path = os.path.join(OUTPUT_DIR, f"{base_name}__FAILED.json")
+        if os.path.exists(success_path) or os.path.exists(failed_path):
+            print(f"Skipping {filename}, output already exists.")
+            continue
+
         print(f"[{idx}/{total}] Processing {filename}")
         result = process_single_file(filename)
         processed += 1
@@ -158,14 +170,15 @@ def process_all_files():
             failed += 1
         print(f"Progress: {processed}/{total} | Success: {success} | Failed: {failed}\n")
 
-    print(f"Finished processing. Success: {success}, Failed: {failed}, Total: {processed}")
+    print(f"Finished processing. Success: {success}, Failed: {failed}, Total processed: {processed}")
+
 
 if __name__ == "__main__":
     # Example usage: process all files
     # process_all_files()
     #print(os.getenv("OPENAI_KEY"))
     # Or for quick testing, uncomment and use:
-    process_single_file("QSB_1864_4-10-16-1.txt")
+    process_single_file("QSB_1889_4-10-11-14.txt")
     #client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
 #
     #response = client.chat.completions.create(
