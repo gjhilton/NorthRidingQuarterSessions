@@ -1,49 +1,6 @@
-# NYCRO working papers of the North Riding Quarter Sessions Scraper
+# Historical Court Records Database - Entity Relationship Diagram
 
-## PYTHON SETUP
-
-### to clean install brew
-
-brew install pyenv pyenv-virtualenv
-(then add lines to .zshrc as instructed)
-brew uninstall --ignore-dependencies openssl readline
-/usr/bin/arch -arm64 brew install openssl gettext readline
-
-### this makes hashtools (and hence requests) work
-
-/usr/local/bin/brew uninstall --ignore-dependencies libb2
-arch -arm64 brew install libb2
-
-(to test do python3 then import hashtools)
-
-### to install a new python
-
-/usr/bin/arch -arm64 pyenv install 3.11.12
-
-### to make a new project 
-
-cd myproject
-pyenv virtualenv 3.11.12 myproject
-pyenv local myproject
-
-### to install a library
-
-python3 -m pip install requests
-
-## RUNNING THE PROJECT
-
-### Step 1:
-01_list_resources.py - executes a search against the QS Bundles collection, and generates a json file of matching resource ids and urls. 
-
-### Step 2:
-
-02_fetch_resources.py - downloads each record in the cached json file (with a pause so as not to DOS the server), and generates a CSV file of the data.
-
-### Step 3:
-
-eg: python3 -m 03_preprocess_resources.py
-
-## DATABASE SCHEMA
+This ERD represents the database schema for historical court records, focusing on Summary Convictions with supporting entities for defendants, persons, locations, and offence types.
 
 ```mermaid
 erDiagram
@@ -134,6 +91,8 @@ erDiagram
     PERSON }o--o| STREET : "street address"
     STREET }o--|| TOWN : "located in"
 ```
+
+## Entity Descriptions
 
 ### SUMMARY_CONVICTION
 Primary entity representing individual court cases with summary convictions for petty offences.
