@@ -1,11 +1,6 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 
-export interface NameCount {
-  name: string;
-  count: number;
-}
-
 export interface YearCount {
   year: number;
   count: number;
@@ -20,21 +15,6 @@ export interface Totals {
   rawCaseTotal: number;
 }
 
-export function offenceTypeBreakdown(limit = 15): NameCount[] {
-  return getDb()
-    .prepare(
-      `
-      SELECT COALESCE(ot.name, 'Unclassified') AS name, COUNT(*) AS count
-      FROM summary_conviction sc
-      LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
-      GROUP BY name
-      ORDER BY count DESC
-      LIMIT ?
-      `
-    )
-    .all(limit) as NameCount[];
-}
-
 export function convictionsByYear(): YearCount[] {
   return getDb()
     .prepare(
@@ -47,21 +27,6 @@ export function convictionsByYear(): YearCount[] {
       `
     )
     .all() as YearCount[];
-}
-
-export function convictionsByTown(limit = 15): NameCount[] {
-  return getDb()
-    .prepare(
-      `
-      SELECT t.name AS name, COUNT(*) AS count
-      FROM summary_conviction sc
-      JOIN town t ON t.id = sc.offence_location_town_id
-      GROUP BY t.name
-      ORDER BY count DESC
-      LIMIT ?
-      `
-    )
-    .all(limit) as NameCount[];
 }
 
 export function getTotals(): Totals {

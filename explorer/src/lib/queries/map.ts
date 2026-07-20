@@ -6,8 +6,8 @@ export interface TownCaseCount {
   count: number;
 }
 
-// Unlike dashboard.ts's convictionsByTown (top N for a bar chart), the map
-// needs every town with at least one case, not just the busiest ones.
+// The map needs every town with at least one case plotted, not just a
+// top-N slice.
 export function allTownCaseCounts(): TownCaseCount[] {
   return getDb()
     .prepare(

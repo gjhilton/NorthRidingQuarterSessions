@@ -8,7 +8,6 @@ const primaryLinks = [
 ];
 
 const insightsLinks = [
-  { href: "/dashboard", label: "Dashboard" },
   { href: "/trends", label: "Trends" },
   { href: "/map", label: "Map" },
   { href: "/streets", label: "Streets" },

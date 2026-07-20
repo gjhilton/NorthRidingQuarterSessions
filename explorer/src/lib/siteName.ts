@@ -1,5 +1,5 @@
 import "server-only";
-import { getTotals } from "@/lib/queries/dashboard";
+import { getTotals } from "@/lib/queries/stats";
 
 // The dataset's year range grows as extraction continues, so the site name
 // is derived from the data rather than hard-coded -- see Methodology for

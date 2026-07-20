@@ -7,7 +7,7 @@ import {
   topOccupations,
   townByYear,
 } from "@/lib/queries/trends";
-import { getTotals } from "@/lib/queries/dashboard";
+import { convictionsByYear, getTotals } from "@/lib/queries/stats";
 import { HorizontalBarStat } from "@/components/charts/BarStat";
 import { YearTrend } from "@/components/charts/YearTrend";
 import { CategoryBar } from "@/components/charts/CategoryBar";
@@ -16,6 +16,7 @@ import { Card, ChartTitle, EmptyState, PageContainer, PageTitle } from "@/compon
 
 export default function TrendsPage() {
   const totals = getTotals();
+  const convictionsPerYear = convictionsByYear();
   const offenceTypes = offenceTypeByYear();
   const towns = townByYear();
   const genderTrend = femalePercentByYear();
@@ -46,6 +47,18 @@ export default function TrendsPage() {
           </p>
         </Card>
       )}
+
+      <Card>
+        <ChartTitle>Convictions over time</ChartTitle>
+        <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+          The raw count behind every chart below — how many convictions are dated to each year.
+        </p>
+        {convictionsPerYear.length === 0 ? (
+          <EmptyState>No dated convictions yet.</EmptyState>
+        ) : (
+          <YearTrend data={convictionsPerYear} />
+        )}
+      </Card>
 
       <Card>
         <ChartTitle>Offence type composition over time</ChartTitle>

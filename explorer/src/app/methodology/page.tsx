@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
-import { getTotals } from "@/lib/queries/dashboard";
+import { getTotals } from "@/lib/queries/stats";
 import { Card, PageContainer, PageTitle } from "@/components/ui";
 
 export default function MethodologyPage() {
@@ -79,11 +79,14 @@ export default function MethodologyPage() {
           deliberately sampled to spread across decades rather than working through the archive
           in catalogue order, specifically so that partial coverage doesn&rsquo;t read as a
           skewed slice of one narrow period. Even so:{" "}
-          <strong>a partial corpus is still a partial corpus.</strong> Any pattern in Dashboard or
-          Trends — an offence type rising or falling, a year with more convictions than another —
-          may simply reflect which records happen to have been extracted yet, not a real
-          historical trend. Treat everything on those two pages as provisional until coverage is
-          much closer to complete.
+          <strong>a partial corpus is still a partial corpus.</strong> Any pattern on{" "}
+          <Link href="/trends" className={css({ color: "fgAccent" })}>
+            Trends
+          </Link>{" "}
+          — an offence type rising or falling, a year with more convictions than another — may
+          simply reflect which records happen to have been extracted yet, not a real historical
+          trend. Treat everything on that page as provisional until coverage is much closer to
+          complete.
         </p>
       </Section>
 

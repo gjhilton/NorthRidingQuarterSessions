@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
-import { convictionsByYear, getTotals } from "@/lib/queries/dashboard";
+import { convictionsByYear, getTotals } from "@/lib/queries/stats";
 import { Card, PageContainer, PageTitle, StatTile } from "@/components/ui";
 import { OnThisDay } from "@/components/OnThisDay";
 import { siteTitle } from "@/lib/siteName";
@@ -12,14 +12,9 @@ const sections = [
     description: "Paginated, filterable list of every summary conviction record.",
   },
   {
-    href: "/dashboard",
-    title: "Dashboard",
-    description: "Offence-type breakdown, convictions over time, geographic spread.",
-  },
-  {
     href: "/trends",
     title: "Trends",
-    description: "Change over time: offence mix, gender, geography, and how fast justice moved.",
+    description: "Convictions over time, offence mix, gender, geography, and how fast justice moved.",
   },
   {
     href: "/people",
