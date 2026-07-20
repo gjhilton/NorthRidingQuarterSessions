@@ -16,6 +16,17 @@ from qsrecords.views import create_views
 _COLUMN_ADDITIONS = [
     ("summary_conviction", "extraction_confidence", "VARCHAR"),
     ("summary_conviction", "uncertain_fields", "VARCHAR"),
+    ("summary_conviction", "petty_sessional_division_id", "INTEGER"),
+    ("summary_conviction", "monetary_value_raw", "VARCHAR"),
+    ("summary_conviction", "game_species", "VARCHAR"),
+    ("defendant", "age", "INTEGER"),
+    ("defendant", "marital_status", "VARCHAR"),
+    ("defendant", "relationship_type", "VARCHAR"),
+    ("defendant", "related_to_name", "VARCHAR"),
+    ("person", "age", "INTEGER"),
+    ("person", "marital_status", "VARCHAR"),
+    ("person", "relationship_type", "VARCHAR"),
+    ("person", "related_to_name", "VARCHAR"),
 ]
 
 

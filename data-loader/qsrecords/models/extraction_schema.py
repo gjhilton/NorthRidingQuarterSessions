@@ -33,6 +33,31 @@ class ExtractedDefendant(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     sex: Optional[Literal["male", "female"]] = None
+    age: Optional[int] = Field(
+        default=None,
+        description="Only if an exact age in years is explicitly stated (e.g. "
+        "'aged 11 years'). Do not estimate or infer from occupation/context.",
+    )
+    marital_status: Optional[Literal["single", "married", "widowed"]] = Field(
+        default=None,
+        description="Only if stated or directly implied by a term in the text "
+        "(e.g. 'singlewoman'/'spinster' -> single, 'widow'/'widower' -> widowed, "
+        "'wife of'/'husband of' -> married). Leave null if not indicated.",
+    )
+    relationship_type: Optional[str] = Field(
+        default=None,
+        description="If this person is identified in relation to another named "
+        "person, the relationship term the text uses -- e.g. 'wife', 'husband', "
+        "'widow', 'son', 'daughter', 'stepson', 'servant', 'master', 'employer', "
+        "'apprentice'. Use whatever term the source actually uses, don't force it "
+        "into a fixed list. Pair with related_to_name.",
+    )
+    related_to_name: Optional[str] = Field(
+        default=None,
+        description="The name of the person relationship_type is relative to "
+        "(e.g. 'Thomas Castello' for relationship_type='wife'). Null if "
+        "relationship_type is null.",
+    )
     occupation: Optional[str] = None
     relationships_and_details: Optional[str] = None
     prior_convictions: Optional[str] = None
@@ -49,6 +74,23 @@ class ExtractedDefendant(BaseModel):
 class ExtractedInvolvedPerson(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    age: Optional[int] = Field(
+        default=None,
+        description="Only if an exact age in years is explicitly stated. Do not "
+        "estimate or infer.",
+    )
+    marital_status: Optional[Literal["single", "married", "widowed"]] = Field(
+        default=None,
+        description="Same rules as ExtractedDefendant.marital_status.",
+    )
+    relationship_type: Optional[str] = Field(
+        default=None,
+        description="Same rules as ExtractedDefendant.relationship_type.",
+    )
+    related_to_name: Optional[str] = Field(
+        default=None,
+        description="Same rules as ExtractedDefendant.related_to_name.",
+    )
     occupation: Optional[str] = None
     relationships_and_details: Optional[str] = None
     role: Optional[str] = None
@@ -75,6 +117,26 @@ class ExtractedRecord(BaseModel):
     offence_town: Optional[str] = None
     offence_street: Optional[str] = None
     court_location_town: Optional[str] = None
+    petty_sessional_division: Optional[str] = Field(
+        default=None,
+        description="The named historic administrative division/wapentake the "
+        "case was heard under (e.g. 'Whitby Strand', 'Ryedale') -- just the "
+        "name itself, not the words 'Petty Sessional division' or 'wapentake'. "
+        "Distinct from court_location_town (the specific town).",
+    )
+    monetary_value_raw: Optional[str] = Field(
+        default=None,
+        description="The raw value/worth stated for stolen or damaged property, "
+        "exactly as written (e.g. 'value 6d', 'one-shillingsworth', 'value of "
+        "1s'). Only for theft/damage offences where an amount is explicitly "
+        "given -- do not compute or convert it.",
+    )
+    game_species: Optional[str] = Field(
+        default=None,
+        description="For poaching-type offences only: the specific species "
+        "mentioned, exactly as written (e.g. 'conies', 'salmon', 'game', "
+        "'pheasant'). Null for all other offence types.",
+    )
     defendants: list[ExtractedDefendant]
     involved_persons: list[ExtractedInvolvedPerson] = Field(default_factory=list)
 

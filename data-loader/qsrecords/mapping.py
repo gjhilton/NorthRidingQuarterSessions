@@ -22,7 +22,7 @@ from qsrecords.models.core import (
 )
 from qsrecords.models.extraction_schema import ExtractedRecord
 from qsrecords.models.raw import RawCase
-from qsrecords.models.reference import Street, Town
+from qsrecords.models.reference import PettySessionalDivision, Street, Town
 from qsrecords.offence_types import get_or_create_offence_type
 from qsrecords.text import normalize_key, normalize_name
 
@@ -57,6 +57,23 @@ def get_or_create_street(
     return street
 
 
+def get_or_create_petty_sessional_division(
+    session: Session, raw_name: Optional[str]
+) -> Optional[PettySessionalDivision]:
+    if not raw_name or not raw_name.strip():
+        return None
+    key = normalize_key(raw_name)
+    existing = session.exec(
+        select(PettySessionalDivision).where(PettySessionalDivision.name == key)
+    ).first()
+    if existing:
+        return existing
+    division = PettySessionalDivision(name=key)
+    session.add(division)
+    session.flush()
+    return division
+
+
 def persist_extracted_record(
     session: Session, raw_case: RawCase, extracted: ExtractedRecord
 ) -> SummaryConviction:
@@ -69,6 +86,9 @@ def persist_extracted_record(
         session, extracted.offence_street, offence_town.id if offence_town else None
     )
     court_town = get_or_create_town(session, extracted.court_location_town)
+    petty_sessional_division = get_or_create_petty_sessional_division(
+        session, extracted.petty_sessional_division
+    )
 
     conviction = SummaryConviction(
         raw_case_id=raw_case.id,
@@ -91,6 +111,11 @@ def persist_extracted_record(
         archive_url=raw_case.archive_url,
         extraction_confidence=extracted.overall_confidence,
         uncertain_fields=", ".join(extracted.uncertain_fields) or None,
+        petty_sessional_division_id=(
+            petty_sessional_division.id if petty_sessional_division else None
+        ),
+        monetary_value_raw=extracted.monetary_value_raw,
+        game_species=extracted.game_species,
     )
     session.add(conviction)
     session.flush()
@@ -104,6 +129,10 @@ def persist_extracted_record(
             first_name=extracted_defendant.first_name,
             last_name=extracted_defendant.last_name,
             sex=extracted_defendant.sex,
+            age=extracted_defendant.age,
+            marital_status=extracted_defendant.marital_status,
+            relationship_type=extracted_defendant.relationship_type,
+            related_to_name=extracted_defendant.related_to_name,
             occupation=extracted_defendant.occupation,
             relationships_and_details=extracted_defendant.relationships_and_details,
             prior_convictions=extracted_defendant.prior_convictions,
@@ -134,6 +163,10 @@ def persist_extracted_record(
         person = Person(
             first_name=extracted_person.first_name,
             last_name=extracted_person.last_name,
+            age=extracted_person.age,
+            marital_status=extracted_person.marital_status,
+            relationship_type=extracted_person.relationship_type,
+            related_to_name=extracted_person.related_to_name,
             occupation=extracted_person.occupation,
             relationships_and_details=extracted_person.relationships_and_details,
             town_id=town.id if town else None,

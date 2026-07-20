@@ -33,3 +33,17 @@ class OffenceType(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(unique=True, index=True)
     is_seeded: bool = Field(default=False)  # True = curated seed list, False = LLM-proposed
+
+
+class PettySessionalDivision(SQLModel, table=True):
+    """The historic administrative/jurisdictional division a case was heard
+    under (e.g. "whitby strand", "ryedale") -- distinct from the town a case
+    was heard *in*. A bounded, repeated vocabulary like Town/OffenceType
+    (dozens of divisions across the whole North Riding, not thousands), so
+    it gets the same get-or-create dedup treatment rather than being stored
+    as a free-text column."""
+
+    __tablename__ = "petty_sessional_division"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(unique=True, index=True)

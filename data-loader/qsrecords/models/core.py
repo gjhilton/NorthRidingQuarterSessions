@@ -47,6 +47,12 @@ class SummaryConviction(SQLModel, table=True):
     extraction_confidence: Optional[str] = None
     uncertain_fields: Optional[str] = None  # comma-separated field names, or None
 
+    petty_sessional_division_id: Optional[int] = Field(
+        default=None, foreign_key="petty_sessional_division.id"
+    )
+    monetary_value_raw: Optional[str] = None  # e.g. "value 6d", "one-shillingsworth"
+    game_species: Optional[str] = None  # poaching offences only, e.g. "conies", "salmon"
+
 
 class Defendant(SQLModel, table=True):
     __tablename__ = "defendant"
@@ -55,6 +61,10 @@ class Defendant(SQLModel, table=True):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     sex: Optional[str] = None
+    age: Optional[int] = None
+    marital_status: Optional[str] = None
+    relationship_type: Optional[str] = None  # e.g. "wife", "servant" -- pairs with related_to_name
+    related_to_name: Optional[str] = None
     occupation: Optional[str] = None
     relationships_and_details: Optional[str] = None
     prior_convictions: Optional[str] = None
@@ -80,6 +90,10 @@ class Person(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    age: Optional[int] = None
+    marital_status: Optional[str] = None
+    relationship_type: Optional[str] = None
+    related_to_name: Optional[str] = None
     occupation: Optional[str] = None
     relationships_and_details: Optional[str] = None
     town_id: Optional[int] = Field(default=None, foreign_key="town.id")

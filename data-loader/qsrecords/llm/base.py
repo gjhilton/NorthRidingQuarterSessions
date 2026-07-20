@@ -45,6 +45,29 @@ is not an offence category.
 court_location_town, defendants, involved_persons: extracted as described in the \
 schema. Leave a field null/empty if the information isn't present in the text -- \
 do not guess or hallucinate.
+- petty_sessional_division: the named historic administrative division/wapentake \
+the case was heard under, if stated (e.g. "Whitby Strand", "Ryedale") -- just the \
+name, not the words "Petty Sessional division" or "wapentake" themselves. This is \
+distinct from court_location_town.
+- monetary_value_raw: for theft or damage offences only, the raw value/worth \
+exactly as stated (e.g. "value 6d", "one-shillingsworth", "value of 1s"). Null if \
+no amount is given.
+- game_species: for poaching-type offences only, the specific species mentioned \
+exactly as written (e.g. "conies", "salmon", "game", "pheasant"). Null for every \
+other offence type.
+- For each defendant and involved person -- age: ONLY if an exact age in years is \
+explicitly stated (e.g. "aged 11 years"). Never estimate or infer an age from \
+occupation, relationships, or any other context.
+- For each defendant and involved person -- marital_status: only if stated or \
+directly implied by a specific term in the text ("singlewoman"/"spinster" -> \
+single, "widow"/"widower" -> widowed, "wife of"/"husband of" -> married). Leave \
+null otherwise -- do not infer marital status from a surname or from context alone.
+- For each defendant and involved person -- relationship_type and related_to_name: \
+if this person is identified in relation to another named person, capture the \
+relationship term the text itself uses (e.g. "wife", "husband", "widow", "son", \
+"daughter", "stepson", "servant", "master", "employer", "apprentice" -- use \
+whatever term appears, do not force it into this list) plus the other person's \
+name in related_to_name. Both null if no such relationship is stated.
 - overall_confidence: "high" if the text was clear throughout, "medium" if one or \
 two fields were uncertain (damaged text, ambiguous handwriting transcription, an \
 inference rather than something stated outright), "low" if you had to guess at \
