@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
 import {
+  getAdjacentConvictionIds,
   getConvictionDefendants,
   getConvictionDetail,
   getConvictionInvolvedPersons,
@@ -10,6 +11,7 @@ import {
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { toSlug } from "@/lib/slug";
 import { titleCase } from "@/lib/text";
+import { CopyCitationButton } from "@/components/CopyCitationButton";
 
 // The dataset is static, so every conviction detail page can be prerendered
 // at build time -- only free-text search/filtering (in BrowseExplorer) needs
@@ -28,13 +30,39 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
 
   const defendants = getConvictionDefendants(convictionId);
   const involvedPersons = getConvictionInvolvedPersons(convictionId);
+  const { prevId, nextId } = getAdjacentConvictionIds(convictionId);
+  const citationText = `North Riding Quarter Sessions Bundles, ${conviction.reference_number}, North Yorkshire County Record Office, Archives Unlocked, ${conviction.archive_url}`;
 
   return (
     <PageContainer>
       <div>
-        <Link href="/browse" className={css({ fontSize: "sm", color: "fgMuted" })}>
-          ← Back to browse
-        </Link>
+        <div
+          className={css({
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          })}
+        >
+          <Link href="/browse" className={css({ fontSize: "sm", color: "fgMuted" })}>
+            ← Back to browse
+          </Link>
+          <div className={css({ display: "flex", gap: "3", fontSize: "sm" })}>
+            {prevId !== null ? (
+              <Link href={`/browse/${prevId}`} className={css({ color: "fgAccent" })}>
+                ← Previous
+              </Link>
+            ) : (
+              <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
+            )}
+            {nextId !== null ? (
+              <Link href={`/browse/${nextId}`} className={css({ color: "fgAccent" })}>
+                Next →
+              </Link>
+            ) : (
+              <span className={css({ color: "fgMuted", opacity: 0.5 })}>Next →</span>
+            )}
+          </div>
+        </div>
         <PageTitle subtitle={conviction.conviction_date ?? conviction.conviction_date_raw}>
           {conviction.reference_number}
         </PageTitle>
@@ -201,6 +229,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             </Link>{" "}
             for why.
           </p>
+          <CopyCitationButton text={citationText} />
         </Card>
       </Section>
     </PageContainer>

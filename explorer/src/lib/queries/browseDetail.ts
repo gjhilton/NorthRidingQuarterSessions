@@ -70,6 +70,24 @@ export function listConvictionIds(): number[] {
   return selectColumn<number>(`SELECT id FROM summary_conviction`, "id");
 }
 
+export interface AdjacentConvictionIds {
+  prevId: number | null;
+  nextId: number | null;
+}
+
+// Stepping by id, not by any date/reference ordering -- ids reflect
+// extraction order, not a claim about chronological or archival sequence,
+// but they're the one ordering every record always has.
+export function getAdjacentConvictionIds(id: number): AdjacentConvictionIds {
+  const { prevId } = getDb()
+    .prepare(`SELECT MAX(id) AS prevId FROM summary_conviction WHERE id < ?`)
+    .get(id) as { prevId: number | null };
+  const { nextId } = getDb()
+    .prepare(`SELECT MIN(id) AS nextId FROM summary_conviction WHERE id > ?`)
+    .get(id) as { nextId: number | null };
+  return { prevId, nextId };
+}
+
 export function getConvictionDetail(id: number): ConvictionDetail | undefined {
   return getDb()
     .prepare(
