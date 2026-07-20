@@ -7,6 +7,7 @@ const links = [
   { href: "/trends", label: "Trends" },
   { href: "/people", label: "People" },
   { href: "/data-quality", label: "Data quality" },
+  { href: "/methodology", label: "Methodology" },
 ];
 
 export default function Nav() {

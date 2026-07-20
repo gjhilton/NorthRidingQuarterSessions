@@ -29,6 +29,11 @@ const sections = [
     title: "Data quality",
     description: "Repeated names, unreviewed offence categories, extraction failures.",
   },
+  {
+    href: "/methodology",
+    title: "Methodology",
+    description: "Where this data comes from, its coverage, and what to treat with caution.",
+  },
 ];
 
 function decadesCovered(years: { year: number }[]): string {
