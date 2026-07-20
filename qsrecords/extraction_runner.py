@@ -15,6 +15,7 @@ discards the already-mapped rows for records 1-22 too.
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 from uuid import uuid4
 
 from sqlmodel import Session, select
@@ -30,6 +31,29 @@ class RunStats:
     processed: int
     succeeded: int
     failed: int
+
+
+def count_pending(session: Session) -> int:
+    return len(session.exec(select(RawCase.id).where(RawCase.status == RawCaseStatus.PENDING)).all())
+
+
+def get_pending_inputs(session: Session, limit: Optional[int] = None) -> list[ExtractionBatchInput]:
+    """Fetch pending raw_case rows (up to `limit`, or all pending if None) as
+    ExtractionBatchInput, for cost estimation before a run starts."""
+    stmt = select(RawCase).where(RawCase.status == RawCaseStatus.PENDING).order_by(RawCase.id)
+    if limit is not None:
+        stmt = stmt.limit(limit)
+    rows = session.exec(stmt).all()
+    return [
+        ExtractionBatchInput(
+            raw_case_id=rc.id,
+            reference_number=rc.reference_number,
+            title=rc.title,
+            description=rc.description,
+            archive_url=rc.archive_url,
+        )
+        for rc in rows
+    ]
 
 
 def _record_failure(
