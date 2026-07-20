@@ -26,6 +26,11 @@ const sections = [
     description: "Look up a defendant or involved person and trace their connections.",
   },
   {
+    href: "/streets",
+    title: "Streets",
+    description: "Browse by street — every extracted case tied to a named street.",
+  },
+  {
     href: "/data-quality",
     title: "Data quality",
     description: "Repeated names, unreviewed offence categories, extraction failures.",
