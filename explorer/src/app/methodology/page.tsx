@@ -44,6 +44,30 @@ export default function MethodologyPage() {
         </p>
       </Section>
 
+      <Section title="Two different extraction paths">
+        <p>
+          Six fields — petty sessional division, monetary value, game species, and age/marital
+          status/relationship for defendants and involved persons — were added to the schema
+          partway through this project, after several hundred records had already been extracted
+          without them. Rather than leave those earlier records with permanent gaps, or re-spend
+          API budget re-running them through the pipeline for six fields, records 1&ndash;193 had
+          these six fields specifically backfilled by an LLM (Claude) reading each raw archivist
+          summary directly within a Claude Code development session — the same underlying task the
+          automated pipeline performs, but run once, manually, outside the documented
+          batch-extraction process.
+        </p>
+        <p>
+          This is recorded, not hidden: every summary conviction carries an{" "}
+          <code>extraction_attempt</code> audit row, and the backfilled records are distinguishable
+          from pipeline-extracted ones by <code>provider = &lsquo;claude-code-session&rsquo;</code>{" "}
+          and <code>batch_id = &lsquo;backfill-2026-07-20-6field&rsquo;</code> in that table. The
+          same extraction discipline applied to the automated pipeline applied here — fields were
+          only filled where the source text explicitly stated them, nothing was inferred or
+          guessed — but treat this as one further remove from the source, on top of the two
+          described above.
+        </p>
+      </Section>
+
       <Section title="How much of the archive is covered">
         <p>
           {totals.convictions.toLocaleString()} of {totals.rawCaseTotal.toLocaleString()} archive
