@@ -155,6 +155,30 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
           </p>
         </Card>
       </Section>
+
+      <Section title="Citing this record">
+        <Card>
+          <p className={css({ fontSize: "sm" })}>
+            North Riding Quarter Sessions Bundles, {conviction.reference_number}, North Yorkshire
+            County Record Office, Archives Unlocked,{" "}
+            <a
+              href={conviction.archive_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={css({ color: "fgAccent" })}
+            >
+              {conviction.archive_url}
+            </a>
+          </p>
+          <p className={css({ fontSize: "xs", color: "fgMuted", mt: "2" })}>
+            Cite the original archive record, not this site — see{" "}
+            <Link href="/methodology" className={css({ color: "fgAccent" })}>
+              Methodology
+            </Link>{" "}
+            for why.
+          </p>
+        </Card>
+      </Section>
     </PageContainer>
   );
 }
