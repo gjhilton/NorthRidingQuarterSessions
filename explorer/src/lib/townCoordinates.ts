@@ -20,6 +20,7 @@ export const TOWN_COORDINATES: Record<string, [number, number]> = {
   mickleby: [54.5157, -0.7057],
   fylingdales: [54.4183, -0.5333],
   hinderwell: [54.5389, -0.7757],
+  barnby: [54.4922, -0.6478],
   ellerby: [54.4967, -0.7256],
   ruswarp: [54.4728, -0.6142],
   "eskdaleside cum ugglebarnby": [54.4611, -0.6511],
