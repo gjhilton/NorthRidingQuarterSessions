@@ -3,6 +3,7 @@ import { css } from "styled-system/css";
 import { convictionsByYear, getTotals } from "@/lib/queries/dashboard";
 import { Card, PageContainer, PageTitle, StatTile } from "@/components/ui";
 import { OnThisDay } from "@/components/OnThisDay";
+import { siteTitle } from "@/lib/siteName";
 
 const sections = [
   {
@@ -62,9 +63,11 @@ export default function Home() {
 
   return (
     <PageContainer>
-      <PageTitle subtitle="North Riding Quarter Sessions — Whitby Summary Conviction records">
-        NRQS Explorer
+      <PageTitle subtitle="Summary Conviction records from the Quarter Sessions Bundles archive">
+        {siteTitle()}
       </PageTitle>
+
+      <OnThisDay />
 
       <Card className={css({ borderColor: "fgAccent" })}>
         <p className={css({ fontSize: "sm", color: "fgMuted" })}>
@@ -91,8 +94,6 @@ export default function Home() {
           }
         />
       </div>
-
-      <OnThisDay />
 
       <div
         className={css({

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { NavDropdown } from "@/components/NavDropdown";
+import { siteTitle } from "@/lib/siteName";
 
 const primaryLinks = [
   { href: "/browse", label: "Browse" },
@@ -20,6 +21,7 @@ const aboutLinks = [
 ];
 
 export default function Nav() {
+  const title = siteTitle();
   return (
     <header
       className={css({
@@ -35,6 +37,7 @@ export default function Nav() {
           px: "6",
           py: "4",
           display: "flex",
+          flexWrap: "wrap",
           alignItems: "center",
           gap: "8",
         })}
@@ -46,9 +49,10 @@ export default function Nav() {
             fontSize: "lg",
             fontWeight: "600",
             color: "fg",
+            whiteSpace: "nowrap",
           })}
         >
-          NRQS Explorer
+          {title}
         </Link>
         <ul className={css({ display: "flex", gap: "6", listStyle: "none", alignItems: "center" })}>
           {primaryLinks.map((link) => (

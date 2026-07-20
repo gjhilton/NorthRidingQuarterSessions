@@ -27,7 +27,7 @@ export function OnThisDay() {
   }, []);
 
   return (
-    <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+    <Card className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
       <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>
         On this day: {formatMonthDay(today)}
       </h2>
@@ -49,6 +49,6 @@ export function OnThisDay() {
           ))}
         </div>
       )}
-    </section>
+    </Card>
   );
 }
