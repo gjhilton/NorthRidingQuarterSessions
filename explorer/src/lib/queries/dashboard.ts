@@ -17,6 +17,7 @@ export interface Totals {
   involvedPersons: number;
   earliestYear: number | null;
   latestYear: number | null;
+  rawCaseTotal: number;
 }
 
 export function offenceTypeBreakdown(limit = 15): NameCount[] {
@@ -79,6 +80,9 @@ export function getTotals(): Totals {
       `SELECT MIN(offence_year) AS earliestYear, MAX(offence_year) AS latestYear FROM summary_conviction`
     )
     .get() as { earliestYear: number | null; latestYear: number | null };
+  const { rawCaseTotal } = db
+    .prepare(`SELECT COUNT(*) AS rawCaseTotal FROM raw_case`)
+    .get() as { rawCaseTotal: number };
 
-  return { convictions, defendants, involvedPersons, earliestYear, latestYear };
+  return { convictions, defendants, involvedPersons, earliestYear, latestYear, rawCaseTotal };
 }

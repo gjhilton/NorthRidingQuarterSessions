@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
-import { getTotals } from "@/lib/queries/dashboard";
+import { convictionsByYear, getTotals } from "@/lib/queries/dashboard";
 import { Card, PageContainer, PageTitle, StatTile } from "@/components/ui";
 
 const sections = [
@@ -31,14 +31,36 @@ const sections = [
   },
 ];
 
+function decadesCovered(years: { year: number }[]): string {
+  const decades = [...new Set(years.map((y) => Math.floor(y.year / 10) * 10))].sort(
+    (a, b) => a - b
+  );
+  if (decades.length === 0) return "none yet";
+  if (decades.length <= 6) return decades.map((d) => `${d}s`).join(", ");
+  return `${decades.length} different decades (${decades[0]}s–${decades[decades.length - 1]}s)`;
+}
+
 export default function Home() {
   const totals = getTotals();
+  const coveragePct = Math.round((totals.convictions / totals.rawCaseTotal) * 100);
 
   return (
     <PageContainer>
       <PageTitle subtitle="North Riding Quarter Sessions — Whitby Summary Conviction records">
         NRQS Explorer
       </PageTitle>
+
+      <Card className={css({ borderColor: "fgAccent" })}>
+        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+          <strong className={css({ color: "fg" })}>
+            {totals.convictions.toLocaleString()} of {totals.rawCaseTotal.toLocaleString()}
+          </strong>{" "}
+          archive records extracted so far ({coveragePct}%), spanning{" "}
+          {decadesCovered(convictionsByYear())}. Extraction is ongoing and sampled to cover
+          decades evenly rather than in archive order, but a partial corpus is still a partial
+          corpus — treat any pattern here as provisional until coverage is more complete.
+        </p>
+      </Card>
 
       <div className={css({ display: "flex", gap: "4", flexWrap: "wrap" })}>
         <StatTile label="Convictions" value={totals.convictions} />
