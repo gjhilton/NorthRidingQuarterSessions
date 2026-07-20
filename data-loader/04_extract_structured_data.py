@@ -68,12 +68,19 @@ def print_cost_estimate_and_confirm(
     return answer in ("y", "yes")
 
 
+def _positive_int(value: str) -> int:
+    parsed = int(value)
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError(f"must be a positive integer, got {value}")
+    return parsed
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--limit", type=int, default=None, help="Max records to process this run (default: all pending)."
+        "--limit", type=_positive_int, default=None, help="Max records to process this run (default: all pending)."
     )
-    parser.add_argument("--batch-size", type=int, default=None, help="Records per LLM call.")
+    parser.add_argument("--batch-size", type=_positive_int, default=None, help="Records per LLM call.")
     parser.add_argument("--provider", choices=["openai", "anthropic"], default=None)
     parser.add_argument("--model", default=None)
     parser.add_argument(

@@ -36,4 +36,4 @@ class FakeProvider:
             raise outcome
         if isinstance(outcome, type) and issubclass(outcome, Exception):
             raise outcome("scripted failure")
-        return outcome
+        return outcome, "fake raw response text"

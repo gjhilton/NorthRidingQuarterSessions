@@ -90,6 +90,8 @@ def estimate_total_cost(
     """
     if not pending_records:
         return None
+    if batch_size <= 0:
+        raise ValueError(f"batch_size must be positive, got {batch_size}")
 
     pricing = get_pricing(provider, model)
     if pricing is None:

@@ -26,7 +26,7 @@ class OpenAIProvider:
 
     def extract_batch(
         self, records: Sequence[ExtractionBatchInput]
-    ) -> list[ExtractionOutcome]:
+    ) -> tuple[list[ExtractionOutcome], str]:
         system_prompt = build_system_prompt(SEED_OFFENCE_TYPES)
         completion = self._client.chat.completions.create(
             model=self.model,
@@ -44,4 +44,4 @@ class OpenAIProvider:
             raise RuntimeError("OpenAI returned an empty response.")
 
         parsed = parse_batch_response(content)
-        return reconcile_batch_output(records, parsed.records)
+        return reconcile_batch_output(records, parsed.records), content

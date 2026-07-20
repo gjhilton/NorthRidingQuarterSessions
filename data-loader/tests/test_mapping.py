@@ -1,7 +1,7 @@
 from sqlmodel import select
 
 from qsrecords.mapping import persist_extracted_record
-from qsrecords.models.core import Defendant, SummaryConviction
+from qsrecords.models.core import Defendant
 from qsrecords.models.extraction_schema import ExtractedDefendant, ExtractedRecord
 from qsrecords.models.raw import RawCase
 from qsrecords.models.reference import Town

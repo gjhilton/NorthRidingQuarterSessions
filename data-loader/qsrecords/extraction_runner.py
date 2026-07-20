@@ -13,6 +13,7 @@ constraint violation on record 23 would force a session.rollback() that
 discards the already-mapped rows for records 1-22 too.
 """
 
+import time
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
@@ -63,6 +64,8 @@ def _record_failure(
     provider: ExtractionProvider,
     error_message: str,
     max_attempts: int,
+    raw_response: Optional[str] = None,
+    duration_ms: Optional[int] = None,
 ) -> None:
     raw_case.attempt_count += 1
     raw_case.last_attempted_at = datetime.utcnow()
@@ -80,6 +83,8 @@ def _record_failure(
             model=provider.model,
             success=False,
             error_message=error_message,
+            raw_response=raw_response,
+            duration_ms=duration_ms,
         )
     )
 
@@ -112,22 +117,30 @@ def run(
     ]
     batch_id = uuid4().hex
 
+    start = time.monotonic()
     try:
-        outcomes = provider.extract_batch(inputs)
+        outcomes, raw_response = provider.extract_batch(inputs)
     except Exception as exc:
+        duration_ms = int((time.monotonic() - start) * 1000)
         # Whole-batch transport failure (auth/network/rate-limit): every row
-        # in the batch gets one failed attempt, no partial silent loss.
+        # in the batch gets one failed attempt, no partial silent loss. No
+        # raw_response -- the call itself failed, there's no response text.
         for raw_case in batch:
-            _record_failure(session, raw_case, batch_id, provider, str(exc), max_attempts)
+            _record_failure(
+                session, raw_case, batch_id, provider, str(exc), max_attempts,
+                raw_response=None, duration_ms=duration_ms,
+            )
         session.commit()
         return RunStats(processed=len(batch), succeeded=0, failed=len(batch))
+    duration_ms = int((time.monotonic() - start) * 1000)
 
     succeeded = 0
     failed = 0
     for raw_case, outcome in zip(batch, outcomes):
         if isinstance(outcome, ExtractionError):
             _record_failure(
-                session, raw_case, batch_id, provider, outcome.error_message, max_attempts
+                session, raw_case, batch_id, provider, outcome.error_message, max_attempts,
+                raw_response=raw_response, duration_ms=duration_ms,
             )
             failed += 1
             continue
@@ -137,7 +150,8 @@ def run(
                 persist_extracted_record(session, raw_case, outcome)
         except Exception as exc:
             _record_failure(
-                session, raw_case, batch_id, provider, f"mapping error: {exc}", max_attempts
+                session, raw_case, batch_id, provider, f"mapping error: {exc}", max_attempts,
+                raw_response=raw_response, duration_ms=duration_ms,
             )
             failed += 1
             continue
@@ -152,6 +166,8 @@ def run(
                 provider=provider.name,
                 model=provider.model,
                 success=True,
+                raw_response=raw_response,
+                duration_ms=duration_ms,
             )
         )
         succeeded += 1

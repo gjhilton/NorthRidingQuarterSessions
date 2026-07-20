@@ -24,7 +24,7 @@ class AnthropicProvider:
 
     def extract_batch(
         self, records: Sequence[ExtractionBatchInput]
-    ) -> list[ExtractionOutcome]:
+    ) -> tuple[list[ExtractionOutcome], str]:
         system_prompt = build_system_prompt(SEED_OFFENCE_TYPES)
         # Plain text completion, not output_format= -- see qsrecords.llm.base
         # module docstring: Anthropic's schema-constrained decoding rejected
@@ -53,5 +53,6 @@ class AnthropicProvider:
         if not text_blocks:
             raise RuntimeError("Anthropic returned no text content.")
 
-        parsed = parse_batch_response("".join(text_blocks))
-        return reconcile_batch_output(records, parsed.records)
+        raw_text = "".join(text_blocks)
+        parsed = parse_batch_response(raw_text)
+        return reconcile_batch_output(records, parsed.records), raw_text

@@ -50,6 +50,34 @@ def test_all_succeed_marks_rows_done(session):
     assert len(session.exec(select(SummaryConviction)).all()) == 3
 
 
+def test_successful_attempt_records_raw_response_and_duration(session):
+    cases = _seed_raw_cases(session, 1)
+    provider = FakeProvider(plan=[[_extracted_for(cases[0])]])
+
+    extraction_runner.run(session, provider, batch_size=25, max_attempts=3)
+
+    attempt = session.exec(select(ExtractionAttempt)).one()
+    assert attempt.success is True
+    assert attempt.raw_response == "fake raw response text"
+    assert isinstance(attempt.duration_ms, int)
+    assert attempt.duration_ms >= 0
+
+
+def test_per_record_content_error_still_records_raw_response(session):
+    cases = _seed_raw_cases(session, 1)
+    outcomes = [ExtractionError(reference_number=cases[0].reference_number, error_message="bad")]
+    provider = FakeProvider(plan=[outcomes])
+
+    extraction_runner.run(session, provider, batch_size=25, max_attempts=3)
+
+    attempt = session.exec(select(ExtractionAttempt)).one()
+    assert attempt.success is False
+    # The batch call itself succeeded (we got a response) -- only this
+    # record's content was a problem -- so the raw response is still useful
+    # to have on hand for debugging, unlike a whole-batch transport failure.
+    assert attempt.raw_response == "fake raw response text"
+
+
 def test_partial_failure_only_retries_failed_rows(session):
     cases = _seed_raw_cases(session, 3)
     outcomes = [
@@ -92,6 +120,10 @@ def test_whole_batch_transport_error_bumps_every_row(session):
     attempts = session.exec(select(ExtractionAttempt)).all()
     assert len(attempts) == 2
     assert all(not a.success for a in attempts)
+    # No raw_response for a transport failure -- the call itself never
+    # returned anything to record.
+    assert all(a.raw_response is None for a in attempts)
+    assert all(isinstance(a.duration_ms, int) for a in attempts)
 
 
 def test_retry_cap_escalates_to_failed(session):

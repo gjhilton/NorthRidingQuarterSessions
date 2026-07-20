@@ -91,14 +91,17 @@ class ExtractionProvider(Protocol):
 
     def extract_batch(
         self, records: Sequence[ExtractionBatchInput]
-    ) -> list[ExtractionOutcome]:
+    ) -> tuple[list[ExtractionOutcome], str]:
         """Extract structured data for a batch of records.
 
-        Returns exactly one outcome per input record (matched by
-        reference_number, not position). Raises only on transport-level
-        failure (auth/network/rate-limit/refusal) -- per-record content
-        problems (e.g. a record the model couldn't make sense of) should
-        become an ExtractionError entry, not an exception.
+        Returns (outcomes, raw_response_text): exactly one outcome per input
+        record (matched by reference_number, not position), plus the full
+        raw text the model returned for this call -- stored verbatim on
+        every ExtractionAttempt row for this batch (success or failure) so a
+        bad response can be debugged without re-calling the LLM. Raises only
+        on transport-level failure (auth/network/rate-limit/refusal) --
+        per-record content problems (e.g. a record the model couldn't make
+        sense of) should become an ExtractionError entry, not an exception.
         """
         ...
 

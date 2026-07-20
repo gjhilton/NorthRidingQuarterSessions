@@ -1,5 +1,3 @@
-from datetime import date
-
 from sqlalchemy import text
 
 from qsrecords.models.core import Defendant, Person, InvolvedPerson, SummaryConviction, SummaryConvictionDefendant
