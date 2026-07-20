@@ -33,16 +33,21 @@ python3 01_list_resources.py
 # Step 2: Fetch individual records  
 python3 02_fetch_resources.py
 
-# Step 3: Extract Summary conviction records
-python3 -m 03_postprocess_resources.py
+# Step 3+: Stage records and run LLM extraction (data-loader/ -- see
+# data-loader/qsrecords for the SQLModel schema, pluggable LLM providers,
+# and cost-estimate-before-you-spend confirmation prompt)
+python3 data-loader/03_load_raw_cases.py
+python3 data-loader/04_extract_structured_data.py --provider anthropic
+
+# Data-quality reports (repeated names, unreviewed offence categories)
+python3 data-loader/report.py
 ```
 
 ### Database Operations
 ```bash
-# Initialize the database with schema
-python3 scratch/initialize_db.py
-
-# Database file location
+# Database file location (shared by 01/02's CSV output and data-loader/'s
+# SQLModel schema -- data-loader/ is one part of a larger project built on
+# top of this shared data/ directory)
 data/db.sqlite
 ```
 
@@ -79,9 +84,9 @@ The database implements a relational model with these core entities:
 - **OFFENCE_TYPE**: Standardized offense categorization
 
 ### File Structure
-- `data/` - Contains output files (JSON, CSV, SQLite database)
-- `scratch/` - Database initialization scripts and schema
-- Root level - Main processing scripts (01_, 02_, 03_)
+- `data/` - Shared output files (JSON, CSV, SQLite database), used by both the root-level scraper and data-loader/
+- `data-loader/` - The SQLModel/LLM-extraction pipeline (steps 3+): `qsrecords/` package, its tests, `03_load_raw_cases.py`, `04_extract_structured_data.py`, `report.py`. Self-contained (own `pyproject.toml`, `.env`) -- one part of a larger project
+- Root level - Scraper scripts (`01_list_resources.py`, `02_fetch_resources.py`)
 
 ## Important Implementation Details
 

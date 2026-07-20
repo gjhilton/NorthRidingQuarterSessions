@@ -18,10 +18,13 @@ from qsrecords.config import Settings
 from qsrecords.csv_ingest import load_raw_cases
 from qsrecords.db import get_session, init_db
 
+# Resolved relative to this file, not the CWD -- see qsrecords.config.
+_DEFAULT_CSV_PATH = Path(__file__).resolve().parent.parent / "data" / "whitby.csv"
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--csv-path", default="data/whitby.csv")
+    parser.add_argument("--csv-path", default=str(_DEFAULT_CSV_PATH))
     args = parser.parse_args()
 
     settings = Settings.from_env()
