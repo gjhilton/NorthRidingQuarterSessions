@@ -1,4 +1,5 @@
 import "server-only";
+import { Suspense } from "react";
 import { getDb } from "@/lib/db";
 import { listConvictions, PAGE_SIZE } from "@/lib/queries/browseList";
 import { listTowns, listOffenceTypes } from "@/lib/queries/filters";
@@ -19,12 +20,14 @@ export default function BrowsePage() {
   return (
     <PageContainer>
       <PageTitle>Browse</PageTitle>
-      <BrowseExplorer
-        initialRows={rows}
-        initialTotal={total}
-        towns={towns}
-        offenceTypes={offenceTypes}
-      />
+      <Suspense fallback={null}>
+        <BrowseExplorer
+          initialRows={rows}
+          initialTotal={total}
+          towns={towns}
+          offenceTypes={offenceTypes}
+        />
+      </Suspense>
     </PageContainer>
   );
 }

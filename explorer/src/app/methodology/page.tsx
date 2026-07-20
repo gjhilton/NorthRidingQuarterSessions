@@ -144,10 +144,10 @@ export default function MethodologyPage() {
           <Link href="/browse" className={css({ color: "fgAccent" })}>
             Browse
           </Link>{" "}
-          matches against the charge description, reference number, and defendant/involved-person
-          names. It does not currently match against offence type, sentencing text, or occupation
-          — searching &ldquo;poaching&rdquo; won&rsquo;t find a case classified under that offence
-          type unless the word itself appears in the charge description text.
+          matches against the charge description, reference number, offence type, sentencing text,
+          and defendant/involved-person names. It does not currently match against occupation —
+          searching &ldquo;butcher&rdquo; won&rsquo;t find a defendant with that occupation unless
+          the word itself appears elsewhere in the record.
         </p>
       </Section>
 

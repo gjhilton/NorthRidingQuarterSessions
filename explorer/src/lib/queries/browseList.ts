@@ -5,15 +5,44 @@ import type { DbLike } from "@/lib/dbTypes";
 
 export const PAGE_SIZE = 25;
 
+export type BrowseSortColumn =
+  | "reference_number"
+  | "conviction_date"
+  | "defendant_names"
+  | "offence_type_name"
+  | "location";
+
 export interface BrowseFilters {
   q?: string;
   townId?: number;
   offenceTypeId?: number;
   dateFrom?: string;
   dateTo?: string;
+  sortBy?: BrowseSortColumn;
+  sortDir?: "asc" | "desc";
   page: number;
   pageSize: number;
 }
+
+// Looked up rather than interpolating filters.sortBy directly, since it
+// ultimately comes from client-controlled state (and, once URL-synced,
+// straight from the query string) -- this keeps the ORDER BY clause to a
+// fixed set of known-safe expressions.
+const LOCATION_EXPR = "COALESCE(ot_town.name, court_town.name)";
+// valueExpr is the column/expression actually being sorted; nullsExpr (when
+// set) always sorts ascending so NULLs land last regardless of sort
+// direction, rather than jumping to the top when a descending sort is
+// applied to valueExpr.
+const SORT_EXPRESSIONS: Record<BrowseSortColumn, { nullsExpr?: string; valueExpr: string }> = {
+  reference_number: { valueExpr: "sc.reference_number" },
+  conviction_date: { nullsExpr: "sc.conviction_date IS NULL", valueExpr: "sc.conviction_date" },
+  defendant_names: { nullsExpr: "defendant_names IS NULL", valueExpr: "defendant_names" },
+  offence_type_name: {
+    nullsExpr: "offence_type_name IS NULL",
+    valueExpr: "offence_type_name",
+  },
+  location: { nullsExpr: `${LOCATION_EXPR} IS NULL`, valueExpr: LOCATION_EXPR },
+};
 
 export interface BrowseRow {
   id: number;
@@ -40,6 +69,11 @@ function buildWhere(filters: BrowseFilters): WhereClause {
     clauses.push(`(
       sc.charge_description LIKE @q
       OR sc.reference_number LIKE @q
+      OR sc.sentencing LIKE @q
+      OR EXISTS (
+        SELECT 1 FROM offence_type ot2
+        WHERE ot2.id = sc.offence_type_id AND ot2.name LIKE @q
+      )
       OR EXISTS (
         SELECT 1 FROM summary_conviction_defendant scd2
         JOIN defendant d2 ON d2.id = scd2.defendant_id
@@ -76,6 +110,16 @@ function buildWhere(filters: BrowseFilters): WhereClause {
   };
 }
 
+function buildOrderBy(filters: BrowseFilters): string {
+  const { nullsExpr, valueExpr } = SORT_EXPRESSIONS[filters.sortBy ?? "conviction_date"];
+  const dir = filters.sortDir === "asc" ? "ASC" : "DESC";
+  const terms = nullsExpr ? [`${nullsExpr} ASC`, `${valueExpr} ${dir}`] : [`${valueExpr} ${dir}`];
+  // Reference number as a final tiebreaker keeps the order stable when many
+  // rows share the same sorted value (e.g. the same conviction_date).
+  terms.push("sc.reference_number");
+  return terms.join(", ");
+}
+
 export function listConvictions(
   db: DbLike,
   filters: BrowseFilters
@@ -84,6 +128,7 @@ export function listConvictions(
   total: number;
 } {
   const { sql: whereSql, params } = buildWhere(filters);
+  const orderBySql = buildOrderBy(filters);
   const offset = (filters.page - 1) * filters.pageSize;
 
   const rows = db
@@ -109,7 +154,7 @@ export function listConvictions(
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
       LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
       ${whereSql}
-      ORDER BY sc.conviction_date IS NULL, sc.conviction_date DESC, sc.reference_number
+      ORDER BY ${orderBySql}
       LIMIT @limit OFFSET @offset
       `
     )

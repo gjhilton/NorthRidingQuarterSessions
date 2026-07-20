@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { css, cx } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
 import { downloadCsv } from "@/lib/csv";
@@ -10,6 +11,7 @@ import {
   PAGE_SIZE,
   type BrowseFilters,
   type BrowseRow,
+  type BrowseSortColumn,
 } from "@/lib/queries/browseList";
 import type { Option } from "@/lib/queries/filters";
 import { titleCase } from "@/lib/text";
@@ -22,6 +24,52 @@ const EXPORT_PAGE_SIZE = 1_000_000;
 
 const DEFAULT_FILTERS: BrowseFilters = { page: 1, pageSize: PAGE_SIZE };
 
+const SORT_COLUMNS: { key: BrowseSortColumn; label: string }[] = [
+  { key: "reference_number", label: "Reference" },
+  { key: "conviction_date", label: "Date" },
+  { key: "defendant_names", label: "Defendant(s)" },
+  { key: "offence_type_name", label: "Offence" },
+  { key: "location", label: "Location" },
+];
+
+const SORT_COLUMN_KEYS = new Set<string>(SORT_COLUMNS.map((c) => c.key));
+
+function isSortColumn(value: string | null): value is BrowseSortColumn {
+  return value !== null && SORT_COLUMN_KEYS.has(value);
+}
+
+// Bookmarkable/shareable search state -- read once on mount to hydrate a
+// filtered view from a pasted URL, and written back on every filter change.
+// Not used for the initial server-rendered (unfiltered) page load itself.
+function filtersFromSearchParams(params: URLSearchParams): BrowseFilters {
+  const get = (key: string) => params.get(key) ?? undefined;
+  const sortDir = get("dir");
+  return {
+    q: get("q"),
+    townId: get("town") ? Number(get("town")) : undefined,
+    offenceTypeId: get("offence") ? Number(get("offence")) : undefined,
+    dateFrom: get("from"),
+    dateTo: get("to"),
+    sortBy: isSortColumn(params.get("sort")) ? (params.get("sort") as BrowseSortColumn) : undefined,
+    sortDir: sortDir === "asc" || sortDir === "desc" ? sortDir : undefined,
+    page: get("page") ? Number(get("page")) : 1,
+    pageSize: PAGE_SIZE,
+  };
+}
+
+function searchParamsFromFilters(filters: BrowseFilters): string {
+  const params = new URLSearchParams();
+  if (filters.q) params.set("q", filters.q);
+  if (filters.townId) params.set("town", String(filters.townId));
+  if (filters.offenceTypeId) params.set("offence", String(filters.offenceTypeId));
+  if (filters.dateFrom) params.set("from", filters.dateFrom);
+  if (filters.dateTo) params.set("to", filters.dateTo);
+  if (filters.sortBy) params.set("sort", filters.sortBy);
+  if (filters.sortDir) params.set("dir", filters.sortDir);
+  if (filters.page > 1) params.set("page", String(filters.page));
+  return params.toString();
+}
+
 export function BrowseExplorer({
   initialRows,
   initialTotal,
@@ -33,6 +81,9 @@ export function BrowseExplorer({
   towns: Option[];
   offenceTypes: Option[];
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [filters, setFilters] = useState<BrowseFilters>(DEFAULT_FILTERS);
   const [rows, setRows] = useState(initialRows);
   const [total, setTotal] = useState(initialTotal);
@@ -43,6 +94,16 @@ export function BrowseExplorer({
   const { isPending: isExporting, run: runExport } = useClientQuery<BrowseRow[]>((exportRows) => {
     downloadCsv("nrqs-convictions.csv", exportRows);
   });
+
+  useEffect(() => {
+    if (searchParams.size === 0) return;
+    const urlFilters = filtersFromSearchParams(searchParams);
+    setFilters(urlFilters);
+    run((db) => listConvictions(db, urlFilters));
+    // Only hydrate from the URL once, on mount -- afterwards this component
+    // is the one writing to the URL (see runQuery), not reading from it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const isFiltered = Boolean(
@@ -56,6 +117,8 @@ export function BrowseExplorer({
   function runQuery(nextFilters: BrowseFilters) {
     setFilters(nextFilters);
     run((db) => listConvictions(db, nextFilters));
+    const qs = searchParamsFromFilters(nextFilters);
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -75,6 +138,21 @@ export function BrowseExplorer({
 
   function goToPage(page: number) {
     runQuery({ ...filters, page });
+  }
+
+  const effectiveSortBy = filters.sortBy ?? "conviction_date";
+  const effectiveSortDir = filters.sortDir ?? "desc";
+
+  function toggleSort(column: BrowseSortColumn) {
+    const isActive = column === effectiveSortBy;
+    const nextDir: "asc" | "desc" = isActive
+      ? effectiveSortDir === "asc"
+        ? "desc"
+        : "asc"
+      : column === "conviction_date"
+        ? "desc"
+        : "asc";
+    runQuery({ ...filters, sortBy: column, sortDir: nextDir, page: 1 });
   }
 
   return (
@@ -158,11 +236,32 @@ export function BrowseExplorer({
         <Table>
           <thead>
             <tr>
-              <Th>Reference</Th>
-              <Th>Date</Th>
-              <Th>Defendant(s)</Th>
-              <Th>Offence</Th>
-              <Th>Location</Th>
+              {SORT_COLUMNS.map(({ key, label }) => (
+                <Th key={key}>
+                  <button
+                    type="button"
+                    onClick={() => toggleSort(key)}
+                    className={css({
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1",
+                      bg: "transparent",
+                      border: "none",
+                      p: 0,
+                      m: 0,
+                      font: "inherit",
+                      color: "inherit",
+                      cursor: "pointer",
+                      _hover: { color: "fgAccent" },
+                    })}
+                  >
+                    {label}
+                    <span aria-hidden className={css({ fontSize: "2xs", opacity: key === effectiveSortBy ? 1 : 0.35 })}>
+                      {key === effectiveSortBy && effectiveSortDir === "asc" ? "▲" : "▼"}
+                    </span>
+                  </button>
+                </Th>
+              ))}
             </tr>
           </thead>
           <tbody>
