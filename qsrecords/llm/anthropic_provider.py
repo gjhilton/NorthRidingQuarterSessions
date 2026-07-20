@@ -29,10 +29,24 @@ class AnthropicProvider:
         # Plain text completion, not output_format= -- see qsrecords.llm.base
         # module docstring: Anthropic's schema-constrained decoding rejected
         # this schema live with "Schema is too complex" (grammar-size limit).
+        #
+        # cache_control marks this (identical-every-call) system prompt as
+        # cacheable. NOTE: as of this writing the prompt is ~2,000 tokens,
+        # below Anthropic's documented 4,096-token minimum cacheable prefix
+        # for Opus-tier models -- so with the default claude-opus-4-8 this
+        # currently has no effect (no error, just no cache hit). It's a
+        # no-cost no-op today and starts paying off if the prompt grows past
+        # that threshold, or against a model with a lower minimum.
         message = self._client.messages.create(
             model=self.model,
             max_tokens=MAX_TOKENS,
-            system=system_prompt,
+            system=[
+                {
+                    "type": "text",
+                    "text": system_prompt,
+                    "cache_control": {"type": "ephemeral"},
+                }
+            ],
             messages=[{"role": "user", "content": build_batch_prompt(records)}],
         )
         text_blocks = [block.text for block in message.content if block.type == "text"]
