@@ -1,3 +1,4 @@
+import "server-only";
 import path from "node:path";
 import Database from "better-sqlite3";
 
@@ -15,4 +16,11 @@ export function getDb(): Database.Database {
     db.pragma("query_only = ON");
   }
   return db;
+}
+
+// Shared by generateStaticParams() implementations that just need every
+// value of one column (e.g. all conviction ids, all name_keys) to enumerate
+// static routes at build time.
+export function selectColumn<T>(sql: string, column: string): T[] {
+  return (getDb().prepare(sql).all() as Record<string, T>[]).map((row) => row[column]);
 }

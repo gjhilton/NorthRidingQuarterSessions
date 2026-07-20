@@ -1,37 +1,9 @@
-import { getDb } from "@/lib/db";
-
-export interface PersonSearchResult {
-  name_key: string;
-  display_name: string;
-  defendant_mentions: number;
-  person_mentions: number;
-}
-
-export function searchPeople(q: string, limit = 25): PersonSearchResult[] {
-  const like = `%${q.toLowerCase()}%`;
-  return getDb()
-    .prepare(
-      `
-      SELECT
-        name_key,
-        MAX(display_name) AS display_name,
-        SUM(CASE WHEN kind = 'defendant' THEN 1 ELSE 0 END) AS defendant_mentions,
-        SUM(CASE WHEN kind = 'person' THEN 1 ELSE 0 END) AS person_mentions
-      FROM (
-        SELECT name_key, TRIM(first_name || ' ' || last_name) AS display_name, 'defendant' AS kind
-        FROM defendant
-        UNION ALL
-        SELECT name_key, TRIM(first_name || ' ' || last_name) AS display_name, 'person' AS kind
-        FROM person
-      )
-      WHERE name_key LIKE @like
-      GROUP BY name_key
-      ORDER BY (defendant_mentions + person_mentions) DESC, display_name
-      LIMIT @limit
-      `
-    )
-    .all({ like, limit }) as PersonSearchResult[];
-}
+// Server-only (better-sqlite3, build-time) -- the `server-only` import below
+// makes this a build error, not a convention to remember, if a 'use client'
+// component ever pulls it in. See peopleSearch.ts for the client-safe half
+// of what used to be a single people.ts.
+import "server-only";
+import { getDb, selectColumn } from "@/lib/db";
 
 export interface CaseMention {
   summary_conviction_id: number;
@@ -61,6 +33,13 @@ export interface PersonNetwork {
   cases: CaseMention[];
   connections: Connection[];
   graph: NetworkGraph;
+}
+
+export function listNameKeys(): string[] {
+  return selectColumn<string>(
+    `SELECT name_key FROM defendant UNION SELECT name_key FROM person`,
+    "name_key"
+  );
 }
 
 export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {

@@ -1,3 +1,4 @@
+import "server-only";
 import { getDb } from "@/lib/db";
 
 // Mirrors data-loader/qsrecords/reports.py -- same queries, TS side, read-only.

@@ -150,6 +150,41 @@ export function EmptyState({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function ChartTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className={css({ fontFamily: "serif", fontSize: "lg", fontWeight: "600", mb: "3" })}>
+      {children}
+    </h2>
+  );
+}
+
+// Shared by the two client search islands (BrowseExplorer, PeopleSearch) so
+// their forms stay visually identical without each re-declaring the same
+// css() literal.
+export const formInputStyle = css({
+  border: "1px solid",
+  borderColor: "borderMuted",
+  borderRadius: "md",
+  px: "3",
+  py: "2",
+  fontSize: "sm",
+  bg: "bgSurface",
+  color: "fg",
+});
+
+export const primaryButtonStyle = css({
+  bg: "fgAccent",
+  color: "bgSurface",
+  px: "4",
+  py: "2",
+  borderRadius: "md",
+  fontSize: "sm",
+  fontWeight: "600",
+  cursor: "pointer",
+  border: "none",
+  _disabled: { opacity: 0.6, cursor: "default" },
+});
+
 export function Pill({ children }: { children: React.ReactNode }) {
   return (
     <span

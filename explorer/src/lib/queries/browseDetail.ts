@@ -1,0 +1,120 @@
+// Server-only (better-sqlite3, build-time) -- the `server-only` import below
+// makes this a build error, not a convention to remember, if a 'use client'
+// component ever pulls it in. See browseList.ts for the client-safe half of
+// what used to be a single browse.ts.
+import "server-only";
+import { getDb, selectColumn } from "@/lib/db";
+
+export interface ConvictionDetail {
+  id: number;
+  reference_number: string;
+  conviction_date: string | null;
+  conviction_date_raw: string;
+  offence_date: string | null;
+  offence_date_raw: string | null;
+  offence_day_of_week: string | null;
+  offence_time: string | null;
+  offence_type_name: string | null;
+  charge_description: string;
+  sentencing: string | null;
+  raw_record: string;
+  archive_url: string;
+  offence_town_name: string | null;
+  offence_street_name: string | null;
+  court_town_name: string | null;
+}
+
+export interface DetailDefendant {
+  id: number;
+  first_name: string | null;
+  last_name: string | null;
+  sex: string | null;
+  occupation: string | null;
+  relationships_and_details: string | null;
+  prior_convictions: string | null;
+  town_name: string | null;
+  street_name: string | null;
+  aliases: string[];
+}
+
+export interface DetailInvolvedPerson {
+  id: number;
+  first_name: string | null;
+  last_name: string | null;
+  occupation: string | null;
+  relationships_and_details: string | null;
+  role: string | null;
+  town_name: string | null;
+}
+
+export function listConvictionIds(): number[] {
+  return selectColumn<number>(`SELECT id FROM summary_conviction`, "id");
+}
+
+export function getConvictionDetail(id: number): ConvictionDetail | undefined {
+  return getDb()
+    .prepare(
+      `
+      SELECT
+        sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
+        sc.offence_date, sc.offence_date_raw, sc.offence_day_of_week, sc.offence_time,
+        ot.name AS offence_type_name,
+        sc.charge_description, sc.sentencing, sc.raw_record, sc.archive_url,
+        ot_town.name AS offence_town_name,
+        st.name AS offence_street_name,
+        court_town.name AS court_town_name
+      FROM summary_conviction sc
+      LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
+      LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
+      LEFT JOIN street st ON st.id = sc.offence_location_street_id
+      LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
+      WHERE sc.id = ?
+      `
+    )
+    .get(id) as ConvictionDetail | undefined;
+}
+
+export function getConvictionDefendants(convictionId: number): DetailDefendant[] {
+  const defendants = getDb()
+    .prepare(
+      `
+      SELECT
+        d.id, d.first_name, d.last_name, d.sex, d.occupation,
+        d.relationships_and_details, d.prior_convictions,
+        t.name AS town_name, st.name AS street_name,
+        (
+          SELECT GROUP_CONCAT(a.alias_name, char(31))
+          FROM alias a
+          WHERE a.defendant_id = d.id
+        ) AS aliases_concat
+      FROM summary_conviction_defendant scd
+      JOIN defendant d ON d.id = scd.defendant_id
+      LEFT JOIN town t ON t.id = d.town_id
+      LEFT JOIN street st ON st.id = d.street_id
+      WHERE scd.summary_conviction_id = ?
+      `
+    )
+    .all(convictionId) as (Omit<DetailDefendant, "aliases"> & { aliases_concat: string | null })[];
+
+  return defendants.map(({ aliases_concat, ...d }) => ({
+    ...d,
+    aliases: aliases_concat ? aliases_concat.split("\x1f") : [],
+  }));
+}
+
+export function getConvictionInvolvedPersons(convictionId: number): DetailInvolvedPerson[] {
+  return getDb()
+    .prepare(
+      `
+      SELECT
+        p.id, p.first_name, p.last_name, p.occupation,
+        p.relationships_and_details, ip.role,
+        t.name AS town_name
+      FROM involved_persons ip
+      JOIN person p ON p.id = ip.person_id
+      LEFT JOIN town t ON t.id = p.town_id
+      WHERE ip.summary_conviction_id = ?
+      `
+    )
+    .all(convictionId) as DetailInvolvedPerson[];
+}

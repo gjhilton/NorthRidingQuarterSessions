@@ -5,7 +5,8 @@
       "Bash(sqlite3 data/db.sqlite \".tables\")",
       "Bash(pip3 list *)",
       "Skill(claude-api)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Skill(simplify)"
     ],
     "deny": []
   }

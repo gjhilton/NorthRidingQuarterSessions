@@ -5,8 +5,17 @@ import {
   getConvictionDefendants,
   getConvictionDetail,
   getConvictionInvolvedPersons,
-} from "@/lib/queries/browse";
+  listConvictionIds,
+} from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
+import { toSlug } from "@/lib/slug";
+
+// The dataset is static, so every conviction detail page can be prerendered
+// at build time -- only free-text search/filtering (in BrowseExplorer) needs
+// client-side SQLite.
+export async function generateStaticParams() {
+  return listConvictionIds().map((id) => ({ id: String(id) }));
+}
 
 export default async function ConvictionDetailPage(props: PageProps<"/browse/[id]">) {
   const { id } = await props.params;
@@ -59,7 +68,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             {defendants.map((d) => (
               <Card key={d.id}>
                 <Link
-                  href={`/people/${encodeURIComponent(
+                  href={`/people/${toSlug(
                     `${d.first_name ?? ""} ${d.last_name ?? ""}`.trim().toLowerCase()
                   )}`}
                   className={css({ fontWeight: "600", color: "fgAccent" })}
@@ -95,7 +104,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             {involvedPersons.map((p) => (
               <Card key={p.id}>
                 <Link
-                  href={`/people/${encodeURIComponent(
+                  href={`/people/${toSlug(
                     `${p.first_name ?? ""} ${p.last_name ?? ""}`.trim().toLowerCase()
                   )}`}
                   className={css({ fontWeight: "600", color: "fgAccent" })}

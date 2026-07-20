@@ -4,6 +4,7 @@ import { css } from "styled-system/css";
 const links = [
   { href: "/browse", label: "Browse" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/trends", label: "Trends" },
   { href: "/people", label: "People" },
   { href: "/data-quality", label: "Data quality" },
 ];

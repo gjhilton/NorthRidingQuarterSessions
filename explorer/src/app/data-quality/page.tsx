@@ -8,6 +8,7 @@ import {
   unreviewedOffenceTypes,
 } from "@/lib/queries/quality";
 import { Card, EmptyState, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
+import { toSlug } from "@/lib/slug";
 
 export default function DataQualityPage() {
   const repeatedDefendants = repeatedDefendantNames();
@@ -40,7 +41,7 @@ export default function DataQualityPage() {
         note="Same name_key across multiple mentions -- candidates for manual cross-case identity resolution, not automatically merged."
       >
         <NameList
-          rows={repeatedDefendants.map((r) => ({ ...r, href: `/people/${encodeURIComponent(r.name_key)}` }))}
+          rows={repeatedDefendants.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
         />
       </Section>
 
@@ -49,7 +50,7 @@ export default function DataQualityPage() {
         note="Witnesses, victims, prosecutors etc. whose name recurs across cases."
       >
         <NameList
-          rows={repeatedPersons.map((r) => ({ ...r, href: `/people/${encodeURIComponent(r.name_key)}` }))}
+          rows={repeatedPersons.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
         />
       </Section>
 

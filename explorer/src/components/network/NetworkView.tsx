@@ -4,8 +4,9 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { css } from "styled-system/css";
-import type { Connection, NetworkGraph } from "@/lib/queries/people";
+import type { Connection, NetworkGraph } from "@/lib/queries/peopleNetwork";
 import { Card, EmptyState, Pill } from "@/components/ui";
+import { toSlug } from "@/lib/slug";
 
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), { ssr: false });
 
@@ -40,7 +41,7 @@ export function NetworkView({
       ) : mode === "list" ? (
         <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
           {connections.map((c) => (
-            <Link key={c.name_key} href={`/people/${encodeURIComponent(c.name_key)}`}>
+            <Link key={c.name_key} href={`/people/${toSlug(c.name_key)}`}>
               <Card
                 className={css({
                   display: "flex",

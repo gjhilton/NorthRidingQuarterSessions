@@ -6,7 +6,7 @@ import {
 } from "@/lib/queries/dashboard";
 import { HorizontalBarStat } from "@/components/charts/BarStat";
 import { YearTrend } from "@/components/charts/YearTrend";
-import { Card, EmptyState, PageContainer, PageTitle } from "@/components/ui";
+import { Card, ChartTitle, EmptyState, PageContainer, PageTitle } from "@/components/ui";
 
 export default function DashboardPage() {
   const offences = offenceTypeBreakdown();
@@ -52,20 +52,5 @@ export default function DashboardPage() {
         )}
       </Card>
     </PageContainer>
-  );
-}
-
-function ChartTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <h2
-      className={css({
-        fontFamily: "serif",
-        fontSize: "lg",
-        fontWeight: "600",
-        mb: "3",
-      })}
-    >
-      {children}
-    </h2>
   );
 }

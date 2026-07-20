@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
-import { getPersonNetwork } from "@/lib/queries/people";
+import { getPersonNetwork, listNameKeys } from "@/lib/queries/peopleNetwork";
 import { NetworkView } from "@/components/network/NetworkView";
 import { Card, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
+import { fromSlug, toSlug } from "@/lib/slug";
+
+// The set of known name_keys is static (fixed dataset), so every person page
+// can be prerendered -- only the free-text search on /people needs
+// client-side SQLite.
+export async function generateStaticParams() {
+  return listNameKeys().map((nameKey) => ({ nameKey: toSlug(nameKey) }));
+}
 
 export default async function PersonPage(props: PageProps<"/people/[nameKey]">) {
   const { nameKey } = await props.params;
-  const network = getPersonNetwork(decodeURIComponent(nameKey));
+  const network = getPersonNetwork(fromSlug(nameKey));
   if (!network) notFound();
 
   return (

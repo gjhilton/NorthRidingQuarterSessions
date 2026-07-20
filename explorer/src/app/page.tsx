@@ -15,6 +15,11 @@ const sections = [
     description: "Offence-type breakdown, convictions over time, geographic spread.",
   },
   {
+    href: "/trends",
+    title: "Trends",
+    description: "Change over time: offence mix, gender, geography, and how fast justice moved.",
+  },
+  {
     href: "/people",
     title: "People",
     description: "Look up a defendant or involved person and trace their connections.",
