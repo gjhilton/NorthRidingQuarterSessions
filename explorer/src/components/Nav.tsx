@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { NavDropdown } from "@/components/NavDropdown";
-import { siteTitle } from "@/lib/siteName";
 
 const primaryLinks = [
   { href: "/browse", label: "Browse" },
@@ -21,7 +20,6 @@ const aboutLinks = [
 ];
 
 export default function Nav() {
-  const title = siteTitle();
   return (
     <header
       className={css({
@@ -52,7 +50,7 @@ export default function Nav() {
             whiteSpace: "nowrap",
           })}
         >
-          {title}
+          NRQS: Whitby
         </Link>
         <ul className={css({ display: "flex", gap: "6", listStyle: "none", alignItems: "center" })}>
           {primaryLinks.map((link) => (
