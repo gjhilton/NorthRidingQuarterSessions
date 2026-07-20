@@ -1,13 +1,20 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
+import { NavDropdown } from "@/components/NavDropdown";
 
-const links = [
+const primaryLinks = [
   { href: "/browse", label: "Browse" },
+  { href: "/people", label: "People" },
+];
+
+const insightsLinks = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/trends", label: "Trends" },
-  { href: "/people", label: "People" },
-  { href: "/streets", label: "Streets" },
   { href: "/map", label: "Map" },
+  { href: "/streets", label: "Streets" },
+];
+
+const aboutLinks = [
   { href: "/data-quality", label: "Data quality" },
   { href: "/methodology", label: "Methodology" },
 ];
@@ -43,8 +50,8 @@ export default function Nav() {
         >
           NRQS Explorer
         </Link>
-        <ul className={css({ display: "flex", gap: "6", listStyle: "none" })}>
-          {links.map((link) => (
+        <ul className={css({ display: "flex", gap: "6", listStyle: "none", alignItems: "center" })}>
+          {primaryLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -58,6 +65,12 @@ export default function Nav() {
               </Link>
             </li>
           ))}
+          <li>
+            <NavDropdown label="Insights" links={insightsLinks} />
+          </li>
+          <li>
+            <NavDropdown label="About" links={aboutLinks} />
+          </li>
         </ul>
       </nav>
     </header>
