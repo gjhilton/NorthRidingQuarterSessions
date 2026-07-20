@@ -26,6 +26,13 @@ export interface ConvictionDetail {
   // extracted before this was captured, not a sign of anything wrong.
   extraction_confidence: string | null;
   uncertain_fields: string | null; // comma-separated field names, or null
+  // Added partway through extraction -- null on records extracted before
+  // these fields existed, and null on any record where the source text
+  // simply didn't state them (most records, for monetary_value_raw and
+  // game_species specifically -- see Methodology).
+  petty_sessional_division_name: string | null;
+  monetary_value_raw: string | null;
+  game_species: string | null;
 }
 
 export interface DetailDefendant {
@@ -33,6 +40,10 @@ export interface DetailDefendant {
   first_name: string | null;
   last_name: string | null;
   sex: string | null;
+  age: number | null;
+  marital_status: string | null;
+  relationship_type: string | null;
+  related_to_name: string | null;
   occupation: string | null;
   relationships_and_details: string | null;
   prior_convictions: string | null;
@@ -45,6 +56,10 @@ export interface DetailInvolvedPerson {
   id: number;
   first_name: string | null;
   last_name: string | null;
+  age: number | null;
+  marital_status: string | null;
+  relationship_type: string | null;
+  related_to_name: string | null;
   occupation: string | null;
   relationships_and_details: string | null;
   role: string | null;
@@ -67,12 +82,15 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
         ot_town.name AS offence_town_name,
         st.name AS offence_street_name,
         court_town.name AS court_town_name,
-        sc.extraction_confidence, sc.uncertain_fields
+        sc.extraction_confidence, sc.uncertain_fields,
+        psd.name AS petty_sessional_division_name,
+        sc.monetary_value_raw, sc.game_species
       FROM summary_conviction sc
       LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
       LEFT JOIN street st ON st.id = sc.offence_location_street_id
       LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
+      LEFT JOIN petty_sessional_division psd ON psd.id = sc.petty_sessional_division_id
       WHERE sc.id = ?
       `
     )
@@ -84,7 +102,9 @@ export function getConvictionDefendants(convictionId: number): DetailDefendant[]
     .prepare(
       `
       SELECT
-        d.id, d.first_name, d.last_name, d.sex, d.occupation,
+        d.id, d.first_name, d.last_name, d.sex,
+        d.age, d.marital_status, d.relationship_type, d.related_to_name,
+        d.occupation,
         d.relationships_and_details, d.prior_convictions,
         t.name AS town_name, st.name AS street_name,
         (
@@ -112,7 +132,9 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
     .prepare(
       `
       SELECT
-        p.id, p.first_name, p.last_name, p.occupation,
+        p.id, p.first_name, p.last_name,
+        p.age, p.marital_status, p.relationship_type, p.related_to_name,
+        p.occupation,
         p.relationships_and_details, ip.role,
         t.name AS town_name
       FROM involved_persons ip

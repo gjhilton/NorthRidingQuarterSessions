@@ -45,6 +45,11 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
           {conviction.offence_town_name && <Pill>Offence: {conviction.offence_town_name}</Pill>}
           {conviction.court_town_name && <Pill>Court: {conviction.court_town_name}</Pill>}
           {conviction.offence_date && <Pill>Offence date: {conviction.offence_date}</Pill>}
+          {conviction.petty_sessional_division_name && (
+            <Pill>Division: {conviction.petty_sessional_division_name}</Pill>
+          )}
+          {conviction.monetary_value_raw && <Pill>Value: {conviction.monetary_value_raw}</Pill>}
+          {conviction.game_species && <Pill>Species: {conviction.game_species}</Pill>}
         </div>
         <p>{conviction.charge_description}</p>
         {conviction.sentencing && (
@@ -105,6 +110,14 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
                 )}
                 <dl className={detailListStyle}>
                   {d.sex && <Detail label="Sex" value={d.sex} />}
+                  {d.age !== null && <Detail label="Age" value={`${d.age}`} />}
+                  {d.marital_status && <Detail label="Marital status" value={d.marital_status} />}
+                  {d.relationship_type && d.related_to_name && (
+                    <Detail
+                      label="Relationship"
+                      value={`${d.relationship_type} of ${d.related_to_name}`}
+                    />
+                  )}
                   {d.occupation && <Detail label="Occupation" value={d.occupation} />}
                   {d.town_name && <Detail label="Town" value={d.town_name} />}
                   {d.street_name && <Detail label="Street" value={d.street_name} />}
@@ -136,6 +149,14 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
                 </Link>
                 {p.role && <span className={css({ ml: "2" })}><Pill>{p.role}</Pill></span>}
                 <dl className={detailListStyle}>
+                  {p.age !== null && <Detail label="Age" value={`${p.age}`} />}
+                  {p.marital_status && <Detail label="Marital status" value={p.marital_status} />}
+                  {p.relationship_type && p.related_to_name && (
+                    <Detail
+                      label="Relationship"
+                      value={`${p.relationship_type} of ${p.related_to_name}`}
+                    />
+                  )}
                   {p.occupation && <Detail label="Occupation" value={p.occupation} />}
                   {p.town_name && <Detail label="Town" value={p.town_name} />}
                   {p.relationships_and_details && (
