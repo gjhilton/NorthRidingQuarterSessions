@@ -7,6 +7,7 @@ const links = [
   { href: "/trends", label: "Trends" },
   { href: "/people", label: "People" },
   { href: "/streets", label: "Streets" },
+  { href: "/map", label: "Map" },
   { href: "/data-quality", label: "Data quality" },
   { href: "/methodology", label: "Methodology" },
 ];

@@ -31,6 +31,11 @@ const sections = [
     description: "Browse by street — every extracted case tied to a named street.",
   },
   {
+    href: "/map",
+    title: "Map",
+    description: "Offence locations by township, sized by how many cases.",
+  },
+  {
     href: "/data-quality",
     title: "Data quality",
     description: "Repeated names, unreviewed offence categories, extraction failures.",
