@@ -126,6 +126,32 @@ export default function MethodologyPage() {
           type unless the word itself appears in the charge description text.
         </p>
       </Section>
+
+      <Section title="Getting the data">
+        <p>
+          Every field discussed above is in the download, in case you want to analyse it
+          yourself rather than through this site&rsquo;s views: reference number, dates, offence
+          type, charge description, sentencing, location, defendant names, extraction confidence,
+          and the archive URL, one row per conviction.
+        </p>
+        <a
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/nrqs-dataset.csv`}
+          download
+          className={css({
+            display: "inline-block",
+            width: "fit-content",
+            bg: "fgAccent",
+            color: "bgSurface",
+            px: "4",
+            py: "2",
+            borderRadius: "md",
+            fontSize: "sm",
+            fontWeight: "600",
+          })}
+        >
+          Download full dataset (CSV)
+        </a>
+      </Section>
     </PageContainer>
   );
 }

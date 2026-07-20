@@ -44,6 +44,8 @@ next-env.d.ts
 styled-system
 styled-system-studio
 
-## Static assets staged by scripts/copy-db.mjs -- regenerated on every build
+## Static assets staged by scripts/copy-db.mjs and scripts/export-csv.mjs --
+## regenerated on every build
 /public/db.sqlite
 /public/sql-wasm.wasm
+/public/nrqs-dataset.csv

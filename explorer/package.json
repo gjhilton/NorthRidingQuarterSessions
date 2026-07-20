@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run copy-db && next dev",
+    "dev": "npm run copy-db && npm run export-csv && next dev",
     "copy-db": "node scripts/copy-db.mjs",
-    "build": "npm run copy-db && next build",
+    "export-csv": "node scripts/export-csv.mjs",
+    "build": "npm run copy-db && npm run export-csv && next build",
     "start": "next start",
     "lint": "eslint"
   },

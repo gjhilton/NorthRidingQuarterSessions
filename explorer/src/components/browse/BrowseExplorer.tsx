@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { css, cx } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
+import { downloadCsv } from "@/lib/csv";
 import {
   listConvictions,
   PAGE_SIZE,
@@ -12,6 +13,11 @@ import {
 } from "@/lib/queries/browseList";
 import type { Option } from "@/lib/queries/filters";
 import { EmptyState, Table, Th, Td, formInputStyle, primaryButtonStyle } from "@/components/ui";
+
+// Large enough to cover "every row matching the current filters" in one
+// query -- the whole extracted corpus is a few thousand rows at most, so
+// there's no real pagination-of-export concern to design around.
+const EXPORT_PAGE_SIZE = 1_000_000;
 
 const DEFAULT_FILTERS: BrowseFilters = { page: 1, pageSize: PAGE_SIZE };
 
@@ -33,8 +39,15 @@ export function BrowseExplorer({
     setRows(result.rows);
     setTotal(result.total);
   });
+  const { isPending: isExporting, run: runExport } = useClientQuery<BrowseRow[]>((exportRows) => {
+    downloadCsv("nrqs-convictions.csv", exportRows);
+  });
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  function exportCsv() {
+    runExport((db) => listConvictions(db, { ...filters, page: 1, pageSize: EXPORT_PAGE_SIZE }).rows);
+  }
 
   function runQuery(nextFilters: BrowseFilters) {
     setFilters(nextFilters);
@@ -105,6 +118,32 @@ export function BrowseExplorer({
           {isPending ? "Loading…" : "Apply"}
         </button>
       </form>
+
+      {rows.length > 0 && (
+        <div
+          className={css({ display: "flex", justifyContent: "flex-end" })}
+        >
+          <button
+            onClick={exportCsv}
+            disabled={isExporting}
+            className={css({
+              px: "3",
+              py: "1.5",
+              border: "1px solid",
+              borderColor: "borderMuted",
+              borderRadius: "md",
+              fontSize: "sm",
+              color: "fg",
+              bg: "bgSurface",
+              cursor: "pointer",
+              _hover: { borderColor: "fgAccent" },
+              _disabled: { opacity: 0.5, cursor: "default" },
+            })}
+          >
+            {isExporting ? "Preparing…" : `Download CSV (${total.toLocaleString()} rows)`}
+          </button>
+        </div>
+      )}
 
       {rows.length === 0 ? (
         <EmptyState>No records match these filters.</EmptyState>
