@@ -19,14 +19,30 @@ function radiusFor(count: number): number {
   return 4 + Math.sqrt(count) * 3;
 }
 
-export function MapView({ points }: { points: MapPoint[] }) {
-  // Whitby, roughly centred on the townships this dataset covers.
-  const center: [number, number] = [54.45, -0.75];
-
+export function MapView({
+  points,
+  center = [54.45, -0.75], // Whitby, roughly centred on the townships this dataset covers.
+  zoom = 9,
+  // Coordinates are hand-compiled (township or street) centroids, not
+  // geocoded addresses (see the caveat card on /map) -- zooming in further
+  // would suggest a precision the data doesn't have, and zooming out past
+  // the relevant area makes the circles meaningless. minZoom/maxZoom keep
+  // the view within the range where the map is actually honest.
+  minZoom = 8,
+  maxZoom = 13,
+}: {
+  points: MapPoint[];
+  center?: [number, number];
+  zoom?: number;
+  minZoom?: number;
+  maxZoom?: number;
+}) {
   return (
     <MapContainer
       center={center}
-      zoom={9}
+      zoom={zoom}
+      minZoom={minZoom}
+      maxZoom={maxZoom}
       scrollWheelZoom={false}
       style={{ height: "32rem", width: "100%", borderRadius: "8px" }}
     >

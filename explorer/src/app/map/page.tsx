@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { css } from "styled-system/css";
 import { allTownCaseCounts } from "@/lib/queries/map";
 import { coordinatesFor } from "@/lib/townCoordinates";
@@ -35,6 +36,12 @@ export default function MapPage() {
       </Card>
 
       <MapViewLoader points={points} />
+
+      <p className={css({ fontSize: "sm" })}>
+        <Link href="/map/whitby" className={css({ color: "fgAccent" })}>
+          View street-level detail within Whitby →
+        </Link>
+      </p>
     </PageContainer>
   );
 }

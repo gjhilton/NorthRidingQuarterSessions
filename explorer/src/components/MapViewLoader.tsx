@@ -26,6 +26,18 @@ const MapView = dynamic(() => import("@/components/MapView").then((m) => m.MapVi
   ),
 });
 
-export function MapViewLoader({ points }: { points: MapPoint[] }) {
-  return <MapView points={points} />;
+export function MapViewLoader({
+  points,
+  center,
+  zoom,
+  minZoom,
+  maxZoom,
+}: {
+  points: MapPoint[];
+  center?: [number, number];
+  zoom?: number;
+  minZoom?: number;
+  maxZoom?: number;
+}) {
+  return <MapView points={points} center={center} zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} />;
 }
