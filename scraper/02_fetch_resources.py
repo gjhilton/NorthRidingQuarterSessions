@@ -4,8 +4,16 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+from pathlib import Path
 
 pd.set_option("display.max_columns", None)
+
+# Resolved relative to this file, not the CWD -- see 01_list_resources.py
+# and data-loader/qsrecords/config.py for the same fix. Anchored to data/
+# (not the repo root) since that's where whitby.json actually lives and
+# where data-loader's default --csv-path expects whitby.csv.
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+_DATA_DIR = _REPO_ROOT / "data"
 
 def clean_html_ids(html_string):
     def id_replacer(match):
@@ -53,7 +61,7 @@ def process_json_to_dataframe(json_file):
 
 if __name__ == "__main__":
     FILE_NAME = 'whitby'
-    json_file = FILE_NAME + '.json'
+    json_file = _DATA_DIR / (FILE_NAME + '.json')
     df = process_json_to_dataframe(json_file)
     print(df)
-    df.to_csv(FILE_NAME + '.csv', index=False)
+    df.to_csv(_DATA_DIR / (FILE_NAME + '.csv'), index=False)

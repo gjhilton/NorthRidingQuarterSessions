@@ -33,23 +33,15 @@ python3 -m pip install requests
 ## RUNNING THE PROJECT
 
 ### Step 1:
-01_list_resources.py - executes a search against the QS Bundles collection, and generates a json file of matching resource ids and urls. 
+scraper/01_list_resources.py - executes a search against the QS Bundles collection, and generates a json file of matching resource ids and urls. 
 
 ### Step 2:
 
-02_fetch_resources.py - downloads each record in the cached json file (with a pause so as not to DOS the server), and generates a CSV file of the data.
+scraper/02_fetch_resources.py - downloads each record in the cached json file (with a pause so as not to DOS the server), and generates a CSV file of the data.
 
-### Step 3:
+### Step 3+:
 
-eg: python3 -m 03_preprocess_resources - splits out the summary convictions into separate text files
-
-### Step 4:
-
-eg: python3 -m 04_extract_structured_data - uses an llm to parse the unstructured data into JSON
-
-### Step 5:
-
-eg: python3 -m 05_load_data - ingests the JSON files into SQLite
+data-loader/03_load_raw_cases.py and data-loader/04_extract_structured_data.py - stage records into SQLite and use an LLM to parse them into the normalized schema below. See data-loader/ for its own setup (pyproject.toml, .env).
 
 ## DATABASE SCHEMA
 

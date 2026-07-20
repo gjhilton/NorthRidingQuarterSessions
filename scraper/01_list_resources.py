@@ -2,6 +2,15 @@ import requests
 import cssutils
 from bs4 import BeautifulSoup
 import json
+from pathlib import Path
+
+# Resolved relative to this file, not the CWD, so this script behaves the
+# same whether invoked as `python3 scraper/01_list_resources.py` from the
+# repo root or as `python3 01_list_resources.py` from inside scraper/ --
+# see data-loader/qsrecords/config.py for the same fix and the bug it
+# addressed there.
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+_DATA_DIR = _REPO_ROOT / "data"
 
 session = requests.Session()
 
@@ -136,9 +145,9 @@ if __name__ == "__main__":
     resources = search(SEARCH_STR)
     print("Total matching resources:", len(resources))
     
-    blacklist = load_blacklist('data/id_blacklist.txt')
+    blacklist = load_blacklist(_DATA_DIR / 'id_blacklist.txt')
     filtered_resources = filter_records(resources, blacklist)
     print("Resources remaining after cleaning:", len(filtered_resources))
-    
-    with open("data/" + SEARCH_STR + '.json', 'w') as f:
+
+    with open(_DATA_DIR / (SEARCH_STR + '.json'), 'w') as f:
         json.dump(filtered_resources, f, indent=4)

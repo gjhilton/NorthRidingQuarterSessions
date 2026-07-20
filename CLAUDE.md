@@ -9,9 +9,8 @@ This is a Python-based scraper for historical court records from the North Ridin
 The project follows a multi-step data processing pipeline:
 
 ### Phase 1: Data Extraction (Complete)
-1. **01_list_resources.py** - Searches the archives website and generates JSON files of matching resource IDs and URLs
-2. **02_fetch_resources.py** - Downloads individual records from the cached JSON file and generates CSV data 
-3. **03_postprocess_resources.py** - Extracts Summary conviction records from CSV and saves to individual text files
+1. **scraper/01_list_resources.py** - Searches the archives website and generates JSON files of matching resource IDs and URLs
+2. **scraper/02_fetch_resources.py** - Downloads individual records from the cached JSON file and generates CSV data
 
 ### Phase 2: Data Parsing (Planned - LLM-Based)
 4. **LLM Parsing Pipeline** - Parse unstructured text files into structured JSON using Large Language Models:
@@ -28,10 +27,10 @@ The project follows a multi-step data processing pipeline:
 ### Running the Pipeline
 ```bash
 # Step 1: Search and list resources
-python3 01_list_resources.py
+python3 scraper/01_list_resources.py
 
 # Step 2: Fetch individual records  
-python3 02_fetch_resources.py
+python3 scraper/02_fetch_resources.py
 
 # Step 3+: Stage records and run LLM extraction (data-loader/ -- see
 # data-loader/qsrecords for the SQLModel schema, pluggable LLM providers,
@@ -84,9 +83,10 @@ The database implements a relational model with these core entities:
 - **OFFENCE_TYPE**: Standardized offense categorization
 
 ### File Structure
-- `data/` - Shared output files (JSON, CSV, SQLite database), used by both the root-level scraper and data-loader/
+- `data/` - Shared output files (JSON, CSV, SQLite database), used by both `scraper/` and `data-loader/`
+- `scraper/` - The archive-scraping scripts: `01_list_resources.py`, `02_fetch_resources.py`
 - `data-loader/` - The SQLModel/LLM-extraction pipeline (steps 3+): `qsrecords/` package, its tests, `03_load_raw_cases.py`, `04_extract_structured_data.py`, `report.py`. Self-contained (own `pyproject.toml`, `.env`) -- one part of a larger project
-- Root level - Scraper scripts (`01_list_resources.py`, `02_fetch_resources.py`)
+- Root level - Shared docs (`CLAUDE.md`, `README.md`, `court-records-erd.md`) and `data/`
 
 ## Important Implementation Details
 
