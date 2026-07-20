@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
-import { getPersonNetwork, listNameKeys } from "@/lib/queries/peopleNetwork";
+import { getPersonNetwork, listNameKeys, type CaseMention } from "@/lib/queries/peopleNetwork";
 import { NetworkView } from "@/components/network/NetworkView";
 import { Card, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
 import { fromSlug, toSlug } from "@/lib/slug";
+import { titleCase } from "@/lib/text";
+
+function caseDetails(c: CaseMention): string {
+  return [
+    c.occupation,
+    c.age !== null ? `age ${c.age}` : null,
+    c.marital_status,
+    c.relationship_type && c.related_to_name ? `${c.relationship_type} of ${c.related_to_name}` : null,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
 
 // The set of known name_keys is static (fixed dataset), so every person page
 // can be prerendered -- only the free-text search on /people needs
@@ -41,26 +53,42 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
               <Th>Date</Th>
               <Th>Role</Th>
               <Th>Charge</Th>
+              <Th>Details</Th>
             </tr>
           </thead>
           <tbody>
-            {network.cases.map((c) => (
-              <tr key={`${c.summary_conviction_id}-${c.role}`}>
-                <Td>
-                  <Link
-                    href={`/browse/${c.summary_conviction_id}`}
-                    className={css({ color: "fgAccent", fontWeight: "600" })}
-                  >
-                    {c.reference_number}
-                  </Link>
-                </Td>
-                <Td>{c.conviction_date ?? "—"}</Td>
-                <Td>
-                  <Pill>{c.role}</Pill>
-                </Td>
-                <Td>{c.charge_description}</Td>
-              </tr>
-            ))}
+            {network.cases.map((c) => {
+              const details = caseDetails(c);
+              return (
+                <tr key={`${c.summary_conviction_id}-${c.role}`}>
+                  <Td>
+                    <Link
+                      href={`/browse/${c.summary_conviction_id}`}
+                      className={css({ color: "fgAccent", fontWeight: "600" })}
+                    >
+                      {c.reference_number}
+                    </Link>
+                  </Td>
+                  <Td>{c.conviction_date ?? "—"}</Td>
+                  <Td>
+                    <Pill>{c.role}</Pill>
+                  </Td>
+                  <Td>{c.charge_description}</Td>
+                  <Td>
+                    {details && <span>{details}</span>}
+                    {c.town_name && (
+                      <>
+                        {details && " · "}
+                        <Link href="/map" className={css({ color: "fgAccent" })}>
+                          {titleCase(c.town_name)}
+                        </Link>
+                      </>
+                    )}
+                    {!details && !c.town_name && "—"}
+                  </Td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Section>

@@ -11,6 +11,17 @@ export interface CaseMention {
   conviction_date: string | null;
   charge_description: string;
   role: string;
+  // These are per-mention, not per-person -- defendant/person rows aren't
+  // deduplicated across cases (see Methodology), so the same real person
+  // can carry different values here in different cases, and that's
+  // expected rather than a data-quality bug.
+  occupation: string | null;
+  age: number | null;
+  marital_status: string | null;
+  relationship_type: string | null;
+  related_to_name: string | null;
+  town_id: number | null;
+  town_name: string | null;
 }
 
 export interface Connection {
@@ -52,10 +63,14 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
   const asDefendant = db
     .prepare(
       `
-      SELECT sc.id AS summary_conviction_id, sc.reference_number, sc.conviction_date, sc.charge_description
+      SELECT
+        sc.id AS summary_conviction_id, sc.reference_number, sc.conviction_date, sc.charge_description,
+        d.occupation, d.age, d.marital_status, d.relationship_type, d.related_to_name,
+        d.town_id, t.name AS town_name
       FROM defendant d
       JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
       JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
+      LEFT JOIN town t ON t.id = d.town_id
       WHERE d.name_key = ?
       `
     )
@@ -64,10 +79,14 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
   const asInvolved = db
     .prepare(
       `
-      SELECT sc.id AS summary_conviction_id, sc.reference_number, sc.conviction_date, sc.charge_description, ip.role
+      SELECT
+        sc.id AS summary_conviction_id, sc.reference_number, sc.conviction_date, sc.charge_description, ip.role,
+        p.occupation, p.age, p.marital_status, p.relationship_type, p.related_to_name,
+        p.town_id, t.name AS town_name
       FROM person p
       JOIN involved_persons ip ON ip.person_id = p.id
       JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
+      LEFT JOIN town t ON t.id = p.town_id
       WHERE p.name_key = ?
       `
     )
