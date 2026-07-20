@@ -89,6 +89,8 @@ def persist_extracted_record(
         offence_location_street_id=offence_street.id if offence_street else None,
         court_location_town_id=court_town.id if court_town else None,
         archive_url=raw_case.archive_url,
+        extraction_confidence=extracted.overall_confidence,
+        uncertain_fields=", ".join(extracted.uncertain_fields) or None,
     )
     session.add(conviction)
     session.flush()

@@ -78,6 +78,19 @@ class ExtractedRecord(BaseModel):
     defendants: list[ExtractedDefendant]
     involved_persons: list[ExtractedInvolvedPerson] = Field(default_factory=list)
 
+    overall_confidence: Literal["high", "medium", "low"] = Field(
+        description="Your overall confidence in this extraction. Use 'low' if "
+        "the source text was ambiguous, damaged/illegible, or you had to guess "
+        "at multiple fields; 'medium' if one or two fields were uncertain; "
+        "'high' if the text was clear throughout."
+    )
+    uncertain_fields: list[str] = Field(
+        default_factory=list,
+        description="Names of the specific fields you were not confident about, "
+        "if any -- e.g. 'offence_date_raw', 'sentencing', 'defendants[0].occupation'. "
+        "Empty if overall_confidence is 'high'.",
+    )
+
     @model_validator(mode="before")
     @classmethod
     def blank_strings_to_none(cls, data):

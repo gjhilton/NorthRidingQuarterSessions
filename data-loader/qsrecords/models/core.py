@@ -40,6 +40,13 @@ class SummaryConviction(SQLModel, table=True):
     court_location_town_id: Optional[int] = Field(default=None, foreign_key="town.id")
     archive_url: str
 
+    # Self-reported by the LLM at extraction time (see
+    # qsrecords.models.extraction_schema.ExtractedRecord) -- not a measure of
+    # correctness, just the model's own signal about which records/fields
+    # deserve a second look before being relied on.
+    extraction_confidence: Optional[str] = None
+    uncertain_fields: Optional[str] = None  # comma-separated field names, or None
+
 
 class Defendant(SQLModel, table=True):
     __tablename__ = "defendant"

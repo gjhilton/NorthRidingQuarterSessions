@@ -45,6 +45,16 @@ is not an offence category.
 court_location_town, defendants, involved_persons: extracted as described in the \
 schema. Leave a field null/empty if the information isn't present in the text -- \
 do not guess or hallucinate.
+- overall_confidence: "high" if the text was clear throughout, "medium" if one or \
+two fields were uncertain (damaged text, ambiguous handwriting transcription, an \
+inference rather than something stated outright), "low" if you had to guess at \
+multiple fields or the record as a whole is hard to make sense of. Be honest and \
+critical here -- this is read by a human deciding which records to double-check \
+against the original source, so it is more useful wrong in the direction of \
+under- than over-confidence.
+- uncertain_fields: list the specific field names behind a "medium" or "low" \
+overall_confidence (e.g. "offence_date_raw", "defendants[0].occupation"). Leave \
+empty for "high" confidence.
 
 If a record is missing from the input, do not invent one. Return exactly one \
 entry per input record, matched by reference_number.

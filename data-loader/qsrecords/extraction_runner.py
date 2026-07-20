@@ -13,7 +13,9 @@ constraint violation on record 23 would force a session.rollback() that
 discards the already-mapped rows for records 1-22 too.
 """
 
+import re
 import time
+from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
@@ -34,17 +36,67 @@ class RunStats:
     failed: int
 
 
+_YEAR_RE = re.compile(r"(1[6-9]\d{2})")
+
+
+def _extract_year(document_date_raw: str) -> Optional[int]:
+    """Pulls a 4-digit year out of document_date_raw, which is transcribed
+    free text ("3 April 1875", "5 Feb1887", "14-18 May 1818", "Sep-Oct
+    1834", "1881") -- too irregular to parse as a full date, but every
+    observed form has exactly one unambiguous year in it."""
+    match = _YEAR_RE.search(document_date_raw)
+    return int(match.group(1)) if match else None
+
+
+def _select_pending_stratified(session: Session, limit: Optional[int]) -> list[RawCase]:
+    """Round-robins pending rows across decades (derived from
+    document_date_raw) instead of taking them in RawCase.id order.
+
+    id order follows the archive's own bundle/box catalogue order, not
+    chronology -- id 1 is "QSB 1889 1/10/10/1", id 6257 is "QSB 1856
+    1/10/18/5". Left as ORDER BY id, any partial-corpus extraction run
+    produces a sample whose date coverage is an artifact of catalogue
+    order, not a representative slice of the archive: early runs would
+    have looked like they were about one narrow slice of history rather
+    than sampling the whole 1803-1889 span. Rows whose year can't be
+    parsed land in their own bucket (decade=None) rather than being
+    silently skipped or clustered at one end.
+    """
+    all_pending = session.exec(
+        select(RawCase).where(RawCase.status == RawCaseStatus.PENDING).order_by(RawCase.id)
+    ).all()
+
+    buckets: dict[Optional[int], list[RawCase]] = defaultdict(list)
+    for rc in all_pending:
+        year = _extract_year(rc.document_date_raw)
+        decade = (year // 10) * 10 if year is not None else None
+        buckets[decade].append(rc)
+
+    ordered_decades = sorted(buckets.keys(), key=lambda d: (d is None, d))
+
+    selected: list[RawCase] = []
+    while buckets and (limit is None or len(selected) < limit):
+        for decade in ordered_decades:
+            bucket = buckets.get(decade)
+            if not bucket:
+                continue
+            selected.append(bucket.pop(0))
+            if not bucket:
+                del buckets[decade]
+            if limit is not None and len(selected) >= limit:
+                break
+    return selected
+
+
 def count_pending(session: Session) -> int:
     return len(session.exec(select(RawCase.id).where(RawCase.status == RawCaseStatus.PENDING)).all())
 
 
 def get_pending_inputs(session: Session, limit: Optional[int] = None) -> list[ExtractionBatchInput]:
-    """Fetch pending raw_case rows (up to `limit`, or all pending if None) as
+    """Fetch pending raw_case rows (up to `limit`, or all pending if None,
+    stratified across decades -- see _select_pending_stratified) as
     ExtractionBatchInput, for cost estimation before a run starts."""
-    stmt = select(RawCase).where(RawCase.status == RawCaseStatus.PENDING).order_by(RawCase.id)
-    if limit is not None:
-        stmt = stmt.limit(limit)
-    rows = session.exec(stmt).all()
+    rows = _select_pending_stratified(session, limit)
     return [
         ExtractionBatchInput(
             raw_case_id=rc.id,
@@ -95,12 +147,7 @@ def run(
     batch_size: int,
     max_attempts: int,
 ) -> RunStats:
-    batch = session.exec(
-        select(RawCase)
-        .where(RawCase.status == RawCaseStatus.PENDING)
-        .order_by(RawCase.id)
-        .limit(batch_size)
-    ).all()
+    batch = _select_pending_stratified(session, batch_size)
 
     if not batch:
         return RunStats(processed=0, succeeded=0, failed=0)

@@ -37,6 +37,7 @@ def _make_extracted(**overrides):
             ExtractedDefendant(first_name="Henry", last_name="Raw", occupation="jeweller")
         ],
         involved_persons=[],
+        overall_confidence="high",
     )
     defaults.update(overrides)
     return ExtractedRecord(**defaults)
@@ -127,6 +128,7 @@ def test_blank_strings_from_llm_become_none():
             "offence_type": "theft",
             "sentencing": "",
             "defendants": [{"first_name": "Jane", "last_name": "Doe", "town": ""}],
+            "overall_confidence": "high",
         }
     )
     assert extracted.offence_date_raw is None

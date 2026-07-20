@@ -10,7 +10,8 @@ from qsrecords.models.extraction_schema import ExtractionBatchInput
 
 VALID_BATCH_JSON = (
     '{"records": [{"reference_number": "R1", "charge_description": "assault", '
-    '"offence_type": "assault", "defendants": [{"first_name": "John", "last_name": "Smith"}]}]}'
+    '"offence_type": "assault", "defendants": [{"first_name": "John", "last_name": "Smith"}], '
+    '"overall_confidence": "high"}]}'
 )
 
 

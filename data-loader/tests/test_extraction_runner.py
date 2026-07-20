@@ -9,6 +9,20 @@ from qsrecords.models.raw import ExtractionAttempt, RawCase, RawCaseStatus
 from conftest import FakeProvider
 
 
+def _seed_raw_case_with_date(session, reference_number, document_date_raw):
+    rc = RawCase(
+        archive_url=f"https://example.org/{reference_number}",
+        reference_number=reference_number,
+        title="Summary conviction: Someone",
+        document_date_raw=document_date_raw,
+        description="Summary conviction of Someone...",
+    )
+    session.add(rc)
+    session.commit()
+    session.refresh(rc)
+    return rc
+
+
 def _seed_raw_cases(session, n):
     cases = []
     for i in range(n):
@@ -34,6 +48,7 @@ def _extracted_for(rc):
         charge_description="a charge",
         offence_type="assault",
         defendants=[ExtractedDefendant(first_name="A", last_name="B")],
+        overall_confidence="high",
     )
 
 
@@ -149,3 +164,55 @@ def test_no_pending_rows_is_a_noop(session):
     stats = extraction_runner.run(session, provider, batch_size=25, max_attempts=3)
     assert (stats.processed, stats.succeeded, stats.failed) == (0, 0, 0)
     assert provider.calls == []
+
+
+def test_extract_year_handles_real_document_date_raw_variants():
+    # Every one of these is a real value observed in raw_case.document_date_raw
+    # -- too irregular to parse as a full date, but each has exactly one
+    # unambiguous 4-digit year embedded in it.
+    assert extraction_runner._extract_year("3 April 1875") == 1875
+    assert extraction_runner._extract_year("5 Feb1887") == 1887
+    assert extraction_runner._extract_year("3 Jan [sic] 1869") == 1869
+    assert extraction_runner._extract_year("14-18 May 1818") == 1818
+    assert extraction_runner._extract_year("Sep-Oct 1834") == 1834
+    assert extraction_runner._extract_year("1881") == 1881
+    assert extraction_runner._extract_year("undated") is None
+
+
+def test_select_pending_stratified_interleaves_decades_not_id_order(session):
+    # Seeded in id order 1810, 1880, 1820, 1870 -- if selection just followed
+    # RawCase.id, the first two picks would be 1810 then 1880 (adjacent ids,
+    # 70 years apart). Stratified selection should instead visit each decade
+    # once before repeating any.
+    rc_1810 = _seed_raw_case_with_date(session, "QSB A", "1 Jan 1810")
+    rc_1880 = _seed_raw_case_with_date(session, "QSB B", "1 Jan 1880")
+    rc_1820 = _seed_raw_case_with_date(session, "QSB C", "1 Jan 1820")
+    rc_1870 = _seed_raw_case_with_date(session, "QSB D", "1 Jan 1870")
+
+    selected = extraction_runner._select_pending_stratified(session, limit=None)
+
+    assert [rc.reference_number for rc in selected] == ["QSB A", "QSB C", "QSB D", "QSB B"]
+    assert {rc.id for rc in selected} == {rc_1810.id, rc_1880.id, rc_1820.id, rc_1870.id}
+
+
+def test_select_pending_stratified_limit_still_spans_decades(session):
+    for i in range(3):
+        _seed_raw_case_with_date(session, f"QSB 1810 {i}", "1 Jan 1810")
+    for i in range(3):
+        _seed_raw_case_with_date(session, f"QSB 1880 {i}", "1 Jan 1880")
+
+    selected = extraction_runner._select_pending_stratified(session, limit=2)
+
+    decades = {(int(rc.document_date_raw[-4:]) // 10) * 10 for rc in selected}
+    assert decades == {1810, 1880}
+
+
+def test_select_pending_stratified_unparseable_date_gets_own_bucket(session):
+    rc_dated = _seed_raw_case_with_date(session, "QSB dated", "1 Jan 1850")
+    rc_undated = _seed_raw_case_with_date(session, "QSB undated", "undated")
+
+    selected = extraction_runner._select_pending_stratified(session, limit=None)
+
+    assert {rc.reference_number for rc in selected} == {"QSB dated", "QSB undated"}
+    assert rc_dated.id in {rc.id for rc in selected}
+    assert rc_undated.id in {rc.id for rc in selected}
