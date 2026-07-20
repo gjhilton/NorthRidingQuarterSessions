@@ -2,6 +2,7 @@ import Link from "next/link";
 import { css } from "styled-system/css";
 import { convictionsByYear, getTotals } from "@/lib/queries/dashboard";
 import { Card, PageContainer, PageTitle, StatTile } from "@/components/ui";
+import { OnThisDay } from "@/components/OnThisDay";
 
 const sections = [
   {
@@ -80,6 +81,8 @@ export default function Home() {
           }
         />
       </div>
+
+      <OnThisDay />
 
       <div
         className={css({
