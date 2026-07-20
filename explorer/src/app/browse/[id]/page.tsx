@@ -52,6 +52,29 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             <strong>Sentencing:</strong> {conviction.sentencing}
           </p>
         )}
+        {(conviction.extraction_confidence === "medium" ||
+          conviction.extraction_confidence === "low") && (
+          <p
+            className={css({
+              fontSize: "sm",
+              color: "fgAccent",
+              bg: "bg",
+              border: "1px solid",
+              borderColor: "borderMuted",
+              borderRadius: "md",
+              px: "3",
+              py: "2",
+            })}
+          >
+            <strong>
+              {conviction.extraction_confidence === "low" ? "Low" : "Medium"} extraction
+              confidence
+            </strong>
+            {conviction.uncertain_fields
+              ? ` — the model flagged: ${conviction.uncertain_fields}. Worth checking against the original record.`
+              : " — worth checking against the original record."}
+          </p>
+        )}
         <a
           href={conviction.archive_url}
           target="_blank"

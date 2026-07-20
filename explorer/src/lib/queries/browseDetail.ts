@@ -22,6 +22,10 @@ export interface ConvictionDetail {
   offence_town_name: string | null;
   offence_street_name: string | null;
   court_town_name: string | null;
+  // Self-reported by the LLM at extraction time -- null for records
+  // extracted before this was captured, not a sign of anything wrong.
+  extraction_confidence: string | null;
+  uncertain_fields: string | null; // comma-separated field names, or null
 }
 
 export interface DetailDefendant {
@@ -62,7 +66,8 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
         sc.charge_description, sc.sentencing, sc.raw_record, sc.archive_url,
         ot_town.name AS offence_town_name,
         st.name AS offence_street_name,
-        court_town.name AS court_town_name
+        court_town.name AS court_town_name,
+        sc.extraction_confidence, sc.uncertain_fields
       FROM summary_conviction sc
       LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
