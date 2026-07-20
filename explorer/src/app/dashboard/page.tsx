@@ -7,11 +7,12 @@ import {
 import { HorizontalBarStat } from "@/components/charts/BarStat";
 import { YearTrend } from "@/components/charts/YearTrend";
 import { Card, ChartTitle, EmptyState, PageContainer, PageTitle } from "@/components/ui";
+import { titleCase } from "@/lib/text";
 
 export default function DashboardPage() {
   const offences = offenceTypeBreakdown();
   const years = convictionsByYear();
-  const towns = convictionsByTown();
+  const towns = convictionsByTown().map((t) => ({ ...t, name: titleCase(t.name) }));
 
   return (
     <PageContainer>

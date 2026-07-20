@@ -18,7 +18,7 @@ export default function BrowsePage() {
 
   return (
     <PageContainer>
-      <PageTitle subtitle={`${total} record${total === 1 ? "" : "s"} in total`}>Browse</PageTitle>
+      <PageTitle>Browse</PageTitle>
       <BrowseExplorer
         initialRows={rows}
         initialTotal={total}

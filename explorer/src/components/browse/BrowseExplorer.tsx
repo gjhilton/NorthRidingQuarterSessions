@@ -12,6 +12,7 @@ import {
   type BrowseRow,
 } from "@/lib/queries/browseList";
 import type { Option } from "@/lib/queries/filters";
+import { titleCase } from "@/lib/text";
 import { EmptyState, Table, Th, Td, formInputStyle, primaryButtonStyle } from "@/components/ui";
 
 // Large enough to cover "every row matching the current filters" in one
@@ -44,6 +45,9 @@ export function BrowseExplorer({
   });
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const isFiltered = Boolean(
+    filters.q || filters.townId || filters.offenceTypeId || filters.dateFrom || filters.dateTo
+  );
 
   function exportCsv() {
     runExport((db) => listConvictions(db, { ...filters, page: 1, pageSize: EXPORT_PAGE_SIZE }).rows);
@@ -93,7 +97,7 @@ export function BrowseExplorer({
             <option value="">All towns</option>
             {towns.map((t) => (
               <option key={t.id} value={t.id}>
-                {t.name}
+                {titleCase(t.name)}
               </option>
             ))}
           </select>
@@ -119,10 +123,13 @@ export function BrowseExplorer({
         </button>
       </form>
 
-      {rows.length > 0 && (
-        <div
-          className={css({ display: "flex", justifyContent: "flex-end" })}
-        >
+      <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
+        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+          {isFiltered
+            ? `${total.toLocaleString()} matching record${total === 1 ? "" : "s"} (of ${initialTotal.toLocaleString()} total)`
+            : `${total.toLocaleString()} record${total === 1 ? "" : "s"}`}
+        </p>
+        {rows.length > 0 && (
           <button
             onClick={exportCsv}
             disabled={isExporting}
@@ -142,8 +149,8 @@ export function BrowseExplorer({
           >
             {isExporting ? "Preparing…" : `Download CSV (${total.toLocaleString()} rows)`}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {rows.length === 0 ? (
         <EmptyState>No records match these filters.</EmptyState>
@@ -172,7 +179,11 @@ export function BrowseExplorer({
                 <Td>{r.conviction_date ?? r.conviction_date_raw}</Td>
                 <Td>{r.defendant_names ?? "—"}</Td>
                 <Td>{r.offence_type_name ?? "—"}</Td>
-                <Td>{r.offence_town_name ?? r.court_town_name ?? "—"}</Td>
+                <Td>
+                  {r.offence_town_name || r.court_town_name
+                    ? titleCase(r.offence_town_name ?? r.court_town_name!)
+                    : "—"}
+                </Td>
               </tr>
             ))}
           </tbody>

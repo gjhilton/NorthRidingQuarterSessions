@@ -2,6 +2,7 @@ import Link from "next/link";
 import { css } from "styled-system/css";
 import { listStreets } from "@/lib/queries/streets";
 import { Card, EmptyState, PageContainer, PageTitle, Pill } from "@/components/ui";
+import { titleCase } from "@/lib/text";
 
 export default function StreetsPage() {
   const streets = listStreets();
@@ -27,11 +28,11 @@ export default function StreetsPage() {
                 })}
               >
                 <span>
-                  <span className={css({ fontWeight: "600" })}>{s.name}</span>
+                  <span className={css({ fontWeight: "600" })}>{titleCase(s.name)}</span>
                   {s.town_name && (
                     <span className={css({ color: "fgMuted", fontSize: "sm" })}>
                       {" "}
-                      · {s.town_name}
+                      · {titleCase(s.town_name)}
                     </span>
                   )}
                 </span>

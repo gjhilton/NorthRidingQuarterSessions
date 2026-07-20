@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
 import { getStreetCases, getStreetDetail, listStreetIds } from "@/lib/queries/streets";
 import { PageContainer, PageTitle, Table, Th, Td } from "@/components/ui";
+import { titleCase } from "@/lib/text";
 
 export async function generateStaticParams() {
   return listStreetIds().map((id) => ({ id: String(id) }));
@@ -26,10 +27,10 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
         </Link>
         <PageTitle
           subtitle={`${cases.length} case${cases.length === 1 ? "" : "s"}${
-            street.town_name ? ` · ${street.town_name}` : ""
+            street.town_name ? ` · ${titleCase(street.town_name)}` : ""
           }`}
         >
-          {street.name}
+          {titleCase(street.name)}
         </PageTitle>
       </div>
 

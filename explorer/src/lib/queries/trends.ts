@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "@/lib/db";
+import { titleCase } from "@/lib/text";
 
 // Change-over-time aggregates for /trends. All server-only, build-time
 // (better-sqlite3) -- the dataset is fixed, so there's nothing here that
@@ -66,7 +67,10 @@ export function townByYear(topN = 5): YearSeries {
       `
     )
     .all() as { year: number; name: string; count: number }[];
-  return topNSeriesByYear(rows, topN);
+  return topNSeriesByYear(
+    rows.map((r) => ({ ...r, name: titleCase(r.name) })),
+    topN
+  );
 }
 
 export interface GenderYearPoint {

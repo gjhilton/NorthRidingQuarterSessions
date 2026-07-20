@@ -9,6 +9,7 @@ import {
 } from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { toSlug } from "@/lib/slug";
+import { titleCase } from "@/lib/text";
 
 // The dataset is static, so every conviction detail page can be prerendered
 // at build time -- only free-text search/filtering (in BrowseExplorer) needs
@@ -42,8 +43,10 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
       <Card className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
         <div className={css({ display: "flex", gap: "2", flexWrap: "wrap" })}>
           {conviction.offence_type_name && <Pill>{conviction.offence_type_name}</Pill>}
-          {conviction.offence_town_name && <Pill>Offence: {conviction.offence_town_name}</Pill>}
-          {conviction.court_town_name && <Pill>Court: {conviction.court_town_name}</Pill>}
+          {conviction.offence_town_name && (
+            <Pill>Offence: {titleCase(conviction.offence_town_name)}</Pill>
+          )}
+          {conviction.court_town_name && <Pill>Court: {titleCase(conviction.court_town_name)}</Pill>}
           {conviction.offence_date && <Pill>Offence date: {conviction.offence_date}</Pill>}
           {conviction.petty_sessional_division_name && (
             <Pill>Division: {conviction.petty_sessional_division_name}</Pill>
@@ -119,8 +122,8 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
                     />
                   )}
                   {d.occupation && <Detail label="Occupation" value={d.occupation} />}
-                  {d.town_name && <Detail label="Town" value={d.town_name} />}
-                  {d.street_name && <Detail label="Street" value={d.street_name} />}
+                  {d.town_name && <Detail label="Town" value={titleCase(d.town_name)} />}
+                  {d.street_name && <Detail label="Street" value={titleCase(d.street_name)} />}
                   {d.prior_convictions && (
                     <Detail label="Prior convictions" value={d.prior_convictions} />
                   )}
@@ -158,7 +161,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
                     />
                   )}
                   {p.occupation && <Detail label="Occupation" value={p.occupation} />}
-                  {p.town_name && <Detail label="Town" value={p.town_name} />}
+                  {p.town_name && <Detail label="Town" value={titleCase(p.town_name)} />}
                   {p.relationships_and_details && (
                     <Detail label="Details" value={p.relationships_and_details} />
                   )}
