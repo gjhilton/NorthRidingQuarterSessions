@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(sqlite3 data/db.sqlite \".tables\")",
+      "Bash(pip3 list *)",
+      "Skill(claude-api)",
+      "Bash(python3 *)"
     ],
     "deny": []
   }
