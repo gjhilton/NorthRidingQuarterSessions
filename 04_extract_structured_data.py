@@ -1,140 +1,68 @@
-import os
-import json
-from typing import Optional, List
-from pydantic import BaseModel, Field, ValidationError
-from openai import OpenAI
+"""Step 4: LLM extraction + normalized load, in one pass.
 
-# === Configuration ===
-openai_api_key = os.getenv("OPENAI_KEY")
-client = OpenAI(api_key=openai_api_key)
+Replaces the old 04_extract_structured_data.py (deprecated OpenAI
+`functions`/`function_call` API, one .json/__FAILED.json marker file per
+record) AND the never-built 05_load_data.py -- extraction results are
+written directly into the normalized SQLite tables, no intermediate JSON
+files at all.
 
-INPUT_DIR = "./data/summary_convictions"
-OUTPUT_DIR = "./data/structured"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+Resumable by construction: re-running with no flags just processes the next
+batch of `raw_case` rows still in `pending` status (see
+qsrecords.extraction_runner). There's no equivalent of v1's "budget counts
+skipped files against the quota" bug, since the underlying query only ever
+returns rows that still need work.
 
-# === Pydantic Models ===
-class Defendant(BaseModel):
-    first_name: str
-    last_name: str
-    occupation: Optional[str] = None
-    other_details: Optional[str] = None
-    prior_convictions: Optional[str] = None
-    town: Optional[str] = None
-    street: Optional[str] = None
-    aliases: Optional[List[str]] = None
-    sex: Optional[str] = None
+Usage:
+    python3 04_extract_structured_data.py [--limit N] [--batch-size N] \\
+        [--provider openai|anthropic] [--model NAME]
+"""
 
-class InvolvedPerson(BaseModel):
-    first_name: str
-    last_name: str
-    occupation: Optional[str] = None
-    other_details: Optional[str] = None
-    role: Optional[str] = None
-    town: Optional[str] = None
-    street: Optional[str] = None
+import argparse
 
-class Court(BaseModel):
-    location_town: str
+from qsrecords.config import Settings
+from qsrecords.db import get_session, init_db
+from qsrecords.extraction_runner import run
+from qsrecords.llm.factory import get_provider
 
-class RecordSchema(BaseModel):
-    reference_number: str
-    conviction_date: str
-    offence_date: Optional[str] = None
-    offence_day_of_week: Optional[str] = None
-    offence_day_of_month: Optional[int] = None
-    offence_year: Optional[int] = None
-    offence_time: Optional[str] = None
-    charge_description: str
-    sentencing: Optional[str] = None
-    raw_record: str
-    archive_url: str
-    defendants: List[Defendant]
-    involved_persons: Optional[List[InvolvedPerson]] = Field(default_factory=list)
-    offence_type: Optional[str] = None
-    offence_town: Optional[str] = None
-    offence_street: Optional[str] = None
-    court: Optional[Court] = None  # Now optional with default None
 
-# Build function schema for function-calling
-function_schema = {
-    "name": "extract_record",
-    "description": "Extract structured court record data",
-    "parameters": RecordSchema.model_json_schema(),
-}
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--limit", type=int, default=None, help="Max records to process this run (default: all pending)."
+    )
+    parser.add_argument("--batch-size", type=int, default=None, help="Records per LLM call.")
+    parser.add_argument("--provider", choices=["openai", "anthropic"], default=None)
+    parser.add_argument("--model", default=None)
+    args = parser.parse_args()
 
-SYSTEM_PROMPT = (
-    "You are an assistant that extracts court record data. "
-    "Return exactly one structured JSON matching the schema. "
-    "Always include 'involved_persons' (empty list if none). "
-    "If 'court' is missing, it's okay to omit or return None."
-)
+    settings = Settings.from_env()
+    init_db(settings.db_path)
 
-MODEL_FALLBACKS = ["gpt-3.5-turbo", "gpt-4"]
+    batch_size = args.batch_size or settings.batch_size
+    provider = get_provider(name=args.provider, model=args.model)
 
-def extract_structured(content: str):
-    for model in MODEL_FALLBACKS:
-        try:
-            resp = client.chat.completions.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": content},
-                ],
-                functions=[function_schema],
-                function_call="auto"
+    processed_total = 0
+    succeeded_total = 0
+    failed_total = 0
+
+    with get_session(settings.db_path) as session:
+        while args.limit is None or processed_total < args.limit:
+            stats = run(session, provider, batch_size, settings.max_attempts)
+            if stats.processed == 0:
+                break
+            processed_total += stats.processed
+            succeeded_total += stats.succeeded
+            failed_total += stats.failed
+            print(
+                f"Batch done: {stats.succeeded} succeeded, {stats.failed} failed "
+                f"(running total: {processed_total} processed)"
             )
-            fn_call = resp.choices[0].message.function_call
-            args = json.loads(fn_call.arguments)
-            return args
-        except Exception as e:
-            print(f"[{model}] call failed: {e}; trying next model...")
-    raise RuntimeError("All models failed to extract structured output")
 
-def write_json(path: str, data):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    print(
+        f"Done. {succeeded_total} succeeded, {failed_total} failed, "
+        f"out of {processed_total} processed."
+    )
 
-def process_file(filename: str) -> bool:
-    base = filename.rsplit(".", 1)[0]
-    in_path = os.path.join(INPUT_DIR, filename)
-    success_path = os.path.join(OUTPUT_DIR, f"{base}.json")
-    failed_path = os.path.join(OUTPUT_DIR, f"{base}__FAILED.json")
-
-    if os.path.exists(success_path) or os.path.exists(failed_path):
-        print(f"Skipping {filename}, already processed.")
-        return True
-
-    content = open(in_path, encoding="utf-8").read()
-    print(f"Processing {filename}...")
-
-    try:
-        args = extract_structured(content)
-        record = RecordSchema.model_validate(args)
-        write_json(success_path, record.model_dump())
-        print(f"Success: {filename}")
-        return True
-    except (ValidationError, RuntimeError) as e:
-        print(f"Failed {filename}: {e}")
-        write_json(failed_path, {"error": str(e), "content": content})
-        return False
-
-def process_all(max_files: Optional[int] = None):
-    files = [f for f in sorted(os.listdir(INPUT_DIR)) if f.endswith(".txt")]
-    total = len(files)
-    processed = success = failed = 0
-
-    for idx, fname in enumerate(files, start=1):
-        if max_files and processed >= max_files:
-            break
-        print(f"[{idx}/{total}] {fname}")
-        if process_file(fname):
-            success += 1
-        else:
-            failed += 1
-        processed += 1
-        print(f"Progress: {processed}/{total}, Success: {success}, Failed: {failed}\n")
-
-    print(f"Done. {success} passed, {failed} failed, out of {processed}.")
 
 if __name__ == "__main__":
-    process_all(max_files=160)
+    main()
