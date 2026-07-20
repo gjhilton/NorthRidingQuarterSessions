@@ -144,7 +144,7 @@ export function listConvictions(
         ot_town.name AS offence_town_name,
         court_town.name AS court_town_name,
         (
-          SELECT GROUP_CONCAT(TRIM(d.first_name || ' ' || d.last_name), ', ')
+          SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
           FROM summary_conviction_defendant scd
           JOIN defendant d ON d.id = scd.defendant_id
           WHERE scd.summary_conviction_id = sc.id

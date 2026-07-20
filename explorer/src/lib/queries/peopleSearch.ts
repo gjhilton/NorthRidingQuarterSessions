@@ -21,13 +21,13 @@ export function searchPeople(db: DbLike, q: string, limit = 25): PersonSearchRes
         SUM(CASE WHEN kind = 'defendant' THEN 1 ELSE 0 END) AS defendant_mentions,
         SUM(CASE WHEN kind = 'person' THEN 1 ELSE 0 END) AS person_mentions
       FROM (
-        SELECT name_key, TRIM(first_name || ' ' || last_name) AS display_name, 'defendant' AS kind
+        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name, 'defendant' AS kind
         FROM defendant
         UNION ALL
-        SELECT name_key, TRIM(first_name || ' ' || last_name) AS display_name, 'person' AS kind
+        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name, 'person' AS kind
         FROM person
       )
-      WHERE name_key LIKE @like
+      WHERE name_key LIKE @like AND TRIM(name_key) != ''
       GROUP BY name_key
       ORDER BY (defendant_mentions + person_mentions) DESC, display_name
       LIMIT @limit

@@ -37,9 +37,13 @@ export interface PersonNetwork {
 
 export function listNameKeys(): string[] {
   return selectColumn<string>(
-    `SELECT name_key FROM defendant UNION SELECT name_key FROM person`,
+    `
+    SELECT name_key FROM defendant
+    UNION
+    SELECT name_key FROM person
+    `,
     "name_key"
-  );
+  ).filter((k) => k != null && k.trim() !== "");
 }
 
 export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
@@ -80,9 +84,9 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
 
   const displayNameRow = db
     .prepare(
-      `SELECT TRIM(first_name || ' ' || last_name) AS name FROM defendant WHERE name_key = ?
+      `SELECT TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS name FROM defendant WHERE name_key = ?
        UNION ALL
-       SELECT TRIM(first_name || ' ' || last_name) AS name FROM person WHERE name_key = ?
+       SELECT TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS name FROM person WHERE name_key = ?
        LIMIT 1`
     )
     .get(nameKey, nameKey) as { name: string } | undefined;
@@ -107,7 +111,7 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
     const coDefendants = db
       .prepare(
         `
-        SELECT d.name_key, TRIM(d.first_name || ' ' || d.last_name) AS display_name, scd.summary_conviction_id, sc.reference_number
+        SELECT d.name_key, TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')) AS display_name, scd.summary_conviction_id, sc.reference_number
         FROM summary_conviction_defendant scd
         JOIN defendant d ON d.id = scd.defendant_id
         JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
@@ -124,7 +128,7 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
     const coInvolved = db
       .prepare(
         `
-        SELECT p.name_key, TRIM(p.first_name || ' ' || p.last_name) AS display_name, ip.role, ip.summary_conviction_id, sc.reference_number
+        SELECT p.name_key, TRIM(COALESCE(p.first_name,'') || ' ' || COALESCE(p.last_name,'')) AS display_name, ip.role, ip.summary_conviction_id, sc.reference_number
         FROM involved_persons ip
         JOIN person p ON p.id = ip.person_id
         JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
