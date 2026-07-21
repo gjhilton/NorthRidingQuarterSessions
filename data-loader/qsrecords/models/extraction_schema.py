@@ -133,9 +133,11 @@ class ExtractedRecord(BaseModel):
     )
     game_species: Optional[str] = Field(
         default=None,
-        description="For poaching-type offences only: the specific species "
-        "mentioned, exactly as written (e.g. 'conies', 'salmon', 'game', "
-        "'pheasant'). Null for all other offence types.",
+        description="For poaching-type offences only: the specific SPECIES "
+        "mentioned, exactly as written (e.g. 'conies', 'salmon', 'pheasant', "
+        "'hares'). The generic legal term 'game' alone, with no species named, "
+        "is not a species -- leave this null in that case. Null for all other "
+        "offence types too.",
     )
     defendants: list[ExtractedDefendant]
     involved_persons: list[ExtractedInvolvedPerson] = Field(default_factory=list)
