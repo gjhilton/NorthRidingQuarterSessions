@@ -13,10 +13,7 @@ const insightsLinks = [
   { href: "/streets", label: "Streets" },
 ];
 
-const aboutLinks = [
-  { href: "/data-quality", label: "Data quality" },
-  { href: "/methodology", label: "Methodology" },
-];
+const trailingLinks = [{ href: "/about", label: "About" }];
 
 export default function Nav() {
   return (
@@ -69,9 +66,20 @@ export default function Nav() {
           <li>
             <NavDropdown label="Insights" links={insightsLinks} />
           </li>
-          <li>
-            <NavDropdown label="About" links={aboutLinks} />
-          </li>
+          {trailingLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={css({
+                  color: "fgMuted",
+                  fontSize: "sm",
+                  _hover: { color: "fgAccent" },
+                })}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>

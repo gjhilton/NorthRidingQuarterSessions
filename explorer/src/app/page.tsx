@@ -32,14 +32,10 @@ const sections = [
     description: "Offence locations by township, sized by how many cases.",
   },
   {
-    href: "/data-quality",
-    title: "Data quality",
-    description: "Repeated names, unreviewed offence categories, extraction failures.",
-  },
-  {
-    href: "/methodology",
-    title: "Methodology",
-    description: "Where this data comes from, its coverage, and what to treat with caution.",
+    href: "/about",
+    title: "About",
+    description:
+      "Where this data comes from, its coverage, and its rough edges: repeated names, unreviewed offence categories, extraction failures.",
   },
 ];
 

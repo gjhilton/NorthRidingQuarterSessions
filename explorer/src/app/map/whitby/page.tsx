@@ -37,8 +37,8 @@ export default function WhitbyStreetMapPage() {
           Coordinates here are hand-compiled from general knowledge of Whitby&rsquo;s layout, not
           geocoded addresses — each is one rough spot along the street, not the exact offence
           location. See{" "}
-          <a href="/methodology" className={css({ color: "fgAccent" })}>
-            Methodology
+          <a href="/about" className={css({ color: "fgAccent" })}>
+            About
           </a>
           .
           {unmapped > 0 &&

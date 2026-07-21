@@ -224,8 +224,8 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
           </p>
           <p className={css({ fontSize: "xs", color: "fgMuted", mt: "2" })}>
             Cite the original archive record, not this site — see{" "}
-            <Link href="/methodology" className={css({ color: "fgAccent" })}>
-              Methodology
+            <Link href="/about" className={css({ color: "fgAccent" })}>
+              About
             </Link>{" "}
             for why.
           </p>

@@ -28,8 +28,8 @@ export default function MapPage() {
         <p className={css({ fontSize: "sm", color: "fgMuted" })}>
           Coordinates are hand-compiled township centres, not geocoded addresses — there&rsquo;s
           no street-level positioning here, only which town each offence was recorded in. See{" "}
-          <a href="/methodology" className={css({ color: "fgAccent" })}>
-            Methodology
+          <a href="/about" className={css({ color: "fgAccent" })}>
+            About
           </a>
           .{unmapped > 0 && ` ${unmapped} town(s) with cases aren't plotted yet (no known coordinates).`}
         </p>

@@ -1,16 +1,31 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { getTotals } from "@/lib/queries/stats";
-import { Card, PageContainer, PageTitle } from "@/components/ui";
+import {
+  lowConfidenceRecords,
+  recentExtractionFailures,
+  repeatedDefendantNames,
+  repeatedPersonNames,
+  rawCaseStatusBreakdown,
+  unreviewedOffenceTypes,
+} from "@/lib/queries/quality";
+import { Card, EmptyState, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
+import { toSlug } from "@/lib/slug";
 
-export default function MethodologyPage() {
+export default function AboutPage() {
   const totals = getTotals();
   const coveragePct = Math.round((totals.convictions / totals.rawCaseTotal) * 100);
+  const repeatedDefendants = repeatedDefendantNames();
+  const repeatedPersons = repeatedPersonNames();
+  const unreviewedOffences = unreviewedOffenceTypes();
+  const statusBreakdown = rawCaseStatusBreakdown();
+  const failures = recentExtractionFailures();
+  const lowConfidence = lowConfidenceRecords();
 
   return (
     <PageContainer>
-      <PageTitle subtitle="How this dataset was built, and what it can and can't tell you">
-        Methodology
+      <PageTitle subtitle="How this dataset was built, what it can and can't tell you, and where the rough edges are">
+        About
       </PageTitle>
 
       <Section title="Where this data comes from">
@@ -88,12 +103,25 @@ export default function MethodologyPage() {
           trend. Treat everything on that page as provisional until coverage is much closer to
           complete.
         </p>
+        <div className={css({ display: "flex", gap: "3", flexWrap: "wrap" })}>
+          {statusBreakdown.map((s) => (
+            <Card key={s.status} className={css({ minWidth: "8rem" })}>
+              <div className={css({ fontSize: "xl", fontWeight: "600", fontFamily: "serif" })}>
+                {s.count}
+              </div>
+              <div className={css({ fontSize: "sm", color: "fgMuted" })}>{s.status}</div>
+            </Card>
+          ))}
+        </div>
       </Section>
 
-      <Section title="What the extraction gets wrong, and how you'd know">
+      <Section
+        title="What the extraction gets wrong, and how you'd know"
+        id="confidence"
+      >
         <p>
-          As of the batches processed since this page was added, each record carries the LLM&rsquo;s
-          own self-reported confidence (&ldquo;high&rdquo;, &ldquo;medium&rdquo;, or
+          As of the batches processed since this note was added, each record carries the
+          LLM&rsquo;s own self-reported confidence (&ldquo;high&rdquo;, &ldquo;medium&rdquo;, or
           &ldquo;low&rdquo;) and, when not high, which specific fields it was unsure about. A
           record&rsquo;s detail page only shows this note when confidence is medium or low —
           nothing appears for high-confidence records, or for records extracted before this was
@@ -105,9 +133,45 @@ export default function MethodologyPage() {
           check — it can be wrong, including in the direction of unwarranted confidence. It&rsquo;s
           a hint about where to look twice, not a guarantee.
         </p>
+        <div>
+          <h3 className={css({ fontWeight: "600", mb: "2" })}>
+            Medium/low-confidence records ({lowConfidence.length})
+          </h3>
+          {lowConfidence.length === 0 ? (
+            <EmptyState>None flagged.</EmptyState>
+          ) : (
+            <Table>
+              <thead>
+                <tr>
+                  <Th>Reference</Th>
+                  <Th>Confidence</Th>
+                  <Th>Flagged fields</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {lowConfidence.map((r) => (
+                  <tr key={r.id}>
+                    <Td>
+                      <Link
+                        href={`/browse/${r.id}`}
+                        className={css({ color: "fgAccent", fontWeight: "600" })}
+                      >
+                        {r.reference_number}
+                      </Link>
+                    </Td>
+                    <Td>
+                      <Pill>{r.extraction_confidence}</Pill>
+                    </Td>
+                    <Td>{r.uncertain_fields ?? "—"}</Td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </div>
       </Section>
 
-      <Section title="Defendants and involved persons are not deduplicated">
+      <Section title="Defendants and involved persons are not deduplicated" id="deduplication">
         <p>
           Every extraction creates fresh defendant/involved-person rows — there is no
           identity-resolution step linking &ldquo;John Smith&rdquo; in one case to &ldquo;John
@@ -118,13 +182,28 @@ export default function MethodologyPage() {
           </Link>{" "}
           pages group mentions by an exact normalised name match only. Two different real people
           sharing a name will appear as one page; the same real person spelled two different ways
-          will appear as two. The{" "}
-          <Link href="/data-quality" className={css({ color: "fgAccent" })}>
-            Data quality
-          </Link>{" "}
-          page lists repeated names as candidates worth a manual second look, not as confirmed
-          matches.
+          will appear as two. The lists below are repeat-name candidates worth a manual second
+          look, not confirmed matches.
         </p>
+        <div>
+          <h3 className={css({ fontWeight: "600", mb: "2" })}>
+            Repeated defendant names ({repeatedDefendants.length})
+          </h3>
+          <NameList
+            rows={repeatedDefendants.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
+          />
+        </div>
+        <div>
+          <h3 className={css({ fontWeight: "600", mb: "2" })}>
+            Repeated involved-person names ({repeatedPersons.length})
+          </h3>
+          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "2" })}>
+            Witnesses, victims, prosecutors etc. whose name recurs across cases.
+          </p>
+          <NameList
+            rows={repeatedPersons.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
+          />
+        </div>
       </Section>
 
       <Section title="Offence categories are partly LLM-invented">
@@ -133,12 +212,67 @@ export default function MethodologyPage() {
           against it, but may propose a new category if none fit. Those proposed categories
           aren&rsquo;t automatically reviewed for whether they duplicate an existing one under a
           different name (e.g. &ldquo;possession of short weights&rdquo; vs. &ldquo;possession of
-          inaccurate weights&rdquo;) — see the unreviewed list on{" "}
-          <Link href="/data-quality" className={css({ color: "fgAccent" })}>
-            Data quality
-          </Link>
-          .
+          inaccurate weights&rdquo;).
         </p>
+        <div>
+          <h3 className={css({ fontWeight: "600", mb: "2" })}>
+            Unreviewed offence types ({unreviewedOffences.length})
+          </h3>
+          {unreviewedOffences.length === 0 ? (
+            <EmptyState>None pending review.</EmptyState>
+          ) : (
+            <Table>
+              <thead>
+                <tr>
+                  <Th>Offence type</Th>
+                  <Th>Case count</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {unreviewedOffences.map((o) => (
+                  <tr key={o.name}>
+                    <Td>{o.name}</Td>
+                    <Td>{o.count}</Td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </div>
+      </Section>
+
+      <Section title="Recent extraction failures" id="failures">
+        <p>
+          Raw cases where an extraction attempt errored out rather than producing a record —
+          these aren&rsquo;t in the {totals.convictions.toLocaleString()} extracted so far, and
+          are retried in later batches.
+        </p>
+        {failures.length === 0 ? (
+          <EmptyState>No extraction failures recorded.</EmptyState>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <Th>Reference</Th>
+                <Th>Attempted</Th>
+                <Th>Provider / model</Th>
+                <Th>Error</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {failures.map((f) => (
+                <tr key={f.id}>
+                  <Td>{f.reference_number}</Td>
+                  <Td>{f.attempted_at}</Td>
+                  <Td>
+                    {f.provider} / {f.model}
+                  </Td>
+                  <Td className={css({ maxWidth: "24rem" })}>{f.error_message ?? "—"}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Section>
 
       <Section title="Search scope">
@@ -183,13 +317,36 @@ export default function MethodologyPage() {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  id,
+  children,
+}: {
+  title: string;
+  id?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+    <section id={id} className={css({ display: "flex", flexDirection: "column", gap: "3", scrollMarginTop: "3rem" })}>
       <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>{title}</h2>
-      <Card className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+      <Card className={css({ display: "flex", flexDirection: "column", gap: "4" })}>
         {children}
       </Card>
     </section>
+  );
+}
+
+function NameList({ rows }: { rows: { name_key: string; count: number; href: string }[] }) {
+  if (rows.length === 0) return <EmptyState>None found.</EmptyState>;
+  return (
+    <div className={css({ display: "flex", flexWrap: "wrap", gap: "2" })}>
+      {rows.map((r) => (
+        <Link key={r.name_key} href={r.href}>
+          <Pill>
+            {r.name_key} ({r.count}×)
+          </Pill>
+        </Link>
+      ))}
+    </div>
   );
 }

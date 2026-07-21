@@ -29,7 +29,7 @@ export interface ConvictionDetail {
   // Added partway through extraction -- null on records extracted before
   // these fields existed, and null on any record where the source text
   // simply didn't state them (most records, for monetary_value_raw and
-  // game_species specifically -- see Methodology).
+  // game_species specifically -- see About).
   petty_sessional_division_name: string | null;
   monetary_value_raw: string | null;
   game_species: string | null;

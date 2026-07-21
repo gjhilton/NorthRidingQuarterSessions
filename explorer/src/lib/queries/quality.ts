@@ -126,3 +126,26 @@ export function recentExtractionFailures(limit = 25): ExtractionFailure[] {
     )
     .all(limit) as ExtractionFailure[];
 }
+
+export interface LowConfidenceRecord {
+  id: number;
+  reference_number: string;
+  extraction_confidence: string;
+  uncertain_fields: string | null;
+}
+
+// Records extracted before self-reported confidence was captured have
+// extraction_confidence = NULL -- excluded here deliberately (that's a
+// coverage gap, not a flagged-as-uncertain record), see About.
+export function lowConfidenceRecords(): LowConfidenceRecord[] {
+  return getDb()
+    .prepare(
+      `
+      SELECT id, reference_number, extraction_confidence, uncertain_fields
+      FROM summary_conviction
+      WHERE extraction_confidence IN ('low', 'medium')
+      ORDER BY extraction_confidence = 'low' DESC, reference_number
+      `
+    )
+    .all() as LowConfidenceRecord[];
+}

@@ -12,7 +12,7 @@ export interface CaseMention {
   charge_description: string;
   role: string;
   // These are per-mention, not per-person -- defendant/person rows aren't
-  // deduplicated across cases (see Methodology), so the same real person
+  // deduplicated across cases (see About), so the same real person
   // can carry different values here in different cases, and that's
   // expected rather than a data-quality bug.
   occupation: string | null;
