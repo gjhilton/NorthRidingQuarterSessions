@@ -12,6 +12,7 @@ import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { toSlug } from "@/lib/slug";
 import { titleCase } from "@/lib/text";
 import { CopyCitationButton } from "@/components/CopyCitationButton";
+import { formatDate } from "@/lib/date";
 
 // The dataset is static, so every conviction detail page can be prerendered
 // at build time -- only free-text search/filtering (in BrowseExplorer) needs
@@ -63,7 +64,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             )}
           </div>
         </div>
-        <PageTitle subtitle={conviction.conviction_date ?? conviction.conviction_date_raw}>
+        <PageTitle subtitle={formatDate(conviction.conviction_date) ?? conviction.conviction_date_raw}>
           {conviction.reference_number}
         </PageTitle>
       </div>
@@ -77,7 +78,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             <Pill>Offence: {titleCase(conviction.offence_town_name)}</Pill>
           )}
           {conviction.court_town_name && <Pill>Court: {titleCase(conviction.court_town_name)}</Pill>}
-          {conviction.offence_date && <Pill>Offence date: {conviction.offence_date}</Pill>}
+          {conviction.offence_date && <Pill>Offence date: {formatDate(conviction.offence_date)}</Pill>}
           {conviction.petty_sessional_division_name && (
             <Pill>Division: {conviction.petty_sessional_division_name}</Pill>
           )}

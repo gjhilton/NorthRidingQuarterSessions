@@ -4,6 +4,7 @@ import { css } from "styled-system/css";
 import { getStreetCases, getStreetDetail, listStreetIds } from "@/lib/queries/streets";
 import { PageContainer, PageTitle, Table, Th, Td } from "@/components/ui";
 import { titleCase } from "@/lib/text";
+import { formatDate } from "@/lib/date";
 
 export async function generateStaticParams() {
   return listStreetIds().map((id) => ({ id: String(id) }));
@@ -54,7 +55,7 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
                   {c.reference_number}
                 </Link>
               </Td>
-              <Td>{c.conviction_date ?? c.conviction_date_raw}</Td>
+              <Td>{formatDate(c.conviction_date) ?? c.conviction_date_raw}</Td>
               <Td>{c.defendant_names ?? "—"}</Td>
               <Td>{c.offence_type_names ?? "—"}</Td>
             </tr>

@@ -15,6 +15,7 @@ import {
 } from "@/lib/queries/browseList";
 import type { Option } from "@/lib/queries/filters";
 import { titleCase } from "@/lib/text";
+import { formatDate } from "@/lib/date";
 import { EmptyState, Table, Th, Td, formInputStyle, primaryButtonStyle } from "@/components/ui";
 
 // Large enough to cover "every row matching the current filters" in one
@@ -275,7 +276,7 @@ export function BrowseExplorer({
                     {r.reference_number}
                   </Link>
                 </Td>
-                <Td>{r.conviction_date ?? r.conviction_date_raw}</Td>
+                <Td>{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
                 <Td>{r.defendant_names ?? "—"}</Td>
                 <Td>{r.offence_type_names ?? "—"}</Td>
                 <Td>
