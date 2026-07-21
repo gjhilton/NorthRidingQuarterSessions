@@ -3,6 +3,7 @@ import { css } from "styled-system/css";
 import { convictionsByYear, getTotals } from "@/lib/queries/stats";
 import { Card, PageContainer, PageTitle, StatTile } from "@/components/ui";
 import { OnThisDay } from "@/components/OnThisDay";
+import { EspecialInterest } from "@/components/EspecialInterest";
 import { siteTitle } from "@/lib/siteName";
 
 const sections = [
@@ -59,6 +60,8 @@ export default function Home() {
       </PageTitle>
 
       <OnThisDay />
+
+      <EspecialInterest />
 
       <Card className={css({ borderColor: "fgAccent" })}>
         <p className={css({ fontSize: "body", color: "fgMuted" })}>

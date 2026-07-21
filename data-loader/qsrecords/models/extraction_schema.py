@@ -177,6 +177,14 @@ class ExtractedRecord(BaseModel):
         "for 'this seems unusual compared to what I'd expect' -- that's what "
         "uncertain_fields is for. Leave null in every other case.",
     )
+    of_especial_interest: bool = Field(
+        default=False,
+        description="True if this case is unusually colourful, notable, or "
+        "surprising compared to the general run of the corpus -- e.g. a mass "
+        "incident with many defendants, a rare or unusual offence category, "
+        "a vivid or memorable set of circumstances. Most records should be "
+        "False; this is for the rare stand-out case.",
+    )
 
     @model_validator(mode="before")
     @classmethod

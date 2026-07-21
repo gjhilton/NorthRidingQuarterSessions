@@ -38,6 +38,9 @@ export interface ConvictionDetail {
   // contain an error -- see About. Null in the overwhelming majority of
   // records.
   correction_note: string | null;
+  // Self-reported by the LLM/human extractor -- flags unusually colourful or
+  // notable cases. False for the overwhelming majority of records.
+  of_especial_interest: boolean;
 }
 
 export interface DetailDefendant {
@@ -124,7 +127,8 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
         court_town.name AS court_town_name,
         sc.extraction_confidence, sc.uncertain_fields,
         psd.name AS petty_sessional_division_name,
-        sc.monetary_value_raw, sc.game_species, sc.correction_note
+        sc.monetary_value_raw, sc.game_species, sc.correction_note,
+        sc.of_especial_interest
       FROM summary_conviction sc
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
       LEFT JOIN street st ON st.id = sc.offence_location_street_id
@@ -133,15 +137,17 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
       WHERE sc.id = ?
       `
     )
-    .get(id) as (Omit<ConvictionDetail, "offence_type_names"> & {
+    .get(id) as (Omit<ConvictionDetail, "offence_type_names" | "of_especial_interest"> & {
     offence_type_names_concat: string | null;
+    of_especial_interest: number;
   }) | undefined;
 
   if (!row) return undefined;
-  const { offence_type_names_concat, ...rest } = row;
+  const { offence_type_names_concat, of_especial_interest, ...rest } = row;
   return {
     ...rest,
     offence_type_names: offence_type_names_concat ? offence_type_names_concat.split("\x1f") : [],
+    of_especial_interest: Boolean(of_especial_interest),
   };
 }
 

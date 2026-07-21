@@ -73,6 +73,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
 
       <Card className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
         <div className={css({ display: "flex", gap: "2", flexWrap: "wrap" })}>
+          {conviction.of_especial_interest && <Pill>★ Of especial interest</Pill>}
           {conviction.offence_type_names.map((name) => (
             <Pill key={name}>{name}</Pill>
           ))}

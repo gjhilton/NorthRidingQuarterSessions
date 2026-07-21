@@ -62,6 +62,7 @@ const rows = db
         WHERE scd.summary_conviction_id = sc.id
       ) AS defendants,
       sc.extraction_confidence,
+      sc.of_especial_interest,
       sc.archive_url
     FROM summary_conviction sc
     LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id

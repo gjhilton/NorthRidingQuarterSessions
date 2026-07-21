@@ -63,6 +63,10 @@ class SummaryConviction(SQLModel, table=True):
     # just be extracted literally and flagged via uncertain_fields instead.
     correction_note: Optional[str] = None
 
+    # Self-reported by the LLM/human extractor (see ExtractedRecord.of_especial_interest)
+    # -- flags unusually colourful or notable cases for surfacing on the homepage.
+    of_especial_interest: bool = Field(default=False)
+
 
 class Defendant(SQLModel, table=True):
     __tablename__ = "defendant"

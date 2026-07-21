@@ -37,6 +37,7 @@ export interface SummaryConviction {
   offence_location_street_id: number | null;
   court_location_town_id: number | null;
   archive_url: string;
+  of_especial_interest: number; // sqlite boolean
 }
 
 export interface Defendant {

@@ -20,6 +20,7 @@ _COLUMN_ADDITIONS = [
     ("summary_conviction", "monetary_value_raw", "VARCHAR"),
     ("summary_conviction", "game_species", "VARCHAR"),
     ("summary_conviction", "correction_note", "VARCHAR"),
+    ("summary_conviction", "of_especial_interest", "BOOLEAN DEFAULT 0"),
     ("defendant", "age", "INTEGER"),
     ("defendant", "marital_status", "VARCHAR"),
     ("defendant", "relationship_type", "VARCHAR"),

@@ -116,6 +116,7 @@ def persist_extracted_record(
         monetary_value_raw=extracted.monetary_value_raw,
         game_species=extracted.game_species,
         correction_note=extracted.correction_note,
+        of_especial_interest=extracted.of_especial_interest,
     )
     session.add(conviction)
     session.flush()
