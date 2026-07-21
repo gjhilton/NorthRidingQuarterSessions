@@ -1,7 +1,9 @@
+import json
+
 import pytest
 from sqlmodel import select
 
-from qsrecords.manual_batch import MANUAL_PROVIDER, persist_manual_batch
+from qsrecords.manual_batch import MANUAL_PROVIDER, load_records_from_json, persist_manual_batch
 from qsrecords.models.extraction_schema import ExtractedDefendant, ExtractedRecord
 from qsrecords.models.raw import ExtractionAttempt, RawCase, RawCaseStatus
 
@@ -90,3 +92,61 @@ def test_raises_if_raw_case_not_pending(session):
         persist_manual_batch(
             session, {raw_case.id: _make_extracted()}, batch_id="manual-parse-test-4"
         )
+
+
+def test_load_records_from_json_parses_string_keys_into_extracted_records(tmp_path):
+    path = tmp_path / "batch.json"
+    path.write_text(
+        json.dumps(
+            {
+                "6180": {
+                    "reference_number": "QSB 1835 3/10/22",
+                    "offence_date_raw": "5 May 1835",
+                    "charge_description": "obstructing a railway",
+                    "offence_types": ["railway offence"],
+                    "defendants": [{"first_name": "Henry", "last_name": "Walker", "sex": "male"}],
+                    "overall_confidence": "medium",
+                    "uncertain_fields": ["offence_types"],
+                }
+            }
+        )
+    )
+
+    records = load_records_from_json(path)
+
+    assert list(records.keys()) == [6180]
+    record = records[6180]
+    assert isinstance(record, ExtractedRecord)
+    assert record.reference_number == "QSB 1835 3/10/22"
+    assert record.offence_types == ["railway offence"]
+    assert record.defendants[0].last_name == "Walker"
+
+
+def test_load_records_from_json_handles_multiple_records(tmp_path):
+    path = tmp_path / "batch.json"
+    path.write_text(
+        json.dumps(
+            {
+                "1": {
+                    "reference_number": "QSB 1900 1/10/1",
+                    "offence_date_raw": "1 Jan 1900",
+                    "charge_description": "a",
+                    "offence_types": ["assault"],
+                    "defendants": [{"first_name": "A", "last_name": "B"}],
+                    "overall_confidence": "high",
+                },
+                "2": {
+                    "reference_number": "QSB 1900 1/10/2",
+                    "offence_date_raw": "2 Jan 1900",
+                    "charge_description": "b",
+                    "offence_types": ["theft"],
+                    "defendants": [{"first_name": "C", "last_name": "D"}],
+                    "overall_confidence": "high",
+                },
+            }
+        )
+    )
+
+    records = load_records_from_json(path)
+
+    assert sorted(records.keys()) == [1, 2]

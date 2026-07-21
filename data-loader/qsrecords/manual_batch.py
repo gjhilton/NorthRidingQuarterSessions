@@ -14,9 +14,10 @@ specifically about the manual-session provenance path's bookkeeping around
 that translation (marking raw_case DONE, writing the audit trail).
 """
 
+import json
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from sqlmodel import Session, select
 
@@ -87,3 +88,12 @@ def run_manual_batch(
         count = persist_manual_batch(session, records, batch_id, model=model)
         session.commit()
     return count
+
+
+def load_records_from_json(path: Union[str, Path]) -> dict[int, ExtractedRecord]:
+    """Loads a {raw_case_id (string key) -> ExtractedRecord-shaped object}
+    JSON file, as produced for save_manual_batch.py. JSON has no integer
+    keys, so raw_case_id is a string in the file and converted here."""
+    with open(path) as f:
+        raw = json.load(f)
+    return {int(raw_case_id): ExtractedRecord.model_validate(data) for raw_case_id, data in raw.items()}
