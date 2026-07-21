@@ -9,6 +9,7 @@ single parsed date (see qsrecords.dates) and never sourced from the LLM.
 from datetime import date
 from typing import Optional
 
+from sqlalchemy import CheckConstraint
 from sqlmodel import Field, SQLModel
 
 
@@ -135,3 +136,27 @@ class InvolvedPerson(SQLModel, table=True):
     summary_conviction_id: int = Field(foreign_key="summary_conviction.id", index=True)
     person_id: int = Field(foreign_key="person.id", index=True)
     role: Optional[str] = None
+
+
+class RelatedConviction(SQLModel, table=True):
+    """Self-referential link: two convictions judged to stem from the same
+    underlying event -- one arrest producing several same-day charges
+    against one defendant, a mutual assault charged from both sides, a
+    group incident (joint theft, poaching trip, riot) producing several
+    convictions. Informal by design: built from patterns noticed reading
+    records or detected heuristically (see qsrecords.related_convictions),
+    not a formal legal grouping -- `note` always explains the basis for
+    the link so it can be judged, not just trusted.
+
+    Conceptually symmetric (A relates to B same as B relates to A) but
+    stored as one row per pair with the lower id first, enforced by the
+    CHECK constraint, so a pair is never stored twice in both directions.
+    Always go through qsrecords.related_convictions.link_convictions()
+    rather than constructing this directly, since it does that ordering."""
+
+    __tablename__ = "related_conviction"
+    __table_args__ = (CheckConstraint("summary_conviction_id_a < summary_conviction_id_b"),)
+
+    summary_conviction_id_a: int = Field(foreign_key="summary_conviction.id", primary_key=True)
+    summary_conviction_id_b: int = Field(foreign_key="summary_conviction.id", primary_key=True)
+    note: Optional[str] = None

@@ -71,6 +71,18 @@ export interface DetailInvolvedPerson {
   town_name: string | null;
 }
 
+export interface RelatedConviction {
+  id: number;
+  reference_number: string;
+  conviction_date: string | null;
+  conviction_date_raw: string;
+  charge_description: string;
+  // Explains why this pair was linked -- see qsrecords.related_convictions.
+  // Not a claim of certainty, just what matched (same defendant + date, or
+  // same date/street/charge wording with a different defendant).
+  note: string | null;
+}
+
 export function listConvictionIds(): number[] {
   return selectColumn<number>(`SELECT id FROM summary_conviction`, "id");
 }
@@ -180,4 +192,23 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
       `
     )
     .all(convictionId) as DetailInvolvedPerson[];
+}
+
+export function getRelatedConvictions(convictionId: number): RelatedConviction[] {
+  return getDb()
+    .prepare(
+      `
+      SELECT
+        sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
+        sc.charge_description, rc.note
+      FROM related_conviction rc
+      JOIN summary_conviction sc
+        ON sc.id = CASE WHEN rc.summary_conviction_id_a = @id
+                         THEN rc.summary_conviction_id_b
+                         ELSE rc.summary_conviction_id_a END
+      WHERE rc.summary_conviction_id_a = @id OR rc.summary_conviction_id_b = @id
+      ORDER BY sc.conviction_date IS NULL, sc.conviction_date
+      `
+    )
+    .all({ id: convictionId }) as RelatedConviction[];
 }

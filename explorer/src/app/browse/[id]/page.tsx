@@ -6,6 +6,7 @@ import {
   getConvictionDefendants,
   getConvictionDetail,
   getConvictionInvolvedPersons,
+  getRelatedConvictions,
   listConvictionIds,
 } from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
@@ -31,6 +32,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
 
   const defendants = getConvictionDefendants(convictionId);
   const involvedPersons = getConvictionInvolvedPersons(convictionId);
+  const relatedConvictions = getRelatedConvictions(convictionId);
   const { prevId, nextId } = getAdjacentConvictionIds(convictionId);
   const citationText = `North Riding Quarter Sessions Bundles, ${conviction.reference_number}, North Yorkshire County Record Office, Archives Unlocked, ${conviction.archive_url}`;
 
@@ -213,6 +215,35 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
                     <Detail label="Details" value={p.relationships_and_details} />
                   )}
                 </dl>
+              </Card>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {relatedConvictions.length > 0 && (
+        <Section title="Related cases">
+          <p className={css({ fontSize: "small", color: "fgMuted", mt: "-2" })}>
+            Detected automatically (same defendant on the same date, or several
+            defendants charged with the same wording on the same date and street) —
+            a suggestion worth checking, not a certainty.
+          </p>
+          <div className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+            {relatedConvictions.map((rc) => (
+              <Card key={rc.id}>
+                <Link
+                  href={`/browse/${rc.id}`}
+                  className={css({ fontWeight: "600", color: "fgAccent" })}
+                >
+                  {rc.reference_number}
+                </Link>
+                <p className={css({ fontSize: "small", color: "fgMuted", mt: "1" })}>
+                  {formatDate(rc.conviction_date) ?? rc.conviction_date_raw}
+                </p>
+                <p className={css({ fontSize: "body", mt: "1" })}>{rc.charge_description}</p>
+                {rc.note && (
+                  <p className={css({ fontSize: "small", color: "fgMuted", mt: "2" })}>{rc.note}</p>
+                )}
               </Card>
             ))}
           </div>
