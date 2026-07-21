@@ -3,6 +3,7 @@ import { css } from "styled-system/css";
 import { getTotals } from "@/lib/queries/stats";
 import {
   lowConfidenceRecords,
+  possibleNameVariants,
   recentExtractionFailures,
   repeatedDefendantNames,
   repeatedPersonNames,
@@ -21,6 +22,7 @@ export default function AboutPage() {
   const statusBreakdown = rawCaseStatusBreakdown();
   const failures = recentExtractionFailures();
   const lowConfidence = lowConfidenceRecords();
+  const nameVariants = possibleNameVariants();
 
   return (
     <PageContainer>
@@ -203,6 +205,45 @@ export default function AboutPage() {
           <NameList
             rows={repeatedPersons.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
           />
+        </div>
+        <div>
+          <h3 className={css({ fontWeight: "600", mb: "2" })}>
+            Possible name variants ({nameVariants.length})
+          </h3>
+          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "2" })}>
+            The lists above only catch the exact same name recurring. These pairs share a surname
+            with a small spelling difference between them (like &ldquo;Jno. Smith&rdquo; vs.
+            &ldquo;John Smith&rdquo;) — worth a look, but a shared surname with a close spelling is
+            also just what two unrelated people in a small town look like, so treat this as a
+            prompt to check, not a claim.
+          </p>
+          {nameVariants.length === 0 ? (
+            <EmptyState>None found.</EmptyState>
+          ) : (
+            <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
+              {nameVariants.map((v) => (
+                <div
+                  key={`${v.a.name_key}::${v.b.name_key}`}
+                  className={css({
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2",
+                    flexWrap: "wrap",
+                    fontSize: "sm",
+                  })}
+                >
+                  <Link href={`/people/${toSlug(v.a.name_key)}`} className={css({ color: "fgAccent" })}>
+                    {v.a.display_name} ({v.a.count}×)
+                  </Link>
+                  <span className={css({ color: "fgMuted" })}>↔</span>
+                  <Link href={`/people/${toSlug(v.b.name_key)}`} className={css({ color: "fgAccent" })}>
+                    {v.b.display_name} ({v.b.count}×)
+                  </Link>
+                  <Pill>edit distance {v.distance}</Pill>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </Section>
 
