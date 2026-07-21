@@ -53,6 +53,16 @@ class SummaryConviction(SQLModel, table=True):
     monetary_value_raw: Optional[str] = None  # e.g. "value 6d", "one-shillingsworth"
     game_species: Optional[str] = None  # poaching offences only, e.g. "conies", "salmon"
 
+    # Different from uncertain_fields: uncertain_fields flags "I'm not sure
+    # about this", correction_note is for "the text explicitly says X, I'm
+    # confident X is wrong, and I've recorded Y instead" -- e.g. an
+    # offence_town that contradicts a street name attested nowhere else in
+    # the corpus except that one town. Always explains what the source said
+    # and why it was overridden, so the departure from a literal reading is
+    # never silent. Rare by design -- most apparent contradictions should
+    # just be extracted literally and flagged via uncertain_fields instead.
+    correction_note: Optional[str] = None
+
 
 class Defendant(SQLModel, table=True):
     __tablename__ = "defendant"

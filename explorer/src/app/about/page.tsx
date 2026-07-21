@@ -135,6 +135,17 @@ export default function AboutPage() {
           check — it can be wrong, including in the direction of unwarranted confidence. It&rsquo;s
           a hint about where to look twice, not a guarantee.
         </p>
+        <p>
+          A small number of records also carry an <strong>editorial correction</strong> — shown
+          directly on that record&rsquo;s page — for the rarer case where a field was extracted
+          against what the source text literally says, because the text was judged to contain an
+          error. One example: a record whose stated street (Church Street) is attested nowhere
+          else in the archive except in Whitby, while that record&rsquo;s own offence town is
+          given as Ruswarp — recorded as Whitby instead, with a note explaining why. This is
+          different from the confidence flag above: confidence says &ldquo;this might be
+          wrong&rdquo;, a correction note says &ldquo;this was wrong, and here&rsquo;s what
+          changed and why&rdquo;. Always transparent, never silent.
+        </p>
         <div>
           <h3 className={css({ fontWeight: "600", mb: "2" })}>
             Medium/low-confidence records ({lowConfidence.length})

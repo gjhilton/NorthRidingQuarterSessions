@@ -140,6 +140,33 @@ def test_persists_petty_sessional_division_monetary_value_and_game_species(sessi
     assert division.name == "whitby strand"
 
 
+def test_persists_correction_note(session):
+    raw_case = _make_raw_case(session)
+    extracted = _make_extracted(
+        correction_note=(
+            "Text says 'Church Street' but offence_town is stated as Ruswarp; "
+            "Church Street is attested elsewhere only in Whitby, so offence_town "
+            "has been recorded as Whitby instead."
+        ),
+    )
+
+    conviction = persist_extracted_record(session, raw_case, extracted)
+    session.flush()
+
+    assert conviction.correction_note is not None
+    assert "Church Street" in conviction.correction_note
+
+
+def test_correction_note_defaults_to_none(session):
+    raw_case = _make_raw_case(session)
+    extracted = _make_extracted()
+
+    conviction = persist_extracted_record(session, raw_case, extracted)
+    session.flush()
+
+    assert conviction.correction_note is None
+
+
 def test_two_records_naming_same_division_share_one_row(session):
     raw_case_1 = _make_raw_case(session, archive_url="https://example.org/1")
     raw_case_2 = _make_raw_case(

@@ -154,6 +154,21 @@ class ExtractedRecord(BaseModel):
         "if any -- e.g. 'offence_date_raw', 'sentencing', 'defendants[0].occupation'. "
         "Empty if overall_confidence is 'high'.",
     )
+    correction_note: Optional[str] = Field(
+        default=None,
+        description="Different from uncertain_fields, which is for 'I'm not "
+        "sure about this'. This is for the rarer case where the text states "
+        "something you are confident is actually wrong, and you've recorded "
+        "the corrected value instead of extracting it literally -- e.g. an "
+        "internal contradiction within this one record (a person described "
+        "as both someone's current wife and a widow in the same sentence). "
+        "Only use this with a specific, well-evidenced reason you can state "
+        "in the note itself (what the text said, and why you believe it's "
+        "wrong) -- not a general hunch. You are extracting one record in "
+        "isolation and can't see the rest of the archive, so do not use this "
+        "for 'this seems unusual compared to what I'd expect' -- that's what "
+        "uncertain_fields is for. Leave null in every other case.",
+    )
 
     @model_validator(mode="before")
     @classmethod

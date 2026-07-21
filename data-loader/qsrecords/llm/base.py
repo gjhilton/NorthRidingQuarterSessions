@@ -90,6 +90,13 @@ under- than over-confidence.
 - uncertain_fields: list the specific field names behind a "medium" or "low" \
 overall_confidence (e.g. "offence_date_raw", "defendants[0].occupation"). Leave \
 empty for "high" confidence.
+- correction_note: different from uncertain_fields. Only set this in the rare case \
+where the text states something you are CONFIDENT is wrong -- e.g. an internal \
+contradiction within this one record -- and you have recorded a corrected value \
+instead of extracting it literally. State what the text said and why you believe \
+it is wrong. You are extracting one record in isolation, so this is only for \
+contradictions visible within that one record -- never for "this seems unusual", \
+which belongs in uncertain_fields instead. Null in every other case.
 
 If a record is missing from the input, do not invent one. Return exactly one \
 entry per input record, matched by reference_number.

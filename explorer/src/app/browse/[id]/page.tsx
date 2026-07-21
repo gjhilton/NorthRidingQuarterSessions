@@ -88,6 +88,22 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             <strong>Sentencing:</strong> {conviction.sentencing}
           </p>
         )}
+        {conviction.correction_note && (
+          <p
+            className={css({
+              fontSize: "body",
+              color: "fg",
+              bg: "bgSurface",
+              borderWidth: "hairline", borderStyle: "solid",
+              borderColor: "fgAccent",
+              borderRadius: "corner",
+              px: "3",
+              py: "2",
+            })}
+          >
+            <strong>Editorial correction:</strong> {conviction.correction_note}
+          </p>
+        )}
         {(conviction.extraction_confidence === "medium" ||
           conviction.extraction_confidence === "low") && (
           <p

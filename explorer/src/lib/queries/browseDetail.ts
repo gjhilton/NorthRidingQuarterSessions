@@ -33,6 +33,11 @@ export interface ConvictionDetail {
   petty_sessional_division_name: string | null;
   monetary_value_raw: string | null;
   game_species: string | null;
+  // Set only when a field was deliberately extracted *against* a literal
+  // reading of raw_record, because the source text itself was judged to
+  // contain an error -- see About. Null in the overwhelming majority of
+  // records.
+  correction_note: string | null;
 }
 
 export interface DetailDefendant {
@@ -102,7 +107,7 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
         court_town.name AS court_town_name,
         sc.extraction_confidence, sc.uncertain_fields,
         psd.name AS petty_sessional_division_name,
-        sc.monetary_value_raw, sc.game_species
+        sc.monetary_value_raw, sc.game_species, sc.correction_note
       FROM summary_conviction sc
       LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
