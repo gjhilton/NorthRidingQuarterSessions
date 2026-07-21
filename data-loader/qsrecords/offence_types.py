@@ -47,6 +47,25 @@ def seed_offence_types(session: Session) -> None:
         get_or_create_offence_type(session, name, is_seeded=True)
 
 
+def list_offence_type_names(session: Session) -> list[str]:
+    """Every offence type the model should be shown as a candidate category,
+    seeded and previously-proposed alike.
+
+    Passing only SEED_OFFENCE_TYPES here (as extract_batch used to) means the
+    model can never reuse a category an earlier batch proposed and had
+    accepted (e.g. "straying animals") -- it has no way to know that
+    category already exists, so it either re-proposes a near-duplicate or,
+    worse, force-fits the record into an unrelated seeded category instead.
+    Querying the live table closes that gap. Seeded names are listed first
+    (stable, most load-bearing categories), then proposed ones
+    alphabetically.
+    """
+    rows = session.exec(
+        select(OffenceType).order_by(OffenceType.is_seeded.desc(), OffenceType.name)
+    ).all()
+    return [row.name for row in rows]
+
+
 def get_or_create_offence_type(
     session: Session, raw_name: str, is_seeded: bool = False
 ) -> OffenceType:

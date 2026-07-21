@@ -5,6 +5,7 @@ from qsrecords.llm.base import ExtractionError
 from qsrecords.models.core import SummaryConviction
 from qsrecords.models.extraction_schema import ExtractedDefendant, ExtractedRecord
 from qsrecords.models.raw import ExtractionAttempt, RawCase, RawCaseStatus
+from qsrecords.offence_types import get_or_create_offence_type, seed_offence_types
 
 from conftest import FakeProvider
 
@@ -63,6 +64,20 @@ def test_all_succeed_marks_rows_done(session):
         session.refresh(rc)
         assert rc.status == RawCaseStatus.DONE
     assert len(session.exec(select(SummaryConviction)).all()) == 3
+
+
+def test_run_passes_live_offence_types_not_static_seed_list(session):
+    # Regression test for the "straying animals" bug: extract_batch used to
+    # be given only the static SEED_OFFENCE_TYPES, so a category an earlier
+    # batch proposed and had accepted was invisible to this one.
+    seed_offence_types(session)
+    get_or_create_offence_type(session, "straying animals")
+    cases = _seed_raw_cases(session, 1)
+    provider = FakeProvider(plan=[[_extracted_for(rc) for rc in cases]])
+
+    extraction_runner.run(session, provider, batch_size=25, max_attempts=3)
+
+    assert "straying animals" in provider.offence_types_seen[0]
 
 
 def test_successful_attempt_records_raw_response_and_duration(session):

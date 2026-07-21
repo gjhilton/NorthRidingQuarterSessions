@@ -28,9 +28,11 @@ class FakeProvider:
     def __init__(self, plan):
         self._plan = list(plan)
         self.calls = []
+        self.offence_types_seen = []
 
-    def extract_batch(self, records):
+    def extract_batch(self, records, offence_types=()):
         self.calls.append(list(records))
+        self.offence_types_seen.append(list(offence_types))
         outcome = self._plan.pop(0)
         if isinstance(outcome, Exception):
             raise outcome

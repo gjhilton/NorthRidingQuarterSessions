@@ -10,7 +10,6 @@ from qsrecords.llm.base import (
     reconcile_batch_output,
 )
 from qsrecords.models.extraction_schema import ExtractionBatchInput
-from qsrecords.offence_types import SEED_OFFENCE_TYPES
 
 MAX_TOKENS = 8192
 
@@ -23,9 +22,9 @@ class AnthropicProvider:
         self._client = Anthropic()
 
     def extract_batch(
-        self, records: Sequence[ExtractionBatchInput]
+        self, records: Sequence[ExtractionBatchInput], offence_types: Sequence[str]
     ) -> tuple[list[ExtractionOutcome], str]:
-        system_prompt = build_system_prompt(SEED_OFFENCE_TYPES)
+        system_prompt = build_system_prompt(offence_types)
         # Plain text completion, not output_format= -- see qsrecords.llm.base
         # module docstring: Anthropic's schema-constrained decoding rejected
         # this schema live with "Schema is too complex" (grammar-size limit).

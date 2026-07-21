@@ -11,7 +11,6 @@ from qsrecords.llm.base import (
     reconcile_batch_output,
 )
 from qsrecords.models.extraction_schema import ExtractionBatchInput
-from qsrecords.offence_types import SEED_OFFENCE_TYPES
 
 
 class OpenAIProvider:
@@ -25,9 +24,9 @@ class OpenAIProvider:
         self._client = OpenAI(api_key=api_key)
 
     def extract_batch(
-        self, records: Sequence[ExtractionBatchInput]
+        self, records: Sequence[ExtractionBatchInput], offence_types: Sequence[str]
     ) -> tuple[list[ExtractionOutcome], str]:
-        system_prompt = build_system_prompt(SEED_OFFENCE_TYPES)
+        system_prompt = build_system_prompt(offence_types)
         completion = self._client.chat.completions.create(
             model=self.model,
             messages=[

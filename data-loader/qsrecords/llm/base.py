@@ -40,11 +40,21 @@ of week, day of month, or year yourself -- only extract the raw date text.
 - offence_type: pick the closest matching category from this list, or propose a \
 new short, canonical, lowercase, singular category if none fit: {offence_types}. \
 NEVER return "summary conviction" or the record title as the offence_type -- that \
-is not an offence category.
+is not an offence category. Only pick a category if the text actually supports its \
+defining criteria -- e.g. "illegal gambling" requires the text to mention stakes, \
+wagering, or a betting game (like pitch and toss); a game with no mention of \
+betting is not gambling just because another record in this batch is. If nothing \
+in the list genuinely fits, propose a new category rather than stretching an \
+existing one to cover it.
 - charge_description, sentencing, offence_time, offence_town, offence_street, \
 court_location_town, defendants, involved_persons: extracted as described in the \
 schema. Leave a field null/empty if the information isn't present in the text -- \
-do not guess or hallucinate.
+do not guess or hallucinate. court_location_town specifically: only fill this in \
+if the text contains an explicit statement of where the case was heard (e.g. \
+"Case heard at Whitby", "case heard in the division of X"). Do not default to \
+Whitby, to the offence_town, or to the court town of other records in this same \
+batch -- a record with no such statement gets court_location_town: null, even if \
+every other record in the batch was heard at the same place.
 - petty_sessional_division: the named historic administrative division/wapentake \
 the case was heard under, if stated (e.g. "Whitby Strand", "Ryedale") -- just the \
 name, not the words "Petty Sessional division" or "wapentake" themselves. This is \
@@ -52,9 +62,11 @@ distinct from court_location_town.
 - monetary_value_raw: for theft or damage offences only, the raw value/worth \
 exactly as stated (e.g. "value 6d", "one-shillingsworth", "value of 1s"). Null if \
 no amount is given.
-- game_species: for poaching-type offences only, the specific species mentioned \
-exactly as written (e.g. "conies", "salmon", "game", "pheasant"). Null for every \
-other offence type.
+- game_species: for poaching-type offences only, the SPECIFIC species mentioned \
+exactly as written (e.g. "conies", "salmon", "pheasant", "hares"). The generic \
+legal term "game" on its own, with no species named, is NOT a species -- leave \
+game_species null in that case rather than writing "game". Null for every other \
+offence type too.
 - For each defendant and involved person -- age: ONLY if an exact age in years is \
 explicitly stated (e.g. "aged 11 years"). Never estimate or infer an age from \
 occupation, relationships, or any other context.
@@ -123,9 +135,15 @@ class ExtractionProvider(Protocol):
     model: str
 
     def extract_batch(
-        self, records: Sequence[ExtractionBatchInput]
+        self, records: Sequence[ExtractionBatchInput], offence_types: Sequence[str]
     ) -> tuple[list[ExtractionOutcome], str]:
         """Extract structured data for a batch of records.
+
+        offence_types is the full current candidate list (seeded +
+        previously-proposed -- see offence_types.list_offence_type_names),
+        not the static seed list, so the model can reuse a category an
+        earlier batch proposed instead of re-proposing a near-duplicate or
+        force-fitting into an unrelated seeded one.
 
         Returns (outcomes, raw_response_text): exactly one outcome per input
         record (matched by reference_number, not position), plus the full

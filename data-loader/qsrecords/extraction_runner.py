@@ -27,6 +27,7 @@ from qsrecords.llm.base import ExtractionError, ExtractionProvider
 from qsrecords.mapping import persist_extracted_record
 from qsrecords.models.extraction_schema import ExtractionBatchInput
 from qsrecords.models.raw import ExtractionAttempt, RawCase, RawCaseStatus
+from qsrecords.offence_types import list_offence_type_names
 
 
 @dataclass
@@ -163,10 +164,11 @@ def run(
         for rc in batch
     ]
     batch_id = uuid4().hex
+    offence_types = list_offence_type_names(session)
 
     start = time.monotonic()
     try:
-        outcomes, raw_response = provider.extract_batch(inputs)
+        outcomes, raw_response = provider.extract_batch(inputs, offence_types)
     except Exception as exc:
         duration_ms = int((time.monotonic() - start) * 1000)
         # Whole-batch transport failure (auth/network/rate-limit): every row

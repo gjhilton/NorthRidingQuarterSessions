@@ -5,6 +5,7 @@ from qsrecords.offence_types import (
     SEED_OFFENCE_TYPES,
     UNCLASSIFIED,
     get_or_create_offence_type,
+    list_offence_type_names,
     seed_offence_types,
 )
 
@@ -34,3 +35,28 @@ def test_summary_conviction_redirects_to_unclassified(session):
 def test_new_llm_proposed_category_is_not_marked_seeded(session):
     result = get_or_create_offence_type(session, "smuggling")
     assert result.is_seeded is False
+
+
+def test_list_offence_type_names_includes_previously_proposed_categories(session):
+    # Regression test: extract_batch used to be given only the static
+    # SEED_OFFENCE_TYPES, so a category an earlier batch proposed (like
+    # "straying animals") was invisible to later batches, which then either
+    # re-proposed a near-duplicate or force-fit the record into an unrelated
+    # seeded category. list_offence_type_names must return the live table,
+    # not the static list.
+    seed_offence_types(session)
+    get_or_create_offence_type(session, "straying animals")
+
+    names = list_offence_type_names(session)
+
+    assert "straying animals" in names
+    assert set(SEED_OFFENCE_TYPES) <= set(names)
+
+
+def test_list_offence_type_names_orders_seeded_before_proposed(session):
+    seed_offence_types(session)
+    get_or_create_offence_type(session, "smuggling")
+
+    names = list_offence_type_names(session)
+
+    assert names.index("smuggling") > names.index(SEED_OFFENCE_TYPES[0])

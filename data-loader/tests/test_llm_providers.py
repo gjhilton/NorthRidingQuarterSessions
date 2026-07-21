@@ -36,7 +36,7 @@ def test_openai_provider_extract_batch_parses_real_response_shape():
         from qsrecords.llm.openai_provider import OpenAIProvider
 
         provider = OpenAIProvider(model="gpt-4o-2024-08-06")
-        outcomes, raw_response = provider.extract_batch([_make_input()])
+        outcomes, raw_response = provider.extract_batch([_make_input()], ["assault"])
 
         assert raw_response == VALID_BATCH_JSON
         assert len(outcomes) == 1
@@ -61,7 +61,7 @@ def test_openai_provider_raises_on_empty_content():
 
         provider = OpenAIProvider(model="gpt-4o-2024-08-06")
         try:
-            provider.extract_batch([_make_input()])
+            provider.extract_batch([_make_input()], ["assault"])
             assert False, "expected RuntimeError"
         except RuntimeError:
             pass
@@ -79,7 +79,7 @@ def test_openai_provider_missing_record_becomes_extraction_error():
         from qsrecords.llm.openai_provider import OpenAIProvider
 
         provider = OpenAIProvider(model="gpt-4o-2024-08-06")
-        outcomes, _ = provider.extract_batch([_make_input("R1"), _make_input("R2")])
+        outcomes, _ = provider.extract_batch([_make_input("R1"), _make_input("R2")], ["assault"])
 
         assert outcomes[0].reference_number == "R1"
         assert isinstance(outcomes[1], ExtractionError)
@@ -97,7 +97,7 @@ def test_anthropic_provider_extract_batch_parses_real_response_shape():
         from qsrecords.llm.anthropic_provider import AnthropicProvider
 
         provider = AnthropicProvider(model="claude-opus-4-8")
-        outcomes, raw_response = provider.extract_batch([_make_input()])
+        outcomes, raw_response = provider.extract_batch([_make_input()], ["assault"])
 
         assert raw_response == VALID_BATCH_JSON
         assert outcomes[0].reference_number == "R1"
@@ -118,7 +118,7 @@ def test_anthropic_provider_raises_on_no_text_content():
 
         provider = AnthropicProvider(model="claude-opus-4-8")
         try:
-            provider.extract_batch([_make_input()])
+            provider.extract_batch([_make_input()], ["assault"])
             assert False, "expected RuntimeError"
         except RuntimeError:
             pass
