@@ -81,9 +81,10 @@ export function unreviewedOffenceTypes(): UnreviewedOffenceType[] {
   return getDb()
     .prepare(
       `
-      SELECT ot.name AS name, COUNT(sc.id) AS count
+      SELECT ot.name AS name, COUNT(DISTINCT sc.id) AS count
       FROM offence_type ot
-      LEFT JOIN summary_conviction sc ON sc.offence_type_id = ot.id
+      LEFT JOIN summary_conviction_offence_type scot ON scot.offence_type_id = ot.id
+      LEFT JOIN summary_conviction sc ON sc.id = scot.summary_conviction_id
       WHERE ot.is_seeded = 0
       GROUP BY ot.name
       ORDER BY count DESC

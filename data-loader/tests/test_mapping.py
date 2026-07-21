@@ -1,14 +1,27 @@
 from sqlmodel import select
 
 from qsrecords.mapping import persist_extracted_record
-from qsrecords.models.core import Defendant, Person
+from qsrecords.models.core import Defendant, Person, SummaryConvictionOffenceType
 from qsrecords.models.extraction_schema import (
     ExtractedDefendant,
     ExtractedInvolvedPerson,
     ExtractedRecord,
 )
 from qsrecords.models.raw import RawCase
-from qsrecords.models.reference import PettySessionalDivision, Town
+from qsrecords.models.reference import OffenceType, PettySessionalDivision, Town
+
+
+def _offence_type_names(session, conviction) -> list[str]:
+    return sorted(
+        session.exec(
+            select(OffenceType.name)
+            .join(
+                SummaryConvictionOffenceType,
+                SummaryConvictionOffenceType.offence_type_id == OffenceType.id,
+            )
+            .where(SummaryConvictionOffenceType.summary_conviction_id == conviction.id)
+        ).all()
+    )
 
 
 def _make_raw_case(session, **overrides):
@@ -33,7 +46,7 @@ def _make_extracted(**overrides):
         offence_time=None,
         charge_description="assaulting Margaret Croft",
         sentencing=None,
-        offence_type="assault",
+        offence_types=["assault"],
         offence_town="Whitby",
         offence_street=None,
         court_location_town="Whitby",
@@ -82,17 +95,24 @@ def test_two_records_naming_same_town_share_one_town_row(session):
     assert len(towns) == 1
 
 
-def test_offence_type_summary_conviction_redirects_to_unclassified(session):
+def test_conviction_can_have_more_than_one_offence_type(session):
     raw_case = _make_raw_case(session)
-    extracted = _make_extracted(offence_type="Summary conviction")
+    extracted = _make_extracted(offence_types=["assault", "resisting a constable"])
 
     conviction = persist_extracted_record(session, raw_case, extracted)
     session.flush()
 
-    from qsrecords.models.reference import OffenceType
+    assert _offence_type_names(session, conviction) == ["assault", "resisting a constable"]
 
-    offence_type = session.get(OffenceType, conviction.offence_type_id)
-    assert offence_type.name == "unclassified"
+
+def test_offence_type_summary_conviction_redirects_to_unclassified(session):
+    raw_case = _make_raw_case(session)
+    extracted = _make_extracted(offence_types=["Summary conviction"])
+
+    conviction = persist_extracted_record(session, raw_case, extracted)
+    session.flush()
+
+    assert _offence_type_names(session, conviction) == ["unclassified"]
 
 
 def test_defendants_from_different_cases_share_name_key_but_stay_distinct_rows(session):
@@ -239,7 +259,7 @@ def test_blank_strings_from_llm_become_none():
             "reference_number": "QSB 1900 1/10/1",
             "offence_date_raw": "",
             "charge_description": "theft",
-            "offence_type": "theft",
+            "offence_types": ["theft"],
             "sentencing": "",
             "defendants": [{"first_name": "Jane", "last_name": "Doe", "town": ""}],
             "overall_confidence": "high",

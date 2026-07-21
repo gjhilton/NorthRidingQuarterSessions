@@ -56,7 +56,7 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
               </Td>
               <Td>{c.conviction_date ?? c.conviction_date_raw}</Td>
               <Td>{c.defendant_names ?? "—"}</Td>
-              <Td>{c.offence_type_name ?? "—"}</Td>
+              <Td>{c.offence_type_names ?? "—"}</Td>
             </tr>
           ))}
         </tbody>

@@ -45,10 +45,85 @@ def _apply_column_additions(engine) -> None:
         conn.commit()
 
 
+def _migrate_offence_type_to_junction(engine) -> None:
+    """One-time structural migration: summary_conviction.offence_type_id used
+    to be a single scalar FK. Replaced by summary_conviction_offence_type (a
+    conviction can charge more than one genuinely distinct offence, e.g.
+    "assaulting and resisting a constable"). Runs only if the old column is
+    still present -- idempotent, and a no-op on any DB created after this
+    migration was introduced (create_all never adds the old column in the
+    first place).
+
+    SQLite's ALTER TABLE DROP COLUMN refuses to drop a column referenced by
+    an inline FOREIGN KEY constraint (offence_type_id is), so this can't be
+    a plain ADD-then-DROP like _apply_column_additions. Instead: rename the
+    old table aside, let create_all build a fresh summary_conviction from
+    the current model (no offence_type_id), copy every other column's data
+    across by explicit name (order-independent, survives future column
+    additions), backfill the junction table from the old table's
+    offence_type_id, then drop the old table.
+    """
+    with engine.connect() as conn:
+        old_columns = [
+            row[1] for row in conn.execute(text("PRAGMA table_info(summary_conviction)"))
+        ]
+        if "offence_type_id" not in old_columns:
+            return
+        # legacy_alter_table=ON stops SQLite "helpfully" rewriting every
+        # other table's FOREIGN KEY text (summary_conviction_defendant,
+        # involved_persons, summary_conviction_offence_type all reference
+        # summary_conviction) to follow this table under its new name --
+        # exactly the opposite of what's wanted: those FK clauses should
+        # keep saying "summary_conviction" so they resolve to the table
+        # that inherits that name below, not to the one being retired.
+        conn.execute(text("PRAGMA legacy_alter_table = ON"))
+        conn.execute(text("ALTER TABLE summary_conviction RENAME TO summary_conviction_old"))
+        conn.execute(text("PRAGMA legacy_alter_table = OFF"))
+        # Indexes keep their original name after a table rename -- drop them
+        # so create_all can recreate same-named indexes on the fresh table
+        # below without a name collision. Auto-indexes (UNIQUE constraints)
+        # are dropped automatically with the table itself, so skip those.
+        index_names = [
+            row[1]
+            for row in conn.execute(text("PRAGMA index_list(summary_conviction_old)"))
+            if not row[1].startswith("sqlite_autoindex_")
+        ]
+        for index_name in index_names:
+            conn.execute(text(f"DROP INDEX {index_name}"))
+        conn.commit()
+
+    SQLModel.metadata.tables["summary_conviction"].create(engine)
+
+    with engine.connect() as conn:
+        new_columns = [
+            row[1] for row in conn.execute(text("PRAGMA table_info(summary_conviction)"))
+        ]
+        shared_columns = ", ".join(c for c in new_columns if c in old_columns)
+        conn.execute(
+            text(
+                f"INSERT INTO summary_conviction ({shared_columns}) "
+                f"SELECT {shared_columns} FROM summary_conviction_old"
+            )
+        )
+        conn.execute(
+            text(
+                """
+                INSERT OR IGNORE INTO summary_conviction_offence_type
+                    (summary_conviction_id, offence_type_id)
+                SELECT id, offence_type_id FROM summary_conviction_old
+                WHERE offence_type_id IS NOT NULL
+                """
+            )
+        )
+        conn.execute(text("DROP TABLE summary_conviction_old"))
+        conn.commit()
+
+
 def init_db(db_path: Path) -> None:
     engine = get_engine(db_path)
     SQLModel.metadata.create_all(engine)
     _apply_column_additions(engine)
+    _migrate_offence_type_to_junction(engine)
     with Session(engine) as session:
         # Pre-populate the canonical offence_type vocabulary with
         # is_seeded=True, so an LLM-returned match (e.g. "drunkenness") lands

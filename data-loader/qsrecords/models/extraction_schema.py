@@ -113,7 +113,15 @@ class ExtractedRecord(BaseModel):
     offence_time: Optional[str] = None
     charge_description: str
     sentencing: Optional[str] = None
-    offence_type: str
+    offence_types: list[str] = Field(
+        min_length=1,
+        description="Almost always a single-item list. Only include more than "
+        "one entry when the charge describes genuinely distinct offences "
+        "within this one conviction -- e.g. 'assaulting and resisting a "
+        "constable' is both assault and resisting a constable, two separate "
+        "categories, not one compound one. Do not split a single offence "
+        "into multiple entries just because its description is long.",
+    )
     offence_town: Optional[str] = None
     offence_street: Optional[str] = None
     court_location_town: Optional[str] = None

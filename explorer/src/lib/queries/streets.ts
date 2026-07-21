@@ -59,7 +59,7 @@ export interface StreetCaseRow {
   conviction_date: string | null;
   conviction_date_raw: string;
   charge_description: string;
-  offence_type_name: string | null;
+  offence_type_names: string | null;
   defendant_names: string | null;
 }
 
@@ -70,7 +70,12 @@ export function getStreetCases(streetId: number): StreetCaseRow[] {
       SELECT
         sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
         sc.charge_description,
-        ot.name AS offence_type_name,
+        (
+          SELECT GROUP_CONCAT(ot.name, ', ')
+          FROM summary_conviction_offence_type scot
+          JOIN offence_type ot ON ot.id = scot.offence_type_id
+          WHERE scot.summary_conviction_id = sc.id
+        ) AS offence_type_names,
         (
           SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
           FROM summary_conviction_defendant scd
@@ -78,7 +83,6 @@ export function getStreetCases(streetId: number): StreetCaseRow[] {
           WHERE scd.summary_conviction_id = sc.id
         ) AS defendant_names
       FROM summary_conviction sc
-      LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
       WHERE sc.offence_location_street_id = ?
       ORDER BY sc.conviction_date IS NULL, sc.conviction_date DESC
       `

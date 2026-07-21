@@ -37,15 +37,20 @@ For each record given, return one entry in `records` with:
 - offence_date_raw: the date the OFFENCE was committed, as a short raw string \
 exactly as it appears in the text (e.g. "16 June 1864"). Do NOT compute the day \
 of week, day of month, or year yourself -- only extract the raw date text.
-- offence_type: pick the closest matching category from this list, or propose a \
-new short, canonical, lowercase, singular category if none fit: {offence_types}. \
-NEVER return "summary conviction" or the record title as the offence_type -- that \
-is not an offence category. Only pick a category if the text actually supports its \
-defining criteria -- e.g. "illegal gambling" requires the text to mention stakes, \
-wagering, or a betting game (like pitch and toss); a game with no mention of \
-betting is not gambling just because another record in this batch is. If nothing \
-in the list genuinely fits, propose a new category rather than stretching an \
-existing one to cover it.
+- offence_types: a list, almost always with exactly one entry -- pick the closest \
+matching category from this list, or propose a new short, canonical, lowercase, \
+singular category if none fit: {offence_types}. Only include more than one entry \
+when the charge names genuinely distinct offences within this one conviction -- \
+e.g. "assaulting and resisting a constable" is both assault and resisting a \
+constable, two separate categories, not one compound one. Do not split a single \
+offence into multiple entries just because its description is long or covers \
+several details. NEVER return "summary conviction" or the record title as an \
+offence_type -- that is not an offence category. Only pick a category if the text \
+actually supports its defining criteria -- e.g. "illegal gambling" requires the \
+text to mention stakes, wagering, or a betting game (like pitch and toss); a game \
+with no mention of betting is not gambling just because another record in this \
+batch is. If nothing in the list genuinely fits, propose a new category rather \
+than stretching an existing one to cover it.
 - charge_description, sentencing, offence_time, offence_town, offence_street, \
 court_location_town, defendants, involved_persons: extracted as described in the \
 schema. Leave a field null/empty if the information isn't present in the text -- \

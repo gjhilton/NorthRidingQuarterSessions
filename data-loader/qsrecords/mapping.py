@@ -19,6 +19,7 @@ from qsrecords.models.core import (
     Person,
     SummaryConviction,
     SummaryConvictionDefendant,
+    SummaryConvictionOffenceType,
 )
 from qsrecords.models.extraction_schema import ExtractedRecord
 from qsrecords.models.raw import RawCase
@@ -80,7 +81,6 @@ def persist_extracted_record(
     conviction_parsed = parse_historical_date(raw_case.document_date_raw)
     offence_parsed = parse_historical_date(extracted.offence_date_raw)
 
-    offence_type = get_or_create_offence_type(session, extracted.offence_type)
     offence_town = get_or_create_town(session, extracted.offence_town)
     offence_street = get_or_create_street(
         session, extracted.offence_street, offence_town.id if offence_town else None
@@ -101,7 +101,6 @@ def persist_extracted_record(
         offence_day_of_month=offence_parsed.day_of_month if offence_parsed else None,
         offence_year=offence_parsed.year if offence_parsed else None,
         offence_time=extracted.offence_time,
-        offence_type_id=offence_type.id,
         charge_description=extracted.charge_description,
         sentencing=extracted.sentencing,
         raw_record=raw_case.description,
@@ -120,6 +119,14 @@ def persist_extracted_record(
     )
     session.add(conviction)
     session.flush()
+
+    for offence_type_name in extracted.offence_types:
+        offence_type = get_or_create_offence_type(session, offence_type_name)
+        session.add(
+            SummaryConvictionOffenceType(
+                summary_conviction_id=conviction.id, offence_type_id=offence_type.id
+            )
+        )
 
     for extracted_defendant in extracted.defendants:
         town = get_or_create_town(session, extracted_defendant.town)

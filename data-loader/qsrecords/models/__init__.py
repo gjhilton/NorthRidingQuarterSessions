@@ -5,6 +5,7 @@ from .core import (
     Person,
     SummaryConviction,
     SummaryConvictionDefendant,
+    SummaryConvictionOffenceType,
 )
 from .raw import ExtractionAttempt, RawCase, RawCaseStatus
 from .reference import OffenceType, Street, Town
@@ -16,6 +17,7 @@ __all__ = [
     "Person",
     "SummaryConviction",
     "SummaryConvictionDefendant",
+    "SummaryConvictionOffenceType",
     "ExtractionAttempt",
     "RawCase",
     "RawCaseStatus",

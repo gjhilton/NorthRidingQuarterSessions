@@ -30,7 +30,6 @@ export interface SummaryConviction {
   offence_day_of_month: number | null;
   offence_year: number | null;
   offence_time: string | null;
-  offence_type_id: number | null;
   charge_description: string;
   sentencing: string | null;
   raw_record: string;

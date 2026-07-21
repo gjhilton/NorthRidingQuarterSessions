@@ -4,6 +4,7 @@ from qsrecords.models.core import (
     Person,
     SummaryConviction,
     SummaryConvictionDefendant,
+    SummaryConvictionOffenceType,
 )
 from qsrecords.models.reference import OffenceType
 from qsrecords.reports import (
@@ -89,8 +90,33 @@ def test_unreviewed_offence_types_excludes_seeded(session):
     session.flush()
 
     c1 = _make_conviction(session, "REF-1")
-    c1.offence_type_id = proposed.id
-    session.add(c1)
+    session.add(
+        SummaryConvictionOffenceType(summary_conviction_id=c1.id, offence_type_id=proposed.id)
+    )
+    session.commit()
+
+    rows = unreviewed_offence_types(session)
+    assert rows == [("straying animals", 1)]
+
+
+def test_unreviewed_offence_types_counts_convictions_not_offence_mentions(session):
+    """A conviction carrying two offence types (e.g. assault + a proposed
+    category) still counts once for the proposed category, not twice --
+    this counts convictions, not (conviction, offence_type) pairs."""
+    seeded = OffenceType(name="assault", is_seeded=True)
+    proposed = OffenceType(name="straying animals", is_seeded=False)
+    session.add_all([seeded, proposed])
+    session.flush()
+
+    c1 = _make_conviction(session, "REF-1")
+    session.add_all(
+        [
+            SummaryConvictionOffenceType(summary_conviction_id=c1.id, offence_type_id=seeded.id),
+            SummaryConvictionOffenceType(
+                summary_conviction_id=c1.id, offence_type_id=proposed.id
+            ),
+        ]
+    )
     session.commit()
 
     rows = unreviewed_offence_types(session)

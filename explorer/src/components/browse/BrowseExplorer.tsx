@@ -28,7 +28,7 @@ const SORT_COLUMNS: { key: BrowseSortColumn; label: string }[] = [
   { key: "reference_number", label: "Reference" },
   { key: "conviction_date", label: "Date" },
   { key: "defendant_names", label: "Defendant(s)" },
-  { key: "offence_type_name", label: "Offence" },
+  { key: "offence_type_names", label: "Offence" },
   { key: "location", label: "Location" },
 ];
 
@@ -277,7 +277,7 @@ export function BrowseExplorer({
                 </Td>
                 <Td>{r.conviction_date ?? r.conviction_date_raw}</Td>
                 <Td>{r.defendant_names ?? "—"}</Td>
-                <Td>{r.offence_type_name ?? "—"}</Td>
+                <Td>{r.offence_type_names ?? "—"}</Td>
                 <Td>
                   {r.offence_town_name || r.court_town_name
                     ? titleCase(r.offence_town_name ?? r.court_town_name!)

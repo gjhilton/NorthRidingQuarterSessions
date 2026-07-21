@@ -41,7 +41,15 @@ const rows = db
       sc.conviction_date,
       sc.offence_date,
       sc.offence_day_of_week,
-      COALESCE(ot.name, 'unclassified') AS offence_type,
+      COALESCE(
+        (
+          SELECT GROUP_CONCAT(ot.name, '; ')
+          FROM summary_conviction_offence_type scot
+          JOIN offence_type ot ON ot.id = scot.offence_type_id
+          WHERE scot.summary_conviction_id = sc.id
+        ),
+        'unclassified'
+      ) AS offence_type,
       sc.charge_description,
       sc.sentencing,
       ot_town.name AS offence_town,
@@ -56,7 +64,6 @@ const rows = db
       sc.extraction_confidence,
       sc.archive_url
     FROM summary_conviction sc
-    LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
     LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
     LEFT JOIN street st ON st.id = sc.offence_location_street_id
     LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id

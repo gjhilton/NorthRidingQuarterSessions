@@ -9,7 +9,7 @@ export type BrowseSortColumn =
   | "reference_number"
   | "conviction_date"
   | "defendant_names"
-  | "offence_type_name"
+  | "offence_type_names"
   | "location";
 
 export interface BrowseFilters {
@@ -37,9 +37,9 @@ const SORT_EXPRESSIONS: Record<BrowseSortColumn, { nullsExpr?: string; valueExpr
   reference_number: { valueExpr: "sc.reference_number" },
   conviction_date: { nullsExpr: "sc.conviction_date IS NULL", valueExpr: "sc.conviction_date" },
   defendant_names: { nullsExpr: "defendant_names IS NULL", valueExpr: "defendant_names" },
-  offence_type_name: {
-    nullsExpr: "offence_type_name IS NULL",
-    valueExpr: "offence_type_name",
+  offence_type_names: {
+    nullsExpr: "offence_type_names IS NULL",
+    valueExpr: "offence_type_names",
   },
   location: { nullsExpr: `${LOCATION_EXPR} IS NULL`, valueExpr: LOCATION_EXPR },
 };
@@ -50,7 +50,7 @@ export interface BrowseRow {
   conviction_date: string | null;
   conviction_date_raw: string;
   charge_description: string;
-  offence_type_name: string | null;
+  offence_type_names: string | null;
   offence_town_name: string | null;
   court_town_name: string | null;
   defendant_names: string | null;
@@ -71,8 +71,9 @@ function buildWhere(filters: BrowseFilters): WhereClause {
       OR sc.reference_number LIKE @q
       OR sc.sentencing LIKE @q
       OR EXISTS (
-        SELECT 1 FROM offence_type ot2
-        WHERE ot2.id = sc.offence_type_id AND ot2.name LIKE @q
+        SELECT 1 FROM summary_conviction_offence_type scot2
+        JOIN offence_type ot2 ON ot2.id = scot2.offence_type_id
+        WHERE scot2.summary_conviction_id = sc.id AND ot2.name LIKE @q
       )
       OR EXISTS (
         SELECT 1 FROM summary_conviction_defendant scd2
@@ -92,7 +93,10 @@ function buildWhere(filters: BrowseFilters): WhereClause {
     params.townId = filters.townId;
   }
   if (filters.offenceTypeId) {
-    clauses.push(`sc.offence_type_id = @offenceTypeId`);
+    clauses.push(`EXISTS (
+      SELECT 1 FROM summary_conviction_offence_type scot3
+      WHERE scot3.summary_conviction_id = sc.id AND scot3.offence_type_id = @offenceTypeId
+    )`);
     params.offenceTypeId = filters.offenceTypeId;
   }
   if (filters.dateFrom) {
@@ -140,7 +144,12 @@ export function listConvictions(
         sc.conviction_date,
         sc.conviction_date_raw,
         sc.charge_description,
-        ot.name AS offence_type_name,
+        (
+          SELECT GROUP_CONCAT(ot.name, ', ')
+          FROM summary_conviction_offence_type scot
+          JOIN offence_type ot ON ot.id = scot.offence_type_id
+          WHERE scot.summary_conviction_id = sc.id
+        ) AS offence_type_names,
         ot_town.name AS offence_town_name,
         court_town.name AS court_town_name,
         (
@@ -150,7 +159,6 @@ export function listConvictions(
           WHERE scd.summary_conviction_id = sc.id
         ) AS defendant_names
       FROM summary_conviction sc
-      LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
       LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
       ${whereSql}

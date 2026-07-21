@@ -14,7 +14,7 @@ export interface ConvictionDetail {
   offence_date_raw: string | null;
   offence_day_of_week: string | null;
   offence_time: string | null;
-  offence_type_name: string | null;
+  offence_type_names: string[];
   charge_description: string;
   sentencing: string | null;
   raw_record: string;
@@ -94,13 +94,18 @@ export function getAdjacentConvictionIds(id: number): AdjacentConvictionIds {
 }
 
 export function getConvictionDetail(id: number): ConvictionDetail | undefined {
-  return getDb()
+  const row = getDb()
     .prepare(
       `
       SELECT
         sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
         sc.offence_date, sc.offence_date_raw, sc.offence_day_of_week, sc.offence_time,
-        ot.name AS offence_type_name,
+        (
+          SELECT GROUP_CONCAT(ot.name, char(31))
+          FROM summary_conviction_offence_type scot
+          JOIN offence_type ot ON ot.id = scot.offence_type_id
+          WHERE scot.summary_conviction_id = sc.id
+        ) AS offence_type_names_concat,
         sc.charge_description, sc.sentencing, sc.raw_record, sc.archive_url,
         ot_town.name AS offence_town_name,
         st.name AS offence_street_name,
@@ -109,7 +114,6 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
         psd.name AS petty_sessional_division_name,
         sc.monetary_value_raw, sc.game_species, sc.correction_note
       FROM summary_conviction sc
-      LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
       LEFT JOIN street st ON st.id = sc.offence_location_street_id
       LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
@@ -117,7 +121,16 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
       WHERE sc.id = ?
       `
     )
-    .get(id) as ConvictionDetail | undefined;
+    .get(id) as (Omit<ConvictionDetail, "offence_type_names"> & {
+    offence_type_names_concat: string | null;
+  }) | undefined;
+
+  if (!row) return undefined;
+  const { offence_type_names_concat, ...rest } = row;
+  return {
+    ...rest,
+    offence_type_names: offence_type_names_concat ? offence_type_names_concat.split("\x1f") : [],
+  };
 }
 
 export function getConvictionDefendants(convictionId: number): DetailDefendant[] {

@@ -18,6 +18,7 @@ from qsrecords.models.core import (
     Person,
     SummaryConviction,
     SummaryConvictionDefendant,
+    SummaryConvictionOffenceType,
 )
 from qsrecords.models.reference import OffenceType
 
@@ -78,15 +79,22 @@ def person_case_references(session: Session, name_key: str) -> Sequence[tuple[st
 def unreviewed_offence_types(session: Session) -> Sequence[tuple[str, int]]:
     """(name, case_count) for LLM-proposed offence types (is_seeded=False),
     most-used first -- the review queue for manual dedup/merge, per
-    qsrecords.offence_types."""
+    qsrecords.offence_types. A conviction charging this offence alongside
+    another (e.g. "assault" + "resisting a constable") counts once here
+    regardless -- this counts convictions, not offence mentions."""
     return session.exec(
-        select(OffenceType.name, func.count(SummaryConviction.id))
+        select(OffenceType.name, func.count(func.distinct(SummaryConviction.id)))
+        .join(
+            SummaryConvictionOffenceType,
+            SummaryConvictionOffenceType.offence_type_id == OffenceType.id,
+            isouter=True,
+        )
         .join(
             SummaryConviction,
-            SummaryConviction.offence_type_id == OffenceType.id,
+            SummaryConviction.id == SummaryConvictionOffenceType.summary_conviction_id,
             isouter=True,
         )
         .where(OffenceType.is_seeded == False)  # noqa: E712 -- SQLAlchemy needs `== False`, not `is False`
         .group_by(OffenceType.name)
-        .order_by(func.count(SummaryConviction.id).desc())
+        .order_by(func.count(func.distinct(SummaryConviction.id)).desc())
     ).all()

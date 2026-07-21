@@ -46,7 +46,8 @@ export function offenceTypeByYear(topN = 6): YearSeries {
       `
       SELECT sc.offence_year AS year, COALESCE(ot.name, 'Unclassified') AS name, COUNT(*) AS count
       FROM summary_conviction sc
-      LEFT JOIN offence_type ot ON ot.id = sc.offence_type_id
+      LEFT JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
+      LEFT JOIN offence_type ot ON ot.id = scot.offence_type_id
       WHERE sc.offence_year IS NOT NULL
       GROUP BY year, name
       `

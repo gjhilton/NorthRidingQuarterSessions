@@ -30,7 +30,6 @@ class SummaryConviction(SQLModel, table=True):
     offence_year: Optional[int] = None
     offence_time: Optional[str] = None
 
-    offence_type_id: Optional[int] = Field(default=None, foreign_key="offence_type.id")
     charge_description: str
     sentencing: Optional[str] = None
     raw_record: str
@@ -116,6 +115,17 @@ class SummaryConvictionDefendant(SQLModel, table=True):
 
     summary_conviction_id: int = Field(foreign_key="summary_conviction.id", primary_key=True)
     defendant_id: int = Field(foreign_key="defendant.id", primary_key=True)
+
+
+class SummaryConvictionOffenceType(SQLModel, table=True):
+    """Many-to-many: a conviction is usually one offence, but occasionally
+    charges two genuinely distinct offences at once (e.g. "assaulting and
+    resisting a constable" = assault + resisting a constable)."""
+
+    __tablename__ = "summary_conviction_offence_type"
+
+    summary_conviction_id: int = Field(foreign_key="summary_conviction.id", primary_key=True)
+    offence_type_id: int = Field(foreign_key="offence_type.id", primary_key=True)
 
 
 class InvolvedPerson(SQLModel, table=True):

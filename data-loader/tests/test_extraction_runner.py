@@ -47,7 +47,7 @@ def _extracted_for(rc):
         reference_number=rc.reference_number,
         offence_date_raw="26 March 1857",
         charge_description="a charge",
-        offence_type="assault",
+        offence_types=["assault"],
         defendants=[ExtractedDefendant(first_name="A", last_name="B")],
         overall_confidence="high",
     )
