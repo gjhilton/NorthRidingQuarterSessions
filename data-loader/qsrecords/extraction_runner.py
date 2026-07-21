@@ -17,7 +17,7 @@ import re
 import time
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Optional
 from uuid import uuid4
 
@@ -121,7 +121,7 @@ def _record_failure(
     duration_ms: Optional[int] = None,
 ) -> None:
     raw_case.attempt_count += 1
-    raw_case.last_attempted_at = datetime.utcnow()
+    raw_case.last_attempted_at = datetime.now(UTC)
     raw_case.status = (
         RawCaseStatus.FAILED
         if raw_case.attempt_count >= max_attempts
@@ -206,7 +206,7 @@ def run(
             continue
 
         raw_case.status = RawCaseStatus.DONE
-        raw_case.last_attempted_at = datetime.utcnow()
+        raw_case.last_attempted_at = datetime.now(UTC)
         session.add(raw_case)
         session.add(
             ExtractionAttempt(
