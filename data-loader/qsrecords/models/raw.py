@@ -6,7 +6,7 @@ data/structured/) with DB rows. Idempotency/resumability becomes a status
 column query instead of a filesystem existence check.
 """
 
-from datetime import datetime
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Optional
 
@@ -45,7 +45,7 @@ class RawCase(SQLModel, table=True):
     )
     attempt_count: int = Field(default=0)
     last_attempted_at: Optional[datetime] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
 class ExtractionAttempt(SQLModel, table=True):
@@ -56,7 +56,7 @@ class ExtractionAttempt(SQLModel, table=True):
     batch_id: str = Field(index=True)  # shared by every raw_case in one LLM call
     provider: str
     model: str
-    attempted_at: datetime = Field(default_factory=datetime.utcnow)
+    attempted_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     success: bool
     error_message: Optional[str] = None
     raw_response: Optional[str] = None
