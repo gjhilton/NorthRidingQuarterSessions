@@ -35,7 +35,7 @@ export default function TrendsPage() {
 
       {!yearSpan && (
         <Card className={css({ borderColor: "fgAccent" })}>
-          <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted" })}>
             The loaded dataset currently spans only{" "}
             {totals.earliestYear ?? "—"}
             {totals.latestYear && totals.latestYear !== totals.earliestYear
@@ -50,7 +50,7 @@ export default function TrendsPage() {
 
       <Card>
         <ChartTitle>Convictions over time</ChartTitle>
-        <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
           The raw count behind every chart below — how many convictions are dated to each year.
         </p>
         {convictionsPerYear.length === 0 ? (
@@ -62,7 +62,7 @@ export default function TrendsPage() {
 
       <Card>
         <ChartTitle>Offence type composition over time</ChartTitle>
-        <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
           What kinds of behaviour the court&rsquo;s attention fell on, year by year.
         </p>
         {offenceTypes.years.length === 0 ? (
@@ -81,7 +81,7 @@ export default function TrendsPage() {
       >
         <Card>
           <ChartTitle>Defendants: % female by year</ChartTitle>
-          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
             Who the law&rsquo;s attention fell on, not just how much.
           </p>
           {genderTrend.length === 0 ? (
@@ -93,7 +93,7 @@ export default function TrendsPage() {
 
         <Card>
           <ChartTitle>Day of the offence</ChartTitle>
-          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
             Weekly rhythms — pay day, market day, the Sabbath.
           </p>
           <CategoryBar data={dayOfWeek} />
@@ -102,7 +102,7 @@ export default function TrendsPage() {
 
       <Card>
         <ChartTitle>Convictions by town over time</ChartTitle>
-        <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
           Whitby against the surrounding townships, year by year.
         </p>
         {towns.years.length === 0 ? (
@@ -114,7 +114,7 @@ export default function TrendsPage() {
 
       <Card>
         <ChartTitle>Defendant occupations</ChartTitle>
-        <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
           The working lives behind the charge sheet.
         </p>
         {occupations.length === 0 ? (
@@ -133,7 +133,7 @@ export default function TrendsPage() {
       >
         <Card>
           <ChartTitle>Average days, offence to conviction</ChartTitle>
-          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
             How fast summary justice moved, by year.
           </p>
           {lag.byYear.length === 0 ? (
@@ -145,7 +145,7 @@ export default function TrendsPage() {
 
         <Card>
           <ChartTitle>Time to conviction</ChartTitle>
-          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "3" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
             Distribution across the whole run.
           </p>
           <CategoryBar data={lag.histogram} />

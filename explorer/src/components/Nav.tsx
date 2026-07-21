@@ -21,7 +21,7 @@ export default function Nav() {
       className={css({
         borderBottomWidth: "hairline", borderBottomStyle: "solid",
         borderColor: "borderMuted",
-        bg: "bgSurface",
+        bg: "bg",
       })}
     >
       <nav
@@ -40,7 +40,7 @@ export default function Nav() {
           href="/"
           className={css({
             fontFamily: "serif",
-            fontSize: "lg",
+            fontSize: "heading",
             fontWeight: "600",
             color: "fg",
             whiteSpace: "nowrap",
@@ -55,7 +55,7 @@ export default function Nav() {
                 href={link.href}
                 className={css({
                   color: "fgMuted",
-                  fontSize: "sm",
+                  fontSize: "body",
                   _hover: { color: "fgAccent" },
                 })}
               >
@@ -72,7 +72,7 @@ export default function Nav() {
                 href={link.href}
                 className={css({
                   color: "fgMuted",
-                  fontSize: "sm",
+                  fontSize: "body",
                   _hover: { color: "fgAccent" },
                 })}
               >

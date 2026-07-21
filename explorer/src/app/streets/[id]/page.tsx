@@ -22,7 +22,7 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
   return (
     <PageContainer>
       <div>
-        <Link href="/streets" className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <Link href="/streets" className={css({ fontSize: "body", color: "fgMuted" })}>
           ← Back to streets
         </Link>
         <PageTitle

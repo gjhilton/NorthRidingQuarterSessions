@@ -61,7 +61,7 @@ export default function Home() {
       <OnThisDay />
 
       <Card className={css({ borderColor: "fgAccent" })}>
-        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted" })}>
           <strong className={css({ color: "fg" })}>
             {totals.convictions.toLocaleString()} of {totals.rawCaseTotal.toLocaleString()}
           </strong>{" "}
@@ -102,10 +102,10 @@ export default function Home() {
                 _hover: { borderColor: "fgAccent" },
               })}
             >
-              <h2 className={css({ fontFamily: "serif", fontSize: "lg", fontWeight: "600" })}>
+              <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>
                 {s.title}
               </h2>
-              <p className={css({ color: "fgMuted", fontSize: "sm", mt: "1" })}>
+              <p className={css({ color: "fgMuted", fontSize: "body", mt: "1" })}>
                 {s.description}
               </p>
             </Card>

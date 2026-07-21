@@ -27,7 +27,7 @@ export default function PeoplePage() {
       <PeopleSearch />
 
       <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-        <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>
+        <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>
           Most mentioned
         </h2>
         <div
@@ -59,7 +59,7 @@ export default function PeoplePage() {
       </section>
 
       <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-        <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>
+        <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>
           Browse all names
         </h2>
         <PeopleBrowseList people={people} />

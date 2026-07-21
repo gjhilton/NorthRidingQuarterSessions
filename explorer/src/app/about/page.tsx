@@ -108,10 +108,10 @@ export default function AboutPage() {
         <div className={css({ display: "flex", gap: "3", flexWrap: "wrap" })}>
           {statusBreakdown.map((s) => (
             <Card key={s.status} className={css({ minWidth: "8rem" })}>
-              <div className={css({ fontSize: "xl", fontWeight: "600", fontFamily: "serif" })}>
+              <div className={css({ fontSize: "heading", fontWeight: "600", fontFamily: "serif" })}>
                 {s.count}
               </div>
-              <div className={css({ fontSize: "sm", color: "fgMuted" })}>{s.status}</div>
+              <div className={css({ fontSize: "body", color: "fgMuted" })}>{s.status}</div>
             </Card>
           ))}
         </div>
@@ -199,7 +199,7 @@ export default function AboutPage() {
           <h3 className={css({ fontWeight: "600", mb: "2" })}>
             Repeated involved-person names ({repeatedPersons.length})
           </h3>
-          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "2" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", mb: "2" })}>
             Witnesses, victims, prosecutors etc. whose name recurs across cases.
           </p>
           <NameList
@@ -210,7 +210,7 @@ export default function AboutPage() {
           <h3 className={css({ fontWeight: "600", mb: "2" })}>
             Possible name variants ({nameVariants.length})
           </h3>
-          <p className={css({ fontSize: "sm", color: "fgMuted", mb: "2" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", mb: "2" })}>
             The lists above only catch the exact same name recurring. These pairs share a surname
             with a small spelling difference between them (like &ldquo;Jno. Smith&rdquo; vs.
             &ldquo;John Smith&rdquo;) — worth a look, but a shared surname with a close spelling is
@@ -229,7 +229,7 @@ export default function AboutPage() {
                     alignItems: "center",
                     gap: "2",
                     flexWrap: "wrap",
-                    fontSize: "sm",
+                    fontSize: "body",
                   })}
                 >
                   <Link href={`/people/${toSlug(v.a.name_key)}`} className={css({ color: "fgAccent" })}>
@@ -346,8 +346,8 @@ export default function AboutPage() {
             color: "bgSurface",
             px: "4",
             py: "2",
-            borderRadius: "md",
-            fontSize: "sm",
+            borderRadius: "corner",
+            fontSize: "body",
             fontWeight: "600",
           })}
         >
@@ -369,7 +369,7 @@ function Section({
 }) {
   return (
     <section id={id} className={css({ display: "flex", flexDirection: "column", gap: "3", scrollMarginTop: "3rem" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>{title}</h2>
+      <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>{title}</h2>
       <Card className={css({ display: "flex", flexDirection: "column", gap: "4" })}>
         {children}
       </Card>

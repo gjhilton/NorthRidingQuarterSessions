@@ -28,11 +28,11 @@ export function OnThisDay() {
 
   return (
     <Card className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>
+      <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>
         On this day: {formatMonthDay(today)}
       </h2>
       {isPending || results === null ? (
-        <p className={css({ fontSize: "sm", color: "fgMuted" })}>Checking the record…</p>
+        <p className={css({ fontSize: "body", color: "fgMuted" })}>Checking the record…</p>
       ) : results.length === 0 ? (
         <EmptyState>No extracted cases on record for this date yet.</EmptyState>
       ) : (
@@ -40,10 +40,10 @@ export function OnThisDay() {
           {results.map((r) => (
             <Link key={r.id} href={`/browse/${r.id}`}>
               <Card className={css({ _hover: { borderColor: "fgAccent" } })}>
-                <span className={css({ fontSize: "xs", color: "fgMuted" })}>
+                <span className={css({ fontSize: "small", color: "fgMuted" })}>
                   {yearOf(r.offence_date ?? r.conviction_date)} — {r.reference_number}
                 </span>
-                <p className={css({ fontSize: "sm", mt: "1" })}>{r.charge_description}</p>
+                <p className={css({ fontSize: "body", mt: "1" })}>{r.charge_description}</p>
               </Card>
             </Link>
           ))}

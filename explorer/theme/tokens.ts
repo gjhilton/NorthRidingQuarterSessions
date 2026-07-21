@@ -10,18 +10,18 @@ import { defineSemanticTokens, defineTokens } from "@pandacss/dev";
 export const tokens = defineTokens({
   colors: {
     // Base palette -- sepia/archival, light and dark variants.
-    paper: { value: "#faf6ee" },
-    paperDark: { value: "#0f0e0b" },
-    ink: { value: "#221f1a" },
-    inkDark: { value: "#ece7db" },
-    muted: { value: "#6b6355" },
-    mutedDark: { value: "#a39e8e" },
-    border: { value: "#ddd3bd" },
-    borderDark: { value: "#3a362c" },
-    accent: { value: "#7a3b2e" },
-    accentDark: { value: "#d98e78" },
-    surface: { value: "#ffffff" },
-    surfaceDark: { value: "#1a1812" },
+    paper: { value: "#fff" },
+    paperDark: { value: "#fff" },
+    ink: { value: "#000" },
+    inkDark: { value: "#000" },
+    muted: { value: "#000" },
+    mutedDark: { value: "#000" },
+    border: { value: "#999" },
+    borderDark: { value: "#999" },
+    accent: { value: "#c00000" },
+    accentDark: { value: "#c00000" },
+    surface: { value: "#fcfcfc" },
+    surfaceDark: { value: "#fcfcfc" },
 
     // Chart/map series palette. Recharts and Leaflet take raw color strings
     // (stroke/fill props, not className), so chart components read these via
@@ -45,6 +45,20 @@ export const tokens = defineTokens({
     // changing line weight everywhere is a one-line edit here rather than a
     // find-and-replace across src/.
     hairline: { value: "1px" },
+  },
+  radii: {
+    // Every rounded corner in the app (other than Pill's fully-round shape,
+    // which is a distinct "capsule" not a corner radius) uses this one value.
+    corner: { value: "0rem" },
+  },
+  fontSizes: {
+    // Reduced from Panda's default preset scale (which had 7 sizes in use
+    // here: 2xs/xs/sm/lg/xl/2xl/3xl) down to 4 explicit, semantically-named
+    // sizes -- everything in src/ now uses one of these four.
+    small: { value: "1.125rem" }, // fine print, meta text, small icon glyphs
+    body: { value: "1.3125rem" }, // the default text size almost everything uses (21px @ 16px root)
+    heading: { value: "1.5rem" }, // card/section headings, nav brand
+    display: { value: "2rem" }, // page title, the big number in a stat tile
   },
 });
 

@@ -33,7 +33,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
   return (
     <PageContainer>
       <div>
-        <Link href="/people" className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <Link href="/people" className={css({ fontSize: "body", color: "fgMuted" })}>
           ← Back to search
         </Link>
         <PageTitle
@@ -105,7 +105,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>{title}</h2>
+      <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>{title}</h2>
       {children}
     </section>
   );

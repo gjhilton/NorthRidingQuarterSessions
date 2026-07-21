@@ -12,7 +12,7 @@ export interface MapPoint {
 }
 
 const MARKER_COLOR = token("colors.chart1");
-const MAP_RADIUS = token("radii.md");
+const MAP_RADIUS = token("radii.corner");
 
 // sqrt so a town with 4x the cases doesn't get a circle 4x the *area* worse
 // than that -- area scales with radius squared, so this keeps differences

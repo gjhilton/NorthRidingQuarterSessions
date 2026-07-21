@@ -30,7 +30,7 @@ export function PageTitle({
       <h1
         className={css({
           fontFamily: "serif",
-          fontSize: "3xl",
+          fontSize: "display",
           fontWeight: "600",
           color: "fg",
         })}
@@ -58,7 +58,7 @@ export function Card({
           bg: "bgSurface",
           borderWidth: "hairline", borderStyle: "solid",
           borderColor: "borderMuted",
-          borderRadius: "md",
+          borderRadius: "corner",
           p: "5",
         }),
         className
@@ -79,18 +79,18 @@ export function StatTile({ label, value }: { label: string; value: string | numb
         minWidth: "10rem",
       })}
     >
-      <span className={css({ fontSize: "2xl", fontWeight: "600", fontFamily: "serif" })}>
+      <span className={css({ fontSize: "display", fontWeight: "600", fontFamily: "serif" })}>
         {value}
       </span>
-      <span className={css({ fontSize: "sm", color: "fgMuted" })}>{label}</span>
+      <span className={css({ fontSize: "body", color: "fgMuted" })}>{label}</span>
     </Card>
   );
 }
 
 export function Table({ children }: { children: React.ReactNode }) {
   return (
-    <div className={css({ overflowX: "auto", borderWidth: "hairline", borderStyle: "solid", borderColor: "borderMuted", borderRadius: "md" })}>
-      <table className={css({ width: "100%", borderCollapse: "collapse", fontSize: "sm" })}>
+    <div className={css({ overflowX: "auto", borderWidth: "hairline", borderStyle: "solid", borderColor: "borderMuted", borderRadius: "corner" })}>
+      <table className={css({ width: "100%", borderCollapse: "collapse", fontSize: "body" })}>
         {children}
       </table>
     </div>
@@ -152,7 +152,7 @@ export function EmptyState({ children }: { children: React.ReactNode }) {
 
 export function ChartTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className={css({ fontFamily: "serif", fontSize: "lg", fontWeight: "600", mb: "3" })}>
+    <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600", mb: "3" })}>
       {children}
     </h2>
   );
@@ -164,10 +164,10 @@ export function ChartTitle({ children }: { children: React.ReactNode }) {
 export const formInputStyle = css({
   borderWidth: "hairline", borderStyle: "solid",
   borderColor: "borderMuted",
-  borderRadius: "md",
+  borderRadius: "corner",
   px: "3",
   py: "2",
-  fontSize: "sm",
+  fontSize: "body",
   bg: "bgSurface",
   color: "fg",
 });
@@ -177,8 +177,8 @@ export const primaryButtonStyle = css({
   color: "bgSurface",
   px: "4",
   py: "2",
-  borderRadius: "md",
-  fontSize: "sm",
+  borderRadius: "corner",
+  fontSize: "body",
   fontWeight: "600",
   cursor: "pointer",
   border: "none",
@@ -190,7 +190,7 @@ export function Pill({ children }: { children: React.ReactNode }) {
     <span
       className={css({
         display: "inline-block",
-        fontSize: "xs",
+        fontSize: "small",
         px: "2",
         py: "0.5",
         borderRadius: "full",

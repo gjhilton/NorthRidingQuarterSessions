@@ -24,7 +24,7 @@ export default function WhitbyStreetMapPage() {
   return (
     <PageContainer>
       <div>
-        <Link href="/map" className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <Link href="/map" className={css({ fontSize: "body", color: "fgMuted" })}>
           ← Back to area map
         </Link>
         <PageTitle subtitle="Offence locations by street, within Whitby itself — circle size is case count, not precision">
@@ -33,7 +33,7 @@ export default function WhitbyStreetMapPage() {
       </div>
 
       <Card className={css({ borderColor: "fgAccent" })}>
-        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted" })}>
           Coordinates here are hand-compiled from general knowledge of Whitby&rsquo;s layout, not
           geocoded addresses — each is one rough spot along the street, not the exact offence
           location. See{" "}

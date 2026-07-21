@@ -202,7 +202,7 @@ export function BrowseExplorer({
       </form>
 
       <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
-        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted" })}>
           {isFiltered
             ? `${total.toLocaleString()} matching record${total === 1 ? "" : "s"} (of ${initialTotal.toLocaleString()} total)`
             : `${total.toLocaleString()} record${total === 1 ? "" : "s"}`}
@@ -216,8 +216,8 @@ export function BrowseExplorer({
               py: "1.5",
               borderWidth: "hairline", borderStyle: "solid",
               borderColor: "borderMuted",
-              borderRadius: "md",
-              fontSize: "sm",
+              borderRadius: "corner",
+              fontSize: "body",
               color: "fg",
               bg: "bgSurface",
               cursor: "pointer",
@@ -256,7 +256,7 @@ export function BrowseExplorer({
                     })}
                   >
                     {label}
-                    <span aria-hidden className={css({ fontSize: "2xs", opacity: key === effectiveSortBy ? 1 : 0.35 })}>
+                    <span aria-hidden className={css({ fontSize: "small", opacity: key === effectiveSortBy ? 1 : 0.35 })}>
                       {key === effectiveSortBy && effectiveSortDir === "asc" ? "▲" : "▼"}
                     </span>
                   </button>
@@ -298,7 +298,7 @@ export function BrowseExplorer({
           >
             ← Prev
           </button>
-          <span className={css({ fontSize: "sm", color: "fgMuted" })}>
+          <span className={css({ fontSize: "body", color: "fgMuted" })}>
             Page {filters.page} of {totalPages}
           </span>
           <button
@@ -321,7 +321,7 @@ function FormField({ label, children }: { label: string; children: React.ReactNo
         display: "flex",
         flexDirection: "column",
         gap: "1",
-        fontSize: "xs",
+        fontSize: "small",
         color: "fgMuted",
       })}
     >
@@ -338,8 +338,8 @@ const pageButtonStyle = css({
   py: "1.5",
   borderWidth: "hairline", borderStyle: "solid",
   borderColor: "borderMuted",
-  borderRadius: "md",
-  fontSize: "sm",
+  borderRadius: "corner",
+  fontSize: "body",
   color: "fg",
   bg: "bgSurface",
   cursor: "pointer",

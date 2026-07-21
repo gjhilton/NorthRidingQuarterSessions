@@ -18,7 +18,7 @@ const MapView = dynamic(() => import("@/components/MapView").then((m) => m.MapVi
         alignItems: "center",
         justifyContent: "center",
         color: "fgMuted",
-        fontSize: "sm",
+        fontSize: "body",
       })}
     >
       Loading map…

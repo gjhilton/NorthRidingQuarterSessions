@@ -60,7 +60,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
             <option value="female">Female</option>
           </select>
         </FilterField>
-        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted" })}>
           {filtered.length.toLocaleString()} of {people.length.toLocaleString()} names
         </p>
       </div>
@@ -71,7 +71,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
             display: "flex",
             flexWrap: "wrap",
             gap: "1",
-            fontSize: "xs",
+            fontSize: "small",
             position: "sticky",
             top: 0,
             bg: "bg",
@@ -89,7 +89,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
                 justifyContent: "center",
                 width: "1.5rem",
                 height: "1.5rem",
-                borderRadius: "sm",
+                borderRadius: "corner",
                 color: "fgAccent",
                 _hover: { bg: "bgSurface" },
               })}
@@ -106,7 +106,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
             <h3
               className={css({
                 fontFamily: "serif",
-                fontSize: "lg",
+                fontSize: "heading",
                 fontWeight: "600",
                 mb: "2",
                 color: "fgMuted",
@@ -130,7 +130,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
                     <span>
                       <span className={css({ fontWeight: "600" })}>{p.display_name}</span>
                       {(p.occupation || p.town_name) && (
-                        <span className={css({ color: "fgMuted", fontSize: "sm" })}>
+                        <span className={css({ color: "fgMuted", fontSize: "body" })}>
                           {" "}
                           · {[p.occupation, p.town_name ? titleCase(p.town_name) : null]
                             .filter(Boolean)
@@ -159,7 +159,7 @@ function FilterField({ label, children }: { label: string; children: React.React
         display: "flex",
         flexDirection: "column",
         gap: "1",
-        fontSize: "xs",
+        fontSize: "small",
         color: "fgMuted",
       })}
     >

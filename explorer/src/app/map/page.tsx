@@ -25,7 +25,7 @@ export default function MapPage() {
       </PageTitle>
 
       <Card className={css({ borderColor: "fgAccent" })}>
-        <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+        <p className={css({ fontSize: "body", color: "fgMuted" })}>
           Coordinates are hand-compiled township centres, not geocoded addresses — there&rsquo;s
           no street-level positioning here, only which town each offence was recorded in. See{" "}
           <a href="/about" className={css({ color: "fgAccent" })}>
@@ -37,7 +37,7 @@ export default function MapPage() {
 
       <MapViewLoader points={points} />
 
-      <p className={css({ fontSize: "sm" })}>
+      <p className={css({ fontSize: "body" })}>
         <Link href="/map/whitby" className={css({ color: "fgAccent" })}>
           View street-level detail within Whitby →
         </Link>

@@ -1,5 +1,13 @@
 @layer reset, base, tokens, recipes, utilities;
 
+html {
+  /* The root all rem-based sizing (including every fontSizes token in
+     theme/tokens.ts) scales from. 100% respects the browser/user default
+     (and any zoom/accessibility text-size setting) rather than pinning an
+     absolute px value -- change this to resize the whole app at once. */
+  font-size: 100%;
+}
+
 html,
 body {
   height: 100%;

@@ -30,7 +30,7 @@ export default function StreetsPage() {
                 <span>
                   <span className={css({ fontWeight: "600" })}>{titleCase(s.name)}</span>
                   {s.town_name && (
-                    <span className={css({ color: "fgMuted", fontSize: "sm" })}>
+                    <span className={css({ color: "fgMuted", fontSize: "body" })}>
                       {" "}
                       · {titleCase(s.town_name)}
                     </span>

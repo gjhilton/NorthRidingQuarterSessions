@@ -43,10 +43,10 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             alignItems: "center",
           })}
         >
-          <Link href="/browse" className={css({ fontSize: "sm", color: "fgMuted" })}>
+          <Link href="/browse" className={css({ fontSize: "body", color: "fgMuted" })}>
             ← Back to browse
           </Link>
-          <div className={css({ display: "flex", gap: "3", fontSize: "sm" })}>
+          <div className={css({ display: "flex", gap: "3", fontSize: "body" })}>
             {prevId !== null ? (
               <Link href={`/browse/${prevId}`} className={css({ color: "fgAccent" })}>
                 ← Previous
@@ -84,7 +84,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
         </div>
         <p>{conviction.charge_description}</p>
         {conviction.sentencing && (
-          <p className={css({ color: "fgMuted", fontSize: "sm" })}>
+          <p className={css({ color: "fgMuted", fontSize: "body" })}>
             <strong>Sentencing:</strong> {conviction.sentencing}
           </p>
         )}
@@ -92,12 +92,12 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
           conviction.extraction_confidence === "low") && (
           <p
             className={css({
-              fontSize: "sm",
+              fontSize: "body",
               color: "fgAccent",
               bg: "bg",
               borderWidth: "hairline", borderStyle: "solid",
               borderColor: "borderMuted",
-              borderRadius: "md",
+              borderRadius: "corner",
               px: "3",
               py: "2",
             })}
@@ -115,7 +115,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
           href={conviction.archive_url}
           target="_blank"
           rel="noopener noreferrer"
-          className={css({ fontSize: "sm", color: "fgAccent" })}
+          className={css({ fontSize: "body", color: "fgAccent" })}
         >
           View original archive record →
         </a>
@@ -135,7 +135,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
                   {d.first_name} {d.last_name}
                 </Link>
                 {d.aliases.length > 0 && (
-                  <p className={css({ fontSize: "sm", color: "fgMuted" })}>
+                  <p className={css({ fontSize: "body", color: "fgMuted" })}>
                     aka {d.aliases.join(", ")}
                   </p>
                 )}
@@ -202,7 +202,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
 
       <Section title="Raw record">
         <Card>
-          <p className={css({ fontSize: "sm", color: "fgMuted", whiteSpace: "pre-wrap" })}>
+          <p className={css({ fontSize: "body", color: "fgMuted", whiteSpace: "pre-wrap" })}>
             {conviction.raw_record}
           </p>
         </Card>
@@ -210,7 +210,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
 
       <Section title="Citing this record">
         <Card>
-          <p className={css({ fontSize: "sm" })}>
+          <p className={css({ fontSize: "body" })}>
             North Riding Quarter Sessions Bundles, {conviction.reference_number}, North Yorkshire
             County Record Office, Archives Unlocked,{" "}
             <a
@@ -222,7 +222,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
               {conviction.archive_url}
             </a>
           </p>
-          <p className={css({ fontSize: "xs", color: "fgMuted", mt: "2" })}>
+          <p className={css({ fontSize: "small", color: "fgMuted", mt: "2" })}>
             Cite the original archive record, not this site — see{" "}
             <Link href="/about" className={css({ color: "fgAccent" })}>
               About
@@ -239,7 +239,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "xl", fontWeight: "600" })}>{title}</h2>
+      <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>{title}</h2>
       {children}
     </section>
   );
@@ -248,8 +248,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className={css({ fontSize: "xs", color: "fgMuted" })}>{label}</dt>
-      <dd className={css({ fontSize: "sm" })}>{value}</dd>
+      <dt className={css({ fontSize: "small", color: "fgMuted" })}>{label}</dt>
+      <dd className={css({ fontSize: "body" })}>{value}</dd>
     </div>
   );
 }

@@ -60,7 +60,7 @@ export function NetworkView({
                     </span>
                   )}
                 </div>
-                <span className={css({ fontSize: "xs", color: "fgMuted" })}>
+                <span className={css({ fontSize: "small", color: "fgMuted" })}>
                   {c.shared_cases.length} shared case{c.shared_cases.length === 1 ? "" : "s"}
                 </span>
               </Card>
@@ -72,7 +72,7 @@ export function NetworkView({
           className={css({
             borderWidth: "hairline", borderStyle: "solid",
             borderColor: "borderMuted",
-            borderRadius: "md",
+            borderRadius: "corner",
             overflow: "hidden",
             height: "28rem",
             bg: "bgSurface",
@@ -117,8 +117,8 @@ function ToggleButton({
       className={css({
         px: "3",
         py: "1.5",
-        borderRadius: "md",
-        fontSize: "sm",
+        borderRadius: "corner",
+        fontSize: "body",
         fontWeight: "600",
         cursor: "pointer",
         borderWidth: "hairline", borderStyle: "solid",

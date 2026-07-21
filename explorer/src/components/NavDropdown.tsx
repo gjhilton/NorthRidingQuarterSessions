@@ -41,7 +41,7 @@ export function NavDropdown({
           alignItems: "center",
           gap: "1",
           color: "fgMuted",
-          fontSize: "sm",
+          fontSize: "body",
           bg: "transparent",
           border: "none",
           cursor: "pointer",
@@ -51,7 +51,7 @@ export function NavDropdown({
         })}
       >
         {label}
-        <span aria-hidden className={css({ fontSize: "2xs", mt: "0.5" })}>
+        <span aria-hidden className={css({ fontSize: "small", mt: "0.5" })}>
           ▾
         </span>
       </button>
@@ -65,7 +65,7 @@ export function NavDropdown({
             bg: "bgSurface",
             borderWidth: "hairline", borderStyle: "solid",
             borderColor: "borderMuted",
-            borderRadius: "md",
+            borderRadius: "corner",
             boxShadow: "md",
             minWidth: "9rem",
             py: "1",
@@ -81,7 +81,7 @@ export function NavDropdown({
                   display: "block",
                   px: "3",
                   py: "2",
-                  fontSize: "sm",
+                  fontSize: "body",
                   color: "fg",
                   _hover: { color: "fgAccent", bg: "bg" },
                 })}

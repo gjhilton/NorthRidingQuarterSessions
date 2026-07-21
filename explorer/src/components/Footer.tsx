@@ -6,7 +6,7 @@ export function Footer() {
       className={css({
         borderTopWidth: "hairline", borderTopStyle: "solid",
         borderColor: "borderMuted",
-        bg: "bgSurface",
+        bg: "bg",
         mt: "12",
       })}
     >
@@ -20,7 +20,7 @@ export function Footer() {
           flexWrap: "wrap",
           justifyContent: "space-between",
           gap: "3",
-          fontSize: "xs",
+          fontSize: "small",
           color: "fgMuted",
         })}
       >
