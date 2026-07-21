@@ -9,10 +9,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { token } from "styled-system/tokens";
 
-const GRID_COLOR = "#ddd3bd";
-const BAR_COLOR = "#8a5240";
-const TEXT_COLOR = "#6b6355";
+// Recharts takes raw color strings (stroke/fill props), not className, so
+// these read the shared theme tokens via the token() helper rather than
+// css() -- see theme/tokens.ts for the actual values.
+const GRID_COLOR = token("colors.border");
+const BAR_COLOR = token("colors.chart1");
+const TEXT_COLOR = token("colors.muted");
 
 export function HorizontalBarStat({
   data,

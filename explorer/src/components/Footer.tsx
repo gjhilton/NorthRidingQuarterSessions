@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer
       className={css({
-        borderTop: "1px solid",
+        borderTopWidth: "hairline", borderTopStyle: "solid",
         borderColor: "borderMuted",
         bg: "bgSurface",
         mt: "12",

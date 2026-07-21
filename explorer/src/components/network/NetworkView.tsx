@@ -4,6 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { css } from "styled-system/css";
+import { token } from "styled-system/tokens";
 import type { Connection, NetworkGraph } from "@/lib/queries/peopleNetwork";
 import { Card, EmptyState, Pill } from "@/components/ui";
 import { toSlug } from "@/lib/slug";
@@ -11,10 +12,11 @@ import { toSlug } from "@/lib/slug";
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), { ssr: false });
 
 const NODE_COLOR = {
-  center: "#8a5240",
-  defendant: "#4c6b6b",
-  person: "#b08c3e",
+  center: token("colors.chart1"),
+  defendant: token("colors.chart2"),
+  person: token("colors.chart3"),
 };
+const LINK_COLOR = token("colors.border");
 
 export function NetworkView({
   connections,
@@ -68,7 +70,7 @@ export function NetworkView({
       ) : (
         <div
           className={css({
-            border: "1px solid",
+            borderWidth: "hairline", borderStyle: "solid",
             borderColor: "borderMuted",
             borderRadius: "md",
             overflow: "hidden",
@@ -88,7 +90,7 @@ export function NetworkView({
             nodeRelSize={5}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             linkWidth={(l: any) => Math.min(4, 1 + l.cases)}
-            linkColor={() => "#ddd3bd"}
+            linkColor={() => LINK_COLOR}
             linkLabel={
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (l: any) => `${l.cases} shared case${l.cases === 1 ? "" : "s"}`
@@ -119,7 +121,7 @@ function ToggleButton({
         fontSize: "sm",
         fontWeight: "600",
         cursor: "pointer",
-        border: "1px solid",
+        borderWidth: "hairline", borderStyle: "solid",
         borderColor: active ? "fgAccent" : "borderMuted",
         bg: active ? "fgAccent" : "bgSurface",
         color: active ? "bgSurface" : "fg",

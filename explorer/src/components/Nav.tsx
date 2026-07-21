@@ -19,7 +19,7 @@ export default function Nav() {
   return (
     <header
       className={css({
-        borderBottom: "1px solid",
+        borderBottomWidth: "hairline", borderBottomStyle: "solid",
         borderColor: "borderMuted",
         bg: "bgSurface",
       })}

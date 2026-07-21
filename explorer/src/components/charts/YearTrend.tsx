@@ -9,10 +9,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { token } from "styled-system/tokens";
 
-const GRID_COLOR = "#ddd3bd";
-const LINE_COLOR = "#4c6b6b";
-const TEXT_COLOR = "#6b6355";
+const GRID_COLOR = token("colors.border");
+const LINE_COLOR = token("colors.chart2");
+const TEXT_COLOR = token("colors.muted");
 
 export function YearTrend({ data }: { data: { year: number; count: number }[] }) {
   return (

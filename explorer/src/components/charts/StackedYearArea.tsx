@@ -10,14 +10,23 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { token } from "styled-system/tokens";
 
-const GRID_COLOR = "#ddd3bd";
-const TEXT_COLOR = "#6b6355";
+const GRID_COLOR = token("colors.border");
+const TEXT_COLOR = token("colors.muted");
 
 // Cycled across series in order; "Other" (always the last series key from
-// topNSeriesByYear) lands on the grey so it reads as a residual bucket
-// rather than competing with the named categories.
-const SERIES_COLORS = ["#8a5240", "#4c6b6b", "#b08c3e", "#6b4c8a", "#4c708a", "#7a8a4c", "#9a9284"];
+// topNSeriesByYear) lands on chart7 (the grey) so it reads as a residual
+// bucket rather than competing with the named categories.
+const SERIES_COLORS = [
+  token("colors.chart1"),
+  token("colors.chart2"),
+  token("colors.chart3"),
+  token("colors.chart4"),
+  token("colors.chart5"),
+  token("colors.chart6"),
+  token("colors.chart7"),
+];
 
 export function StackedYearArea({
   data,

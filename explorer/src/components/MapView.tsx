@@ -2,6 +2,7 @@
 
 import "leaflet/dist/leaflet.css";
 import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import { token } from "styled-system/tokens";
 
 export interface MapPoint {
   name: string;
@@ -10,7 +11,8 @@ export interface MapPoint {
   lon: number;
 }
 
-const MARKER_COLOR = "#8a5240";
+const MARKER_COLOR = token("colors.chart1");
+const MAP_RADIUS = token("radii.md");
 
 // sqrt so a town with 4x the cases doesn't get a circle 4x the *area* worse
 // than that -- area scales with radius squared, so this keeps differences
@@ -44,7 +46,7 @@ export function MapView({
       minZoom={minZoom}
       maxZoom={maxZoom}
       scrollWheelZoom={false}
-      style={{ height: "32rem", width: "100%", borderRadius: "8px" }}
+      style={{ height: "32rem", width: "100%", borderRadius: MAP_RADIUS }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

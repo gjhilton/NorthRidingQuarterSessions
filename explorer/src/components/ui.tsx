@@ -56,7 +56,7 @@ export function Card({
       className={cx(
         css({
           bg: "bgSurface",
-          border: "1px solid",
+          borderWidth: "hairline", borderStyle: "solid",
           borderColor: "borderMuted",
           borderRadius: "md",
           p: "5",
@@ -89,7 +89,7 @@ export function StatTile({ label, value }: { label: string; value: string | numb
 
 export function Table({ children }: { children: React.ReactNode }) {
   return (
-    <div className={css({ overflowX: "auto", border: "1px solid", borderColor: "borderMuted", borderRadius: "md" })}>
+    <div className={css({ overflowX: "auto", borderWidth: "hairline", borderStyle: "solid", borderColor: "borderMuted", borderRadius: "md" })}>
       <table className={css({ width: "100%", borderCollapse: "collapse", fontSize: "sm" })}>
         {children}
       </table>
@@ -107,7 +107,7 @@ export function Th({ children }: { children: React.ReactNode }) {
         bg: "bg",
         color: "fgMuted",
         fontWeight: "600",
-        borderBottom: "1px solid",
+        borderBottomWidth: "hairline", borderBottomStyle: "solid",
         borderColor: "borderMuted",
         whiteSpace: "nowrap",
       })}
@@ -130,7 +130,7 @@ export function Td({
         css({
           py: "2",
           px: "3",
-          borderBottom: "1px solid",
+          borderBottomWidth: "hairline", borderBottomStyle: "solid",
           borderColor: "borderMuted",
           verticalAlign: "top",
         }),
@@ -162,7 +162,7 @@ export function ChartTitle({ children }: { children: React.ReactNode }) {
 // their forms stay visually identical without each re-declaring the same
 // css() literal.
 export const formInputStyle = css({
-  border: "1px solid",
+  borderWidth: "hairline", borderStyle: "solid",
   borderColor: "borderMuted",
   borderRadius: "md",
   px: "3",
@@ -195,7 +195,7 @@ export function Pill({ children }: { children: React.ReactNode }) {
         py: "0.5",
         borderRadius: "full",
         bg: "bg",
-        border: "1px solid",
+        borderWidth: "hairline", borderStyle: "solid",
         borderColor: "borderMuted",
         color: "fgMuted",
       })}

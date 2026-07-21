@@ -95,7 +95,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
               fontSize: "sm",
               color: "fgAccent",
               bg: "bg",
-              border: "1px solid",
+              borderWidth: "hairline", borderStyle: "solid",
               borderColor: "borderMuted",
               borderRadius: "md",
               px: "3",

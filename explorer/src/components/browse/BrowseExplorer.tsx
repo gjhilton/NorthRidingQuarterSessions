@@ -214,7 +214,7 @@ export function BrowseExplorer({
             className={css({
               px: "3",
               py: "1.5",
-              border: "1px solid",
+              borderWidth: "hairline", borderStyle: "solid",
               borderColor: "borderMuted",
               borderRadius: "md",
               fontSize: "sm",
@@ -336,7 +336,7 @@ const inputStyle = cx(formInputStyle, css({ px: "2", py: "1.5", minWidth: "9rem"
 const pageButtonStyle = css({
   px: "3",
   py: "1.5",
-  border: "1px solid",
+  borderWidth: "hairline", borderStyle: "solid",
   borderColor: "borderMuted",
   borderRadius: "md",
   fontSize: "sm",
