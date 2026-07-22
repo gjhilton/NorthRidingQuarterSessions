@@ -6,9 +6,10 @@ no cost). Surfaces two things worth periodic human review:
 1. Names that recur across cases (candidates for manual cross-case identity
    resolution -- deciding whether two mentions are the same real person is
    deliberately out of scope for the extraction pipeline itself).
-2. Offence categories the LLM proposed beyond the seed list, so near-
-   duplicates ("possession of short weights" vs "possession of inaccurate
-   weights") can be reviewed and merged by hand.
+2. Offence types with no taxonomy category assigned yet (see
+   qsrecords.offence_types.OFFENCE_TAXONOMY) -- either a genuinely new
+   proposal, or a near-duplicate of an existing leaf that should be folded
+   into it via OFFENCE_TAXONOMY's merge list.
 
 Usage:
     python3 report.py [--min-occurrences N]
@@ -58,7 +59,7 @@ def main() -> None:
             for reference_number, conviction_date in person_case_references(session, name_key):
                 print(f"    - {reference_number} ({conviction_date})")
 
-        print("\n=== LLM-proposed offence types not yet reviewed (is_seeded=0) ===")
+        print("\n=== Offence types with no taxonomy category assigned ===")
         offence_rows = unreviewed_offence_types(session)
         if not offence_rows:
             print("  (none yet)")

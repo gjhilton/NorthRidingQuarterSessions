@@ -140,6 +140,16 @@ Based on sample records, typical offenses include:
 - Weights and measures fraud
 - Public order offenses
 
+The database has a real two-level taxonomy for this: `offence_category` →
+`offence_type` (see `data-loader/qsrecords/offence_types.py`'s
+`OFFENCE_TAXONOMY`, and `/taxonomy` in the explorer for the browsable
+version). **Before extracting or hand-entering a record's `offence_types`,
+check `OFFENCE_TAXONOMY` (or the live `offence_type` table) for an existing
+leaf that fits** rather than inventing new phrasing for the same charge --
+that's exactly how the vocabulary fragmented to 91 near-duplicate strings
+the first time (six different names for "child not sent to school" alone)
+before the taxonomy migration collapsed it back to 55 canonical leaves.
+
 ## LLM Parsing Implementation Guide
 
 ### Target JSON Schema

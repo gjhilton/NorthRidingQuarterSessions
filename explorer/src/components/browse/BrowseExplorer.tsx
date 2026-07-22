@@ -13,7 +13,7 @@ import {
   type BrowseRow,
   type BrowseSortColumn,
 } from "@/lib/queries/browseList";
-import type { Option } from "@/lib/queries/filters";
+import type { Option, OptionGroup } from "@/lib/queries/filters";
 import { titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 import { EmptyState, Table, Th, Td, formInputStyle, primaryButtonStyle } from "@/components/ui";
@@ -80,7 +80,7 @@ export function BrowseExplorer({
   initialRows: BrowseRow[];
   initialTotal: number;
   towns: Option[];
-  offenceTypes: Option[];
+  offenceTypes: OptionGroup[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -184,10 +184,14 @@ export function BrowseExplorer({
         <FormField label="Offence type">
           <select name="offence" defaultValue={filters.offenceTypeId ?? ""} className={inputStyle}>
             <option value="">All offence types</option>
-            {offenceTypes.map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.name}
-              </option>
+            {offenceTypes.map((group) => (
+              <optgroup key={group.category} label={group.category}>
+                {group.types.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </FormField>

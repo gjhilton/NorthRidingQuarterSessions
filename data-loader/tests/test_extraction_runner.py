@@ -71,13 +71,13 @@ def test_run_passes_live_offence_types_not_static_seed_list(session):
     # be given only the static SEED_OFFENCE_TYPES, so a category an earlier
     # batch proposed and had accepted was invisible to this one.
     seed_offence_types(session)
-    get_or_create_offence_type(session, "straying animals")
+    get_or_create_offence_type(session, "poisoning a well")
     cases = _seed_raw_cases(session, 1)
     provider = FakeProvider(plan=[[_extracted_for(rc) for rc in cases]])
 
     extraction_runner.run(session, provider, batch_size=25, max_attempts=3)
 
-    assert "straying animals" in provider.offence_types_seen[0]
+    assert "poisoning a well" in provider.offence_types_seen[0]
 
 
 def test_successful_attempt_records_raw_response_and_duration(session):

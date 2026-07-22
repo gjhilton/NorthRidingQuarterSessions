@@ -77,6 +77,12 @@ export interface UnreviewedOffenceType {
   count: number;
 }
 
+// Mirrors data-loader/qsrecords/reports.py::unreviewed_offence_types --
+// offence types with no taxonomy category assigned (category_id IS NULL),
+// not is_seeded=0. After the taxonomy migration most former is_seeded=0
+// rows *do* have a category (merged into or matching a canonical leaf, see
+// qsrecords.offence_types.OFFENCE_TAXONOMY); only names proposed since the
+// last taxonomy update should still show up here.
 export function unreviewedOffenceTypes(): UnreviewedOffenceType[] {
   return getDb()
     .prepare(
@@ -85,7 +91,7 @@ export function unreviewedOffenceTypes(): UnreviewedOffenceType[] {
       FROM offence_type ot
       LEFT JOIN summary_conviction_offence_type scot ON scot.offence_type_id = ot.id
       LEFT JOIN summary_conviction sc ON sc.id = scot.summary_conviction_id
-      WHERE ot.is_seeded = 0
+      WHERE ot.category_id IS NULL
       GROUP BY ot.name
       ORDER BY count DESC
       `

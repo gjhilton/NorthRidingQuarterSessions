@@ -9,7 +9,7 @@ from .core import (
     SummaryConvictionOffenceType,
 )
 from .raw import ExtractionAttempt, RawCase, RawCaseStatus
-from .reference import OffenceType, Street, Town
+from .reference import OffenceCategory, OffenceType, Street, Town
 
 __all__ = [
     "Alias",
@@ -23,6 +23,7 @@ __all__ = [
     "ExtractionAttempt",
     "RawCase",
     "RawCaseStatus",
+    "OffenceCategory",
     "OffenceType",
     "Street",
     "Town",

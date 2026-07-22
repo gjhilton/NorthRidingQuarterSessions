@@ -9,6 +9,7 @@ const primaryLinks = [
 
 const insightsLinks = [
   { href: "/trends", label: "Trends" },
+  { href: "/taxonomy", label: "Taxonomy" },
   { href: "/map", label: "Map" },
   { href: "/streets", label: "Streets" },
 ];

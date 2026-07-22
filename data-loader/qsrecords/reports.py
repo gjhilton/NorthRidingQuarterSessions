@@ -77,11 +77,16 @@ def person_case_references(session: Session, name_key: str) -> Sequence[tuple[st
 
 
 def unreviewed_offence_types(session: Session) -> Sequence[tuple[str, int]]:
-    """(name, case_count) for LLM-proposed offence types (is_seeded=False),
-    most-used first -- the review queue for manual dedup/merge, per
-    qsrecords.offence_types. A conviction charging this offence alongside
-    another (e.g. "assault" + "resisting a constable") counts once here
-    regardless -- this counts convictions, not offence mentions."""
+    """(name, case_count) for offence types with no taxonomy category
+    assigned (category_id IS NULL), most-used first -- the review queue for
+    manual categorisation, per qsrecords.offence_types.OFFENCE_TAXONOMY.
+    Genuinely different from is_seeded=False: after the taxonomy migration,
+    most former is_seeded=False rows *do* have a category (they were merged
+    into or match a canonical leaf) and shouldn't still show up here --
+    only names proposed since the last taxonomy update remain uncategorised.
+    A conviction charging this offence alongside another (e.g. "assault" +
+    "resisting a constable") counts once here regardless -- this counts
+    convictions, not offence mentions."""
     return session.exec(
         select(OffenceType.name, func.count(func.distinct(SummaryConviction.id)))
         .join(
@@ -94,7 +99,7 @@ def unreviewed_offence_types(session: Session) -> Sequence[tuple[str, int]]:
             SummaryConviction.id == SummaryConvictionOffenceType.summary_conviction_id,
             isouter=True,
         )
-        .where(OffenceType.is_seeded == False)  # noqa: E712 -- SQLAlchemy needs `== False`, not `is False`
+        .where(OffenceType.category_id.is_(None))
         .group_by(OffenceType.name)
         .order_by(func.count(func.distinct(SummaryConviction.id)).desc())
     ).all()

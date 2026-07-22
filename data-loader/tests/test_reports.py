@@ -6,7 +6,7 @@ from qsrecords.models.core import (
     SummaryConvictionDefendant,
     SummaryConvictionOffenceType,
 )
-from qsrecords.models.reference import OffenceType
+from qsrecords.models.reference import OffenceCategory, OffenceType
 from qsrecords.reports import (
     defendant_case_references,
     person_case_references,
@@ -83,28 +83,35 @@ def test_repeated_person_names(session):
     assert refs == {"REF-1", "REF-2"}
 
 
-def test_unreviewed_offence_types_excludes_seeded(session):
-    seeded = OffenceType(name="drunkenness", is_seeded=True)
-    proposed = OffenceType(name="straying animals", is_seeded=False)
-    session.add_all([seeded, proposed])
+def test_unreviewed_offence_types_excludes_categorised(session):
+    category = OffenceCategory(name="drink & public order", sort_order=0)
+    session.add(category)
+    session.flush()
+    categorised = OffenceType(name="drunkenness", is_seeded=True, category_id=category.id)
+    uncategorised = OffenceType(name="poisoning a well", is_seeded=False)
+    session.add_all([categorised, uncategorised])
     session.flush()
 
     c1 = _make_conviction(session, "REF-1")
     session.add(
-        SummaryConvictionOffenceType(summary_conviction_id=c1.id, offence_type_id=proposed.id)
+        SummaryConvictionOffenceType(summary_conviction_id=c1.id, offence_type_id=uncategorised.id)
     )
     session.commit()
 
     rows = unreviewed_offence_types(session)
-    assert rows == [("straying animals", 1)]
+    assert rows == [("poisoning a well", 1)]
 
 
 def test_unreviewed_offence_types_counts_convictions_not_offence_mentions(session):
-    """A conviction carrying two offence types (e.g. assault + a proposed
-    category) still counts once for the proposed category, not twice --
-    this counts convictions, not (conviction, offence_type) pairs."""
-    seeded = OffenceType(name="assault", is_seeded=True)
-    proposed = OffenceType(name="straying animals", is_seeded=False)
+    """A conviction carrying two offence types (e.g. assault + an
+    uncategorised category) still counts once for the uncategorised
+    category, not twice -- this counts convictions, not (conviction,
+    offence_type) pairs."""
+    category = OffenceCategory(name="assault & resisting authority", sort_order=0)
+    session.add(category)
+    session.flush()
+    seeded = OffenceType(name="assault", is_seeded=True, category_id=category.id)
+    proposed = OffenceType(name="poisoning a well", is_seeded=False)
     session.add_all([seeded, proposed])
     session.flush()
 
@@ -120,4 +127,4 @@ def test_unreviewed_offence_types_counts_convictions_not_offence_mentions(sessio
     session.commit()
 
     rows = unreviewed_offence_types(session)
-    assert rows == [("straying animals", 1)]
+    assert rows == [("poisoning a well", 1)]

@@ -258,17 +258,22 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section title="Offence categories are partly LLM-invented">
+      <Section title="Offence types follow a curated taxonomy, but new proposals still need review">
         <p>
-          The model is given a seed list of standard offence categories and asked to match
-          against it, but may propose a new category if none fit. Those proposed categories
-          aren&rsquo;t automatically reviewed for whether they duplicate an existing one under a
-          different name (e.g. &ldquo;possession of short weights&rdquo; vs. &ldquo;possession of
-          inaccurate weights&rdquo;).
+          Every offence type sits under one of 17 categories in a curated taxonomy (see{" "}
+          <Link href="/taxonomy" className={css({ color: "fgAccent" })}>
+            Taxonomy
+          </Link>{" "}
+          for the full category → offence type breakdown) — but the model, and manual data entry,
+          can still propose a new offence type if none of the existing ones fit. Those proposals
+          start out uncategorised and aren&rsquo;t automatically checked for whether they
+          duplicate an existing type under different phrasing (e.g. &ldquo;possession of short
+          weights&rdquo; vs. &ldquo;possession of inaccurate weights&rdquo;) until someone
+          reviews them and, if needed, adds a merge rule to the taxonomy.
         </p>
         <div>
           <h3 className={css({ fontWeight: "600", mb: "2" })}>
-            Unreviewed offence types ({unreviewedOffences.length})
+            Offence types awaiting categorisation ({unreviewedOffences.length})
           </h3>
           {unreviewedOffences.length === 0 ? (
             <EmptyState>None pending review.</EmptyState>
