@@ -22,7 +22,7 @@ export async function generateStaticParams() {
   return listConvictionIds().map((id) => ({ id: String(id) }));
 }
 
-export default async function ConvictionDetailPage(props: PageProps<"/browse/[id]">) {
+export default async function ConvictionDetailPage(props: PageProps<"/cases/[id]">) {
   const { id } = await props.params;
   const convictionId = Number(id);
   if (!Number.isFinite(convictionId)) notFound();
@@ -46,19 +46,19 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             alignItems: "center",
           })}
         >
-          <Link href="/browse" className={css({ fontSize: "body", color: "fgMuted" })}>
-            ← Back to browse
+          <Link href="/cases" className={css({ fontSize: "body", color: "fgMuted" })}>
+            ← Back to cases
           </Link>
           <div className={css({ display: "flex", gap: "3", fontSize: "body" })}>
             {prevId !== null ? (
-              <Link href={`/browse/${prevId}`} className={css({ color: "fgAccent" })}>
+              <Link href={`/cases/${prevId}`} className={css({ color: "fgAccent" })}>
                 ← Previous
               </Link>
             ) : (
               <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
             )}
             {nextId !== null ? (
-              <Link href={`/browse/${nextId}`} className={css({ color: "fgAccent" })}>
+              <Link href={`/cases/${nextId}`} className={css({ color: "fgAccent" })}>
                 Next →
               </Link>
             ) : (
@@ -233,7 +233,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/browse/[id
             {relatedConvictions.map((rc) => (
               <Card key={rc.id}>
                 <Link
-                  href={`/browse/${rc.id}`}
+                  href={`/cases/${rc.id}`}
                   className={css({ fontWeight: "600", color: "fgAccent" })}
                 >
                   {rc.reference_number}

@@ -2,7 +2,15 @@ import "server-only";
 import { Suspense } from "react";
 import { getDb } from "@/lib/db";
 import { listConvictions, PAGE_SIZE } from "@/lib/queries/browseList";
-import { listTowns, listOffenceTypes } from "@/lib/queries/filters";
+import {
+  listTowns,
+  listOffenceStreets,
+  listOffenceCategories,
+  listOffenceTypes,
+  getOffenceDateRange,
+  getConvictionDateRange,
+  listDefendantCounts,
+} from "@/lib/queries/filters";
 import { PageContainer, PageTitle } from "@/components/ui";
 import { BrowseExplorer } from "@/components/browse/BrowseExplorer";
 
@@ -15,17 +23,27 @@ export default function BrowsePage() {
   const db = getDb();
   const { rows, total } = listConvictions(db, { page: 1, pageSize: PAGE_SIZE });
   const towns = listTowns();
+  const streets = listOffenceStreets();
+  const offenceCategories = listOffenceCategories();
   const offenceTypes = listOffenceTypes();
+  const dateRange = getOffenceDateRange();
+  const sentenceDateRange = getConvictionDateRange();
+  const defendantCounts = listDefendantCounts();
 
   return (
     <PageContainer>
-      <PageTitle>Browse</PageTitle>
+      <PageTitle>Cases</PageTitle>
       <Suspense fallback={null}>
         <BrowseExplorer
           initialRows={rows}
           initialTotal={total}
           towns={towns}
+          streets={streets}
+          offenceCategories={offenceCategories}
           offenceTypes={offenceTypes}
+          dateRange={dateRange}
+          sentenceDateRange={sentenceDateRange}
+          defendantCounts={defendantCounts}
         />
       </Suspense>
     </PageContainer>

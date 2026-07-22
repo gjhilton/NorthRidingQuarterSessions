@@ -9,7 +9,7 @@ import { siteSubtitle } from "@/lib/siteName";
 
 const findBoxes = [
   {
-    href: "/browse",
+    href: "/cases",
     title: "Find cases",
     description: "Search and browse every extracted Summary Conviction record.",
     linkText: "Browse cases",
@@ -119,7 +119,7 @@ import { siteTitle } from "@/lib/siteName";
 
 const sections = [
   {
-    href: "/browse",
+    href: "/cases",
     title: "Browse & search",
     description: "Paginated, filterable list of every summary conviction record.",
   },

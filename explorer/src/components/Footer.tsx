@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
-import { primaryLinks, insightsLinks, trailingLinks } from "@/lib/navLinks";
+import { primaryLinks, trailingLinks } from "@/lib/navLinks";
 
-const footerNavLinks = [...primaryLinks, ...insightsLinks, ...trailingLinks];
+const footerNavLinks = [...primaryLinks, ...trailingLinks];
 
 const footerLinkStyle = css({ color: "fgMuted", _hover: { color: "fgAccent" } });
 

@@ -15,9 +15,15 @@ export type BrowseSortColumn =
 export interface BrowseFilters {
   q?: string;
   townId?: number;
+  streetId?: number;
+  offenceCategoryId?: number;
   offenceTypeId?: number;
   dateFrom?: string;
   dateTo?: string;
+  sentenceDateFrom?: string;
+  sentenceDateTo?: string;
+  sex?: "male" | "female";
+  defendantCount?: number;
   sortBy?: BrowseSortColumn;
   sortDir?: "asc" | "desc";
   page: number;
@@ -89,8 +95,12 @@ function buildWhere(filters: BrowseFilters): WhereClause {
     params.q = `%${filters.q.toLowerCase()}%`;
   }
   if (filters.townId) {
-    clauses.push(`(sc.offence_location_town_id = @townId OR sc.court_location_town_id = @townId)`);
+    clauses.push(`sc.offence_location_town_id = @townId`);
     params.townId = filters.townId;
+  }
+  if (filters.streetId) {
+    clauses.push(`sc.offence_location_street_id = @streetId`);
+    params.streetId = filters.streetId;
   }
   if (filters.offenceTypeId) {
     clauses.push(`EXISTS (
@@ -98,14 +108,47 @@ function buildWhere(filters: BrowseFilters): WhereClause {
       WHERE scot3.summary_conviction_id = sc.id AND scot3.offence_type_id = @offenceTypeId
     )`);
     params.offenceTypeId = filters.offenceTypeId;
+  } else if (filters.offenceCategoryId) {
+    // Only applied when no specific leaf type is chosen -- offenceTypeId
+    // alone already implies its category, so this is the "all subcategories
+    // within this category" case, not an additional narrowing.
+    clauses.push(`EXISTS (
+      SELECT 1 FROM summary_conviction_offence_type scot3b
+      JOIN offence_type ot3b ON ot3b.id = scot3b.offence_type_id
+      WHERE scot3b.summary_conviction_id = sc.id AND ot3b.category_id = @offenceCategoryId
+    )`);
+    params.offenceCategoryId = filters.offenceCategoryId;
   }
   if (filters.dateFrom) {
-    clauses.push(`sc.conviction_date >= @dateFrom`);
+    clauses.push(`sc.offence_date >= @dateFrom`);
     params.dateFrom = filters.dateFrom;
   }
   if (filters.dateTo) {
-    clauses.push(`sc.conviction_date <= @dateTo`);
+    clauses.push(`sc.offence_date <= @dateTo`);
     params.dateTo = filters.dateTo;
+  }
+  if (filters.sentenceDateFrom) {
+    clauses.push(`sc.conviction_date >= @sentenceDateFrom`);
+    params.sentenceDateFrom = filters.sentenceDateFrom;
+  }
+  if (filters.sentenceDateTo) {
+    clauses.push(`sc.conviction_date <= @sentenceDateTo`);
+    params.sentenceDateTo = filters.sentenceDateTo;
+  }
+  if (filters.sex) {
+    clauses.push(`EXISTS (
+      SELECT 1 FROM summary_conviction_defendant scd4
+      JOIN defendant d4 ON d4.id = scd4.defendant_id
+      WHERE scd4.summary_conviction_id = sc.id AND d4.sex = @sex
+    )`);
+    params.sex = filters.sex;
+  }
+  if (filters.defendantCount) {
+    clauses.push(`(
+      SELECT COUNT(*) FROM summary_conviction_defendant scd5
+      WHERE scd5.summary_conviction_id = sc.id
+    ) = @defendantCount`);
+    params.defendantCount = filters.defendantCount;
   }
 
   return {

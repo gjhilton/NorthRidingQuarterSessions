@@ -56,7 +56,7 @@ export function OnThisDay() {
       </h2>
       <p className={css({ fontSize: "body" })}>{row.raw_record}</p>
       <Link
-        href={`/browse/${row.id}`}
+        href={`/cases/${row.id}`}
         className={css({
           display: "inline-block",
           color: "fgAccent",

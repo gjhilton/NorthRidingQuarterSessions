@@ -1,4 +1,5 @@
 import { css, cx } from "styled-system/css";
+import { SearchIcon } from "@/components/icons/SearchIcon";
 
 export function PageContainer({ children }: { children: React.ReactNode }) {
   return (
@@ -171,6 +172,46 @@ export const formInputStyle = css({
   bg: "bgSurface",
   color: "fg",
 });
+
+// The site's one search-widget style: a text input with a square magnifier
+// button flush against its right edge, sharing a border so the two read as
+// one control. Used identically by the homepage's CasesSearch/PeopleSearch
+// and the Cases listing page's own search field.
+export function SearchField(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <div className={css({ display: "flex" })}>
+      <input
+        {...props}
+        className={cx(
+          formInputStyle,
+          css({ flex: "1", borderRightWidth: "0", borderTopRightRadius: "0", borderBottomRightRadius: "0" }),
+          props.className
+        )}
+      />
+      <button
+        type="submit"
+        aria-label="Search"
+        className={css({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "2.75rem",
+          borderWidth: "hairline",
+          borderStyle: "solid",
+          borderColor: "borderMuted",
+          borderTopRightRadius: "corner",
+          borderBottomRightRadius: "corner",
+          bg: "fgAccent",
+          color: "bgSurface",
+          cursor: "pointer",
+          _hover: { opacity: 0.9 },
+        })}
+      >
+        <SearchIcon size={16} />
+      </button>
+    </div>
+  );
+}
 
 export const primaryButtonStyle = css({
   bg: "fgAccent",

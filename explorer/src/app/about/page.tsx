@@ -314,7 +314,7 @@ export default function AboutPage() {
                   <tr key={r.id}>
                     <Td>
                       <Link
-                        href={`/browse/${r.id}`}
+                        href={`/cases/${r.id}`}
                         className={css({ color: "fgAccent", fontWeight: "600" })}
                       >
                         {r.reference_number}
@@ -483,8 +483,8 @@ export default function AboutPage() {
       <Section title="Search scope">
         <p>
           The search box on{" "}
-          <Link href="/browse" className={css({ color: "fgAccent" })}>
-            Browse
+          <Link href="/cases" className={css({ color: "fgAccent" })}>
+            Cases
           </Link>{" "}
           matches against the charge description, reference number, offence type, sentencing text,
           and defendant/involved-person names. It does not currently match against occupation —
