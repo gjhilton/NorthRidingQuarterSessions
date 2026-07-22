@@ -43,3 +43,59 @@ def normalize_name(first_name: str | None, last_name: str | None) -> str:
     """
     parts = [p for p in (first_name, last_name) if p]
     return normalize_key(" ".join(parts))
+
+
+# A lowercase letter or digit immediately followed by an uppercase letter,
+# with zero separating characters, is the signature left by the pre-fix
+# scraper's `td_tag.text.strip()` (no separator= passed to BeautifulSoup's
+# .text, which silently drops <br> tags to zero width instead of a space --
+# see scraper/02_fetch_resources.py::extract_field, fixed to use
+# get_text(separator=". ") going forward). This concatenated originally-
+# separate clauses with nothing between them, e.g. "...himselfOffence
+# committed..." or "...on 20 May 1881Whitby Strand...". This function
+# repairs already-scraped text where the original <br> positions are gone.
+_RUN_ON_BOUNDARY_RE = re.compile(r"[a-z0-9][A-Z]")
+
+
+def fix_run_on_spacing(text: str | None) -> str | None:
+    """Insert '. ' at zero-separator lower/digit->upper boundaries left by
+    the pre-fix scraper's unseparated BeautifulSoup .text extraction.
+
+    Only fires when there is NO character between the two letters, so any
+    seam that's already punctuated or even just space/dash-separated is a
+    no-op -- this repairs the exact concatenation bug, nothing broader.
+    Target punctuation ". " confirmed against a legacy v1 artifact
+    (data/structured/QSB_1803_1-10-3-6.json) that already has it right, and
+    against the live archive HTML itself (the source cells use <br /><br />
+    between clauses, i.e. a full break, not a mid-sentence line wrap).
+
+    Excludes Mc-/Mac- surnames (McDonald, MacGuire, ...): a lowercase 'c'
+    immediately preceded by 'M' or 'Ma' is genuine capitalization, not a
+    lost sentence boundary -- the only known systematic false-positive
+    class in this corpus (verified: 171 Mc[A-Z] + 22 Mac[A-Z] occurrences,
+    all genuine surnames, zero false negatives introduced by excluding
+    them).
+
+    Idempotent: once ". " is inserted the two original characters are no
+    longer adjacent, so re-running on already-fixed text is a no-op.
+    """
+    if not text:
+        return text
+
+    def _replace(match: re.Match) -> str:
+        pos = match.start()
+        lower, upper = match.group(0)
+        if lower == "c" and (text[pos - 1 : pos] == "M" or text[pos - 2 : pos] == "Ma"):
+            return match.group(0)
+        return f"{lower}. {upper}"
+
+    return _RUN_ON_BOUNDARY_RE.sub(_replace, text)
+
+
+def iter_run_on_boundaries(text: str | None):
+    """Public re-scan hook for backfill residual-checks (splits leftover
+    matches into expected-Mc/Mac vs. genuinely unexplained) -- exposed here
+    so callers don't need to reach for the "private" _RUN_ON_BOUNDARY_RE."""
+    if not text:
+        return []
+    return list(_RUN_ON_BOUNDARY_RE.finditer(text))

@@ -3,24 +3,26 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
-This is a Python-based scraper for historical court records from the North Riding Quarter Sessions archives. The project extracts, processes, and stores Summary Conviction records from Whitby historical court documents into a structured SQLite database.
+This is a Python-based scraper and structured-data pipeline for historical court records from the North Riding Quarter Sessions archives, plus a static Next.js explorer site for browsing and analysing the result. The project extracts, processes, and stores Summary Conviction records from Whitby historical court documents into a structured SQLite database, then serves them at `explorer/`.
 
 ## Core Workflow
-The project follows a multi-step data processing pipeline:
+The project is a multi-step data processing pipeline followed by a presentation layer. As of 2026-07, the pipeline has run to completion: all 6,257 staged Summary Conviction records are extracted (`raw_case.status = 'done'` for every row) — this is the full set of Summary Conviction records identified by the scrape, not a sample. Re-running the pipeline is idempotent/resumable and would only pick up genuinely new raw cases (e.g. after a fresh scrape) or retry rows that fail.
 
 ### Phase 1: Data Extraction (Complete)
 1. **scraper/01_list_resources.py** - Searches the archives website and generates JSON files of matching resource IDs and URLs
 2. **scraper/02_fetch_resources.py** - Downloads individual records from the cached JSON file and generates CSV data
 
-### Phase 2: Data Parsing (Planned - LLM-Based)
-4. **LLM Parsing Pipeline** - Parse unstructured text files into structured JSON using Large Language Models:
-   - Process each summary conviction text file individually
-   - Extract structured data elements (defendants, charges, dates, locations, etc.)
-   - Output standardized JSON format matching database schema
-   - Handle edge cases and validation
+### Phase 2: Data Parsing (Complete - LLM-Based)
+3. **data-loader/03_load_raw_cases.py** / **04_extract_structured_data.py** - Stage Summary Conviction rows and extract structured data via LLM (Anthropic/OpenAI, pluggable providers):
+   - Process records in cost-estimated, confirmed batches (see `qsrecords/cost_estimate.py`)
+   - Extract structured data elements (defendants, charges, dates, locations, offence taxonomy, etc.) against the schema in `qsrecords/models/extraction_schema.py`
+   - Self-reported confidence and uncertain-field flags travel with each record (see `SummaryConviction.extraction_confidence`/`uncertain_fields`)
 
-### Phase 3: Database Ingestion (Planned)
-5. **JSON to Database Import** - Ingest structured JSON into SQLite database following the relational schema
+### Phase 3: Database Ingestion (Complete)
+4. **JSON to Database Import** - `qsrecords/mapping.py::persist_extracted_record` ingests each extracted record into the normalized SQLModel schema (`qsrecords/models/`) — see `court-records-erd.md` for the current entity-relationship diagram.
+
+### Phase 4: Explorer / analysis site (Ongoing)
+5. **explorer/** - Static Next.js export (`npm run build`) reading `data/db.sqlite` at build time (`src/lib/db.ts`) for most pages, with two client-side search islands (Browse, People) that ship a copy of the database via sql.js for arbitrary free-text queries a static build can't enumerate in advance. Pages: Browse, Trends, People, Streets, Map, Taxonomy, About. See `explorer/AGENTS.md` before touching Next.js-specific code — this project pins a version with breaking API changes from the training-data-era Next.js.
 
 ## Key Commands
 

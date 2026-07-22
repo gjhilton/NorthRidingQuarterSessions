@@ -2,6 +2,7 @@ import requests
 import cssutils
 from bs4 import BeautifulSoup
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 # Resolved relative to this file, not the CWD, so this script behaves the
@@ -141,13 +142,32 @@ def filter_records(data, blacklist):
     return [record for record in data if record['record_id'] not in blacklist]
 
 if __name__ == "__main__":
-    SEARCH_STR = "whitby stealing"
+    SEARCH_STR = "whitby"
+    scraped_at = datetime.now(UTC)
     resources = search(SEARCH_STR)
     print("Total matching resources:", len(resources))
-    
+
     blacklist = load_blacklist(_DATA_DIR / 'id_blacklist.txt')
     filtered_resources = filter_records(resources, blacklist)
     print("Resources remaining after cleaning:", len(filtered_resources))
 
     with open(_DATA_DIR / (SEARCH_STR + '.json'), 'w') as f:
         json.dump(filtered_resources, f, indent=4)
+
+    # No prior record existed anywhere of *when* a scrape ran or what
+    # CalmView reported at the time -- meaning a later re-scrape had no way
+    # to detect whether the live archive had grown/changed since. This
+    # doesn't make a re-scrape reproduce the original one (the archive is
+    # a live external system, out of this project's control), but it at
+    # least makes drift detectable: compare a new manifest's hit counts
+    # against this one.
+    manifest = {
+        "search_str": SEARCH_STR,
+        "scraped_at_utc": scraped_at.isoformat(),
+        "total_hits_before_blacklist": len(resources),
+        "blacklist_size": len(blacklist),
+        "total_hits_after_blacklist": len(filtered_resources),
+    }
+    with open(_DATA_DIR / (SEARCH_STR + '_scrape_manifest.json'), 'w') as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Scrape manifest written to data/{SEARCH_STR}_scrape_manifest.json")
