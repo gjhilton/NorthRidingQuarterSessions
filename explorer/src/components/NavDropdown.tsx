@@ -4,15 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { css } from "styled-system/css";
 
+function isActive(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function NavDropdown({
   label,
   links,
+  activePath,
 }: {
   label: string;
   links: { href: string; label: string }[];
+  activePath?: string | null;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const hasActiveLink = Boolean(activePath && links.some((l) => isActive(activePath, l.href)));
 
   useEffect(() => {
     if (!open) return;
@@ -40,7 +47,8 @@ export function NavDropdown({
           display: "flex",
           alignItems: "center",
           gap: "1",
-          color: "fgMuted",
+          color: hasActiveLink ? "fg" : "fgMuted",
+          fontWeight: hasActiveLink ? "600" : "400",
           fontSize: "body",
           bg: "transparent",
           border: "none",
@@ -72,24 +80,27 @@ export function NavDropdown({
             zIndex: 10,
           })}
         >
-          {links.map((l) => (
-            <li key={l.href}>
-              <Link
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className={css({
-                  display: "block",
-                  px: "3",
-                  py: "2",
-                  fontSize: "body",
-                  color: "fg",
-                  _hover: { color: "fgAccent", bg: "bg" },
-                })}
-              >
-                {l.label}
-              </Link>
-            </li>
-          ))}
+          {links.map((l) => {
+            const active = Boolean(activePath && isActive(activePath, l.href));
+            return (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className={css({
+                    display: "block",
+                    px: "3",
+                    py: "2",
+                    fontSize: "body",
+                    _hover: { color: "fgAccent", bg: "bg" },
+                  })}
+                  style={active ? { color: "var(--colors-fg)", fontWeight: 600 } : undefined}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

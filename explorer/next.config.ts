@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
+  // Allows viewing the dev server from another device on the local network
+  // (dev-only setting; irrelevant to the static export this config also
+  // produces for GitHub Pages).
+  allowedDevOrigins: ["192.168.1.198"],
 };
 
 export default nextConfig;

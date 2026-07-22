@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
-import { onThisDay, todayMonthDay, type OnThisDayRow } from "@/lib/queries/onThisDay";
-import { Card, EmptyState } from "@/components/ui";
+import { onThisDayNearest, type OnThisDayResult } from "@/lib/queries/onThisDay";
+import { Card } from "@/components/ui";
 
 function formatMonthDay(date: Date): string {
   return date.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+}
+
+function addDays(date: Date, days: number): Date {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
 }
 
 function yearOf(dateStr: string | null): string {
@@ -17,38 +23,49 @@ function yearOf(dateStr: string | null): string {
 
 export function OnThisDay() {
   const [today] = useState(() => new Date());
-  const [results, setResults] = useState<OnThisDayRow[] | null>(null);
-  const { isPending, run } = useClientQuery<OnThisDayRow[]>(setResults);
+  const [result, setResult] = useState<OnThisDayResult | null>(null);
+  const { isPending, run } = useClientQuery<OnThisDayResult | null>(setResult);
 
   useEffect(() => {
-    run((db) => onThisDay(db, todayMonthDay(today)));
+    run((db) => onThisDayNearest(db, today));
     // Only ever needs to run once, on mount, against "today" as captured above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Loads asynchronously and never blocks the rest of the page -- while
+  // pending, or in the near-impossible case nothing turns up even within the
+  // nearest-date search, the box simply isn't rendered (no loading
+  // placeholder, no empty state), so it only ever pops in once there's
+  // something real to show.
+  if (isPending || result === null) {
+    return null;
+  }
+
+  const { row } = result;
+  const matchedDate = addDays(today, result.offsetDays);
+  const year = yearOf(row.offence_date ?? row.conviction_date);
+  const heading =
+    result.offsetDays === 0
+      ? `On this day: ${formatMonthDay(today)} (${year})`
+      : `Nearest to today: ${formatMonthDay(matchedDate)} (${year})`;
+
   return (
     <Card className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
       <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>
-        On this day: {formatMonthDay(today)}
+        {heading}
       </h2>
-      {isPending || results === null ? (
-        <p className={css({ fontSize: "body", color: "fgMuted" })}>Checking the record…</p>
-      ) : results.length === 0 ? (
-        <EmptyState>No extracted cases on record for this date yet.</EmptyState>
-      ) : (
-        <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
-          {results.map((r) => (
-            <Link key={r.id} href={`/browse/${r.id}`}>
-              <Card className={css({ _hover: { borderColor: "fgAccent" } })}>
-                <span className={css({ fontSize: "small", color: "fgMuted" })}>
-                  {yearOf(r.offence_date ?? r.conviction_date)} — {r.reference_number}
-                </span>
-                <p className={css({ fontSize: "body", mt: "1" })}>{r.charge_description}</p>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      )}
+      <p className={css({ fontSize: "body" })}>{row.raw_record}</p>
+      <Link
+        href={`/browse/${row.id}`}
+        className={css({
+          display: "inline-block",
+          color: "fgAccent",
+          fontSize: "body",
+          fontWeight: "600",
+        })}
+      >
+        View full record ({row.reference_number}) →
+      </Link>
     </Card>
   );
 }

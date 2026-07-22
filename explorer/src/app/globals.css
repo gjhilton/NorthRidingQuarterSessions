@@ -18,3 +18,26 @@ body {
   color: var(--colors-fg);
   font-family: var(--fonts-sans);
 }
+
+/* Site-wide convention: every link is the accent red, never underlined --
+   deliberately unlayered (not @layer base) so it overrides both Panda's
+   reset and any component's own color/hover utility classes, without
+   needing this set on every individual Link/anchor across src/. Unlayered
+   CSS always beats layered CSS regardless of source order, per the cascade
+   layers spec -- see the @layer statement at the top of this file for the
+   layers this is deliberately outside of. */
+a {
+  color: var(--colors-fg-accent);
+  text-decoration: none;
+}
+
+/* Header nav is the one exception: muted by default, red only on rollover.
+   More specific than the bare `a` rule above (and still unlayered, so it
+   still beats any component-level utility classes), which is what lets it
+   win without touching the general site-wide link rule. */
+header a {
+  color: var(--colors-fg-muted);
+}
+header a:hover {
+  color: var(--colors-fg-accent);
+}

@@ -7,3 +7,19 @@
 export function titleCase(s: string): string {
   return s.replace(/(^|\s)\w/g, (c) => c.toUpperCase());
 }
+
+// Site-wide name display rule: "SURNAME, Firstname (occupation)". Does NOT
+// apply to literal quotes of the records themselves (raw_record,
+// charge_description, sentencing, etc.) -- only to names shown as their own
+// distinct UI element (a person's name in a list, a link label, a search
+// result). Being rolled out page by page, not applied everywhere yet.
+export function formatPersonName(
+  firstName: string | null | undefined,
+  lastName: string | null | undefined,
+  occupation?: string | null
+): string {
+  const surname = lastName ? lastName.toUpperCase() : "";
+  const first = firstName?.trim() || "";
+  const name = surname && first ? `${surname}, ${first}` : surname || first;
+  return occupation?.trim() ? `${name} (${occupation})` : name;
+}

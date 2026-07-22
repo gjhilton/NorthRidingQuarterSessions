@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
-import { getTotals } from "@/lib/queries/stats";
 import {
+  especialInterestCount,
+  fieldCoverage,
+  getTotals,
+  relatedConvictionPairCount,
+} from "@/lib/queries/stats";
+import {
+  courtTownScopeComparison,
   lowConfidenceRecords,
   possibleNameVariants,
   recentExtractionFailures,
@@ -23,6 +29,11 @@ export default function AboutPage() {
   const failures = recentExtractionFailures();
   const lowConfidence = lowConfidenceRecords();
   const nameVariants = possibleNameVariants();
+  const scopeComparison = courtTownScopeComparison();
+  const coverage = fieldCoverage();
+  const relatedConvictionPairs = relatedConvictionPairCount();
+  const especialInterestTotal = especialInterestCount();
+  const especialInterestPct = Math.round((especialInterestTotal / totals.convictions) * 100);
 
   return (
     <PageContainer>
@@ -86,25 +97,43 @@ export default function AboutPage() {
       </Section>
 
       <Section title="How much of the archive is covered">
-        <p>
-          {totals.convictions.toLocaleString()} of {totals.rawCaseTotal.toLocaleString()} archive
-          records have been extracted so far ({coveragePct}%) — see the coverage note on the{" "}
-          <Link href="/" className={css({ color: "fgAccent" })}>
-            home page
-          </Link>{" "}
-          for the current figure and which decades it spans. Extraction is done in batches,
-          deliberately sampled to spread across decades rather than working through the archive
-          in catalogue order, specifically so that partial coverage doesn&rsquo;t read as a
-          skewed slice of one narrow period. Even so:{" "}
-          <strong>a partial corpus is still a partial corpus.</strong> Any pattern on{" "}
-          <Link href="/trends" className={css({ color: "fgAccent" })}>
-            Trends
-          </Link>{" "}
-          — an offence type rising or falling, a year with more convictions than another — may
-          simply reflect which records happen to have been extracted yet, not a real historical
-          trend. Treat everything on that page as provisional until coverage is much closer to
-          complete.
-        </p>
+        {coveragePct >= 100 ? (
+          <p>
+            All {totals.convictions.toLocaleString()} Summary Conviction records identified in
+            the archive scrape have been extracted ({coveragePct}%) — see the{" "}
+            <Link href="/" className={css({ color: "fgAccent" })}>
+              home page
+            </Link>{" "}
+            for which decades that spans. That completeness is about <em>this</em>{" "}
+            pipeline&rsquo;s input, not the underlying archive: the scrape targeted Summary
+            Conviction records specifically, so other Quarter Sessions document types are out of
+            scope entirely, and it&rsquo;s possible for the archive catalogue itself to grow
+            after the scrape was taken. What&rsquo;s <em>not</em>{" "}
+            uniformly complete is per-field coverage within these records — see &ldquo;Field
+            coverage&rdquo; below before relying on any one field being populated.
+          </p>
+        ) : (
+          <p>
+            {totals.convictions.toLocaleString()} of {totals.rawCaseTotal.toLocaleString()}{" "}
+            Summary Conviction records identified in the archive scrape have been extracted so
+            far ({coveragePct}%) — see the coverage note on the{" "}
+            <Link href="/" className={css({ color: "fgAccent" })}>
+              home page
+            </Link>{" "}
+            for the current figure and which decades it spans. Extraction is done in batches,
+            deliberately sampled to spread across decades rather than working through the archive
+            in catalogue order, specifically so that partial coverage doesn&rsquo;t read as a
+            skewed slice of one narrow period. Even so:{" "}
+            <strong>a partial corpus is still a partial corpus.</strong> Any pattern on{" "}
+            <Link href="/trends" className={css({ color: "fgAccent" })}>
+              Trends
+            </Link>{" "}
+            — an offence type rising or falling, a year with more convictions than another — may
+            simply reflect which records happen to have been extracted yet, not a real historical
+            trend. Treat everything on that page as provisional until coverage is much closer to
+            complete.
+          </p>
+        )}
         <div className={css({ display: "flex", gap: "3", flexWrap: "wrap" })}>
           {statusBreakdown.map((s) => (
             <Card key={s.status} className={css({ minWidth: "8rem" })}>
@@ -115,6 +144,125 @@ export default function AboutPage() {
             </Card>
           ))}
         </div>
+      </Section>
+
+      <Section title="Why 'in scope' isn't just 'heard at Whitby'">
+        <p>
+          The scrape found records via a free-text keyword search for
+          &ldquo;whitby&rdquo; against the archive catalogue, which
+          inevitably caught some records by pure coincidence — a
+          defendant surnamed Whitby who never lived near the town, a pub
+          called the &ldquo;Whitby Arms Inn&rdquo; in Middlesbrough, a
+          railway line merely <em>named</em>{" "}
+          after Whitby. 26 such records were identified, hand-reviewed one
+          at a time, and removed — see{" "}
+          <code>OUT_OF_SCOPE_REVIEW.md</code> in the repository for the
+          full log of every one and why.
+        </p>
+        <p>
+          A record is kept in scope if the offence occurred in Whitby, the
+          case was <em>heard</em>{" "}
+          at Whitby, a defendant lives in Whitby, or an involved person
+          (victim, witness) lives in Whitby. It&rsquo;s worth explaining
+          why court location alone isn&rsquo;t used as the sole rule,
+          since it&rsquo;s tempting to assume &ldquo;heard at Whitby&rdquo;
+          is the cleanest definition of &ldquo;a Whitby case.&rdquo;
+          Restricting the corpus to only{" "}
+          <strong>
+            {scopeComparison.courtTownOnlyTotal.toLocaleString()}
+          </strong>{" "}
+          cases heard at Whitby, out of the current{" "}
+          <strong>{scopeComparison.currentTotal.toLocaleString()}</strong>,
+          would drop{" "}
+          <strong>{scopeComparison.excludedIfRestricted.toLocaleString()}</strong>{" "}
+          records — and most of those are exactly the cases you&rsquo;d
+          most want to keep:
+        </p>
+        <Table>
+          <thead>
+            <tr>
+              <Th>Why it would be excluded</Th>
+              <Th>Records</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {scopeComparison.excludedBreakdown.map((row) => (
+              <tr key={row.reason}>
+                <Td>{row.reason}</Td>
+                <Td>{row.count}</Td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <p className={css({ fontSize: "small", color: "fgMuted" })}>
+          Most of what a court-town-only rule would exclude is cases where
+          the offence itself happened in Whitby but the court/hearing
+          location wasn&rsquo;t recorded — the single most directly
+          relevant category there is. A residency-only connection
+          (defendant or witness lives in Whitby, offence and court both
+          elsewhere) is the weaker signal, not the stronger one — court
+          location alone gets this backwards.
+        </p>
+      </Section>
+
+      <Section title="Field coverage">
+        <p>
+          The stats above are about which <em>records</em> exist — this is about which{" "}
+          <em>fields</em>{" "}
+          are actually filled in within them. Some fields are rarely stated in the
+          archivist&rsquo;s original summary at all (defendant age, for instance, is almost
+          never given as an exact figure), which is a property of the source material, not a
+          pipeline gap — but it&rsquo;s easy to assume a field is reliably populated just because
+          it&rsquo;s in the schema, so here&rsquo;s the actual fill rate for the less
+          consistently-present ones.
+        </p>
+        <Table>
+          <thead>
+            <tr>
+              <Th>Field</Th>
+              <Th>Filled</Th>
+              <Th>Coverage</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {coverage.map((c) => (
+              <tr key={c.field}>
+                <Td>{c.field}</Td>
+                <Td>
+                  {c.filled.toLocaleString()} / {c.total.toLocaleString()}
+                </Td>
+                <Td>{c.pct}%</Td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <p className={css({ fontSize: "small", color: "fgMuted" })}>
+          Convictions-scoped fields are out of {totals.convictions.toLocaleString()};
+          defendant-scoped fields are out of {totals.defendants.toLocaleString()}{" "}
+          defendant mentions (not unique people — see &ldquo;Defendants and involved persons are
+          not deduplicated&rdquo; below).{" "}
+          {relatedConvictionPairs.toLocaleString()}{" "}
+          pairs of convictions are additionally linked as related incidents (shared arrest,
+          mutual charges, group offences) — see any linked record&rsquo;s detail page for the
+          specific note explaining the link.
+        </p>
+      </Section>
+
+      <Section title="&ldquo;Of especial interest&rdquo; picks aren't rare">
+        <p>
+          The homepage widget of that name pulls a random record flagged{" "}
+          <code>of_especial_interest</code>{" "}
+          during extraction — the LLM&rsquo;s own judgment call about which cases are unusually
+          colourful or notable, made with instructions to reserve the flag for a small minority
+          of records. In practice it landed on{" "}
+          <strong>
+            {especialInterestTotal.toLocaleString()} of {totals.convictions.toLocaleString()}{" "}
+            records (about {especialInterestPct}%)
+          </strong>{" "}
+          — roughly one case in five, not the rare stand-out the instructions asked for. Worth
+          knowing before you read too much into a case showing up there: it&rsquo;s a loose
+          filter for &ldquo;probably readable,&rdquo; not a curated highlight reel.
+        </p>
       </Section>
 
       <Section

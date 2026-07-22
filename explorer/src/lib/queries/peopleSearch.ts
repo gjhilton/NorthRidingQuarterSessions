@@ -5,7 +5,12 @@ import type { DbLike } from "@/lib/dbTypes";
 
 export interface PersonSearchResult {
   name_key: string;
-  display_name: string;
+  first_name: string | null;
+  last_name: string | null;
+  // A name_key can span multiple mentions with different recorded
+  // occupations (rows aren't deduplicated -- see About) -- MAX() picks one
+  // representative value, same convention as peopleList.ts.
+  occupation: string | null;
   defendant_mentions: number;
   person_mentions: number;
 }
@@ -17,19 +22,19 @@ export function searchPeople(db: DbLike, q: string, limit = 25): PersonSearchRes
       `
       SELECT
         name_key,
-        MAX(display_name) AS display_name,
+        MAX(first_name) AS first_name,
+        MAX(last_name) AS last_name,
+        MAX(occupation) AS occupation,
         SUM(CASE WHEN kind = 'defendant' THEN 1 ELSE 0 END) AS defendant_mentions,
         SUM(CASE WHEN kind = 'person' THEN 1 ELSE 0 END) AS person_mentions
       FROM (
-        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name, 'defendant' AS kind
-        FROM defendant
+        SELECT name_key, first_name, last_name, occupation, 'defendant' AS kind FROM defendant
         UNION ALL
-        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name, 'person' AS kind
-        FROM person
+        SELECT name_key, first_name, last_name, occupation, 'person' AS kind FROM person
       )
       WHERE name_key LIKE @like AND TRIM(name_key) != ''
       GROUP BY name_key
-      ORDER BY (defendant_mentions + person_mentions) DESC, display_name
+      ORDER BY (defendant_mentions + person_mentions) DESC, name_key
       LIMIT @limit
       `
     )

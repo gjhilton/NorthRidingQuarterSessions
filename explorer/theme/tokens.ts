@@ -53,12 +53,13 @@ export const tokens = defineTokens({
   },
   fontSizes: {
     // Reduced from Panda's default preset scale (which had 7 sizes in use
-    // here: 2xs/xs/sm/lg/xl/2xl/3xl) down to 4 explicit, semantically-named
-    // sizes -- everything in src/ now uses one of these four.
+    // here: 2xs/xs/sm/lg/xl/2xl/3xl) down to explicit, semantically-named
+    // sizes -- everything in src/ now uses one of these.
     small: { value: "1.125rem" }, // fine print, meta text, small icon glyphs
     body: { value: "1.3125rem" }, // the default text size almost everything uses (21px @ 16px root)
     heading: { value: "1.5rem" }, // card/section headings, nav brand
     display: { value: "2rem" }, // page title, the big number in a stat tile
+    hero: { value: "3rem" }, // homepage title only -- see src/app/page.tsx
   },
 });
 

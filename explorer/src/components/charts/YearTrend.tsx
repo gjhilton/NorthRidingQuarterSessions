@@ -15,7 +15,7 @@ const GRID_COLOR = token("colors.border");
 const LINE_COLOR = token("colors.chart2");
 const TEXT_COLOR = token("colors.muted");
 
-export function YearTrend({ data }: { data: { year: number; count: number }[] }) {
+export function YearTrend({ data }: { data: { year: number; count: number; n?: number }[] }) {
   return (
     <ResponsiveContainer width="100%" height={280}>
       <AreaChart data={data} margin={{ left: 8, right: 16, top: 8 }}>
@@ -38,7 +38,17 @@ export function YearTrend({ data }: { data: { year: number; count: number }[] })
           tick={{ fill: TEXT_COLOR, fontSize: 12 }}
         />
         <YAxis allowDecimals={false} tick={{ fill: TEXT_COLOR, fontSize: 12 }} />
-        <Tooltip contentStyle={{ fontSize: 12, borderRadius: 6, borderColor: GRID_COLOR }} />
+        <Tooltip
+          contentStyle={{ fontSize: 12, borderRadius: 6, borderColor: GRID_COLOR }}
+          // Surfaces the record count (n) behind a derived metric (a
+          // percentage or an average), when the caller provides one --
+          // otherwise a spike backed by 2 records reads the same as one
+          // backed by 200. See queries/trends.ts's GenderYearPoint.
+          formatter={(value, name, entry) => {
+            const n = (entry?.payload as { n?: number } | undefined)?.n;
+            return [n != null ? `${value} (n=${n})` : `${value}`, name];
+          }}
+        />
         <Area
           type="monotone"
           dataKey="count"

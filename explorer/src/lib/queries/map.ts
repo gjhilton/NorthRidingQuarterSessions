@@ -1,5 +1,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
+import { titleCase } from "@/lib/text";
+import { topNSeriesByYear, type YearSeries } from "@/lib/queries/chartShapes";
 
 export interface TownCaseCount {
   name: string;
@@ -20,6 +22,26 @@ export function allTownCaseCounts(): TownCaseCount[] {
       `
     )
     .all() as TownCaseCount[];
+}
+
+// Moved from trends.ts -- geography content belongs with geography, not
+// buried in the time-trends page.
+export function townByYear(topN = 5): YearSeries {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT sc.offence_year AS year, t.name AS name, COUNT(*) AS count
+      FROM summary_conviction sc
+      JOIN town t ON t.id = sc.offence_location_town_id
+      WHERE sc.offence_year IS NOT NULL
+      GROUP BY year, name
+      `
+    )
+    .all() as { year: number; name: string; count: number }[];
+  return topNSeriesByYear(
+    rows.map((r) => ({ ...r, name: titleCase(r.name) })),
+    topN
+  );
 }
 
 export interface StreetCaseCount {

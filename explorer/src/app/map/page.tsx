@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
-import { allTownCaseCounts } from "@/lib/queries/map";
+import { allTownCaseCounts, townByYear } from "@/lib/queries/map";
 import { coordinatesFor } from "@/lib/townCoordinates";
 import { titleCase } from "@/lib/text";
 import { MapViewLoader } from "@/components/MapViewLoader";
-import { Card, PageContainer, PageTitle } from "@/components/ui";
+import { StackedYearArea } from "@/components/charts/StackedYearArea";
+import { Card, ChartTitle, EmptyState, PageContainer, PageTitle } from "@/components/ui";
 
 export default function MapPage() {
   const townCounts = allTownCaseCounts();
+  const townsByYear = townByYear();
 
   const points = townCounts
     .map((t) => {
@@ -36,6 +38,18 @@ export default function MapPage() {
       </Card>
 
       <MapViewLoader points={points} />
+
+      <Card>
+        <ChartTitle>Convictions by town over time</ChartTitle>
+        <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
+          Whitby against the surrounding townships, year by year.
+        </p>
+        {townsByYear.years.length === 0 ? (
+          <EmptyState>No located, dated convictions yet.</EmptyState>
+        ) : (
+          <StackedYearArea data={townsByYear.data} seriesKeys={townsByYear.seriesKeys} />
+        )}
+      </Card>
 
       <p className={css({ fontSize: "body" })}>
         <Link href="/map/whitby" className={css({ color: "fgAccent" })}>

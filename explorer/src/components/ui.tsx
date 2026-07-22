@@ -55,7 +55,7 @@ export function Card({
     <div
       className={cx(
         css({
-          bg: "bgSurface",
+          bg: "bg",
           borderWidth: "hairline", borderStyle: "solid",
           borderColor: "borderMuted",
           borderRadius: "corner",

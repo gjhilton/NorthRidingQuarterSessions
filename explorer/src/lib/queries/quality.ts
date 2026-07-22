@@ -158,6 +158,78 @@ export function lowConfidenceRecords(): LowConfidenceRecord[] {
     .all() as LowConfidenceRecord[];
 }
 
+export interface ScopeReasonCount {
+  reason: string;
+  count: number;
+}
+
+export interface CourtTownScopeComparison {
+  currentTotal: number;
+  courtTownOnlyTotal: number;
+  excludedIfRestricted: number;
+  excludedBreakdown: ScopeReasonCount[];
+}
+
+// Answers a methodology question raised during the "whitby" keyword-scrape
+// scope cleanup (see OUT_OF_SCOPE_REVIEW.md and qsrecords.scope_filter):
+// would restricting the corpus to only cases *heard* at Whitby be a better
+// scope rule than the current one (offence town, court town, defendant
+// town, OR involved-person town matching Whitby -- see
+// qsrecords.views.whitby_in_scope_conviction)? Checked directly: no --
+// most of what that stricter rule would exclude (39 of 57) is cases where
+// the offence itself happened in Whitby but the court/hearing location
+// wasn't recorded, the single most directly relevant category there is.
+export function courtTownScopeComparison(): CourtTownScopeComparison {
+  const db = getDb();
+  const { currentTotal } = db
+    .prepare(`SELECT COUNT(*) AS currentTotal FROM summary_conviction`)
+    .get() as { currentTotal: number };
+  const { courtTownOnlyTotal } = db
+    .prepare(
+      `
+      SELECT COUNT(*) AS courtTownOnlyTotal
+      FROM summary_conviction sc
+      JOIN town t ON t.id = sc.court_location_town_id
+      WHERE t.name = 'whitby'
+      `
+    )
+    .get() as { courtTownOnlyTotal: number };
+
+  const excludedBreakdown = db
+    .prepare(
+      `
+      SELECT
+        CASE
+          WHEN t1.name = 'whitby' THEN 'The offence itself occurred in Whitby'
+          WHEN EXISTS (
+            SELECT 1 FROM summary_conviction_defendant scd JOIN defendant d ON d.id = scd.defendant_id
+            WHERE scd.summary_conviction_id = sc.id AND d.town_id = (SELECT id FROM town WHERE name = 'whitby')
+          ) THEN 'The defendant lives in Whitby'
+          WHEN EXISTS (
+            SELECT 1 FROM involved_persons ip JOIN person p ON p.id = ip.person_id
+            WHERE ip.summary_conviction_id = sc.id AND p.town_id = (SELECT id FROM town WHERE name = 'whitby')
+          ) THEN 'A victim or witness lives in Whitby'
+          ELSE 'Other'
+        END AS reason,
+        COUNT(*) AS count
+      FROM summary_conviction sc
+      LEFT JOIN town t1 ON t1.id = sc.offence_location_town_id
+      WHERE sc.court_location_town_id IS NULL
+         OR sc.court_location_town_id != (SELECT id FROM town WHERE name = 'whitby')
+      GROUP BY reason
+      ORDER BY count DESC
+      `
+    )
+    .all() as ScopeReasonCount[];
+
+  return {
+    currentTotal,
+    courtTownOnlyTotal,
+    excludedIfRestricted: currentTotal - courtTownOnlyTotal,
+    excludedBreakdown,
+  };
+}
+
 export interface NameVariantCandidate {
   a: { name_key: string; display_name: string; count: number };
   b: { name_key: string; display_name: string; count: number };

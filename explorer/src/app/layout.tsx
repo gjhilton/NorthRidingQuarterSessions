@@ -3,7 +3,7 @@ import { Inter, Lora } from "next/font/google";
 import { css } from "styled-system/css";
 import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { siteTitle } from "@/lib/siteName";
+import { siteTitleFull } from "@/lib/siteName";
 import "./globals.css";
 
 const sans = Inter({
@@ -18,7 +18,7 @@ const serif = Lora({
 
 export function generateMetadata(): Metadata {
   return {
-    title: siteTitle(),
+    title: siteTitleFull(),
     description: "Browse and visualise the North Riding Quarter Sessions dataset",
   };
 }

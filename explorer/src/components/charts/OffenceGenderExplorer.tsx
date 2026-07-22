@@ -4,7 +4,7 @@ import { useState } from "react";
 import { css, cx } from "styled-system/css";
 import { formInputStyle } from "@/components/ui";
 import { GenderYearLines } from "@/components/charts/GenderYearLines";
-import type { OffenceGenderTrend } from "@/lib/queries/trends";
+import type { OffenceGenderTrend } from "@/lib/queries/gender";
 
 // Both granularities' full year series are precomputed at build time
 // (trends.ts is server-only/better-sqlite3) and shipped as props --
