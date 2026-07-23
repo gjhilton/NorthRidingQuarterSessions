@@ -156,12 +156,18 @@ export function Th({ children, ...props }: React.ThHTMLAttributes<HTMLTableCellE
 export function Td({
   children,
   className,
+  rowSpan,
+  colSpan,
 }: {
   children: React.ReactNode;
   className?: string;
+  rowSpan?: number;
+  colSpan?: number;
 }) {
   return (
     <td
+      rowSpan={rowSpan}
+      colSpan={colSpan}
       className={cx(
         css({
           py: "2",
