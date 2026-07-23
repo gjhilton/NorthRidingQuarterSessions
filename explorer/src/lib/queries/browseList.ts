@@ -188,6 +188,102 @@ function buildOrderBy(filters: BrowseFilters): string {
   return terms.join(", ");
 }
 
+// The valid set of sortable columns -- for URL query-param validation only;
+// each table column's own sort button is the source of truth for what's
+// actually rendered and in what order.
+const SORT_COLUMN_KEYS: Set<string> = new Set<BrowseSortColumn>([
+  "offence_date",
+  "conviction_date",
+  "reference_number",
+  "defendant_names",
+  "offence_type_names",
+  "location",
+]);
+
+function isSortColumn(value: string | null): value is BrowseSortColumn {
+  return value !== null && SORT_COLUMN_KEYS.has(value);
+}
+
+// Bookmarkable/shareable search state -- read once on mount to hydrate a
+// filtered view from a pasted URL, and written back on every filter change.
+// Also read by the conviction detail page, to show "Record N of M matching
+// search for..." and keep Prev/Next scoped to the same filtered set when
+// arriving from a filtered listing rather than browsing cold.
+export function filtersFromSearchParams(params: URLSearchParams): BrowseFilters {
+  const get = (key: string) => params.get(key) ?? undefined;
+  const sortDir = get("dir");
+  const sex = get("sex");
+  return {
+    q: get("q"),
+    townId: get("town") ? Number(get("town")) : undefined,
+    streetId: get("street") ? Number(get("street")) : undefined,
+    offenceCategoryId: get("category") ? Number(get("category")) : undefined,
+    offenceTypeId: get("offence") ? Number(get("offence")) : undefined,
+    dateFrom: get("from"),
+    dateTo: get("to"),
+    sentenceDateFrom: get("sentenceFrom"),
+    sentenceDateTo: get("sentenceTo"),
+    sex: sex === "male" || sex === "female" ? sex : undefined,
+    defendantCount: get("defendants") ? Number(get("defendants")) : undefined,
+    sortBy: isSortColumn(params.get("sort")) ? (params.get("sort") as BrowseSortColumn) : undefined,
+    sortDir: sortDir === "asc" || sortDir === "desc" ? sortDir : undefined,
+    page: get("page") ? Number(get("page")) : 1,
+    pageSize: PAGE_SIZE,
+  };
+}
+
+export function searchParamsFromFilters(filters: BrowseFilters): string {
+  const params = new URLSearchParams();
+  if (filters.q) params.set("q", filters.q);
+  if (filters.townId) params.set("town", String(filters.townId));
+  if (filters.streetId) params.set("street", String(filters.streetId));
+  if (filters.offenceCategoryId) params.set("category", String(filters.offenceCategoryId));
+  if (filters.offenceTypeId) params.set("offence", String(filters.offenceTypeId));
+  if (filters.dateFrom) params.set("from", filters.dateFrom);
+  if (filters.dateTo) params.set("to", filters.dateTo);
+  if (filters.sentenceDateFrom) params.set("sentenceFrom", filters.sentenceDateFrom);
+  if (filters.sentenceDateTo) params.set("sentenceTo", filters.sentenceDateTo);
+  if (filters.sex) params.set("sex", filters.sex);
+  if (filters.defendantCount) params.set("defendants", String(filters.defendantCount));
+  if (filters.sortBy) params.set("sort", filters.sortBy);
+  if (filters.sortDir) params.set("dir", filters.sortDir);
+  if (filters.page > 1) params.set("page", String(filters.page));
+  return params.toString();
+}
+
+// True when any filter narrows the result set beyond "everything" -- used
+// both to decide whether to show "Clear filters" on the listing and whether
+// a detail page arrived at via a link should describe itself as scoped to a
+// search/filter rather than the whole dataset.
+export function isFilteredSearch(filters: BrowseFilters): boolean {
+  return Boolean(
+    filters.q ||
+      filters.townId ||
+      filters.streetId ||
+      filters.offenceCategoryId ||
+      filters.offenceTypeId ||
+      filters.dateFrom ||
+      filters.dateTo ||
+      filters.sentenceDateFrom ||
+      filters.sentenceDateTo ||
+      filters.sex ||
+      filters.defendantCount
+  );
+}
+
+// Unpaginated ids in the same order listConvictions would page through --
+// for the detail page's "Record N of M" position and Prev/Next within a
+// filtered set, where the whole ordered set (not just one page of it) is
+// needed to find where a given id falls.
+export function listConvictionOrder(db: DbLike, filters: BrowseFilters): number[] {
+  const { sql: whereSql, params } = buildWhere(filters);
+  const orderBySql = buildOrderBy(filters);
+  const rows = db
+    .prepare(`SELECT sc.id FROM summary_conviction sc ${whereSql} ORDER BY ${orderBySql}`)
+    .all(params) as { id: number }[];
+  return rows.map((r) => r.id);
+}
+
 export function listConvictions(
   db: DbLike,
   filters: BrowseFilters

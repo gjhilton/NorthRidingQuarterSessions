@@ -1,15 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { css } from "styled-system/css";
 import {
   getAdjacentConvictionIds,
   getConvictionDefendants,
   getConvictionDetail,
   getConvictionInvolvedPersons,
+  getConvictionPosition,
   getRelatedConvictions,
   listConvictionIds,
 } from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
+import { ConvictionNav } from "@/components/ConvictionNav";
 import { toSlug } from "@/lib/slug";
 import { titleCase } from "@/lib/text";
 import { CopyCitationButton } from "@/components/CopyCitationButton";
@@ -34,38 +37,21 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
   const involvedPersons = getConvictionInvolvedPersons(convictionId);
   const relatedConvictions = getRelatedConvictions(convictionId);
   const { prevId, nextId } = getAdjacentConvictionIds(convictionId);
+  const { position, total } = getConvictionPosition(convictionId);
   const citationText = `North Riding Quarter Sessions Bundles, ${conviction.reference_number}, North Yorkshire County Record Office, Archives Unlocked, ${conviction.archive_url}`;
 
   return (
     <PageContainer>
       <div>
-        <div
-          className={css({
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          })}
-        >
-          <Link href="/convictions" className={css({ fontSize: "body", color: "fgMuted" })}>
-            ← Back to convictions
-          </Link>
-          <div className={css({ display: "flex", gap: "3", fontSize: "body" })}>
-            {prevId !== null ? (
-              <Link href={`/convictions/${prevId}`} className={css({ color: "fgAccent" })}>
-                ← Previous
-              </Link>
-            ) : (
-              <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
-            )}
-            {nextId !== null ? (
-              <Link href={`/convictions/${nextId}`} className={css({ color: "fgAccent" })}>
-                Next →
-              </Link>
-            ) : (
-              <span className={css({ color: "fgMuted", opacity: 0.5 })}>Next →</span>
-            )}
-          </div>
-        </div>
+        <Suspense fallback={null}>
+          <ConvictionNav
+            convictionId={convictionId}
+            serverPrevId={prevId}
+            serverNextId={nextId}
+            serverPosition={position}
+            serverTotal={total}
+          />
+        </Suspense>
         <PageTitle subtitle={formatDate(conviction.conviction_date) ?? conviction.conviction_date_raw}>
           {conviction.reference_number}
         </PageTitle>

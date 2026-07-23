@@ -6,7 +6,10 @@ import { css, cx } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
 import { downloadCsv } from "@/lib/csv";
 import {
+  filtersFromSearchParams,
+  isFilteredSearch,
   listConvictions,
+  searchParamsFromFilters,
   PAGE_SIZE,
   type BrowseDefendantName,
   type BrowseFilters,
@@ -28,22 +31,6 @@ const EXPORT_PAGE_SIZE = 1_000_000;
 
 type CsvRow = Omit<BrowseRow, "defendant_names_json"> & { defendant_names: string };
 
-// The valid set of sortable columns -- for URL query-param validation only;
-// the table header (each column individually sortable, see sortButton())
-// is the source of truth for what's actually rendered and in what order.
-const SORT_COLUMN_KEYS: Set<string> = new Set<BrowseSortColumn>([
-  "offence_date",
-  "conviction_date",
-  "reference_number",
-  "defendant_names",
-  "offence_type_names",
-  "location",
-]);
-
-function isSortColumn(value: string | null): value is BrowseSortColumn {
-  return value !== null && SORT_COLUMN_KEYS.has(value);
-}
-
 // defendant_names_json is a JSON array (one object per defendant) rather
 // than a pre-joined string, specifically so each name can go through the
 // site's standard SURNAME, Firstname (occupation) formatting instead of a
@@ -57,51 +44,6 @@ function parseDefendantNames(json: string | null): string[] {
 function formatDefendantNames(json: string | null): string {
   const names = parseDefendantNames(json);
   return names.length > 0 ? names.join(", ") : "—";
-}
-
-// Bookmarkable/shareable search state -- read once on mount to hydrate a
-// filtered view from a pasted URL, and written back on every filter change.
-// Not used for the initial server-rendered (unfiltered) page load itself.
-function filtersFromSearchParams(params: URLSearchParams): BrowseFilters {
-  const get = (key: string) => params.get(key) ?? undefined;
-  const sortDir = get("dir");
-  const sex = get("sex");
-  return {
-    q: get("q"),
-    townId: get("town") ? Number(get("town")) : undefined,
-    streetId: get("street") ? Number(get("street")) : undefined,
-    offenceCategoryId: get("category") ? Number(get("category")) : undefined,
-    offenceTypeId: get("offence") ? Number(get("offence")) : undefined,
-    dateFrom: get("from"),
-    dateTo: get("to"),
-    sentenceDateFrom: get("sentenceFrom"),
-    sentenceDateTo: get("sentenceTo"),
-    sex: sex === "male" || sex === "female" ? sex : undefined,
-    defendantCount: get("defendants") ? Number(get("defendants")) : undefined,
-    sortBy: isSortColumn(params.get("sort")) ? (params.get("sort") as BrowseSortColumn) : undefined,
-    sortDir: sortDir === "asc" || sortDir === "desc" ? sortDir : undefined,
-    page: get("page") ? Number(get("page")) : 1,
-    pageSize: PAGE_SIZE,
-  };
-}
-
-function searchParamsFromFilters(filters: BrowseFilters): string {
-  const params = new URLSearchParams();
-  if (filters.q) params.set("q", filters.q);
-  if (filters.townId) params.set("town", String(filters.townId));
-  if (filters.streetId) params.set("street", String(filters.streetId));
-  if (filters.offenceCategoryId) params.set("category", String(filters.offenceCategoryId));
-  if (filters.offenceTypeId) params.set("offence", String(filters.offenceTypeId));
-  if (filters.dateFrom) params.set("from", filters.dateFrom);
-  if (filters.dateTo) params.set("to", filters.dateTo);
-  if (filters.sentenceDateFrom) params.set("sentenceFrom", filters.sentenceDateFrom);
-  if (filters.sentenceDateTo) params.set("sentenceTo", filters.sentenceDateTo);
-  if (filters.sex) params.set("sex", filters.sex);
-  if (filters.defendantCount) params.set("defendants", String(filters.defendantCount));
-  if (filters.sortBy) params.set("sort", filters.sortBy);
-  if (filters.sortDir) params.set("dir", filters.sortDir);
-  if (filters.page > 1) params.set("page", String(filters.page));
-  return params.toString();
 }
 
 export function BrowseExplorer({
@@ -166,19 +108,11 @@ export function BrowseExplorer({
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const rangeStart = total === 0 ? 0 : (filters.page - 1) * PAGE_SIZE + 1;
   const rangeEnd = Math.min(filters.page * PAGE_SIZE, total);
-  const isFiltered = Boolean(
-    filters.q ||
-      filters.townId ||
-      filters.streetId ||
-      filters.offenceCategoryId ||
-      filters.offenceTypeId ||
-      filters.dateFrom ||
-      filters.dateTo ||
-      filters.sentenceDateFrom ||
-      filters.sentenceDateTo ||
-      filters.sex ||
-      filters.defendantCount
-  );
+  const isFiltered = isFilteredSearch(filters);
+  // Carried onto each row's link so the detail page can show "Record N of M
+  // matching search for..." and keep Prev/Next scoped to this same filtered
+  // set, instead of losing that context the moment a record is opened.
+  const rowLinkQs = searchParamsFromFilters(filters);
 
   function exportCsv() {
     runExport((db) => {
@@ -640,7 +574,9 @@ export function BrowseExplorer({
             {rows.map((r) => (
               <tr
                 key={r.id}
-                onClick={() => router.push(`/convictions/${r.id}`)}
+                onClick={() =>
+                  router.push(`/convictions/${r.id}${rowLinkQs ? `?${rowLinkQs}` : ""}`)
+                }
                 className={css({
                   cursor: "pointer",
                   _hover: { bg: "bgSurface" },

@@ -108,6 +108,25 @@ export function getAdjacentConvictionIds(id: number): AdjacentConvictionIds {
   return { prevId, nextId };
 }
 
+export interface ConvictionPosition {
+  position: number;
+  total: number;
+}
+
+// The whole-dataset "Record N of M" shown when a detail page is opened
+// without arriving from a filtered/search listing -- prerendered at build
+// time, same id ordering as getAdjacentConvictionIds. Superseded client-side
+// by ConvictionSearchNav whenever the URL carries filter/search state.
+export function getConvictionPosition(id: number): ConvictionPosition {
+  const { position } = getDb()
+    .prepare(`SELECT COUNT(*) AS position FROM summary_conviction WHERE id <= ?`)
+    .get(id) as { position: number };
+  const { total } = getDb().prepare(`SELECT COUNT(*) AS total FROM summary_conviction`).get() as {
+    total: number;
+  };
+  return { position, total };
+}
+
 export function getConvictionDetail(id: number): ConvictionDetail | undefined {
   const row = getDb()
     .prepare(
