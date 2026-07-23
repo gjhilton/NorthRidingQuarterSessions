@@ -48,3 +48,12 @@ export function formatPersonName({
   const detail = occ && twn ? `${occ}: ${twn}` : occ || twn;
   return detail ? `${name} (${detail})` : name;
 }
+
+// Broad-category display casing for the Offences tree (see the conviction
+// detail page) -- just the name; the archive-wide conviction count next to
+// it is rendered separately (matching the People lists' "mentioned in N
+// other records" pattern: plain muted text beside the link, not baked into
+// the link's own label).
+export function formatOffenceCategory(categoryName: string): string {
+  return categoryName.toUpperCase();
+}

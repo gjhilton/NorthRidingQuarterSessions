@@ -137,6 +137,38 @@ reference_number is the stable public identifier. Old numeric URLs now
   could in principle drift from the actual `/people/[nameKey]` static
   pages -- worth a test that a defendant's link on a conviction page
   actually resolves (not just that it's shaped like a URL).
+- Each person in the People lists shows "mentioned in N other records"
+  (muted, small) when `getOtherConvictionCounts` finds mentions of that
+  `name_key` elsewhere -- omitted entirely at N=0, singular/plural text
+  handled ("1 other record" vs "N other records"). Batched into one query
+  for the whole page rather than one per person -- worth a test with a
+  conviction containing a person who appears nowhere else (count
+  omitted) alongside one who's a repeat name (count shown, matches the
+  About page's own mention-count logic since name_key isn't deduplicated
+  identity).
+- New "Offences" section (own top-level `<h2>`, same `display`-size
+  heading as People): a genuine two-level nested `<ul><li>` tree, one
+  category node per distinct category tagged on the conviction, each with
+  its tagged offence type(s) nested underneath (grouped client-side in
+  `OffenceTree`, not one flat row per type) -- styled with a stem
+  (border-left on the nested `<ul>` + a short `::before` horizontal branch
+  on each leaf `<li>`) and an em-dash prefix on each leaf as a second,
+  CSS-independent signal that it's a child node. Category/type name is a
+  link (`offenceHref`/`offenceCategorySlug`, `lib/links.ts` +
+  `lib/offenceCategorySlugs.ts`); the archive-wide conviction count next
+  to it is separate plain text (`CountNote`: "in **N** convictions",
+  small/muted/bold-count, not bracketed, not part of the link -- same
+  visual idiom as the People lists' `MentionCount`, just different
+  wording since "mentioned in other records" doesn't fit an offence
+  count). The `/offences/[category-slug]` pages don't exist yet (see
+  TODO.md); `offenceHref` returns `undefined` for any category without a
+  slug mapping and both tree levels fall back to plain unlinked text --
+  only 4 of 17 categories have real precedent slugs from the homepage,
+  the rest are this session's best-guess picks pending the actual
+  page-per-category build. Worth testing: a conviction with 2+ types in
+  the same category (multiple leaves under one parent), one with types
+  spanning 2+ categories (multiple parent nodes), and that the fallback
+  (no dead `/offences/undefined` links) holds until those pages exist.
 - `formatPersonName` (`lib/text.ts`) took an object param and gained an
   opt-in `town` field: passing it extends the usual "SURNAME, Firstname
   [qualifier] (occupation)" to "...(occupation: Town)" -- used only on

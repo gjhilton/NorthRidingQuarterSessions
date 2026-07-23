@@ -15,7 +15,6 @@ export interface ConvictionDetail {
   offence_date_raw: string | null;
   offence_day_of_week: string | null;
   offence_time: string | null;
-  offence_type_names: string[];
   charge_description: string;
   sentencing: string | null;
   raw_record: string;
@@ -171,12 +170,6 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
       SELECT
         sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
         sc.offence_date, sc.offence_date_raw, sc.offence_day_of_week, sc.offence_time,
-        (
-          SELECT GROUP_CONCAT(ot.name, char(31))
-          FROM summary_conviction_offence_type scot
-          JOIN offence_type ot ON ot.id = scot.offence_type_id
-          WHERE scot.summary_conviction_id = sc.id
-        ) AS offence_type_names_concat,
         sc.charge_description, sc.sentencing, sc.raw_record, sc.archive_url,
         ot_town.name AS offence_town_name,
         st.name AS offence_street_name,
@@ -193,18 +186,88 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
       WHERE sc.id = ?
       `
     )
-    .get(id) as (Omit<ConvictionDetail, "offence_type_names" | "of_especial_interest"> & {
-    offence_type_names_concat: string | null;
+    .get(id) as (Omit<ConvictionDetail, "of_especial_interest"> & {
     of_especial_interest: number;
   }) | undefined;
 
   if (!row) return undefined;
-  const { offence_type_names_concat, of_especial_interest, ...rest } = row;
+  const { of_especial_interest, ...rest } = row;
   return {
     ...rest,
-    offence_type_names: offence_type_names_concat ? offence_type_names_concat.split("\x1f") : [],
     of_especial_interest: Boolean(of_especial_interest),
   };
+}
+
+export interface ConvictionOffence {
+  id: number;
+  type_name: string;
+  // Archive-wide total convictions tagged with this specific offence type.
+  type_count: number;
+  category_name: string;
+  // Archive-wide total convictions tagged with any type in this category.
+  category_count: number;
+}
+
+export function getConvictionOffences(convictionId: number): ConvictionOffence[] {
+  return getDb()
+    .prepare(
+      `
+      SELECT
+        ot.id, ot.name AS type_name, oc.name AS category_name,
+        (
+          SELECT COUNT(DISTINCT scot2.summary_conviction_id)
+          FROM summary_conviction_offence_type scot2
+          WHERE scot2.offence_type_id = ot.id
+        ) AS type_count,
+        (
+          SELECT COUNT(DISTINCT scot3.summary_conviction_id)
+          FROM summary_conviction_offence_type scot3
+          JOIN offence_type ot3 ON ot3.id = scot3.offence_type_id
+          WHERE ot3.category_id = oc.id
+        ) AS category_count
+      FROM summary_conviction_offence_type scot
+      JOIN offence_type ot ON ot.id = scot.offence_type_id
+      JOIN offence_category oc ON oc.id = ot.category_id
+      WHERE scot.summary_conviction_id = ?
+      ORDER BY ot.name
+      `
+    )
+    .all(convictionId) as ConvictionOffence[];
+}
+
+// How many *other* convictions each of the given name_keys is mentioned in
+// (as either a defendant or an involved person), archive-wide -- name_key
+// is a coarse "every mention of this name" index, not a per-individual
+// dedup key (two different real people can share one), so this counts
+// mentions of the name, same as the People pages' own mention counts.
+// Batched into one query per page render rather than one per person.
+export function getOtherConvictionCounts(
+  nameKeys: string[],
+  excludeConvictionId: number
+): Map<string, number> {
+  if (nameKeys.length === 0) return new Map();
+  const placeholders = nameKeys.map(() => "?").join(",");
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT name_key, COUNT(DISTINCT summary_conviction_id) AS count
+      FROM (
+        SELECT d.name_key AS name_key, scd.summary_conviction_id AS summary_conviction_id
+        FROM defendant d
+        JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
+        WHERE d.name_key IN (${placeholders})
+        UNION ALL
+        SELECT p.name_key AS name_key, ip.summary_conviction_id AS summary_conviction_id
+        FROM person p
+        JOIN involved_persons ip ON ip.person_id = p.id
+        WHERE p.name_key IN (${placeholders})
+      )
+      WHERE summary_conviction_id != ?
+      GROUP BY name_key
+      `
+    )
+    .all(...nameKeys, ...nameKeys, excludeConvictionId) as { name_key: string; count: number }[];
+  return new Map(rows.map((r) => [r.name_key, r.count]));
 }
 
 export function getConvictionDefendants(convictionId: number): DetailDefendant[] {

@@ -61,6 +61,12 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("indecent exposure", []),
         ("public nuisance", ["nuisance"]),
         ("sabbath breaking", []),
+        # About the drunk patron's own conduct (refusing to leave when
+        # told), not the licensee's regulatory compliance -- belongs here
+        # with drunkenness/drunk and disorderly, not with Licensing &
+        # Gaming's trading-without-a-licence/opening-hours/dog-licence
+        # offences.
+        ("refusal to quit licensed premises", []),
     ]),
     ("Assault & Resisting Authority", [
         ("assault", ["attempted assault"]),

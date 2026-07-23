@@ -9,15 +9,18 @@ import {
   getConvictionIdBySlug,
   getConvictionInvolvedPersons,
   type DetailInvolvedPerson,
+  getConvictionOffences,
+  type ConvictionOffence,
   getConvictionPosition,
+  getOtherConvictionCounts,
   getRelatedConvictions,
   listConvictionSlugs,
 } from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { ConvictionNav } from "@/components/ConvictionNav";
-import { personHref } from "@/lib/links";
+import { personHref, offenceHref } from "@/lib/links";
 import { convictionHref } from "@/lib/referenceSlug";
-import { formatPersonName, titleCase } from "@/lib/text";
+import { formatOffenceCategory, formatPersonName, titleCase } from "@/lib/text";
 import { Roles, ROLE_LABELS, classifyInvolvedPersonRole } from "@/lib/roles";
 import { CopyCitationButton } from "@/components/CopyCitationButton";
 import { formatDate } from "@/lib/date";
@@ -41,6 +44,11 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
   const involvedPersons = [...getConvictionInvolvedPersons(convictionId)].sort(bySurname);
   const police = involvedPersons.filter((p) => classifyInvolvedPersonRole(p.role) === Roles.police);
   const otherPersons = involvedPersons.filter((p) => classifyInvolvedPersonRole(p.role) === Roles.other);
+  const otherConvictionCounts = getOtherConvictionCounts(
+    [...defendants, ...involvedPersons].map((p) => p.name_key),
+    convictionId
+  );
+  const offences = getConvictionOffences(convictionId);
   const relatedConvictions = getRelatedConvictions(convictionId);
   const { prevSlug, nextSlug } = getAdjacentConvictionSlugs(convictionId);
   const { position, total } = getConvictionPosition(convictionId);
@@ -132,6 +140,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
                     town: d.town_name,
                   })}
                 </Link>
+                <MentionCount count={otherConvictionCounts.get(d.name_key)} />
               </li>
             ))}
           </ul>
@@ -140,15 +149,21 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
 
         {police.length > 0 && (
           <SubSection title={ROLE_LABELS[Roles.police]}>
-          <PersonList people={police} showRole={false} />
+          <PersonList people={police} showRole={false} otherConvictionCounts={otherConvictionCounts} />
           </SubSection>
         )}
 
         {otherPersons.length > 0 && (
           <SubSection title={ROLE_LABELS[Roles.other]}>
-          <PersonList people={otherPersons} />
+          <PersonList people={otherPersons} otherConvictionCounts={otherConvictionCounts} />
           </SubSection>
         )}
+        </Section>
+      )}
+
+      {offences.length > 0 && (
+        <Section title="Offences" titleSize="display">
+          <OffenceTree offences={offences} />
         </Section>
       )}
 
@@ -223,14 +238,19 @@ function SubSection({ title, children }: { title: string; children: React.ReactN
 function PersonList({
   people,
   showRole = true,
+  otherConvictionCounts,
 }: {
   people: DetailInvolvedPerson[];
   showRole?: boolean;
+  otherConvictionCounts: Map<string, number>;
 }) {
   return (
     <ul className={personListStyle}>
       {people.map((p) => (
-        <li key={p.id} className={css({ display: "flex", alignItems: "center", gap: "2" })}>
+        <li
+          key={p.id}
+          className={css({ display: "flex", alignItems: "center", gap: "2", flexWrap: "wrap" })}
+        >
           <Link href={personHref(p.name_key)} className={css({ color: "fgAccent" })}>
             {formatPersonName({
               firstName: p.first_name,
@@ -241,9 +261,114 @@ function PersonList({
             })}
           </Link>
           {showRole && p.role && <Pill>{p.role}</Pill>}
+          <MentionCount count={otherConvictionCounts.get(p.name_key)} />
         </li>
       ))}
     </ul>
+  );
+}
+
+// name_key is a coarse "every mention of this name" index, not a per-person
+// dedup key -- this is a mention count, not a claim that the same real
+// individual appears in all of them (see About's "not deduplicated" note).
+// Groups the conviction's tagged offence types under their category, then
+// renders category -> type as a two-level tree: a vertical stem (border on
+// the nested <ul>) with a short horizontal branch (::before on each <li>)
+// pointing at each leaf, same visual idiom as a file-tree view. Genuinely
+// nested <ul><li> markup underneath the styling, not just visually
+// indented flat items, so it degrades to a normal nested list with CSS off.
+function OffenceTree({ offences }: { offences: ConvictionOffence[] }) {
+  const categories = new Map<string, { count: number; types: ConvictionOffence[] }>();
+  for (const o of offences) {
+    const existing = categories.get(o.category_name);
+    if (existing) existing.types.push(o);
+    else categories.set(o.category_name, { count: o.category_count, types: [o] });
+  }
+
+  return (
+    <ul className={personListStyle}>
+      {[...categories.entries()].map(([categoryName, { count, types }]) => {
+        const href = offenceHref(categoryName);
+        const label = formatOffenceCategory(categoryName);
+        return (
+          <li key={categoryName}>
+            {href ? (
+              <Link href={href} className={css({ color: "fgAccent" })}>
+                {label}
+              </Link>
+            ) : (
+              label
+            )}{" "}
+            <CountNote count={count} unit="conviction" />
+            <ul
+              className={css({
+                display: "flex",
+                flexDirection: "column",
+                gap: "2",
+                listStyle: "none",
+                mt: "2",
+                ml: "3",
+                pl: "8",
+                borderLeftWidth: "lineweight_normal",
+                borderLeftStyle: "solid",
+                borderLeftColor: "fgMuted",
+              })}
+            >
+              {types.map((t) => (
+                <li
+                  key={t.id}
+                  className={css({
+                    position: "relative",
+                    pl: "8",
+                    _before: {
+                      content: '""',
+                      position: "absolute",
+                      left: "-2rem",
+                      top: "0.7em",
+                      width: "1.75rem",
+                      height: "0",
+                      borderTopWidth: "lineweight_normal",
+                      borderTopStyle: "solid",
+                      borderTopColor: "fgMuted",
+                    },
+                  })}
+                >
+                  <span aria-hidden className={css({ color: "fgMuted" })}>
+                    └─{" "}
+                  </span>
+                  {href ? (
+                    <Link href={href} className={css({ color: "fgAccent" })}>
+                      {t.type_name}
+                    </Link>
+                  ) : (
+                    t.type_name
+                  )}{" "}
+                  <CountNote count={t.type_count} unit="conviction" />
+                </li>
+              ))}
+            </ul>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function CountNote({ count, unit }: { count: number; unit: string }) {
+  return (
+    <span className={css({ fontSize: "small", color: "fgMuted" })}>
+      <strong>{count.toLocaleString()}</strong> {unit}
+      {count === 1 ? "" : "s"}
+    </span>
+  );
+}
+
+function MentionCount({ count }: { count: number | undefined }) {
+  if (!count) return null;
+  return (
+    <span className={css({ fontSize: "small", color: "fgMuted" })}>
+      mentioned in <strong>{count.toLocaleString()}</strong> other record{count === 1 ? "" : "s"}
+    </span>
   );
 }
 
