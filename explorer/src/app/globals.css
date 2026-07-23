@@ -17,6 +17,13 @@ body {
   background: var(--colors-bg);
   color: var(--colors-fg);
   font-family: var(--fonts-sans);
+  /* The actual default: unstyled text (anything that doesn't set its own
+     fontSize) should already be the correct body copy size, not the
+     browser's 1rem -- forgetting an explicit fontSize: "body" on some
+     element shouldn't be able to silently render undersized text. Every
+     component that needs a *different* size (headings, small print) still
+     overrides this via its own more-specific class. */
+  font-size: var(--font-sizes-body);
 }
 
 /* Site-wide convention: every link is the accent red, never underlined --

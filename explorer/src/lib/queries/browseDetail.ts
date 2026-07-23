@@ -49,6 +49,7 @@ export interface DetailDefendant {
   name_key: string;
   first_name: string | null;
   last_name: string | null;
+  name_qualifier: string | null;
   sex: string | null;
   age: number | null;
   marital_status: string | null;
@@ -67,6 +68,7 @@ export interface DetailInvolvedPerson {
   name_key: string;
   first_name: string | null;
   last_name: string | null;
+  name_qualifier: string | null;
   age: number | null;
   marital_status: string | null;
   relationship_type: string | null;
@@ -210,7 +212,7 @@ export function getConvictionDefendants(convictionId: number): DetailDefendant[]
     .prepare(
       `
       SELECT
-        d.id, d.name_key, d.first_name, d.last_name, d.sex,
+        d.id, d.name_key, d.first_name, d.last_name, d.name_qualifier, d.sex,
         d.age, d.marital_status, d.relationship_type, d.related_to_name,
         d.occupation,
         d.relationships_and_details, d.prior_convictions,
@@ -240,7 +242,7 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
     .prepare(
       `
       SELECT
-        p.id, p.name_key, p.first_name, p.last_name,
+        p.id, p.name_key, p.first_name, p.last_name, p.name_qualifier,
         p.age, p.marital_status, p.relationship_type, p.related_to_name,
         p.occupation,
         p.relationships_and_details, ip.role,

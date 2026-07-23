@@ -137,3 +137,14 @@ reference_number is the stable public identifier. Old numeric URLs now
   could in principle drift from the actual `/people/[nameKey]` static
   pages -- worth a test that a defendant's link on a conviction page
   actually resolves (not just that it's shaped like a URL).
+- `formatPersonName` (`lib/text.ts`) took an object param and gained an
+  opt-in `town` field: passing it extends the usual "SURNAME, Firstname
+  [qualifier] (occupation)" to "...(occupation: Town)" -- used only on
+  the conviction detail page's Offenders/Police/Other cards, not the
+  Browse table or People search results (those still call it without
+  `town`, unchanged). Falls back sensibly when only one of
+  occupation/town is present (no dangling colon). The separate
+  Occupation/Town `<dl>` rows on those cards were removed since they're
+  now folded into the name line -- worth a case with occupation only, one
+  with town only, and one with neither, to check the parenthetical
+  never renders as an empty "()" or a bare "(: Town)".

@@ -17,7 +17,7 @@ import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { ConvictionNav } from "@/components/ConvictionNav";
 import { personHref } from "@/lib/links";
 import { convictionHref } from "@/lib/referenceSlug";
-import { titleCase } from "@/lib/text";
+import { formatPersonName, titleCase } from "@/lib/text";
 import { Roles, ROLE_LABELS, classifyInvolvedPersonRole } from "@/lib/roles";
 import { CopyCitationButton } from "@/components/CopyCitationButton";
 import { formatDate } from "@/lib/date";
@@ -37,8 +37,8 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
   const conviction = getConvictionDetail(convictionId);
   if (!conviction) notFound();
 
-  const defendants = getConvictionDefendants(convictionId);
-  const involvedPersons = getConvictionInvolvedPersons(convictionId);
+  const defendants = [...getConvictionDefendants(convictionId)].sort(bySurname);
+  const involvedPersons = [...getConvictionInvolvedPersons(convictionId)].sort(bySurname);
   const police = involvedPersons.filter((p) => classifyInvolvedPersonRole(p.role) === Roles.police);
   const otherPersons = involvedPersons.filter((p) => classifyInvolvedPersonRole(p.role) === Roles.other);
   const relatedConvictions = getRelatedConvictions(convictionId);
@@ -120,63 +120,33 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
         <Section title="People" titleSize="display">
         {defendants.length > 0 && (
           <SubSection title={ROLE_LABELS[Roles.offender]}>
-          <div className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+          <ul className={personListStyle}>
             {defendants.map((d) => (
-              <Card key={d.id}>
-                <Link
-                  href={personHref(d.name_key)}
-                  className={css({ fontWeight: "600", color: "fgAccent" })}
-                >
-                  {d.first_name} {d.last_name}
+              <li key={d.id}>
+                <Link href={personHref(d.name_key)} className={css({ color: "fgAccent" })}>
+                  {formatPersonName({
+                    firstName: d.first_name,
+                    lastName: d.last_name,
+                    occupation: d.occupation,
+                    nameQualifier: d.name_qualifier,
+                    town: d.town_name,
+                  })}
                 </Link>
-                {d.aliases.length > 0 && (
-                  <p className={css({ fontSize: "body", color: "fgMuted" })}>
-                    aka {d.aliases.join(", ")}
-                  </p>
-                )}
-                <dl className={detailListStyle}>
-                  {d.sex && <Detail label="Sex" value={d.sex} />}
-                  {d.age !== null && <Detail label="Age" value={`${d.age}`} />}
-                  {d.marital_status && <Detail label="Marital status" value={d.marital_status} />}
-                  {d.relationship_type && d.related_to_name && (
-                    <Detail
-                      label="Relationship"
-                      value={`${d.relationship_type} of ${d.related_to_name}`}
-                    />
-                  )}
-                  {d.occupation && <Detail label="Occupation" value={d.occupation} />}
-                  {d.town_name && <Detail label="Town" value={titleCase(d.town_name)} />}
-                  {d.street_name && <Detail label="Street" value={titleCase(d.street_name)} />}
-                  {d.prior_convictions && (
-                    <Detail label="Prior convictions" value={d.prior_convictions} />
-                  )}
-                  {d.relationships_and_details && (
-                    <Detail label="Details" value={d.relationships_and_details} />
-                  )}
-                </dl>
-              </Card>
+              </li>
             ))}
-          </div>
+          </ul>
           </SubSection>
         )}
 
         {police.length > 0 && (
           <SubSection title={ROLE_LABELS[Roles.police]}>
-          <div className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-            {police.map((p) => (
-              <InvolvedPersonCard key={p.id} person={p} />
-            ))}
-          </div>
+          <PersonList people={police} showRole={false} />
           </SubSection>
         )}
 
         {otherPersons.length > 0 && (
           <SubSection title={ROLE_LABELS[Roles.other]}>
-          <div className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-            {otherPersons.map((p) => (
-              <InvolvedPersonCard key={p.id} person={p} />
-            ))}
-          </div>
+          <PersonList people={otherPersons} />
           </SubSection>
         )}
         </Section>
@@ -215,6 +185,15 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
   );
 }
 
+// Nulls (unnamed people, rare) sort last rather than first -- localeCompare
+// so accented surnames sort where a reader would expect them, not by raw
+// char code.
+function bySurname(a: { last_name: string | null }, b: { last_name: string | null }): number {
+  if (!a.last_name) return b.last_name ? 1 : 0;
+  if (!b.last_name) return -1;
+  return a.last_name.localeCompare(b.last_name);
+}
+
 function Section({
   title,
   titleSize = "heading",
@@ -241,48 +220,37 @@ function SubSection({ title, children }: { title: string; children: React.ReactN
   );
 }
 
-function InvolvedPersonCard({ person: p }: { person: DetailInvolvedPerson }) {
+function PersonList({
+  people,
+  showRole = true,
+}: {
+  people: DetailInvolvedPerson[];
+  showRole?: boolean;
+}) {
   return (
-    <Card>
-      <Link
-        href={personHref(p.name_key)}
-        className={css({ fontWeight: "600", color: "fgAccent" })}
-      >
-        {p.first_name} {p.last_name}
-      </Link>
-      {p.role && (
-        <span className={css({ ml: "2" })}>
-          <Pill>{p.role}</Pill>
-        </span>
-      )}
-      <dl className={detailListStyle}>
-        {p.age !== null && <Detail label="Age" value={`${p.age}`} />}
-        {p.marital_status && <Detail label="Marital status" value={p.marital_status} />}
-        {p.relationship_type && p.related_to_name && (
-          <Detail label="Relationship" value={`${p.relationship_type} of ${p.related_to_name}`} />
-        )}
-        {p.occupation && <Detail label="Occupation" value={p.occupation} />}
-        {p.town_name && <Detail label="Town" value={titleCase(p.town_name)} />}
-        {p.relationships_and_details && (
-          <Detail label="Details" value={p.relationships_and_details} />
-        )}
-      </dl>
-    </Card>
+    <ul className={personListStyle}>
+      {people.map((p) => (
+        <li key={p.id} className={css({ display: "flex", alignItems: "center", gap: "2" })}>
+          <Link href={personHref(p.name_key)} className={css({ color: "fgAccent" })}>
+            {formatPersonName({
+              firstName: p.first_name,
+              lastName: p.last_name,
+              occupation: p.occupation,
+              nameQualifier: p.name_qualifier,
+              town: p.town_name,
+            })}
+          </Link>
+          {showRole && p.role && <Pill>{p.role}</Pill>}
+        </li>
+      ))}
+    </ul>
   );
 }
 
-function Detail({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className={css({ fontSize: "small", color: "fgMuted" })}>{label}</dt>
-      <dd className={css({ fontSize: "body" })}>{value}</dd>
-    </div>
-  );
-}
-
-const detailListStyle = css({
-  display: "grid",
-  gridTemplateColumns: { base: "1fr", sm: "repeat(auto-fill, minmax(9rem, 1fr))" },
+const personListStyle = css({
+  display: "flex",
+  flexDirection: "column",
   gap: "2",
-  mt: "2",
+  listStyle: "none",
+  fontSize: "body",
 });

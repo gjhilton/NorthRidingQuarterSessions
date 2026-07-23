@@ -39,7 +39,14 @@ type CsvRow = Omit<BrowseRow, "defendant_names_json"> & { defendant_names: strin
 function parseDefendantNames(json: string | null): string[] {
   if (!json) return [];
   const defendants = JSON.parse(json) as BrowseDefendantName[];
-  return defendants.map((d) => formatPersonName(d.first_name, d.last_name, d.occupation, d.name_qualifier));
+  return defendants.map((d) =>
+    formatPersonName({
+      firstName: d.first_name,
+      lastName: d.last_name,
+      occupation: d.occupation,
+      nameQualifier: d.name_qualifier,
+    })
+  );
 }
 
 function formatDefendantNames(json: string | null): string {
