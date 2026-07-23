@@ -9,7 +9,7 @@ import type { PlaceNode } from "@/lib/queries/locationTree";
 // anything six or more levels deep -- each level down is visibly, distinctly
 // smaller than its parent, so the type scale itself carries the hierarchy
 // rather than just the indent/stem.
-const DEPTH_FONT_REMS = [2.488, 2.07, 1.72, 1.44, 1.2, 1];
+const DEPTH_FONT_REMS = [2.011, 1.749, 1.521, 1.323, 1.15, 1];
 
 function fontSizeForDepth(depth: number): string {
   return `${DEPTH_FONT_REMS[Math.min(depth, DEPTH_FONT_REMS.length - 1)]}rem`;

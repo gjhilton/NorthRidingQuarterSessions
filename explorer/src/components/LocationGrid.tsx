@@ -24,9 +24,10 @@ interface Cell {
 }
 type Row = Cell[];
 
-// Same fixed modular scale (ratio 1.2) as LocationTree/LocationTables --
-// the type size itself carries the hierarchy, not just column position.
-const DEPTH_FONT_REMS = [2.488, 2.07, 1.72, 1.44, 1.2, 1];
+// Fixed modular scale (ratio 1.15, same shape as LocationTree's but
+// gentler -- the type size itself carries the hierarchy, not just column
+// position), floor of 1rem for anything six or more levels deep.
+const DEPTH_FONT_REMS = [2.011, 1.749, 1.521, 1.323, 1.15, 1];
 
 function fontSizeForDepth(depth: number): string {
   return `${DEPTH_FONT_REMS[Math.min(depth, DEPTH_FONT_REMS.length - 1)]}rem`;
