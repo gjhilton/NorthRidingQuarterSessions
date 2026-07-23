@@ -74,10 +74,10 @@ export default function Nav() {
             return (
               <li key={link.href}>
                 <Link href={link.href} className={navLinkStyle} style={navLinkColor(active)}>
+                  {link.label}{" "}
                   <span aria-hidden style={navBulletColor(active)}>
-                    •{" "}
+                    •
                   </span>
-                  {link.label}
                 </Link>
               </li>
             );
@@ -90,10 +90,10 @@ export default function Nav() {
             return (
               <li key={link.href}>
                 <Link href={link.href} className={navLinkStyle} style={navLinkColor(active)}>
+                  {link.label}{" "}
                   <span aria-hidden style={navBulletColor(active)}>
-                    •{" "}
+                    •
                   </span>
-                  {link.label}
                 </Link>
               </li>
             );
