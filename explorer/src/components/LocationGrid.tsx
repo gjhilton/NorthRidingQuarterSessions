@@ -1,5 +1,5 @@
 import { css } from "styled-system/css";
-import { Pill, Td } from "@/components/ui";
+import { Td } from "@/components/ui";
 import type { PlaceNode } from "@/lib/queries/locationTree";
 
 // A different alternative again: one flat grid, not nested tables. Every
@@ -10,10 +10,19 @@ import type { PlaceNode } from "@/lib/queries/locationTree";
 // expanded -- no collapse, unlike LocationTree/LocationTables.
 interface Cell {
   node: PlaceNode;
+  depth: number;
   rowSpan: number;
   colSpan: number;
 }
 type Row = Cell[];
+
+// Same fixed modular scale (ratio 1.2) as LocationTree/LocationTables --
+// the type size itself carries the hierarchy, not just column position.
+const DEPTH_FONT_REMS = [2.488, 2.07, 1.72, 1.44, 1.2, 1];
+
+function fontSizeForDepth(depth: number): string {
+  return `${DEPTH_FONT_REMS[Math.min(depth, DEPTH_FONT_REMS.length - 1)]}rem`;
+}
 
 function maxDepth(node: PlaceNode, depth = 0): number {
   if (node.children.length === 0) return depth;
@@ -22,11 +31,11 @@ function maxDepth(node: PlaceNode, depth = 0): number {
 
 function buildRows(node: PlaceNode, depth: number, treeMaxDepth: number): Row[] {
   if (node.children.length === 0) {
-    return [[{ node, rowSpan: 1, colSpan: treeMaxDepth - depth + 1 }]];
+    return [[{ node, depth, rowSpan: 1, colSpan: treeMaxDepth - depth + 1 }]];
   }
   const childRows = node.children.flatMap((child) => buildRows(child, depth + 1, treeMaxDepth));
   const [firstRow, ...restRows] = childRows;
-  return [[{ node, rowSpan: childRows.length, colSpan: 1 }, ...firstRow], ...restRows];
+  return [[{ node, depth, rowSpan: childRows.length, colSpan: 1 }, ...firstRow], ...restRows];
 }
 
 export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
@@ -68,9 +77,11 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                   colSpan={cell.colSpan}
                   className={css({ borderRightWidth: "lineweight_normal", borderRightStyle: "solid", borderRightColor: "fg" })}
                 >
-                  <span className={css({ display: "flex", alignItems: "center", gap: "2", flexWrap: "wrap" })}>
+                  <span
+                    style={{ fontSize: fontSizeForDepth(cell.depth) }}
+                    className={css({ fontWeight: cell.depth === 0 ? "600" : "400" })}
+                  >
                     {cell.node.name}
-                    <Pill>{cell.node.type}</Pill>
                   </span>
                 </Td>
               ))}
