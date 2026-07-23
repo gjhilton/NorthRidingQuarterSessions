@@ -15,7 +15,7 @@ export default function OccupationsPage() {
       </PageTitle>
 
       <Card>
-        <ChartTitle>Defendant occupations</ChartTitle>
+        <ChartTitle>Offender occupations</ChartTitle>
         <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
           Whole archive, both sexes combined — see{" "}
           <Link href="/gender" className={css({ color: "fgAccent" })}>
@@ -33,7 +33,7 @@ export default function OccupationsPage() {
       <Card>
         <ChartTitle>What each occupation was prosecuted for</ChartTitle>
         <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
-          Top occupations against top offence categories, whole archive, defendant-mention
+          Top occupations against top offence categories, whole archive, offender-mention
           counts. Occupation text is taken as-extracted (not a controlled vocabulary), so close
           variants of the same trade may appear as separate rows.
         </p>

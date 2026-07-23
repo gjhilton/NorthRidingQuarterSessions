@@ -2,6 +2,7 @@ import Link from "next/link";
 import { css } from "styled-system/css";
 import { listStreets } from "@/lib/queries/streets";
 import { Card, EmptyState, PageContainer, PageTitle, Pill } from "@/components/ui";
+import { streetHref } from "@/lib/links";
 import { titleCase } from "@/lib/text";
 
 export default function StreetsPage() {
@@ -18,7 +19,7 @@ export default function StreetsPage() {
       ) : (
         <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
           {streets.map((s) => (
-            <Link key={s.id} href={`/streets/${s.id}`}>
+            <Link key={s.id} href={streetHref(s.id)}>
               <Card
                 className={css({
                   display: "flex",

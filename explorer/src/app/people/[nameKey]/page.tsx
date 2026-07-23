@@ -5,6 +5,7 @@ import { getPersonNetwork, listNameKeys, type CaseMention } from "@/lib/queries/
 import { NetworkView } from "@/components/network/NetworkView";
 import { Card, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
 import { fromSlug, toSlug } from "@/lib/slug";
+import { convictionHref } from "@/lib/referenceSlug";
 import { titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 
@@ -64,7 +65,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
                 <tr key={`${c.summary_conviction_id}-${c.role}`}>
                   <Td>
                     <Link
-                      href={`/convictions/${c.summary_conviction_id}`}
+                      href={convictionHref(c.reference_number)}
                       className={css({ color: "fgAccent", fontWeight: "600" })}
                     >
                       {c.reference_number}

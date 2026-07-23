@@ -68,8 +68,8 @@ export default function PatternsPage() {
       <Card>
         <ChartTitle>Group vs. solo offending</ChartTitle>
         <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
-          Average defendants per conviction, by category (categories with fewer than 20
-          convictions excluded so a couple of multi-defendant records can&rsquo;t swing the
+          Average offenders per conviction, by category (categories with fewer than 20
+          convictions excluded so a couple of multi-offender records can&rsquo;t swing the
           ranking). Poaching and property offences run highest — consistent with poaching&rsquo;s
           known history as gang/party activity — while vagrancy and assault are almost always
           solo.
@@ -123,12 +123,12 @@ export default function PatternsPage() {
           </p>
           <p className={css({ fontSize: "body" })}>
             <strong>
-              High-repeat defendant names are probably several different people, not one
+              High-repeat offender names are probably several different people, not one
               prolific offender.
             </strong>{" "}
             Names recurring 3+ times often span many unrelated offence
             categories in a way one person&rsquo;s criminal career rarely would. Given this
-            site&rsquo;s defendant records are never deduplicated across cases (see About), a
+            site&rsquo;s offender records are never deduplicated across cases (see About), a
             common name recurring dozens of times is far more likely several real people sharing
             a name than a single busy individual — a caution about the People pages, not a
             finding about crime.

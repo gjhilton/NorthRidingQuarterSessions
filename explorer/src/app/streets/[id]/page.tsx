@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
 import { getStreetCases, getStreetDetail, listStreetIds } from "@/lib/queries/streets";
 import { PageContainer, PageTitle, Table, Th, Td } from "@/components/ui";
+import { convictionHref } from "@/lib/referenceSlug";
 import { titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 
@@ -40,7 +41,7 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
           <tr>
             <Th>Reference</Th>
             <Th>Date</Th>
-            <Th>Defendant(s)</Th>
+            <Th>Offender(s)</Th>
             <Th>Offence</Th>
           </tr>
         </thead>
@@ -49,7 +50,7 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
             <tr key={c.id}>
               <Td>
                 <Link
-                  href={`/convictions/${c.id}`}
+                  href={convictionHref(c.reference_number)}
                   className={css({ color: "fgAccent", fontWeight: "600" })}
                 >
                   {c.reference_number}

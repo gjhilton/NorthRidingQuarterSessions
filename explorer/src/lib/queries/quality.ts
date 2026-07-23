@@ -204,7 +204,7 @@ export function courtTownScopeComparison(): CourtTownScopeComparison {
           WHEN EXISTS (
             SELECT 1 FROM summary_conviction_defendant scd JOIN defendant d ON d.id = scd.defendant_id
             WHERE scd.summary_conviction_id = sc.id AND d.town_id = (SELECT id FROM town WHERE name = 'whitby')
-          ) THEN 'The defendant lives in Whitby'
+          ) THEN 'The offender lives in Whitby'
           WHEN EXISTS (
             SELECT 1 FROM involved_persons ip JOIN person p ON p.id = ip.person_id
             WHERE ip.summary_conviction_id = sc.id AND p.town_id = (SELECT id FROM town WHERE name = 'whitby')

@@ -26,7 +26,7 @@ export function getConvictionDateRange(): { min: string | null; max: string | nu
 }
 
 // Every distinct number of defendants a conviction actually has (1..6 in
-// practice -- the overwhelming majority are 1) -- drives the Defendants
+// practice -- the overwhelming majority are 1) -- drives the Offenders
 // count filter's options.
 export function listDefendantCounts(): number[] {
   return getDb()

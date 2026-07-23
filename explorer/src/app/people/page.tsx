@@ -4,7 +4,7 @@ import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { PeopleSearch } from "@/components/people/PeopleSearch";
 import { PeopleBrowseList } from "@/components/people/PeopleBrowseList";
 import { listAllPeople } from "@/lib/queries/peopleList";
-import { toSlug } from "@/lib/slug";
+import { personHref } from "@/lib/links";
 
 const LEADERBOARD_SIZE = 10;
 
@@ -21,7 +21,7 @@ export default function PeoplePage() {
 
   return (
     <PageContainer>
-      <PageTitle subtitle="Search for a defendant or involved person, then trace their connections">
+      <PageTitle subtitle="Search for an offender or involved person, then trace their connections">
         People
       </PageTitle>
       <PeopleSearch />
@@ -38,7 +38,7 @@ export default function PeoplePage() {
           })}
         >
           {leaderboard.map((p) => (
-            <Link key={p.name_key} href={`/people/${toSlug(p.name_key)}`}>
+            <Link key={p.name_key} href={personHref(p.name_key)}>
               <Card
                 className={css({
                   display: "flex",

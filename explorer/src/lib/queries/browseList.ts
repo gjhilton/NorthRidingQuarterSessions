@@ -2,6 +2,7 @@
 // bundled into the browser for BrowseExplorer's interactive search/filter
 // without dragging a native module into the client bundle.
 import type { DbLike } from "@/lib/dbTypes";
+import { referenceToSlug } from "@/lib/referenceSlug";
 
 export const PAGE_SIZE = 25;
 
@@ -275,13 +276,20 @@ export function isFilteredSearch(filters: BrowseFilters): boolean {
 // for the detail page's "Record N of M" position and Prev/Next within a
 // filtered set, where the whole ordered set (not just one page of it) is
 // needed to find where a given id falls.
-export function listConvictionOrder(db: DbLike, filters: BrowseFilters): number[] {
+export interface ConvictionOrderRow {
+  id: number;
+  slug: string;
+}
+
+export function listConvictionOrder(db: DbLike, filters: BrowseFilters): ConvictionOrderRow[] {
   const { sql: whereSql, params } = buildWhere(filters);
   const orderBySql = buildOrderBy(filters);
   const rows = db
-    .prepare(`SELECT sc.id FROM summary_conviction sc ${whereSql} ORDER BY ${orderBySql}`)
-    .all(params) as { id: number }[];
-  return rows.map((r) => r.id);
+    .prepare(
+      `SELECT sc.id, sc.reference_number FROM summary_conviction sc ${whereSql} ORDER BY ${orderBySql}`
+    )
+    .all(params) as { id: number; reference_number: string }[];
+  return rows.map((r) => ({ id: r.id, slug: referenceToSlug(r.reference_number) }));
 }
 
 export function listConvictions(

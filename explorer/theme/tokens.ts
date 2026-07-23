@@ -23,6 +23,7 @@ export const tokens = defineTokens({
   fonts: {
     serif: { value: "var(--font-serif), Georgia, serif" },
     sans: { value: "var(--font-sans), system-ui, sans-serif" },
+    mono: { value: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" },
   },
   borderWidths: {
     lineweight_normal: { value: "1px" },

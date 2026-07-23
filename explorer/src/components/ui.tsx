@@ -38,7 +38,7 @@ export function PageTitle({
         {children}
       </h1>
       {subtitle && (
-        <p className={css({ color: "fgMuted", mt: "1" })}>{subtitle}</p>
+        <p className={css({ color: "fg", fontSize: "heading", mt: "1" })}>{subtitle}</p>
       )}
     </div>
   );

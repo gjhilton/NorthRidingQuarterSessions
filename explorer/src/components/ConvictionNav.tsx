@@ -10,10 +10,11 @@ import {
   isFilteredSearch,
   listConvictionOrder,
 } from "@/lib/queries/browseList";
+import { convictionHrefFromSlug } from "@/lib/referenceSlug";
 
 interface SearchNavState {
-  prevId: number | null;
-  nextId: number | null;
+  prevSlug: string | null;
+  nextSlug: string | null;
   position: number;
   total: number;
   label: string;
@@ -29,15 +30,15 @@ interface SearchNavState {
 // there's no loading flash for the common case of arriving here cold
 // (a shared link, a search engine, typing the URL directly).
 export function ConvictionNav({
-  convictionId,
-  serverPrevId,
-  serverNextId,
+  convictionSlug,
+  serverPrevSlug,
+  serverNextSlug,
   serverPosition,
   serverTotal,
 }: {
-  convictionId: number;
-  serverPrevId: number | null;
-  serverNextId: number | null;
+  convictionSlug: string;
+  serverPrevSlug: string | null;
+  serverNextSlug: string | null;
   serverPosition: number;
   serverTotal: number;
 }) {
@@ -51,17 +52,17 @@ export function ConvictionNav({
     if (!isFilteredSearch(filters)) return;
     const qs = searchParams.toString();
     run((db) => {
-      const ids = listConvictionOrder(db, filters);
-      const index = ids.indexOf(convictionId);
+      const rows = listConvictionOrder(db, filters);
+      const index = rows.findIndex((r) => r.slug === convictionSlug);
       // The current record no longer matches these filters (e.g. an edited
       // URL, or filters that have since changed) -- fall back to the
       // whole-dataset default rather than showing a broken position.
       if (index === -1) return null;
       return {
-        prevId: index > 0 ? ids[index - 1] : null,
-        nextId: index < ids.length - 1 ? ids[index + 1] : null,
+        prevSlug: index > 0 ? rows[index - 1].slug : null,
+        nextSlug: index < rows.length - 1 ? rows[index + 1].slug : null,
         position: index + 1,
-        total: ids.length,
+        total: rows.length,
         label: filters.q ? `matching search for "${filters.q}"` : "matching filtered results",
         qs,
       };
@@ -74,8 +75,8 @@ export function ConvictionNav({
 
   const backHref = searchNav ? `/convictions?${searchNav.qs}` : "/convictions";
   const backLabel = searchNav ? "← Back to search results" : "← Back to convictions";
-  const prevId = searchNav ? searchNav.prevId : serverPrevId;
-  const nextId = searchNav ? searchNav.nextId : serverNextId;
+  const prevSlug = searchNav ? searchNav.prevSlug : serverPrevSlug;
+  const nextSlug = searchNav ? searchNav.nextSlug : serverNextSlug;
   const linkQs = searchNav ? `?${searchNav.qs}` : "";
   const position = searchNav ? searchNav.position : serverPosition;
   const total = searchNav ? searchNav.total : serverTotal;
@@ -90,15 +91,15 @@ export function ConvictionNav({
         {searchNav ? ` ${searchNav.label}` : ""}
       </p>
       <div className={css({ display: "flex", gap: "3", fontSize: "body" })}>
-        {prevId !== null ? (
-          <Link href={`/convictions/${prevId}${linkQs}`} className={css({ color: "fgAccent" })}>
+        {prevSlug !== null ? (
+          <Link href={`${convictionHrefFromSlug(prevSlug)}${linkQs}`} className={css({ color: "fgAccent" })}>
             ← Previous
           </Link>
         ) : (
           <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
         )}
-        {nextId !== null ? (
-          <Link href={`/convictions/${nextId}${linkQs}`} className={css({ color: "fgAccent" })}>
+        {nextSlug !== null ? (
+          <Link href={`${convictionHrefFromSlug(nextSlug)}${linkQs}`} className={css({ color: "fgAccent" })}>
             Next →
           </Link>
         ) : (

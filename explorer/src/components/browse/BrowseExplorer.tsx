@@ -17,6 +17,7 @@ import {
   type BrowseSortColumn,
 } from "@/lib/queries/browseList";
 import type { Option, OffenceTypeOption, StreetOption } from "@/lib/queries/filters";
+import { convictionHref } from "@/lib/referenceSlug";
 import { titleCase, formatPersonName } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 import { Card, EmptyState, IconButton, Table, Th, Td, formInputStyle } from "@/components/ui";
@@ -477,7 +478,7 @@ export function BrowseExplorer({
                 })}
               >
                 <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
-                  Defendants
+                  Offenders
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
                   <FormField label="Gender" className={css({ flex: "1" })}>
@@ -561,7 +562,7 @@ export function BrowseExplorer({
             <tr>
               <Th rowSpan={2}>Record ID</Th>
               <Th rowSpan={2}>{sortButton("conviction_date", "Date")}</Th>
-              <Th rowSpan={2}>Defendant(s)</Th>
+              <Th rowSpan={2}>Offender(s)</Th>
               <Th colSpan={3}>Offence</Th>
             </tr>
             <tr>
@@ -575,7 +576,7 @@ export function BrowseExplorer({
               <tr
                 key={r.id}
                 onClick={() =>
-                  router.push(`/convictions/${r.id}${rowLinkQs ? `?${rowLinkQs}` : ""}`)
+                  router.push(`${convictionHref(r.reference_number)}${rowLinkQs ? `?${rowLinkQs}` : ""}`)
                 }
                 className={css({
                   cursor: "pointer",

@@ -82,10 +82,10 @@ export function fieldCoverage(): FieldCoverage[] {
       "Extraction confidence recorded",
       convictionTotal
     ),
-    coverage("defendant", "occupation", "Defendant occupation", defendantTotal),
-    coverage("defendant", "age", "Defendant age", defendantTotal),
-    coverage("defendant", "marital_status", "Defendant marital status", defendantTotal),
-    coverage("defendant", "relationship_type", "Defendant relationship (e.g. ‘wife of’)", defendantTotal),
+    coverage("defendant", "occupation", "Offender occupation", defendantTotal),
+    coverage("defendant", "age", "Offender age", defendantTotal),
+    coverage("defendant", "marital_status", "Offender marital status", defendantTotal),
+    coverage("defendant", "relationship_type", "Offender relationship (e.g. ‘wife of’)", defendantTotal),
   ];
 }
 

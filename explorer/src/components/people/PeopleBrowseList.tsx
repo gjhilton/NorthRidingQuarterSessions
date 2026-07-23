@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { css } from "styled-system/css";
 import type { PersonListRow } from "@/lib/queries/peopleList";
-import { toSlug } from "@/lib/slug";
+import { personHref } from "@/lib/links";
 import { titleCase } from "@/lib/text";
 import { Card, Pill, formInputStyle } from "@/components/ui";
 
@@ -45,7 +45,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
             className={css(formInputStyle, { px: "2", py: "1.5" })}
           >
             <option value="all">All roles</option>
-            <option value="defendant">Defendants</option>
+            <option value="defendant">Offenders</option>
             <option value="person">Involved persons</option>
           </select>
         </FilterField>
@@ -116,7 +116,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
             </h3>
             <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
               {rows.map((p) => (
-                <Link key={p.name_key} href={`/people/${toSlug(p.name_key)}`}>
+                <Link key={p.name_key} href={personHref(p.name_key)}>
                   <Card
                     className={css({
                       display: "flex",

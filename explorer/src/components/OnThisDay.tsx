@@ -5,6 +5,7 @@ import Link from "next/link";
 import { css } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
 import { onThisDayNearest, type OnThisDayResult } from "@/lib/queries/onThisDay";
+import { convictionHref } from "@/lib/referenceSlug";
 import { Card } from "@/components/ui";
 
 function formatMonthDay(date: Date): string {
@@ -56,7 +57,7 @@ export function OnThisDay() {
       </h2>
       <p className={css({ fontSize: "body" })}>{row.raw_record}</p>
       <Link
-        href={`/convictions/${row.id}`}
+        href={convictionHref(row.reference_number)}
         className={css({
           display: "inline-block",
           color: "fgAccent",

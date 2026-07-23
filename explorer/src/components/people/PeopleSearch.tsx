@@ -6,7 +6,7 @@ import { css } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
 import { searchPeople, type PersonSearchResult } from "@/lib/queries/peopleSearch";
 import { formInputStyle } from "@/components/ui";
-import { toSlug } from "@/lib/slug";
+import { personHref } from "@/lib/links";
 import { formatPersonName } from "@/lib/text";
 
 const SUGGESTION_LIMIT = 8;
@@ -50,7 +50,7 @@ export function PeopleSearch({ autoFocus = true }: { autoFocus?: boolean }) {
 
   function goTo(nameKey: string) {
     setOpen(false);
-    router.push(`/people/${toSlug(nameKey)}`);
+    router.push(personHref(nameKey));
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {

@@ -3,7 +3,8 @@
 // component ever pulls it in. See browseList.ts for the client-safe half of
 // what used to be a single browse.ts.
 import "server-only";
-import { getDb, selectColumn } from "@/lib/db";
+import { getDb } from "@/lib/db";
+import { referenceToSlug } from "@/lib/referenceSlug";
 
 export interface ConvictionDetail {
   id: number;
@@ -45,6 +46,7 @@ export interface ConvictionDetail {
 
 export interface DetailDefendant {
   id: number;
+  name_key: string;
   first_name: string | null;
   last_name: string | null;
   sex: string | null;
@@ -62,6 +64,7 @@ export interface DetailDefendant {
 
 export interface DetailInvolvedPerson {
   id: number;
+  name_key: string;
   first_name: string | null;
   last_name: string | null;
   age: number | null;
@@ -86,26 +89,58 @@ export interface RelatedConviction {
   note: string | null;
 }
 
-export function listConvictionIds(): number[] {
-  return selectColumn<number>(`SELECT id FROM summary_conviction`, "id");
+// The URL key for a conviction detail page is a slug derived from its
+// reference_number, not the internal auto-increment id -- ids are extraction
+// order, not a stable public identifier, and could shift on a future
+// re-import. Verified unique across the whole table before this was
+// introduced (see fix_reference_number_mismatches.py for the two rows whose
+// reference_number had to be corrected first). Built once per build process
+// and cached, since it's looked up once per static page (6,231 of them).
+let slugToIdCache: Map<string, number> | null = null;
+
+function slugToIdMap(): Map<string, number> {
+  if (!slugToIdCache) {
+    const rows = getDb().prepare(`SELECT id, reference_number FROM summary_conviction`).all() as {
+      id: number;
+      reference_number: string;
+    }[];
+    slugToIdCache = new Map(rows.map((r) => [referenceToSlug(r.reference_number), r.id]));
+  }
+  return slugToIdCache;
 }
 
-export interface AdjacentConvictionIds {
-  prevId: number | null;
-  nextId: number | null;
+export function listConvictionSlugs(): string[] {
+  return [...slugToIdMap().keys()];
+}
+
+export function getConvictionIdBySlug(slug: string): number | undefined {
+  return slugToIdMap().get(slug);
+}
+
+export interface AdjacentConvictionSlugs {
+  prevSlug: string | null;
+  nextSlug: string | null;
 }
 
 // Stepping by id, not by any date/reference ordering -- ids reflect
 // extraction order, not a claim about chronological or archival sequence,
-// but they're the one ordering every record always has.
-export function getAdjacentConvictionIds(id: number): AdjacentConvictionIds {
-  const { prevId } = getDb()
-    .prepare(`SELECT MAX(id) AS prevId FROM summary_conviction WHERE id < ?`)
-    .get(id) as { prevId: number | null };
-  const { nextId } = getDb()
-    .prepare(`SELECT MIN(id) AS nextId FROM summary_conviction WHERE id > ?`)
-    .get(id) as { nextId: number | null };
-  return { prevId, nextId };
+// but they're the one ordering every record always has. Returns slugs
+// (not ids) since that's what a Prev/Next link actually needs.
+export function getAdjacentConvictionSlugs(id: number): AdjacentConvictionSlugs {
+  const prevRow = getDb()
+    .prepare(
+      `SELECT reference_number FROM summary_conviction WHERE id = (SELECT MAX(id) FROM summary_conviction WHERE id < ?)`
+    )
+    .get(id) as { reference_number: string } | undefined;
+  const nextRow = getDb()
+    .prepare(
+      `SELECT reference_number FROM summary_conviction WHERE id = (SELECT MIN(id) FROM summary_conviction WHERE id > ?)`
+    )
+    .get(id) as { reference_number: string } | undefined;
+  return {
+    prevSlug: prevRow ? referenceToSlug(prevRow.reference_number) : null,
+    nextSlug: nextRow ? referenceToSlug(nextRow.reference_number) : null,
+  };
 }
 
 export interface ConvictionPosition {
@@ -115,8 +150,8 @@ export interface ConvictionPosition {
 
 // The whole-dataset "Record N of M" shown when a detail page is opened
 // without arriving from a filtered/search listing -- prerendered at build
-// time, same id ordering as getAdjacentConvictionIds. Superseded client-side
-// by ConvictionSearchNav whenever the URL carries filter/search state.
+// time, same id ordering as getAdjacentConvictionSlugs. Superseded
+// client-side by ConvictionNav whenever the URL carries filter/search state.
 export function getConvictionPosition(id: number): ConvictionPosition {
   const { position } = getDb()
     .prepare(`SELECT COUNT(*) AS position FROM summary_conviction WHERE id <= ?`)
@@ -175,7 +210,7 @@ export function getConvictionDefendants(convictionId: number): DetailDefendant[]
     .prepare(
       `
       SELECT
-        d.id, d.first_name, d.last_name, d.sex,
+        d.id, d.name_key, d.first_name, d.last_name, d.sex,
         d.age, d.marital_status, d.relationship_type, d.related_to_name,
         d.occupation,
         d.relationships_and_details, d.prior_convictions,
@@ -205,7 +240,7 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
     .prepare(
       `
       SELECT
-        p.id, p.first_name, p.last_name,
+        p.id, p.name_key, p.first_name, p.last_name,
         p.age, p.marital_status, p.relationship_type, p.related_to_name,
         p.occupation,
         p.relationships_and_details, ip.role,

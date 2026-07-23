@@ -35,7 +35,7 @@ export default function GenderPage() {
       </PageTitle>
 
       <Card>
-        <ChartTitle>Defendants: % female by year</ChartTitle>
+        <ChartTitle>Offenders: % female by year</ChartTitle>
         <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
           Who the law&rsquo;s attention fell on, not just how much — see{" "}
           <Link href="/trends" className={css({ color: "fgAccent" })}>
@@ -44,7 +44,7 @@ export default function GenderPage() {
           for the raw volume behind this ratio.
         </p>
         {femaleTrend.length === 0 ? (
-          <EmptyState>No defendant sex data yet.</EmptyState>
+          <EmptyState>No offender sex data yet.</EmptyState>
         ) : (
           <Sparkline data={femaleTrend.map((p) => ({ x: p.year, y: p.count }))} height={80} />
         )}
@@ -201,7 +201,7 @@ export default function GenderPage() {
         >
           <div>
             <h3 className={css({ fontSize: "small", color: "fgMuted", mb: "2" })}>
-              Female defendants
+              Female offenders
             </h3>
             {femaleOccupations.length === 0 ? (
               <EmptyState>No occupation data yet.</EmptyState>
@@ -213,7 +213,7 @@ export default function GenderPage() {
           </div>
           <div>
             <h3 className={css({ fontSize: "small", color: "fgMuted", mb: "2" })}>
-              Male defendants
+              Male offenders
             </h3>
             {maleOccupations.length === 0 ? (
               <EmptyState>No occupation data yet.</EmptyState>

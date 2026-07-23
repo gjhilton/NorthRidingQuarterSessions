@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
+import { convictionHref } from "@/lib/referenceSlug";
 import {
   especialInterestCount,
   fieldCoverage,
@@ -17,7 +18,7 @@ import {
   unreviewedOffenceTypes,
 } from "@/lib/queries/quality";
 import { Card, EmptyState, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
-import { toSlug } from "@/lib/slug";
+import { personHref } from "@/lib/links";
 
 export default function AboutPage() {
   const totals = getTotals();
@@ -60,14 +61,14 @@ export default function AboutPage() {
         <p>
           That description is what gets processed here: scraped into a spreadsheet, then sent to
           a large language model (Claude or GPT-4, depending on the run) with instructions to
-          pull out structured fields — defendant names, offence type, dates, location, sentencing
+          pull out structured fields — offender names, offence type, dates, location, sentencing
           — into the database this site reads from. Nothing here is transcribed by a human from
           the original document, and this site is two steps removed from it: archivist&rsquo;s
           summary, then LLM extraction from that summary.
         </p>
         <p>
           <strong>For anything you intend to rely on</strong> — citing in research, confirming a
-          family history detail — follow the &ldquo;View original archive record&rdquo; link on
+          family history detail — follow the &ldquo;View original record at NYCRO&rdquo; link on
           any record back to Archives Unlocked and check it against the original catalogue entry.
         </p>
       </Section>
@@ -75,7 +76,7 @@ export default function AboutPage() {
       <Section title="Two different extraction paths">
         <p>
           Six fields — petty sessional division, monetary value, game species, and age/marital
-          status/relationship for defendants and involved persons — were added to the schema
+          status/relationship for offenders and involved persons — were added to the schema
           partway through this project, after several hundred records had already been extracted
           without them. Rather than leave those earlier records with permanent gaps, or re-spend
           API budget re-running them through the pipeline for six fields, records 1&ndash;193 had
@@ -150,8 +151,8 @@ export default function AboutPage() {
         <p>
           The scrape found records via a free-text keyword search for
           &ldquo;whitby&rdquo; against the archive catalogue, which
-          inevitably caught some records by pure coincidence — a
-          defendant surnamed Whitby who never lived near the town, a pub
+          inevitably caught some records by pure coincidence — an
+          offender surnamed Whitby who never lived near the town, a pub
           called the &ldquo;Whitby Arms Inn&rdquo; in Middlesbrough, a
           railway line merely <em>named</em>{" "}
           after Whitby. 26 such records were identified, hand-reviewed one
@@ -162,7 +163,7 @@ export default function AboutPage() {
         <p>
           A record is kept in scope if the offence occurred in Whitby, the
           case was <em>heard</em>{" "}
-          at Whitby, a defendant lives in Whitby, or an involved person
+          at Whitby, an offender lives in Whitby, or an involved person
           (victim, witness) lives in Whitby. It&rsquo;s worth explaining
           why court location alone isn&rsquo;t used as the sole rule,
           since it&rsquo;s tempting to assume &ldquo;heard at Whitby&rdquo;
@@ -199,7 +200,7 @@ export default function AboutPage() {
           the offence itself happened in Whitby but the court/hearing
           location wasn&rsquo;t recorded — the single most directly
           relevant category there is. A residency-only connection
-          (defendant or witness lives in Whitby, offence and court both
+          (offender or witness lives in Whitby, offence and court both
           elsewhere) is the weaker signal, not the stronger one — court
           location alone gets this backwards.
         </p>
@@ -210,7 +211,7 @@ export default function AboutPage() {
           The stats above are about which <em>records</em> exist — this is about which{" "}
           <em>fields</em>{" "}
           are actually filled in within them. Some fields are rarely stated in the
-          archivist&rsquo;s original summary at all (defendant age, for instance, is almost
+          archivist&rsquo;s original summary at all (offender age, for instance, is almost
           never given as an exact figure), which is a property of the source material, not a
           pipeline gap — but it&rsquo;s easy to assume a field is reliably populated just because
           it&rsquo;s in the schema, so here&rsquo;s the actual fill rate for the less
@@ -238,8 +239,8 @@ export default function AboutPage() {
         </Table>
         <p className={css({ fontSize: "small", color: "fgMuted" })}>
           Convictions-scoped fields are out of {totals.convictions.toLocaleString()};
-          defendant-scoped fields are out of {totals.defendants.toLocaleString()}{" "}
-          defendant mentions (not unique people — see &ldquo;Defendants and involved persons are
+          offender-scoped fields are out of {totals.defendants.toLocaleString()}{" "}
+          offender mentions (not unique people — see &ldquo;Offenders and involved persons are
           not deduplicated&rdquo; below).{" "}
           {relatedConvictionPairs.toLocaleString()}{" "}
           pairs of convictions are additionally linked as related incidents (shared arrest,
@@ -314,7 +315,7 @@ export default function AboutPage() {
                   <tr key={r.id}>
                     <Td>
                       <Link
-                        href={`/convictions/${r.id}`}
+                        href={convictionHref(r.reference_number)}
                         className={css({ color: "fgAccent", fontWeight: "600" })}
                       >
                         {r.reference_number}
@@ -332,9 +333,9 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section title="Defendants and involved persons are not deduplicated" id="deduplication">
+      <Section title="Offenders and involved persons are not deduplicated" id="deduplication">
         <p>
-          Every extraction creates fresh defendant/involved-person rows — there is no
+          Every extraction creates fresh offender/involved-person rows — there is no
           identity-resolution step linking &ldquo;John Smith&rdquo; in one case to &ldquo;John
           Smith&rdquo; in another as the same real person, or catching that &ldquo;Jno. Smith&rdquo;
           and &ldquo;John Smith&rdquo; might be. The{" "}
@@ -348,10 +349,10 @@ export default function AboutPage() {
         </p>
         <div>
           <h3 className={css({ fontWeight: "600", mb: "2" })}>
-            Repeated defendant names ({repeatedDefendants.length})
+            Repeated offender names ({repeatedDefendants.length})
           </h3>
           <NameList
-            rows={repeatedDefendants.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
+            rows={repeatedDefendants.map((r) => ({ ...r, href: personHref(r.name_key) }))}
           />
         </div>
         <div>
@@ -362,7 +363,7 @@ export default function AboutPage() {
             Witnesses, victims, prosecutors etc. whose name recurs across cases.
           </p>
           <NameList
-            rows={repeatedPersons.map((r) => ({ ...r, href: `/people/${toSlug(r.name_key)}` }))}
+            rows={repeatedPersons.map((r) => ({ ...r, href: personHref(r.name_key) }))}
           />
         </div>
         <div>
@@ -391,11 +392,11 @@ export default function AboutPage() {
                     fontSize: "body",
                   })}
                 >
-                  <Link href={`/people/${toSlug(v.a.name_key)}`} className={css({ color: "fgAccent" })}>
+                  <Link href={personHref(v.a.name_key)} className={css({ color: "fgAccent" })}>
                     {v.a.display_name} ({v.a.count}×)
                   </Link>
                   <span className={css({ color: "fgMuted" })}>↔</span>
-                  <Link href={`/people/${toSlug(v.b.name_key)}`} className={css({ color: "fgAccent" })}>
+                  <Link href={personHref(v.b.name_key)} className={css({ color: "fgAccent" })}>
                     {v.b.display_name} ({v.b.count}×)
                   </Link>
                   <Pill>edit distance {v.distance}</Pill>
@@ -487,8 +488,8 @@ export default function AboutPage() {
             Convictions
           </Link>{" "}
           matches against the charge description, reference number, offence type, sentencing text,
-          and defendant/involved-person names. It does not currently match against occupation —
-          searching &ldquo;butcher&rdquo; won&rsquo;t find a defendant with that occupation unless
+          and offender/involved-person names. It does not currently match against occupation —
+          searching &ldquo;butcher&rdquo; won&rsquo;t find an offender with that occupation unless
           the word itself appears elsewhere in the record.
         </p>
       </Section>
@@ -497,7 +498,7 @@ export default function AboutPage() {
         <p>
           Every field discussed above is in the download, in case you want to analyse it
           yourself rather than through this site&rsquo;s views: reference number, dates, offence
-          type, charge description, sentencing, location, defendant names, extraction confidence,
+          type, charge description, sentencing, location, offender names, extraction confidence,
           and the archive URL, one row per conviction.
         </p>
         <a

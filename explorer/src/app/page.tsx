@@ -18,7 +18,7 @@ const findBoxes = [
   {
     href: "/people",
     title: "Find people",
-    description: "Look up a defendant or involved person and trace their connections.",
+    description: "Look up an offender or involved person and trace their connections.",
     linkText: "Browse people",
     search: <PeopleSearch autoFocus={false} />,
   },
@@ -131,7 +131,7 @@ const sections = [
   {
     href: "/people",
     title: "People",
-    description: "Look up a defendant or involved person and trace their connections.",
+    description: "Look up an offender or involved person and trace their connections.",
   },
   {
     href: "/streets",
@@ -281,7 +281,7 @@ export default function Home() {
 
       <div className={css({ display: "flex", gap: "4", flexWrap: "wrap" })}>
         <StatTile label="Convictions" value={totals.convictions} />
-        <StatTile label="Defendant mentions" value={totals.defendants} />
+        <StatTile label="Offender mentions" value={totals.defendants} />
         <StatTile label="Involved persons" value={totals.involvedPersons} />
         <StatTile
           label="Year range"
