@@ -20,9 +20,11 @@ function isActive(pathname: string, href: string): boolean {
 // color classes without exceptions (see that file) -- which means a
 // component-level "active" class would lose to it too. Inline styles beat
 // both layered and unlayered stylesheet rules, so this is the one way to
-// actually make the active link look different.
+// actually make the active link look different. Uses --colors-bg (white)
+// rather than --colors-fg (black) to match the header's current black
+// background -- EXPERIMENTAL, see globals.css's header a rule.
 function navLinkColor(active: boolean): React.CSSProperties {
-  return active ? { color: "var(--colors-fg)", fontWeight: 600 } : {};
+  return active ? { color: "var(--colors-bg)", fontWeight: 600 } : {};
 }
 
 export default function Nav() {
@@ -33,7 +35,10 @@ export default function Nav() {
   const activePath = isHome ? null : pathname;
 
   return (
-    <header className={css({ bg: "bg" })}>
+    // EXPERIMENTAL: black header background (paired with globals.css's
+    // header a rule going white-on-black). Revert to bg: "bg" if it
+    // doesn't work out.
+    <header className={css({ bg: "fg" })}>
       <nav
         className={css({
           maxWidth: "72rem",

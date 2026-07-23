@@ -37,7 +37,7 @@ export function EspecialInterest() {
         </p>
       ) : (
         result && (
-          <Link href={`/cases/${result.id}`}>
+          <Link href={`/convictions/${result.id}`}>
             <Card className={css({ mt: "2", _hover: { borderColor: "fgAccent" } })}>
               <span className={css({ fontSize: "small", color: "fgMuted" })}>
                 {yearOf(result.offence_date ?? result.conviction_date)} —{" "}

@@ -22,7 +22,7 @@ export async function generateStaticParams() {
   return listConvictionIds().map((id) => ({ id: String(id) }));
 }
 
-export default async function ConvictionDetailPage(props: PageProps<"/cases/[id]">) {
+export default async function ConvictionDetailPage(props: PageProps<"/convictions/[id]">) {
   const { id } = await props.params;
   const convictionId = Number(id);
   if (!Number.isFinite(convictionId)) notFound();
@@ -46,19 +46,19 @@ export default async function ConvictionDetailPage(props: PageProps<"/cases/[id]
             alignItems: "center",
           })}
         >
-          <Link href="/cases" className={css({ fontSize: "body", color: "fgMuted" })}>
-            ← Back to cases
+          <Link href="/convictions" className={css({ fontSize: "body", color: "fgMuted" })}>
+            ← Back to convictions
           </Link>
           <div className={css({ display: "flex", gap: "3", fontSize: "body" })}>
             {prevId !== null ? (
-              <Link href={`/cases/${prevId}`} className={css({ color: "fgAccent" })}>
+              <Link href={`/convictions/${prevId}`} className={css({ color: "fgAccent" })}>
                 ← Previous
               </Link>
             ) : (
               <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
             )}
             {nextId !== null ? (
-              <Link href={`/cases/${nextId}`} className={css({ color: "fgAccent" })}>
+              <Link href={`/convictions/${nextId}`} className={css({ color: "fgAccent" })}>
                 Next →
               </Link>
             ) : (
@@ -233,7 +233,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/cases/[id]
             {relatedConvictions.map((rc) => (
               <Card key={rc.id}>
                 <Link
-                  href={`/cases/${rc.id}`}
+                  href={`/convictions/${rc.id}`}
                   className={css({ fontWeight: "600", color: "fgAccent" })}
                 >
                   {rc.reference_number}

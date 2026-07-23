@@ -49,7 +49,7 @@ export default async function StreetDetailPage(props: PageProps<"/streets/[id]">
             <tr key={c.id}>
               <Td>
                 <Link
-                  href={`/cases/${c.id}`}
+                  href={`/convictions/${c.id}`}
                   className={css({ color: "fgAccent", fontWeight: "600" })}
                 >
                   {c.reference_number}

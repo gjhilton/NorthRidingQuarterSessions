@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { css, cx } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
@@ -255,7 +254,7 @@ export function BrowseExplorer({
   const offenceTypesForSelectedCategory = offenceTypes.filter((o) => o.categoryId === selectedCategoryId);
 
   const effectiveSortBy = filters.sortBy ?? "conviction_date";
-  const effectiveSortDir = filters.sortDir ?? "desc";
+  const effectiveSortDir = filters.sortDir ?? "asc";
 
   function toggleSort(column: BrowseSortColumn) {
     const isActive = column === effectiveSortBy;
@@ -263,9 +262,7 @@ export function BrowseExplorer({
       ? effectiveSortDir === "asc"
         ? "desc"
         : "asc"
-      : column === "conviction_date"
-        ? "desc"
-        : "asc";
+      : "asc";
     runQuery({ ...filters, sortBy: column, sortDir: nextDir, page: 1 });
   }
 
@@ -507,7 +504,7 @@ export function BrowseExplorer({
                 })}
               >
                 <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
-                  Sentencing date
+                  Conviction date
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
                   <FormField label="From" className={css({ flex: "1" })}>
@@ -628,10 +625,10 @@ export function BrowseExplorer({
         <Table borderWidth="lineweight_heavy" fontSize="small">
           <thead>
             <tr>
-              <Th rowSpan={2}>{sortButton("defendant_names", "Defendant")}</Th>
-              <Th rowSpan={2}>{sortButton("conviction_date", "Session date")}</Th>
+              <Th rowSpan={2}>Record ID</Th>
+              <Th rowSpan={2}>{sortButton("conviction_date", "Date")}</Th>
+              <Th rowSpan={2}>Defendant(s)</Th>
               <Th colSpan={3}>Offence</Th>
-              <Th rowSpan={2}>{sortButton("reference_number", "Reference")}</Th>
             </tr>
             <tr>
               <Th>{sortButton("offence_type_names", "Type")}</Th>
@@ -640,34 +637,27 @@ export function BrowseExplorer({
             </tr>
           </thead>
           <tbody>
-            {rows.map((r) => {
-              const defendantNames = parseDefendantNames(r.defendant_names_json);
-              return (
-              <tr key={r.id}>
-                <Td>
-                  {defendantNames.length > 0
-                    ? defendantNames.map((name, i) => <div key={i}>{name}</div>)
-                    : "—"}
-                </Td>
+            {rows.map((r) => (
+              <tr
+                key={r.id}
+                onClick={() => router.push(`/convictions/${r.id}`)}
+                className={css({
+                  cursor: "pointer",
+                  _hover: { bg: "bgSurface" },
+                })}
+              >
+                <Td className={css({ fontSize: "0.8rem", lineHeight: "1.1" })}>{r.reference_number}</Td>
                 <Td>{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
-                <Td>{r.offence_type_names ?? "—"}</Td>
-                <Td>{formatDate(r.offence_date) ?? r.offence_date_raw ?? "—"}</Td>
-                <Td>
+                <Td>{formatDefendantNames(r.defendant_names_json)}</Td>
+                <Td className={truncateCellStyle}>{r.offence_type_names ?? "—"}</Td>
+                <Td className={truncateCellStyle}>{formatDate(r.offence_date) ?? r.offence_date_raw ?? "—"}</Td>
+                <Td className={truncateCellStyle}>
                   {r.offence_town_name || r.court_town_name
                     ? titleCase(r.offence_town_name ?? r.court_town_name!)
                     : "—"}
                 </Td>
-                <Td>
-                  <Link
-                    href={`/cases/${r.id}`}
-                    className={css({ color: "fgAccent", fontWeight: "600" })}
-                  >
-                    {r.reference_number}
-                  </Link>
-                </Td>
               </tr>
-              );
-            })}
+            ))}
           </tbody>
         </Table>
       )}
@@ -727,4 +717,14 @@ function FormField({
 }
 
 const inputStyle = css(formInputStyle, { px: "2", py: "1.5", width: "100%", colorScheme: "light" });
+
+// The three Offence-group columns (Type, Date, Place) truncate long content
+// with an ellipsis instead of wrapping the row taller -- Type especially can
+// be a long comma-joined list of offence names.
+const truncateCellStyle = css({
+  maxWidth: "12rem",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+});
 

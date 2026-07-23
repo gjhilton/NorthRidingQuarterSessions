@@ -25,13 +25,13 @@ from qsrecords.models.extraction_schema import ExtractedRecord
 from qsrecords.models.raw import RawCase
 from qsrecords.models.reference import PettySessionalDivision, Street, Town
 from qsrecords.offence_types import get_or_create_offence_type
-from qsrecords.text import normalize_key, normalize_name, split_name_qualifier
+from qsrecords.text import normalize_key, normalize_name, normalize_place_name, split_name_qualifier
 
 
 def get_or_create_town(session: Session, raw_name: Optional[str]) -> Optional[Town]:
     if not raw_name or not raw_name.strip():
         return None
-    key = normalize_key(raw_name)
+    key = normalize_place_name(raw_name)
     existing = session.exec(select(Town).where(Town.name == key)).first()
     if existing:
         return existing
@@ -46,7 +46,7 @@ def get_or_create_street(
 ) -> Optional[Street]:
     if not raw_name or not raw_name.strip():
         return None
-    key = normalize_key(raw_name)
+    key = normalize_place_name(raw_name)
     existing = session.exec(
         select(Street).where(Street.name == key, Street.town_id == town_id)
     ).first()

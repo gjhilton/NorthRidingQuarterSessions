@@ -31,12 +31,15 @@ a {
   text-decoration: none;
 }
 
-/* Header nav is the one exception: muted by default, red only on rollover.
-   More specific than the bare `a` rule above (and still unlayered, so it
-   still beats any component-level utility classes), which is what lets it
-   win without touching the general site-wide link rule. */
+/* Header nav is the one exception: white by default, red only on rollover
+   -- EXPERIMENTAL, paired with the header's own black background (see
+   Nav.tsx). Was muted-grey-on-white before this; revert both together if
+   the experiment doesn't work out. More specific than the bare `a` rule
+   above (and still unlayered, so it still beats any component-level
+   utility classes), which is what lets it win without touching the
+   general site-wide link rule. */
 header a {
-  color: var(--colors-fg-muted);
+  color: var(--colors-bg);
 }
 header a:hover {
   color: var(--colors-fg-accent);

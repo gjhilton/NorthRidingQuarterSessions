@@ -180,7 +180,7 @@ function buildWhere(filters: BrowseFilters): WhereClause {
 
 function buildOrderBy(filters: BrowseFilters): string {
   const { nullsExpr, valueExpr } = SORT_EXPRESSIONS[filters.sortBy ?? "conviction_date"];
-  const dir = filters.sortDir === "asc" ? "ASC" : "DESC";
+  const dir = filters.sortDir === "desc" ? "DESC" : "ASC";
   const terms = nullsExpr ? [`${nullsExpr} ASC`, `${valueExpr} ${dir}`] : [`${valueExpr} ${dir}`];
   // Reference number as a final tiebreaker keeps the order stable when many
   // rows share the same sorted value (e.g. the same conviction_date).

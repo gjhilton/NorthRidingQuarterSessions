@@ -64,7 +64,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
                 <tr key={`${c.summary_conviction_id}-${c.role}`}>
                   <Td>
                     <Link
-                      href={`/cases/${c.summary_conviction_id}`}
+                      href={`/convictions/${c.summary_conviction_id}`}
                       className={css({ color: "fgAccent", fontWeight: "600" })}
                     >
                       {c.reference_number}

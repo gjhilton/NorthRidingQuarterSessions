@@ -131,11 +131,13 @@ export function Table({
   );
 }
 
-export function Th({ children }: { children: React.ReactNode }) {
+export function Th({ children, ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) {
   return (
     <th
+      {...props}
       className={css({
         textAlign: "left",
+        verticalAlign: "bottom",
         py: "2",
         px: "3",
         bg: "bg",

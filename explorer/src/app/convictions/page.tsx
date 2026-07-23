@@ -32,7 +32,7 @@ export default function BrowsePage() {
 
   return (
     <PageContainer>
-      <PageTitle>Cases</PageTitle>
+      <PageTitle>Convictions</PageTitle>
       <Suspense fallback={null}>
         <BrowseExplorer
           initialRows={rows}

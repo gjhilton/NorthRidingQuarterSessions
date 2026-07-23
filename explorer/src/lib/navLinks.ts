@@ -2,7 +2,7 @@
 // "use client" component -- importing plain data back out of it into a
 // server component like Footer doesn't work) and Footer.tsx.
 export const primaryLinks = [
-  { href: "/cases", label: "Cases" },
+  { href: "/convictions", label: "Convictions" },
   { href: "/people", label: "People" },
 ];
 

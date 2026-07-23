@@ -14,7 +14,7 @@ export function CasesSearch() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const q = query.trim();
-    router.push(q ? `/cases?q=${encodeURIComponent(q)}` : "/cases");
+    router.push(q ? `/convictions?q=${encodeURIComponent(q)}` : "/convictions");
   }
 
   return (

@@ -32,6 +32,17 @@ def normalize_key(value: str) -> str:
     return _WHITESPACE_RE.sub(" ", value.strip()).lower()
 
 
+def normalize_place_name(raw_name: str) -> str:
+    """normalize_key(), plus hyphenating compound "X cum Y" place names the
+    way they're conventionally written (e.g. "Eskdaleside cum Ugglebarnby"
+    -> "eskdaleside-cum-ugglebarnby") rather than left space-separated.
+    Used for Town/Street specifically -- normalize_key() alone stays a
+    general-purpose helper (also used for person name_key) that shouldn't
+    carry a place-name-specific rule.
+    """
+    return normalize_key(raw_name).replace(" cum ", "-cum-")
+
+
 def normalize_name(first_name: str | None, last_name: str | None) -> str:
     """Normalized 'first last' key for grouping mentions of the same name.
 

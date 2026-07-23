@@ -43,11 +43,15 @@ export function NavDropdown({
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        // EXPERIMENTAL: white text (this is a <button>, not an <a>, so it's
+        // untouched by globals.css's header a rule and needs its own
+        // white-on-black colour here -- see Nav.tsx's header background.
         className={css({
           display: "flex",
           alignItems: "center",
           gap: "1",
-          color: hasActiveLink ? "fg" : "fgMuted",
+          color: "bg",
+          opacity: hasActiveLink ? 1 : 0.7,
           fontWeight: hasActiveLink ? "600" : "400",
           fontSize: "body",
           bg: "transparent",
@@ -55,7 +59,7 @@ export function NavDropdown({
           cursor: "pointer",
           p: 0,
           font: "inherit",
-          _hover: { color: "fgAccent" },
+          _hover: { color: "fgAccent", opacity: 1 },
         })}
       >
         {label}
