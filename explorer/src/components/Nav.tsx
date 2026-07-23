@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { css } from "styled-system/css";
-import { NavDropdown } from "@/components/NavDropdown";
 import { SiteTitle } from "@/components/SiteTitle";
-import { primaryLinks, insightsLinks, trailingLinks } from "@/lib/navLinks";
+import { primaryLinks, trailingLinks } from "@/lib/navLinks";
 
 const navLinkStyle = css({
   fontSize: "body",
@@ -26,17 +25,6 @@ function isActive(pathname: string, href: string): boolean {
 // that rule alone can't add the font-weight.
 function navLinkColor(active: boolean): React.CSSProperties {
   return active ? { color: "var(--colors-fg)", fontWeight: 600 } : {};
-}
-
-// A bullet before each top-nav item, coloured the same as the header's own
-// (white) background so it's invisible by default -- except on whichever
-// section is current, where it's red. Inline style for the same reason
-// navLinkColor() is: needs to win regardless of active state, and a plain
-// Panda class can't override the parent <a>'s color inheritance reliably
-// here either way since this needs its OWN colour, independent of the
-// link text's.
-function navBulletColor(active: boolean): React.CSSProperties {
-  return { color: active ? "#f00" : "var(--colors-bg)" };
 }
 
 export default function Nav() {
@@ -74,26 +62,17 @@ export default function Nav() {
             return (
               <li key={link.href}>
                 <Link href={link.href} className={navLinkStyle} style={navLinkColor(active)}>
-                  {link.label}{" "}
-                  <span aria-hidden style={navBulletColor(active)}>
-                    •
-                  </span>
+                  {link.label}
                 </Link>
               </li>
             );
           })}
-          <li>
-            <NavDropdown label="Insights" links={insightsLinks} activePath={activePath} />
-          </li>
           {trailingLinks.map((link) => {
             const active = Boolean(activePath && isActive(activePath, link.href));
             return (
               <li key={link.href}>
                 <Link href={link.href} className={navLinkStyle} style={navLinkColor(active)}>
-                  {link.label}{" "}
-                  <span aria-hidden style={navBulletColor(active)}>
-                    •
-                  </span>
+                  {link.label}
                 </Link>
               </li>
             );

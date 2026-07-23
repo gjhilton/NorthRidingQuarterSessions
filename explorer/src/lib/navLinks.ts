@@ -4,17 +4,7 @@
 export const primaryLinks = [
   { href: "/convictions", label: "Convictions" },
   { href: "/people", label: "People" },
-];
-
-export const insightsLinks = [
-  { href: "/trends", label: "Trends" },
-  { href: "/gender", label: "Gender" },
-  { href: "/occupations", label: "Occupations" },
-  { href: "/patterns", label: "Patterns" },
-  { href: "/justice", label: "Justice" },
-  { href: "/taxonomy", label: "Taxonomy" },
-  { href: "/map", label: "Map" },
-  { href: "/streets", label: "Streets" },
+  { href: "/locations", label: "Locations" },
 ];
 
 export const trailingLinks = [{ href: "/about", label: "About" }];
