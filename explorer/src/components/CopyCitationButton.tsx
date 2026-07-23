@@ -23,7 +23,7 @@ export function CopyCitationButton({ text }: { text: string }) {
         mt: "2",
         px: "2.5",
         py: "1",
-        borderWidth: "hairline", borderStyle: "solid",
+        borderWidth: "lineweight_normal", borderStyle: "solid",
         borderColor: "borderMuted",
         borderRadius: "corner",
         fontSize: "small",

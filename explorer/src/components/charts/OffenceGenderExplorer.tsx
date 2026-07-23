@@ -32,7 +32,7 @@ export function OffenceGenderExplorer({
   return (
     <div className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
       <div className={css({ display: "flex", flexWrap: "wrap", gap: "3", alignItems: "center" })}>
-        <div className={css({ display: "inline-flex", borderRadius: "corner", overflow: "hidden", borderWidth: "hairline", borderStyle: "solid", borderColor: "borderMuted" })}>
+        <div className={css({ display: "inline-flex", borderRadius: "corner", overflow: "hidden", borderWidth: "lineweight_normal", borderStyle: "solid", borderColor: "borderMuted" })}>
           {(["category", "leaf"] as const).map((g) => (
             <button
               key={g}

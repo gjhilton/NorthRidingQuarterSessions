@@ -71,7 +71,7 @@ export function NavDropdown({
             left: 0,
             listStyle: "none",
             bg: "bgSurface",
-            borderWidth: "hairline", borderStyle: "solid",
+            borderWidth: "lineweight_normal", borderStyle: "solid",
             borderColor: "borderMuted",
             borderRadius: "corner",
             boxShadow: "md",

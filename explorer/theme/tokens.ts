@@ -16,8 +16,8 @@ export const tokens = defineTokens({
     inkDark: { value: "#000" },
     muted: { value: "#000" },
     mutedDark: { value: "#000" },
-    border: { value: "#8c8c8c" },
-    borderDark: { value: "#8c8c8c" },
+    border: { value: "#000" },
+    borderDark: { value: "#000" },
     accent: { value: "#c00000" },
     accentDark: { value: "#c00000" },
     surface: { value: "#fcfcfc" },
@@ -41,10 +41,11 @@ export const tokens = defineTokens({
     sans: { value: "var(--font-sans), system-ui, sans-serif" },
   },
   borderWidths: {
-    // Every border in the app is this one weight -- a single token means
-    // changing line weight everywhere is a one-line edit here rather than a
-    // find-and-replace across src/.
-    hairline: { value: "1px" },
+    // Two named weights -- a single token each means changing line weight
+    // everywhere is a one-line edit here rather than a find-and-replace
+    // across src/.
+    lineweight_normal: { value: "1px" },
+    lineweight_heavy: { value: "2.5px" },
   },
   radii: {
     // Every rounded corner in the app (other than Pill's fully-round shape,
@@ -58,7 +59,7 @@ export const tokens = defineTokens({
     small: { value: "1.125rem" }, // fine print, meta text, small icon glyphs
     body: { value: "1.3125rem" }, // the default text size almost everything uses (21px @ 16px root)
     heading: { value: "1.5rem" }, // card/section headings, nav brand
-    display: { value: "2rem" }, // page title, the big number in a stat tile
+    display: { value: "4rem" }, // page title, the big number in a stat tile
     hero: { value: "3rem" }, // homepage title only -- see src/app/page.tsx
   },
 });

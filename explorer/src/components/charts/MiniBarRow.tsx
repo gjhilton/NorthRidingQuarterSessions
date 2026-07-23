@@ -35,7 +35,7 @@ export function MiniBarRow({
           flex: "1",
           height: "1rem",
           bg: "bg",
-          borderWidth: "hairline",
+          borderWidth: "lineweight_normal",
           borderStyle: "solid",
           borderColor: "borderMuted",
           borderRadius: "corner",

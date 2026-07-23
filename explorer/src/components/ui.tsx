@@ -57,7 +57,7 @@ export function Card({
       className={cx(
         css({
           bg: "bg",
-          borderWidth: "hairline", borderStyle: "solid",
+          borderWidth: "lineweight_normal", borderStyle: "solid",
           borderColor: "borderMuted",
           borderRadius: "corner",
           p: "5",
@@ -88,9 +88,26 @@ export function StatTile({ label, value }: { label: string; value: string | numb
   );
 }
 
-export function Table({ children }: { children: React.ReactNode }) {
+export function Table({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className={css({ overflowX: "auto", borderWidth: "hairline", borderStyle: "solid", borderColor: "borderMuted", borderRadius: "corner" })}>
+    <div
+      className={cx(
+        css({
+          overflowX: "auto",
+          borderWidth: "lineweight_normal",
+          borderStyle: "solid",
+          borderColor: "borderMuted",
+          borderRadius: "corner",
+        }),
+        className
+      )}
+    >
       <table className={css({ width: "100%", borderCollapse: "collapse", fontSize: "body" })}>
         {children}
       </table>
@@ -108,7 +125,7 @@ export function Th({ children }: { children: React.ReactNode }) {
         bg: "bg",
         color: "fgMuted",
         fontWeight: "600",
-        borderBottomWidth: "hairline", borderBottomStyle: "solid",
+        borderBottomWidth: "lineweight_normal", borderBottomStyle: "solid",
         borderColor: "borderMuted",
         whiteSpace: "nowrap",
       })}
@@ -131,7 +148,7 @@ export function Td({
         css({
           py: "2",
           px: "3",
-          borderBottomWidth: "hairline", borderBottomStyle: "solid",
+          borderBottomWidth: "lineweight_normal", borderBottomStyle: "solid",
           borderColor: "borderMuted",
           verticalAlign: "top",
         }),
@@ -163,7 +180,7 @@ export function ChartTitle({ children }: { children: React.ReactNode }) {
 // their forms stay visually identical without each re-declaring the same
 // css() literal.
 export const formInputStyle = css({
-  borderWidth: "hairline", borderStyle: "solid",
+  borderWidth: "lineweight_normal", borderStyle: "solid",
   borderColor: "borderMuted",
   borderRadius: "corner",
   px: "3",
@@ -196,7 +213,7 @@ export function SearchField(props: React.InputHTMLAttributes<HTMLInputElement>) 
           alignItems: "center",
           justifyContent: "center",
           width: "2.75rem",
-          borderWidth: "hairline",
+          borderWidth: "lineweight_normal",
           borderStyle: "solid",
           borderColor: "borderMuted",
           borderTopRightRadius: "corner",
@@ -210,6 +227,50 @@ export function SearchField(props: React.InputHTMLAttributes<HTMLInputElement>) 
         <SearchIcon size={16} />
       </button>
     </div>
+  );
+}
+
+// A bordered button with an icon on either side of its (possibly
+// multi-line) label content, filling solid with the accent colour on
+// hover/focus -- used by the Cases page's CSV export button.
+export function IconButton({
+  icon,
+  iconPosition = "left",
+  children,
+  className,
+  ...props
+}: {
+  icon: React.ReactNode;
+  iconPosition?: "left" | "right";
+  children: React.ReactNode;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...props}
+      className={cx(
+        css({
+          display: "flex",
+          alignItems: "center",
+          gap: "4",
+          px: "5",
+          py: "1.5",
+          borderWidth: "lineweight_heavy", borderStyle: "solid",
+          borderColor: "borderMuted",
+          borderRadius: "corner",
+          color: "fg",
+          bg: "bgSurface",
+          cursor: "pointer",
+          transition: "background-color 0.15s, border-color 0.15s, color 0.15s",
+          _hover: { borderColor: "fgAccent", bg: "fgAccent", color: "bgSurface" },
+          _disabled: { opacity: 0.5, cursor: "default" },
+        }),
+        className
+      )}
+    >
+      {iconPosition === "left" && icon}
+      {children}
+      {iconPosition === "right" && icon}
+    </button>
   );
 }
 
@@ -236,7 +297,7 @@ export function Pill({ children }: { children: React.ReactNode }) {
         py: "0.5",
         borderRadius: "full",
         bg: "bg",
-        borderWidth: "hairline", borderStyle: "solid",
+        borderWidth: "lineweight_normal", borderStyle: "solid",
         borderColor: "borderMuted",
         color: "fgMuted",
       })}

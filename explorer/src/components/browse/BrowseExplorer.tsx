@@ -16,8 +16,9 @@ import {
 import type { Option, OffenceTypeOption, StreetOption } from "@/lib/queries/filters";
 import { titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
-import { Card, EmptyState, SearchField, Table, Th, Td, formInputStyle } from "@/components/ui";
+import { Card, EmptyState, IconButton, SearchField, Table, Th, Td, formInputStyle } from "@/components/ui";
 import { FilterIcon } from "@/components/icons/FilterIcon";
+import { DownloadIcon } from "@/components/icons/DownloadIcon";
 
 // Large enough to cover "every row matching the current filters" in one
 // query -- the whole extracted corpus is a few thousand rows at most, so
@@ -143,6 +144,8 @@ export function BrowseExplorer({
   }, []);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const rangeStart = total === 0 ? 0 : (filters.page - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(filters.page * PAGE_SIZE, total);
   const isFiltered = Boolean(
     filters.q ||
       filters.townId ||
@@ -239,7 +242,7 @@ export function BrowseExplorer({
 
   return (
     <div className={css({ display: "flex", flexDirection: "column", gap: "6" })}>
-      <Card>
+      <Card className={css({ borderWidth: "lineweight_heavy" })}>
         <form
           key={formKey}
           onSubmit={handleSubmit}
@@ -283,11 +286,6 @@ export function BrowseExplorer({
                 gridTemplateColumns: { base: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" },
                 gap: "4",
                 mt: "4",
-                mb: "4",
-                pb: "4",
-                borderBottomWidth: "hairline",
-                borderBottomStyle: "solid",
-                borderColor: "borderMuted",
               })}
             >
               <fieldset
@@ -524,37 +522,40 @@ export function BrowseExplorer({
 
       <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
         <p className={css({ fontSize: "body", color: "fgMuted" })}>
-          {isFiltered
-            ? `${total.toLocaleString()} matching record${total === 1 ? "" : "s"} (of ${initialTotal.toLocaleString()} total)`
-            : `${total.toLocaleString()} record${total === 1 ? "" : "s"}`}
+          Showing{" "}
+          <strong className={css({ color: "fg" })}>
+            {rangeStart.toLocaleString()}–{rangeEnd.toLocaleString()}
+          </strong>{" "}
+          of <strong className={css({ color: "fg" })}>{total.toLocaleString()}</strong> matching record
+          {total === 1 ? "" : "s"}
         </p>
         {rows.length > 0 && (
-          <button
-            onClick={exportCsv}
-            disabled={isExporting}
-            className={css({
-              px: "3",
-              py: "1.5",
-              borderWidth: "hairline", borderStyle: "solid",
-              borderColor: "borderMuted",
-              borderRadius: "corner",
-              fontSize: "body",
-              color: "fg",
-              bg: "bgSurface",
-              cursor: "pointer",
-              _hover: { borderColor: "fgAccent" },
-              _disabled: { opacity: 0.5, cursor: "default" },
-            })}
-          >
-            {isExporting ? "Preparing…" : `Download CSV (${total.toLocaleString()} rows)`}
-          </button>
+          <IconButton icon={<DownloadIcon size={18} />} onClick={exportCsv} disabled={isExporting}>
+            <span
+              className={css({
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                lineHeight: "1.15",
+              })}
+            >
+              <span className={css({ fontSize: "body" })}>
+                {isExporting ? "Preparing…" : "Download CSV"}
+              </span>
+              {!isExporting && (
+                <span className={css({ fontSize: "small", opacity: 0.7 })}>
+                  {total.toLocaleString()} row{total === 1 ? "" : "s"}
+                </span>
+              )}
+            </span>
+          </IconButton>
         )}
       </div>
 
       {rows.length === 0 ? (
         <EmptyState>No records match these filters.</EmptyState>
       ) : (
-        <Table>
+        <Table className={css({ borderWidth: "lineweight_heavy" })}>
           <thead>
             <tr>
               {SORT_COLUMNS.map(({ key, label }) => (
@@ -611,24 +612,25 @@ export function BrowseExplorer({
       )}
 
       {totalPages > 1 && (
-        <nav className={css({ display: "flex", gap: "2", alignItems: "center" })}>
-          <button
+        <nav className={css({ display: "flex", gap: "3", alignItems: "center" })}>
+          <IconButton
+            icon={<span aria-hidden>←</span>}
             onClick={() => goToPage(Math.max(1, filters.page - 1))}
             disabled={filters.page <= 1 || isPending}
-            className={pageButtonStyle}
           >
-            ← Prev
-          </button>
+            Prev
+          </IconButton>
           <span className={css({ fontSize: "body", color: "fgMuted" })}>
             Page {filters.page} of {totalPages}
           </span>
-          <button
+          <IconButton
+            icon={<span aria-hidden>→</span>}
+            iconPosition="right"
             onClick={() => goToPage(Math.min(totalPages, filters.page + 1))}
             disabled={filters.page >= totalPages || isPending}
-            className={pageButtonStyle}
           >
-            Next →
-          </button>
+            Next
+          </IconButton>
         </nav>
       )}
     </div>
@@ -670,16 +672,3 @@ function FormField({
 // page.
 const inputStyle = cx(formInputStyle, css({ px: "2", py: "1.5", width: "100%", colorScheme: "light dark" }));
 
-const pageButtonStyle = css({
-  px: "3",
-  py: "1.5",
-  borderWidth: "hairline", borderStyle: "solid",
-  borderColor: "borderMuted",
-  borderRadius: "corner",
-  fontSize: "body",
-  color: "fg",
-  bg: "bgSurface",
-  cursor: "pointer",
-  _hover: { borderColor: "fgAccent" },
-  _disabled: { opacity: 0.5, cursor: "default" },
-});

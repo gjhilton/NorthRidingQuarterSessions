@@ -70,7 +70,7 @@ export function NetworkView({
       ) : (
         <div
           className={css({
-            borderWidth: "hairline", borderStyle: "solid",
+            borderWidth: "lineweight_normal", borderStyle: "solid",
             borderColor: "borderMuted",
             borderRadius: "corner",
             overflow: "hidden",
@@ -121,7 +121,7 @@ function ToggleButton({
         fontSize: "body",
         fontWeight: "600",
         cursor: "pointer",
-        borderWidth: "hairline", borderStyle: "solid",
+        borderWidth: "lineweight_normal", borderStyle: "solid",
         borderColor: active ? "fgAccent" : "borderMuted",
         bg: active ? "fgAccent" : "bgSurface",
         color: active ? "bgSurface" : "fg",
