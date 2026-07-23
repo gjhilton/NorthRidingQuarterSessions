@@ -60,13 +60,16 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
 
   return (
     <div
-      className={css({
-        overflowX: "auto",
-        borderWidth: "lineweight_normal",
-        borderStyle: "solid",
-        borderColor: "fg",
-        borderRadius: "corner",
-      })}
+      className={cx(
+        "location-grid",
+        css({
+          overflowX: "auto",
+          borderWidth: "lineweight_heavy",
+          borderStyle: "solid",
+          borderColor: "fg",
+          borderRadius: "corner",
+        })
+      )}
     >
       <table
         className={css({ width: "100%", tableLayout: "fixed", borderCollapse: "collapse", fontSize: "body" })}

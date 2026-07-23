@@ -64,3 +64,12 @@ footer a {
 footer a:hover {
   color: var(--colors-fg-accent);
 }
+
+/* /locations grid (LocationGrid.tsx) gets the same black-by-default,
+   red-on-rollover treatment, same reasoning as header/footer above. */
+.location-grid a {
+  color: var(--colors-fg);
+}
+.location-grid a:hover {
+  color: var(--colors-fg-accent);
+}
