@@ -41,8 +41,11 @@ a {
 header a {
   color: var(--colors-bg);
 }
+/* A brighter, more "primary" red than the site's usual accent colour --
+   specifically for nav rollover, not a token, deliberately distinct from
+   --colors-fg-accent. */
 header a:hover {
-  color: var(--colors-fg-accent);
+  color: #f00;
 }
 
 /* Footer links get the same treatment as header links -- black by default,

@@ -92,6 +92,7 @@ export default function Nav() {
               fontFamily: "serif",
               fontSize: "heading",
               fontWeight: "600",
+              fontStyle: "italic",
               color: "fg",
               whiteSpace: "nowrap",
               ml: "auto",

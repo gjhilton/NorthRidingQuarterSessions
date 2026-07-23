@@ -59,7 +59,8 @@ export function NavDropdown({
           cursor: "pointer",
           p: 0,
           font: "inherit",
-          _hover: { color: "fgAccent", opacity: 1 },
+          // #f00, not the fgAccent token -- matches globals.css's header a:hover.
+          _hover: { color: "#f00", opacity: 1 },
         })}
       >
         {label}
