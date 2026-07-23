@@ -1,4 +1,8 @@
-import { css } from "styled-system/css";
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { css, cx } from "styled-system/css";
 import { Td } from "@/components/ui";
 import type { PlaceNode } from "@/lib/queries/locationTree";
 
@@ -13,6 +17,10 @@ interface Cell {
   depth: number;
   rowSpan: number;
   colSpan: number;
+  // Every node in this cell's own subtree (itself + all descendants) --
+  // lets hovering a cell also highlight everything nested under it, even
+  // though those descendants are separate <td> elements to the right/below.
+  subtreeIds: number[];
 }
 type Row = Cell[];
 
@@ -29,19 +37,25 @@ function maxDepth(node: PlaceNode, depth = 0): number {
   return Math.max(...node.children.map((c) => maxDepth(c, depth + 1)));
 }
 
+function collectSubtreeIds(node: PlaceNode): number[] {
+  return [node.id, ...node.children.flatMap(collectSubtreeIds)];
+}
+
 function buildRows(node: PlaceNode, depth: number, treeMaxDepth: number): Row[] {
+  const subtreeIds = collectSubtreeIds(node);
   if (node.children.length === 0) {
-    return [[{ node, depth, rowSpan: 1, colSpan: treeMaxDepth - depth + 1 }]];
+    return [[{ node, depth, rowSpan: 1, colSpan: treeMaxDepth - depth + 1, subtreeIds }]];
   }
   const childRows = node.children.flatMap((child) => buildRows(child, depth + 1, treeMaxDepth));
   const [firstRow, ...restRows] = childRows;
-  return [[{ node, depth, rowSpan: childRows.length, colSpan: 1 }, ...firstRow], ...restRows];
+  return [[{ node, depth, rowSpan: childRows.length, colSpan: 1, subtreeIds }, ...firstRow], ...restRows];
 }
 
 export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
   const treeMaxDepth = Math.max(...roots.map((r) => maxDepth(r)));
   const columnCount = treeMaxDepth + 1;
   const rows = roots.flatMap((root) => buildRows(root, 0, treeMaxDepth));
+  const [hoveredIds, setHoveredIds] = useState<ReadonlySet<number>>(new Set());
 
   return (
     <div
@@ -75,14 +89,29 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                   key={cell.node.id}
                   rowSpan={cell.rowSpan}
                   colSpan={cell.colSpan}
-                  className={css({ borderRightWidth: "lineweight_normal", borderRightStyle: "solid", borderRightColor: "fg" })}
+                  onMouseEnter={() => setHoveredIds(new Set(cell.subtreeIds))}
+                  onMouseLeave={() => setHoveredIds(new Set())}
+                  className={cx(
+                    css({
+                      borderRightWidth: "lineweight_normal",
+                      borderRightStyle: "solid",
+                      borderRightColor: "fg",
+                    }),
+                    hoveredIds.has(cell.node.id) && css({ bg: "bgSurface" })
+                  )}
                 >
-                  <span
+                  <Link
+                    href={`/locations/${cell.node.id}`}
                     style={{ fontSize: fontSizeForDepth(cell.depth) }}
-                    className={css({ fontWeight: cell.depth === 0 ? "600" : "400" })}
+                    className={css({
+                      display: "block",
+                      fontWeight: cell.depth === 0 ? "600" : "400",
+                      color: "fg",
+                      _hover: { color: "fgAccent" },
+                    })}
                   >
                     {cell.node.name}
-                  </span>
+                  </Link>
                 </Td>
               ))}
             </tr>
