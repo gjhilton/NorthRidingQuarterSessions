@@ -97,6 +97,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                   onMouseLeave={() => setHoveredIds(new Set())}
                   className={cx(
                     css({
+                      p: "0", // the Link below takes the padding instead, so it can fill the whole cell
                       borderRightWidth: "lineweight_normal",
                       borderRightStyle: "solid",
                       borderRightColor: "fg",
@@ -107,12 +108,23 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                 >
                   <Link
                     href={`/locations/${cell.node.id}`}
-                    style={{ fontSize: fontSizeForDepth(cell.depth) }}
+                    style={{
+                      fontSize: fontSizeForDepth(cell.depth),
+                      // Inline style so it wins over globals.css's unlayered
+                      // `.location-grid a` rule regardless of cascade layers
+                      // -- needed because the whole hovered subtree should
+                      // turn red, not just the one link the mouse is
+                      // literally over (which :hover alone would give us).
+                      color: hoveredIds.has(cell.node.id) ? "var(--colors-fg-accent)" : undefined,
+                    }}
                     className={css({
                       display: "block",
+                      width: "100%",
+                      height: "100%",
+                      py: "2",
+                      px: "3",
+                      boxSizing: "border-box",
                       fontWeight: cell.depth === 0 ? "600" : "400",
-                      color: "fg",
-                      _hover: { color: "fgAccent" },
                     })}
                   >
                     {cell.node.name}
