@@ -30,6 +30,8 @@ _COLUMN_ADDITIONS = [
     ("person", "relationship_type", "VARCHAR"),
     ("person", "related_to_name", "VARCHAR"),
     ("offence_type", "category_id", "INTEGER"),
+    ("defendant", "name_qualifier", "VARCHAR"),
+    ("person", "name_qualifier", "VARCHAR"),
 ]
 
 

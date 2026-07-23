@@ -1,5 +1,4 @@
 import { css, cx } from "styled-system/css";
-import { SearchIcon } from "@/components/icons/SearchIcon";
 
 export function PageContainer({ children }: { children: React.ReactNode }) {
   return (
@@ -101,16 +100,23 @@ export function StatTile({ label, value }: { label: string; value: string | numb
 export function Table({
   children,
   className,
+  fontSize = "body",
+  borderWidth = "lineweight_normal",
 }: {
   children: React.ReactNode;
   className?: string;
+  // Real props, not className overrides -- see Card's bg/borderWidth props
+  // for why a caller-supplied className can't reliably beat this
+  // component's own default for the same property.
+  fontSize?: string;
+  borderWidth?: string;
 }) {
   return (
     <div
       className={cx(
         css({
           overflowX: "auto",
-          borderWidth: "lineweight_normal",
+          borderWidth,
           borderStyle: "solid",
           borderColor: "fg",
           borderRadius: "corner",
@@ -118,7 +124,7 @@ export function Table({
         className
       )}
     >
-      <table className={css({ width: "100%", borderCollapse: "collapse", fontSize: "body" })}>
+      <table className={css({ width: "100%", borderCollapse: "collapse", fontSize })}>
         {children}
       </table>
     </div>
@@ -214,61 +220,19 @@ export const formInputStyle = css.raw({
 // via a single css() call (raw style objects, not separately-compiled
 // classes -- see Card's bg/borderWidth props for why that distinction
 // matters here).
-const buttonInteractionStyle = css.raw({
+export const buttonInteractionStyle = css.raw({
   cursor: "pointer",
   transition: "background-color 0.15s, border-color 0.15s, color 0.15s",
   _hover: { borderColor: "fgAccent", bg: "fgAccent", color: "bg" },
   _disabled: { opacity: 0.3, cursor: "default" },
 });
 
-const buttonVariantStyle = {
+export const buttonVariantStyle = {
   default: css.raw({ bg: "bg", color: "fg" }),
   hero: css.raw({ bg: "fg", color: "bg" }),
 };
 
 export type ButtonVariant = keyof typeof buttonVariantStyle;
-
-// The site's one search-widget style: a text input with a square magnifier
-// button flush against its right edge, sharing a border so the two read as
-// one control. Used identically by the homepage's CasesSearch/PeopleSearch
-// and the Cases listing page's own search field. The button is the "hero"
-// variant -- filled ink/paper at rest.
-export function SearchField(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <div className={css({ display: "flex" })}>
-      <input
-        {...props}
-        className={cx(
-          css(formInputStyle, {
-            flex: "1",
-            borderWidth: "lineweight_heavy",
-            borderRightWidth: "0",
-            borderTopRightRadius: "0",
-            borderBottomRightRadius: "0",
-          }),
-          props.className
-        )}
-      />
-      <button
-        type="submit"
-        aria-label="Search"
-        className={css(buttonVariantStyle.hero, buttonInteractionStyle, {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "2.75rem",
-          borderWidth: "lineweight_heavy",
-          borderStyle: "solid",
-          borderColor: "fg",
-          borderTopRightRadius: "corner",
-          borderBottomRightRadius: "corner",
-        })}
-      >
-        <SearchIcon size={16} />
-      </button>
-    </div>
-  );
-}
 
 // A bordered button with an icon on either side of its (possibly
 // multi-line) label content -- used by the Cases page's CSV export and

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { SearchField } from "@/components/ui";
+import { SearchField } from "@/components/SearchField";
 
 // A lightweight entry point into Cases' own filtering (BrowseExplorer
 // already reads `q` from the URL on mount) -- this doesn't run its own

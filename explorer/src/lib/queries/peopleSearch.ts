@@ -9,8 +9,12 @@ export interface PersonSearchResult {
   last_name: string | null;
   // A name_key can span multiple mentions with different recorded
   // occupations (rows aren't deduplicated -- see About) -- MAX() picks one
-  // representative value, same convention as peopleList.ts.
+  // representative value, same convention as peopleList.ts. Also true of
+  // name_qualifier: it's deliberately excluded from name_key (see
+  // data-loader's Defendant.name_qualifier), so a group can mix mentions
+  // with and without one.
   occupation: string | null;
+  name_qualifier: string | null;
   defendant_mentions: number;
   person_mentions: number;
 }
@@ -25,12 +29,13 @@ export function searchPeople(db: DbLike, q: string, limit = 25): PersonSearchRes
         MAX(first_name) AS first_name,
         MAX(last_name) AS last_name,
         MAX(occupation) AS occupation,
+        MAX(name_qualifier) AS name_qualifier,
         SUM(CASE WHEN kind = 'defendant' THEN 1 ELSE 0 END) AS defendant_mentions,
         SUM(CASE WHEN kind = 'person' THEN 1 ELSE 0 END) AS person_mentions
       FROM (
-        SELECT name_key, first_name, last_name, occupation, 'defendant' AS kind FROM defendant
+        SELECT name_key, first_name, last_name, occupation, name_qualifier, 'defendant' AS kind FROM defendant
         UNION ALL
-        SELECT name_key, first_name, last_name, occupation, 'person' AS kind FROM person
+        SELECT name_key, first_name, last_name, occupation, name_qualifier, 'person' AS kind FROM person
       )
       WHERE name_key LIKE @like AND TRIM(name_key) != ''
       GROUP BY name_key

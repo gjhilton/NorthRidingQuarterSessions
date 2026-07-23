@@ -7,6 +7,7 @@ export const PAGE_SIZE = 25;
 
 export type BrowseSortColumn =
   | "reference_number"
+  | "offence_date"
   | "conviction_date"
   | "defendant_names"
   | "offence_type_names"
@@ -35,14 +36,25 @@ export interface BrowseFilters {
 // straight from the query string) -- this keeps the ORDER BY clause to a
 // fixed set of known-safe expressions.
 const LOCATION_EXPR = "COALESCE(ot_town.name, court_town.name)";
+// A plain sortable string (surname-first, comma-joined), computed directly
+// in the ORDER BY rather than reusing the SELECTed defendant_names_json --
+// that's a JSON array now (for per-defendant name formatting on display),
+// which would sort by its raw text, not by name.
+const DEFENDANT_SORT_EXPR = `(
+  SELECT GROUP_CONCAT(TRIM(COALESCE(d3.last_name,'') || ' ' || COALESCE(d3.first_name,'')), ', ')
+  FROM summary_conviction_defendant scd3
+  JOIN defendant d3 ON d3.id = scd3.defendant_id
+  WHERE scd3.summary_conviction_id = sc.id
+)`;
 // valueExpr is the column/expression actually being sorted; nullsExpr (when
 // set) always sorts ascending so NULLs land last regardless of sort
 // direction, rather than jumping to the top when a descending sort is
 // applied to valueExpr.
 const SORT_EXPRESSIONS: Record<BrowseSortColumn, { nullsExpr?: string; valueExpr: string }> = {
   reference_number: { valueExpr: "sc.reference_number" },
+  offence_date: { nullsExpr: "sc.offence_date IS NULL", valueExpr: "sc.offence_date" },
   conviction_date: { nullsExpr: "sc.conviction_date IS NULL", valueExpr: "sc.conviction_date" },
-  defendant_names: { nullsExpr: "defendant_names IS NULL", valueExpr: "defendant_names" },
+  defendant_names: { nullsExpr: `${DEFENDANT_SORT_EXPR} IS NULL`, valueExpr: DEFENDANT_SORT_EXPR },
   offence_type_names: {
     nullsExpr: "offence_type_names IS NULL",
     valueExpr: "offence_type_names",
@@ -50,16 +62,25 @@ const SORT_EXPRESSIONS: Record<BrowseSortColumn, { nullsExpr?: string; valueExpr
   location: { nullsExpr: `${LOCATION_EXPR} IS NULL`, valueExpr: LOCATION_EXPR },
 };
 
+export interface BrowseDefendantName {
+  first_name: string | null;
+  last_name: string | null;
+  occupation: string | null;
+  name_qualifier: string | null;
+}
+
 export interface BrowseRow {
   id: number;
   reference_number: string;
+  offence_date: string | null;
+  offence_date_raw: string | null;
   conviction_date: string | null;
   conviction_date_raw: string;
   charge_description: string;
   offence_type_names: string | null;
   offence_town_name: string | null;
   court_town_name: string | null;
-  defendant_names: string | null;
+  defendant_names_json: string | null;
 }
 
 interface WhereClause {
@@ -184,6 +205,8 @@ export function listConvictions(
       SELECT
         sc.id,
         sc.reference_number,
+        sc.offence_date,
+        sc.offence_date_raw,
         sc.conviction_date,
         sc.conviction_date_raw,
         sc.charge_description,
@@ -196,11 +219,11 @@ export function listConvictions(
         ot_town.name AS offence_town_name,
         court_town.name AS court_town_name,
         (
-          SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
+          SELECT json_group_array(json_object('first_name', d.first_name, 'last_name', d.last_name, 'occupation', d.occupation, 'name_qualifier', d.name_qualifier))
           FROM summary_conviction_defendant scd
           JOIN defendant d ON d.id = scd.defendant_id
           WHERE scd.summary_conviction_id = sc.id
-        ) AS defendant_names
+        ) AS defendant_names_json
       FROM summary_conviction sc
       LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
       LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id

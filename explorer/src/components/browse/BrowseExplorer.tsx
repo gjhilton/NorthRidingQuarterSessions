@@ -9,14 +9,16 @@ import { downloadCsv } from "@/lib/csv";
 import {
   listConvictions,
   PAGE_SIZE,
+  type BrowseDefendantName,
   type BrowseFilters,
   type BrowseRow,
   type BrowseSortColumn,
 } from "@/lib/queries/browseList";
 import type { Option, OffenceTypeOption, StreetOption } from "@/lib/queries/filters";
-import { titleCase } from "@/lib/text";
+import { titleCase, formatPersonName } from "@/lib/text";
 import { formatDate } from "@/lib/date";
-import { Card, EmptyState, IconButton, SearchField, Table, Th, Td, formInputStyle } from "@/components/ui";
+import { Card, EmptyState, IconButton, Table, Th, Td, formInputStyle } from "@/components/ui";
+import { SearchField } from "@/components/SearchField";
 import { FilterIcon } from "@/components/icons/FilterIcon";
 import { DownloadIcon } from "@/components/icons/DownloadIcon";
 
@@ -25,18 +27,37 @@ import { DownloadIcon } from "@/components/icons/DownloadIcon";
 // there's no real pagination-of-export concern to design around.
 const EXPORT_PAGE_SIZE = 1_000_000;
 
-const SORT_COLUMNS: { key: BrowseSortColumn; label: string }[] = [
-  { key: "reference_number", label: "Reference" },
-  { key: "conviction_date", label: "Date" },
-  { key: "defendant_names", label: "Defendant(s)" },
-  { key: "offence_type_names", label: "Offence" },
-  { key: "location", label: "Location" },
-];
+type CsvRow = Omit<BrowseRow, "defendant_names_json"> & { defendant_names: string };
 
-const SORT_COLUMN_KEYS = new Set<string>(SORT_COLUMNS.map((c) => c.key));
+// The valid set of sortable columns -- for URL query-param validation only;
+// the table header (each column individually sortable, see sortButton())
+// is the source of truth for what's actually rendered and in what order.
+const SORT_COLUMN_KEYS: Set<string> = new Set<BrowseSortColumn>([
+  "offence_date",
+  "conviction_date",
+  "reference_number",
+  "defendant_names",
+  "offence_type_names",
+  "location",
+]);
 
 function isSortColumn(value: string | null): value is BrowseSortColumn {
   return value !== null && SORT_COLUMN_KEYS.has(value);
+}
+
+// defendant_names_json is a JSON array (one object per defendant) rather
+// than a pre-joined string, specifically so each name can go through the
+// site's standard SURNAME, Firstname (occupation) formatting instead of a
+// plain "First Last" concatenation done in SQL.
+function parseDefendantNames(json: string | null): string[] {
+  if (!json) return [];
+  const defendants = JSON.parse(json) as BrowseDefendantName[];
+  return defendants.map((d) => formatPersonName(d.first_name, d.last_name, d.occupation, d.name_qualifier));
+}
+
+function formatDefendantNames(json: string | null): string {
+  const names = parseDefendantNames(json);
+  return names.length > 0 ? names.join(", ") : "—";
 }
 
 // Bookmarkable/shareable search state -- read once on mount to hydrate a
@@ -125,7 +146,7 @@ export function BrowseExplorer({
     setRows(result.rows);
     setTotal(result.total);
   });
-  const { isPending: isExporting, run: runExport } = useClientQuery<BrowseRow[]>((exportRows) => {
+  const { isPending: isExporting, run: runExport } = useClientQuery<CsvRow[]>((exportRows) => {
     downloadCsv("nrqs-convictions.csv", exportRows);
   });
 
@@ -161,7 +182,15 @@ export function BrowseExplorer({
   );
 
   function exportCsv() {
-    runExport((db) => listConvictions(db, { ...filters, page: 1, pageSize: EXPORT_PAGE_SIZE }).rows);
+    runExport((db) => {
+      const rows = listConvictions(db, { ...filters, page: 1, pageSize: EXPORT_PAGE_SIZE }).rows;
+      // Swap the raw JSON column for the same formatted name list the table
+      // shows -- a CSV column of json_group_array output would be useless.
+      return rows.map(({ defendant_names_json, ...rest }) => ({
+        ...rest,
+        defendant_names: formatDefendantNames(defendant_names_json),
+      }));
+    });
   }
 
   function runQuery(nextFilters: BrowseFilters) {
@@ -238,6 +267,33 @@ export function BrowseExplorer({
         ? "desc"
         : "asc";
     runQuery({ ...filters, sortBy: column, sortDir: nextDir, page: 1 });
+  }
+
+  function sortButton(column: BrowseSortColumn, label: string) {
+    return (
+      <button
+        type="button"
+        onClick={() => toggleSort(column)}
+        className={css({
+          display: "flex",
+          alignItems: "center",
+          gap: "1",
+          bg: "transparent",
+          border: "none",
+          p: 0,
+          m: 0,
+          font: "inherit",
+          color: "inherit",
+          cursor: "pointer",
+          _hover: { color: "fgAccent" },
+        })}
+      >
+        {label}
+        <span aria-hidden className={css({ fontSize: "small", opacity: column === effectiveSortBy ? 1 : 0.35 })}>
+          {column === effectiveSortBy && effectiveSortDir === "asc" ? "▲" : "▼"}
+        </span>
+      </button>
+    );
   }
 
   return (
@@ -569,40 +625,38 @@ export function BrowseExplorer({
       {rows.length === 0 ? (
         <EmptyState>No records match these filters.</EmptyState>
       ) : (
-        <Table className={css({ borderWidth: "lineweight_heavy" })}>
+        <Table borderWidth="lineweight_heavy" fontSize="small">
           <thead>
             <tr>
-              {SORT_COLUMNS.map(({ key, label }) => (
-                <Th key={key}>
-                  <button
-                    type="button"
-                    onClick={() => toggleSort(key)}
-                    className={css({
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1",
-                      bg: "transparent",
-                      border: "none",
-                      p: 0,
-                      m: 0,
-                      font: "inherit",
-                      color: "inherit",
-                      cursor: "pointer",
-                      _hover: { color: "fgAccent" },
-                    })}
-                  >
-                    {label}
-                    <span aria-hidden className={css({ fontSize: "small", opacity: key === effectiveSortBy ? 1 : 0.35 })}>
-                      {key === effectiveSortBy && effectiveSortDir === "asc" ? "▲" : "▼"}
-                    </span>
-                  </button>
-                </Th>
-              ))}
+              <Th rowSpan={2}>{sortButton("defendant_names", "Defendant")}</Th>
+              <Th rowSpan={2}>{sortButton("conviction_date", "Session date")}</Th>
+              <Th colSpan={3}>Offence</Th>
+              <Th rowSpan={2}>{sortButton("reference_number", "Reference")}</Th>
+            </tr>
+            <tr>
+              <Th>{sortButton("offence_type_names", "Type")}</Th>
+              <Th>{sortButton("offence_date", "Date")}</Th>
+              <Th>{sortButton("location", "Place")}</Th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
+            {rows.map((r) => {
+              const defendantNames = parseDefendantNames(r.defendant_names_json);
+              return (
               <tr key={r.id}>
+                <Td>
+                  {defendantNames.length > 0
+                    ? defendantNames.map((name, i) => <div key={i}>{name}</div>)
+                    : "—"}
+                </Td>
+                <Td>{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
+                <Td>{r.offence_type_names ?? "—"}</Td>
+                <Td>{formatDate(r.offence_date) ?? r.offence_date_raw ?? "—"}</Td>
+                <Td>
+                  {r.offence_town_name || r.court_town_name
+                    ? titleCase(r.offence_town_name ?? r.court_town_name!)
+                    : "—"}
+                </Td>
                 <Td>
                   <Link
                     href={`/cases/${r.id}`}
@@ -611,16 +665,9 @@ export function BrowseExplorer({
                     {r.reference_number}
                   </Link>
                 </Td>
-                <Td>{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
-                <Td>{r.defendant_names ?? "—"}</Td>
-                <Td>{r.offence_type_names ?? "—"}</Td>
-                <Td>
-                  {r.offence_town_name || r.court_town_name
-                    ? titleCase(r.offence_town_name ?? r.court_town_name!)
-                    : "—"}
-                </Td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </Table>
       )}

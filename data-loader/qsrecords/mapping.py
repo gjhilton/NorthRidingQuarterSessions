@@ -25,7 +25,7 @@ from qsrecords.models.extraction_schema import ExtractedRecord
 from qsrecords.models.raw import RawCase
 from qsrecords.models.reference import PettySessionalDivision, Street, Town
 from qsrecords.offence_types import get_or_create_offence_type
-from qsrecords.text import normalize_key, normalize_name
+from qsrecords.text import normalize_key, normalize_name, split_name_qualifier
 
 
 def get_or_create_town(session: Session, raw_name: Optional[str]) -> Optional[Town]:
@@ -134,9 +134,13 @@ def persist_extracted_record(
         street = get_or_create_street(
             session, extracted_defendant.street, town.id if town else None
         )
+        defendant_last_name, defendant_qualifier = split_name_qualifier(
+            extracted_defendant.last_name
+        )
         defendant = Defendant(
             first_name=extracted_defendant.first_name,
-            last_name=extracted_defendant.last_name,
+            last_name=defendant_last_name,
+            name_qualifier=defendant_qualifier,
             sex=extracted_defendant.sex,
             age=extracted_defendant.age,
             marital_status=extracted_defendant.marital_status,
@@ -148,7 +152,7 @@ def persist_extracted_record(
             town_id=town.id if town else None,
             street_id=street.id if street else None,
             name_key=normalize_name(
-                extracted_defendant.first_name, extracted_defendant.last_name
+                extracted_defendant.first_name, defendant_last_name
             ),
         )
         session.add(defendant)
@@ -169,9 +173,11 @@ def persist_extracted_record(
         street = get_or_create_street(
             session, extracted_person.street, town.id if town else None
         )
+        person_last_name, person_qualifier = split_name_qualifier(extracted_person.last_name)
         person = Person(
             first_name=extracted_person.first_name,
-            last_name=extracted_person.last_name,
+            last_name=person_last_name,
+            name_qualifier=person_qualifier,
             age=extracted_person.age,
             marital_status=extracted_person.marital_status,
             relationship_type=extracted_person.relationship_type,
@@ -180,7 +186,7 @@ def persist_extracted_record(
             relationships_and_details=extracted_person.relationships_and_details,
             town_id=town.id if town else None,
             street_id=street.id if street else None,
-            name_key=normalize_name(extracted_person.first_name, extracted_person.last_name),
+            name_key=normalize_name(extracted_person.first_name, person_last_name),
         )
         session.add(person)
         session.flush()

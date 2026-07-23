@@ -45,6 +45,34 @@ def normalize_name(first_name: str | None, last_name: str | None) -> str:
     return normalize_key(" ".join(parts))
 
 
+# Generational epithets the source record sometimes appends straight onto a
+# surname (e.g. "Smith the elder") -- not part of the surname itself, and
+# wrongly read as one produces nonsense like "SMITH THE ELDER" as a
+# formatted name. Longest-first so "the elder" doesn't shadow a longer match
+# (none currently overlap, but keeps this safe if more variants are added).
+_NAME_QUALIFIER_RE = re.compile(
+    r"\s+(the elder|the younger|senior|junior|snr|jnr)$", re.IGNORECASE
+)
+
+
+def split_name_qualifier(last_name: str | None) -> tuple[str | None, str | None]:
+    """Splits a trailing generational epithet off last_name, if present.
+
+    Returns (cleaned_last_name, qualifier) -- qualifier is None, and
+    last_name returned unchanged, when there's nothing to split off.
+    Call this at extraction time (mapping.py) so last_name never gets a
+    qualifier baked into it in the first place; also used by the one-off
+    backfill correcting the handful of rows extracted before this existed.
+    """
+    if not last_name:
+        return last_name, None
+    match = _NAME_QUALIFIER_RE.search(last_name)
+    if not match:
+        return last_name, None
+    cleaned = last_name[: match.start()].strip()
+    return (cleaned or None), match.group(1).lower()
+
+
 # A lowercase letter or digit immediately followed by an uppercase letter,
 # with zero separating characters, is the signature left by the pre-fix
 # scraper's `td_tag.text.strip()` (no separator= passed to BeautifulSoup's

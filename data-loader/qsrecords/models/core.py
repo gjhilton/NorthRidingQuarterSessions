@@ -74,6 +74,16 @@ class Defendant(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    # A generational epithet ("the elder", "the younger") the source record
+    # attached to disambiguate two same-named relatives -- kept separate from
+    # last_name rather than concatenated onto it (e.g. "Smith the elder" is
+    # not a surname). Deliberately excluded from name_key: name_key is
+    # explicitly a coarse "every mention of this first+last name" index, not
+    # an individual-disambiguating one (see its own docstring below), so a
+    # record with a qualifier should still land in the same name_key bucket
+    # as every other same-named mention, not get silently siloed into its
+    # own bucket because of an accident of extraction.
+    name_qualifier: Optional[str] = None
     sex: Optional[str] = None
     age: Optional[int] = None
     marital_status: Optional[str] = None
@@ -104,6 +114,8 @@ class Person(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    # See Defendant.name_qualifier above -- same field, same reasoning.
+    name_qualifier: Optional[str] = None
     age: Optional[int] = None
     marital_status: Optional[str] = None
     relationship_type: Optional[str] = None
