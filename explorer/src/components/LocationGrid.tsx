@@ -99,7 +99,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                       borderRightColor: "fg",
                       cursor: "pointer",
                     }),
-                    hoveredIds.has(cell.node.id) && css({ bg: "#fffde7" })
+                    hoveredIds.has(cell.node.id) && css({ bg: "#fffef5" })
                   )}
                 >
                   <Link
