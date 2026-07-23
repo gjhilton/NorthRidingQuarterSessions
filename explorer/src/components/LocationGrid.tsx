@@ -56,7 +56,11 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
   const treeMaxDepth = Math.max(...roots.map((r) => maxDepth(r)));
   const columnCount = treeMaxDepth + 1;
   const rows = roots.flatMap((root) => buildRows(root, 0, treeMaxDepth));
+  // Background cascades to the whole hovered subtree; text colour is
+  // narrower -- only the exact cell the mouse is over, not its
+  // descendants, per explicit request.
   const [hoveredIds, setHoveredIds] = useState<ReadonlySet<number>>(new Set());
+  const [hoveredNodeId, setHoveredNodeId] = useState<number | null>(null);
 
   return (
     <div
@@ -93,8 +97,14 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                   key={cell.node.id}
                   rowSpan={cell.rowSpan}
                   colSpan={cell.colSpan}
-                  onMouseEnter={() => setHoveredIds(new Set(cell.subtreeIds))}
-                  onMouseLeave={() => setHoveredIds(new Set())}
+                  onMouseEnter={() => {
+                    setHoveredIds(new Set(cell.subtreeIds));
+                    setHoveredNodeId(cell.node.id);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredIds(new Set());
+                    setHoveredNodeId(null);
+                  }}
                   className={cx(
                     css({
                       p: "0", // the Link below takes the padding instead, so it can fill the whole cell
@@ -111,11 +121,10 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                     style={{
                       fontSize: fontSizeForDepth(cell.depth),
                       // Inline style so it wins over globals.css's unlayered
-                      // `.location-grid a` rule regardless of cascade layers
-                      // -- needed because the whole hovered subtree should
-                      // turn red, not just the one link the mouse is
-                      // literally over (which :hover alone would give us).
-                      color: hoveredIds.has(cell.node.id) ? "var(--colors-fg-accent)" : undefined,
+                      // `.location-grid a` rule regardless of cascade layers.
+                      // Only the exact hovered cell, not its descendants --
+                      // the background is what cascades, not the text colour.
+                      color: hoveredNodeId === cell.node.id ? "var(--colors-fg-accent)" : undefined,
                     }}
                     className={css({
                       display: "block",
