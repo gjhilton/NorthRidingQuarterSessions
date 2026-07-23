@@ -3,9 +3,9 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { token } from "styled-system/tokens";
 
-const GRID_COLOR = token("colors.border");
+const GRID_COLOR = token("colors.fg");
 const BAR_COLOR = token("colors.chart2");
-const TEXT_COLOR = token("colors.muted");
+const TEXT_COLOR = token("colors.fgMuted");
 
 // Vertical bar chart for a small fixed set of categories (day of week,
 // lag-time buckets) -- as opposed to BarStat's horizontal layout, which

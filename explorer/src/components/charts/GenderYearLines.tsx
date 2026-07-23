@@ -12,8 +12,8 @@ import {
 } from "recharts";
 import { token } from "styled-system/tokens";
 
-const GRID_COLOR = token("colors.border");
-const TEXT_COLOR = token("colors.muted");
+const GRID_COLOR = token("colors.fg");
+const TEXT_COLOR = token("colors.fgMuted");
 const MALE_COLOR = token("colors.chart1");
 const FEMALE_COLOR = token("colors.chart2");
 

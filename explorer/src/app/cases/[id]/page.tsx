@@ -118,7 +118,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/cases/[id]
               color: "fgAccent",
               bg: "bg",
               borderWidth: "lineweight_normal", borderStyle: "solid",
-              borderColor: "borderMuted",
+              borderColor: "fg",
               borderRadius: "corner",
               px: "3",
               py: "2",

@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run copy-db && npm run export-csv && next dev",
+    "dev": "npm run copy-db && npm run export-csv && (npm run panda:watch &) && next dev",
+    "panda:watch": "panda codegen --watch",
     "copy-db": "node scripts/copy-db.mjs",
     "export-csv": "node scripts/export-csv.mjs",
     "build": "npm run copy-db && npm run export-csv && next build",

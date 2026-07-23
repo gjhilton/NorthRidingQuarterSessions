@@ -11,9 +11,9 @@ import {
 } from "recharts";
 import { token } from "styled-system/tokens";
 
-const GRID_COLOR = token("colors.border");
+const GRID_COLOR = token("colors.fg");
 const LINE_COLOR = token("colors.chart2");
-const TEXT_COLOR = token("colors.muted");
+const TEXT_COLOR = token("colors.fgMuted");
 
 export function YearTrend({ data }: { data: { year: number; count: number; n?: number }[] }) {
   return (

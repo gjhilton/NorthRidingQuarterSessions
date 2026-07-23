@@ -12,8 +12,8 @@ import {
 } from "recharts";
 import { token } from "styled-system/tokens";
 
-const GRID_COLOR = token("colors.border");
-const TEXT_COLOR = token("colors.muted");
+const GRID_COLOR = token("colors.fg");
+const TEXT_COLOR = token("colors.fgMuted");
 
 // Cycled across series in order; "Other" (always the last series key from
 // topNSeriesByYear) lands on chart7 (the grey) so it reads as a residual

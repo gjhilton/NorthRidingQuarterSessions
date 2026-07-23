@@ -31,7 +31,7 @@ export function PageTitle({
       <h1
         className={css({
           fontFamily: "serif",
-          fontSize: "display",
+          fontSize: "pageTitle",
           fontWeight: "600",
           color: "fg",
         })}
@@ -48,17 +48,27 @@ export function PageTitle({
 export function Card({
   children,
   className,
+  bg = "bg",
+  borderWidth = "lineweight_normal",
 }: {
   children: React.ReactNode;
   className?: string;
+  // Passed as real props, merged into this component's own css() call,
+  // rather than left to a className override -- two separate css() calls
+  // combined via cx() just concatenate class names, and Panda resolves a
+  // same-specificity conflict between them by stylesheet order, not by
+  // which one the caller passed last. That silently made Card's own
+  // defaults always win over a caller's attempted className override.
+  bg?: string;
+  borderWidth?: string;
 }) {
   return (
     <div
       className={cx(
         css({
-          bg: "bg",
-          borderWidth: "lineweight_normal", borderStyle: "solid",
-          borderColor: "borderMuted",
+          bg,
+          borderWidth, borderStyle: "solid",
+          borderColor: "fg",
           borderRadius: "corner",
           p: "5",
         }),
@@ -102,7 +112,7 @@ export function Table({
           overflowX: "auto",
           borderWidth: "lineweight_normal",
           borderStyle: "solid",
-          borderColor: "borderMuted",
+          borderColor: "fg",
           borderRadius: "corner",
         }),
         className
@@ -126,7 +136,7 @@ export function Th({ children }: { children: React.ReactNode }) {
         color: "fgMuted",
         fontWeight: "600",
         borderBottomWidth: "lineweight_normal", borderBottomStyle: "solid",
-        borderColor: "borderMuted",
+        borderColor: "fg",
         whiteSpace: "nowrap",
       })}
     >
@@ -149,7 +159,7 @@ export function Td({
           py: "2",
           px: "3",
           borderBottomWidth: "lineweight_normal", borderBottomStyle: "solid",
-          borderColor: "borderMuted",
+          borderColor: "fg",
           verticalAlign: "top",
         }),
         className
@@ -176,52 +186,82 @@ export function ChartTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Shared by the two client search islands (BrowseExplorer, PeopleSearch) so
-// their forms stay visually identical without each re-declaring the same
-// css() literal.
-export const formInputStyle = css({
+// Shared by the client search islands (BrowseExplorer, PeopleSearch, People
+// browse filters) so their forms stay visually identical without each
+// re-declaring the same style literal. A raw style object (css.raw), not a
+// compiled className -- consumers merge it via css(formInputStyle, {...})
+// in one call so an override actually wins (two separately-compiled
+// classes combined with cx() just concatenate class names, and Panda
+// resolves a same-specificity conflict between them by stylesheet order,
+// not by which one the caller passed last).
+export const formInputStyle = css.raw({
   borderWidth: "lineweight_normal", borderStyle: "solid",
-  borderColor: "borderMuted",
+  borderColor: "fg",
   borderRadius: "corner",
   px: "3",
   py: "2",
   fontSize: "body",
-  bg: "bgSurface",
+  bg: "bg",
   color: "fg",
 });
+
+// Every button in the app is one of two variants, plus two states layered
+// on top of either: default is bordered paper/ink; hero is a filled
+// ink/paper block (the search button is the one hero use case so far).
+// Both variants roll over to the same white-on-red accent fill and dim to
+// the same disabled state -- only the *resting* look differs, so the
+// interaction behaviour is defined once and merged with whichever variant
+// via a single css() call (raw style objects, not separately-compiled
+// classes -- see Card's bg/borderWidth props for why that distinction
+// matters here).
+const buttonInteractionStyle = css.raw({
+  cursor: "pointer",
+  transition: "background-color 0.15s, border-color 0.15s, color 0.15s",
+  _hover: { borderColor: "fgAccent", bg: "fgAccent", color: "bg" },
+  _disabled: { opacity: 0.3, cursor: "default" },
+});
+
+const buttonVariantStyle = {
+  default: css.raw({ bg: "bg", color: "fg" }),
+  hero: css.raw({ bg: "fg", color: "bg" }),
+};
+
+export type ButtonVariant = keyof typeof buttonVariantStyle;
 
 // The site's one search-widget style: a text input with a square magnifier
 // button flush against its right edge, sharing a border so the two read as
 // one control. Used identically by the homepage's CasesSearch/PeopleSearch
-// and the Cases listing page's own search field.
+// and the Cases listing page's own search field. The button is the "hero"
+// variant -- filled ink/paper at rest.
 export function SearchField(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className={css({ display: "flex" })}>
       <input
         {...props}
         className={cx(
-          formInputStyle,
-          css({ flex: "1", borderRightWidth: "0", borderTopRightRadius: "0", borderBottomRightRadius: "0" }),
+          css(formInputStyle, {
+            flex: "1",
+            borderWidth: "lineweight_heavy",
+            borderRightWidth: "0",
+            borderTopRightRadius: "0",
+            borderBottomRightRadius: "0",
+          }),
           props.className
         )}
       />
       <button
         type="submit"
         aria-label="Search"
-        className={css({
+        className={css(buttonVariantStyle.hero, buttonInteractionStyle, {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           width: "2.75rem",
-          borderWidth: "lineweight_normal",
+          borderWidth: "lineweight_heavy",
           borderStyle: "solid",
-          borderColor: "borderMuted",
+          borderColor: "fg",
           borderTopRightRadius: "corner",
           borderBottomRightRadius: "corner",
-          bg: "fgAccent",
-          color: "bgSurface",
-          cursor: "pointer",
-          _hover: { opacity: 0.9 },
         })}
       >
         <SearchIcon size={16} />
@@ -231,38 +271,34 @@ export function SearchField(props: React.InputHTMLAttributes<HTMLInputElement>) 
 }
 
 // A bordered button with an icon on either side of its (possibly
-// multi-line) label content, filling solid with the accent colour on
-// hover/focus -- used by the Cases page's CSV export button.
+// multi-line) label content -- used by the Cases page's CSV export and
+// Prev/Next buttons.
 export function IconButton({
   icon,
   iconPosition = "left",
+  variant = "default",
   children,
   className,
   ...props
 }: {
   icon: React.ReactNode;
   iconPosition?: "left" | "right";
+  variant?: ButtonVariant;
   children: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       {...props}
       className={cx(
-        css({
+        css(buttonVariantStyle[variant], buttonInteractionStyle, {
           display: "flex",
           alignItems: "center",
           gap: "4",
           px: "5",
           py: "1.5",
           borderWidth: "lineweight_heavy", borderStyle: "solid",
-          borderColor: "borderMuted",
+          borderColor: "fg",
           borderRadius: "corner",
-          color: "fg",
-          bg: "bgSurface",
-          cursor: "pointer",
-          transition: "background-color 0.15s, border-color 0.15s, color 0.15s",
-          _hover: { borderColor: "fgAccent", bg: "fgAccent", color: "bgSurface" },
-          _disabled: { opacity: 0.5, cursor: "default" },
         }),
         className
       )}
@@ -273,19 +309,6 @@ export function IconButton({
     </button>
   );
 }
-
-export const primaryButtonStyle = css({
-  bg: "fgAccent",
-  color: "bgSurface",
-  px: "4",
-  py: "2",
-  borderRadius: "corner",
-  fontSize: "body",
-  fontWeight: "600",
-  cursor: "pointer",
-  border: "none",
-  _disabled: { opacity: 0.6, cursor: "default" },
-});
 
 export function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -298,7 +321,7 @@ export function Pill({ children }: { children: React.ReactNode }) {
         borderRadius: "full",
         bg: "bg",
         borderWidth: "lineweight_normal", borderStyle: "solid",
-        borderColor: "borderMuted",
+        borderColor: "fg",
         color: "fgMuted",
       })}
     >

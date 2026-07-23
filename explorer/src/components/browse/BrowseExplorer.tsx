@@ -242,7 +242,9 @@ export function BrowseExplorer({
 
   return (
     <div className={css({ display: "flex", flexDirection: "column", gap: "6" })}>
-      <Card className={css({ borderWidth: "lineweight_heavy" })}>
+      {/* EXPERIMENTAL: tinted background on the whole search/filters box --
+          revert to the plain Card default if it doesn't work out. */}
+      <Card bg="bgSurface" borderWidth="0">
         <form
           key={formKey}
           onSubmit={handleSubmit}
@@ -522,12 +524,24 @@ export function BrowseExplorer({
 
       <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
         <p className={css({ fontSize: "body", color: "fgMuted" })}>
-          Showing{" "}
-          <strong className={css({ color: "fg" })}>
-            {rangeStart.toLocaleString()}–{rangeEnd.toLocaleString()}
-          </strong>{" "}
-          of <strong className={css({ color: "fg" })}>{total.toLocaleString()}</strong> matching record
-          {total === 1 ? "" : "s"}
+          {total === 1 ? (
+            <>
+              Showing <strong className={css({ color: "fg" })}>1</strong> matching record
+            </>
+          ) : total <= PAGE_SIZE ? (
+            <>
+              Showing all <strong className={css({ color: "fg" })}>{total.toLocaleString()}</strong> matching
+              records
+            </>
+          ) : (
+            <>
+              Showing{" "}
+              <strong className={css({ color: "fg" })}>
+                {rangeStart.toLocaleString()}–{rangeEnd.toLocaleString()}
+              </strong>{" "}
+              of <strong className={css({ color: "fg" })}>{total.toLocaleString()}</strong> matching records
+            </>
+          )}
         </p>
         {rows.length > 0 && (
           <IconButton icon={<DownloadIcon size={18} />} onClick={exportCsv} disabled={isExporting}>
@@ -665,10 +679,5 @@ function FormField({
   );
 }
 
-// colorScheme lets native form-control chrome (the date input's calendar
-// icon/popup, the select's dropdown) follow the OS light/dark setting the
-// same way the site's own tokens already do (theme/tokens.ts's _osDark) --
-// without it, a date picker renders as a jarring white box against a dark
-// page.
-const inputStyle = cx(formInputStyle, css({ px: "2", py: "1.5", width: "100%", colorScheme: "light dark" }));
+const inputStyle = css(formInputStyle, { px: "2", py: "1.5", width: "100%", colorScheme: "light" });
 

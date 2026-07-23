@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css";
 import type { PersonListRow } from "@/lib/queries/peopleList";
 import { toSlug } from "@/lib/slug";
 import { titleCase } from "@/lib/text";
@@ -42,7 +42,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as RoleFilter)}
-            className={cx(formInputStyle, css({ px: "2", py: "1.5" }))}
+            className={css(formInputStyle, { px: "2", py: "1.5" })}
           >
             <option value="all">All roles</option>
             <option value="defendant">Defendants</option>
@@ -53,7 +53,7 @@ export function PeopleBrowseList({ people }: { people: PersonListRow[] }) {
           <select
             value={sex}
             onChange={(e) => setSex(e.target.value as SexFilter)}
-            className={cx(formInputStyle, css({ px: "2", py: "1.5" }))}
+            className={css(formInputStyle, { px: "2", py: "1.5" })}
           >
             <option value="all">All</option>
             <option value="male">Male</option>

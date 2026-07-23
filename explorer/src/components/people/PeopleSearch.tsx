@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
 import { searchPeople, type PersonSearchResult } from "@/lib/queries/peopleSearch";
 import { formInputStyle } from "@/components/ui";
@@ -84,7 +84,7 @@ export function PeopleSearch({ autoFocus = true }: { autoFocus?: boolean }) {
         role="combobox"
         aria-expanded={open}
         aria-autocomplete="list"
-        className={cx(formInputStyle, css({ width: "100%" }))}
+        className={css(formInputStyle, { width: "100%" })}
       />
 
       {open && results.length > 0 && (
@@ -98,7 +98,7 @@ export function PeopleSearch({ autoFocus = true }: { autoFocus?: boolean }) {
             bg: "bgSurface",
             borderWidth: "lineweight_normal",
             borderStyle: "solid",
-            borderColor: "borderMuted",
+            borderColor: "fg",
             borderRadius: "corner",
             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             overflow: "hidden",
@@ -117,7 +117,7 @@ export function PeopleSearch({ autoFocus = true }: { autoFocus?: boolean }) {
                 py: "2",
                 borderBottomWidth: "lineweight_normal",
                 borderBottomStyle: "solid",
-                borderColor: "borderMuted",
+                borderColor: "fg",
                 bg: i === highlighted ? "bg" : "bgSurface",
                 _last: { borderBottomWidth: "0" },
               })}

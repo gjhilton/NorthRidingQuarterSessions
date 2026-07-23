@@ -16,7 +16,7 @@ const NODE_COLOR = {
   defendant: token("colors.chart2"),
   person: token("colors.chart3"),
 };
-const LINK_COLOR = token("colors.border");
+const LINK_COLOR = token("colors.fg");
 
 export function NetworkView({
   connections,
@@ -71,7 +71,7 @@ export function NetworkView({
         <div
           className={css({
             borderWidth: "lineweight_normal", borderStyle: "solid",
-            borderColor: "borderMuted",
+            borderColor: "fg",
             borderRadius: "corner",
             overflow: "hidden",
             height: "28rem",
@@ -122,7 +122,7 @@ function ToggleButton({
         fontWeight: "600",
         cursor: "pointer",
         borderWidth: "lineweight_normal", borderStyle: "solid",
-        borderColor: active ? "fgAccent" : "borderMuted",
+        borderColor: active ? "fgAccent" : "fg",
         bg: active ? "fgAccent" : "bgSurface",
         color: active ? "bgSurface" : "fg",
       })}

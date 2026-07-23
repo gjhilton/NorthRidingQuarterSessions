@@ -24,7 +24,7 @@ export function CopyCitationButton({ text }: { text: string }) {
         px: "2.5",
         py: "1",
         borderWidth: "lineweight_normal", borderStyle: "solid",
-        borderColor: "borderMuted",
+        borderColor: "fg",
         borderRadius: "corner",
         fontSize: "small",
         color: "fg",

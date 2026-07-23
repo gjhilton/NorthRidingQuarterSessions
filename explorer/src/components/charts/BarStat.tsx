@@ -14,9 +14,9 @@ import { token } from "styled-system/tokens";
 // Recharts takes raw color strings (stroke/fill props), not className, so
 // these read the shared theme tokens via the token() helper rather than
 // css() -- see theme/tokens.ts for the actual values.
-const GRID_COLOR = token("colors.border");
+const GRID_COLOR = token("colors.fg");
 const BAR_COLOR = token("colors.chart1");
-const TEXT_COLOR = token("colors.muted");
+const TEXT_COLOR = token("colors.fgMuted");
 
 export function HorizontalBarStat({
   data,

@@ -37,7 +37,7 @@ export function MiniBarRow({
           bg: "bg",
           borderWidth: "lineweight_normal",
           borderStyle: "solid",
-          borderColor: "borderMuted",
+          borderColor: "fg",
           borderRadius: "corner",
           overflow: "hidden",
         })}

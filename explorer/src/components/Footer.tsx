@@ -1,13 +1,35 @@
+"use client";
+
 import Link from "next/link";
-import { css } from "styled-system/css";
+import { usePathname } from "next/navigation";
+import { css, cx } from "styled-system/css";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { primaryLinks, trailingLinks } from "@/lib/navLinks";
 
 const footerNavLinks = [...primaryLinks, ...trailingLinks];
 
-const footerLinkStyle = css({ color: "fgMuted", _hover: { color: "fgAccent" } });
+const footerLinkStyle = css({ color: "fg", _hover: { color: "fgAccent" } });
+
+// Same active-section logic as Nav.tsx, so the footer's nav highlights the
+// current section the same way the header's does.
+function isActive(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+// Inline style, not a Panda class: globals.css's `footer a { color: ... }`
+// rule is deliberately unlayered (see that file), which beats a
+// component-level "active" class too. Inline styles beat both layered and
+// unlayered stylesheet rules, so this is the one way to actually make the
+// active link look different -- see Nav.tsx for the same technique.
+function footerLinkColor(active: boolean): React.CSSProperties {
+  return active ? { fontWeight: 600 } : {};
+}
 
 export function Footer() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const activePath = isHome ? null : pathname;
+
   return (
     <footer
       className={css({
@@ -23,7 +45,7 @@ export function Footer() {
           py: "6",
           display: "flex",
           flexDirection: "column",
-          gap: "4",
+          gap: "3",
           fontSize: "small",
         })}
       >
@@ -34,11 +56,16 @@ export function Footer() {
               flexWrap: "wrap",
               gap: "4",
               listStyle: "none",
+              fontSize: "body",
             })}
           >
             {footerNavLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className={footerLinkStyle}>
+                <Link
+                  href={link.href}
+                  className={footerLinkStyle}
+                  style={footerLinkColor(Boolean(activePath && isActive(activePath, link.href)))}
+                >
                   {link.label}
                 </Link>
               </li>
@@ -46,44 +73,80 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div
+        <ul
           className={css({
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "space-between",
-            gap: "3",
-            color: "fgMuted",
+            gap: "4",
+            listStyle: "none",
+            fontSize: "0.875rem",
           })}
         >
-          <p>
-            &copy; {new Date().getFullYear()} G.J. Hilton, Funeral Games. Source data from{" "}
-            <a
-              href="https://archivesunlocked.northyorks.gov.uk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={css({ color: "fgAccent" })}
-            >
-              Archives Unlocked North Yorkshire
-            </a>
-            , North Yorkshire County Record Office.
-          </p>
-          <div className={css({ display: "flex", gap: "4" })}>
+          <li>
             <Link href="/cookies" className={footerLinkStyle}>
               Cookies policy
             </Link>
+          </li>
+          <li>
             <Link href="/accessibility" className={footerLinkStyle}>
               Accessibility
             </Link>
-            <a
-              href="https://github.com/gjhilton/NorthRidingQuarterSessions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={css({ color: "fgAccent", display: "inline-flex", alignItems: "center", gap: "1.5" })}
-            >
-              <GitHubIcon size={14} />
-              Source on GitHub
-            </a>
+          </li>
+        </ul>
+
+        <div
+          className={css({
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "6",
+            mt: "4rem",
+          })}
+        >
+          <div
+            className={css({
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5",
+              color: "fgMuted",
+              fontSize: "0.875rem",
+            })}
+          >
+            <p>
+              Source data:{" "}
+              <a
+                href="https://archivesunlocked.northyorks.gov.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={footerLinkStyle}
+              >
+                Archives Unlocked North Yorkshire
+              </a>
+              , North Yorkshire County Record Office.
+            </p>
+            <p className={css({ display: "flex", alignItems: "center", gap: "3", flexWrap: "wrap" })}>
+              &copy; {new Date().getFullYear()} G.J. Hilton / Funeral Games.
+              <a
+                href="https://github.com/gjhilton/NorthRidingQuarterSessions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cx(footerLinkStyle, css({ display: "inline-flex", alignItems: "center", gap: "1.5" }))}
+              >
+                <GitHubIcon size={14} />
+                Source code on GitHub
+              </a>
+            </p>
           </div>
+
+          <a
+            href="https://funeralgames.co.uk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={css({ flexShrink: "0" })}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/funeral-games-logo.svg" alt="Funeral Games" className={css({ height: "2rem" })} />
+          </a>
         </div>
       </div>
     </footer>
