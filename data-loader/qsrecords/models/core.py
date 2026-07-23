@@ -35,9 +35,14 @@ class SummaryConviction(SQLModel, table=True):
     sentencing: Optional[str] = None
     raw_record: str
 
-    offence_location_town_id: Optional[int] = Field(default=None, foreign_key="town.id")
-    offence_location_street_id: Optional[int] = Field(default=None, foreign_key="street.id")
-    court_location_town_id: Optional[int] = Field(default=None, foreign_key="town.id")
+    # The single most-specific (leaf) Place node for where the offence
+    # happened, and separately for where the case was heard -- see
+    # Defendant.location_id for the same one-id-per-location reasoning.
+    # The old offence_location_town_id/offence_location_street_id/
+    # court_location_town_id columns still physically exist in the database
+    # during the manual migration (read via raw SQL) but aren't modelled here.
+    offence_location_id: Optional[int] = Field(default=None, foreign_key="place.id")
+    court_location_id: Optional[int] = Field(default=None, foreign_key="place.id")
     archive_url: str
 
     # Self-reported by the LLM at extraction time (see
@@ -92,8 +97,12 @@ class Defendant(SQLModel, table=True):
     occupation: Optional[str] = None
     relationships_and_details: Optional[str] = None
     prior_convictions: Optional[str] = None
-    town_id: Optional[int] = Field(default=None, foreign_key="town.id")
-    street_id: Optional[int] = Field(default=None, foreign_key="street.id")
+    # The one place this defendant is known to live, as the single
+    # most-specific (leaf) node in the Place tree -- see
+    # qsrecords.models.reference.Place. The old town_id/street_id columns
+    # still physically exist in the database during the manual migration
+    # (read via raw SQL, not through this model) but are not modelled here.
+    location_id: Optional[int] = Field(default=None, foreign_key="place.id")
     # Normalized "first last" key — retrieval hook for "every mention of this
     # name", NOT a merge/dedup key. See models/reference.py docstring for the
     # analogous-but-different Town/Street/OffenceType dedup behavior.
@@ -122,8 +131,8 @@ class Person(SQLModel, table=True):
     related_to_name: Optional[str] = None
     occupation: Optional[str] = None
     relationships_and_details: Optional[str] = None
-    town_id: Optional[int] = Field(default=None, foreign_key="town.id")
-    street_id: Optional[int] = Field(default=None, foreign_key="street.id")
+    # See Defendant.location_id above -- same field, same reasoning.
+    location_id: Optional[int] = Field(default=None, foreign_key="place.id")
     name_key: str = Field(index=True)
 
 

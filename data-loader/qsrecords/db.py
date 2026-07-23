@@ -32,6 +32,16 @@ _COLUMN_ADDITIONS = [
     ("offence_type", "category_id", "INTEGER"),
     ("defendant", "name_qualifier", "VARCHAR"),
     ("person", "name_qualifier", "VARCHAR"),
+    # Place tree migration (see qsrecords.models.reference.Place) -- new
+    # single leaf-node location columns, added alongside the still-present
+    # old town_id/street_id-family columns (not modelled in Python anymore,
+    # but not yet dropped from the database either, so the manual place-by-
+    # place migration has the old data to read from and check against).
+    ("defendant", "location_id", "INTEGER"),
+    ("person", "location_id", "INTEGER"),
+    ("summary_conviction", "offence_location_id", "INTEGER"),
+    ("summary_conviction", "court_location_id", "INTEGER"),
+    ("place", "path_geometry", "TEXT"),
 ]
 
 
