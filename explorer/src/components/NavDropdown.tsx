@@ -63,6 +63,11 @@ export function NavDropdown({
           _hover: { color: "#f00", opacity: 1 },
         })}
       >
+        {/* EXPERIMENTAL: same invisible-unless-current bullet as Nav.tsx's
+            top-level items -- see navBulletColor() there. */}
+        <span aria-hidden style={{ color: hasActiveLink ? "#f00" : "var(--colors-fg)" }}>
+          •{" "}
+        </span>
         {label}
         <span aria-hidden className={css({ fontSize: "small", mt: "0.5" })}>
           ▾

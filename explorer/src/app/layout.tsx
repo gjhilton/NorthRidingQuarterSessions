@@ -3,6 +3,7 @@ import { Inter, Lora } from "next/font/google";
 import { css } from "styled-system/css";
 import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { MobileWarningBanner } from "@/components/MobileWarningBanner";
 import { siteTitleFull } from "@/lib/siteName";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable}`}>
       <body className={css({ display: "flex", flexDirection: "column", minHeight: "100vh" })}>
+        <MobileWarningBanner />
         <Nav />
         <div className={css({ flex: "1" })}>{children}</div>
         <Footer />

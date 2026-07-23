@@ -27,6 +27,17 @@ function navLinkColor(active: boolean): React.CSSProperties {
   return active ? { color: "var(--colors-bg)", fontWeight: 600 } : {};
 }
 
+// EXPERIMENTAL: a bullet before each top-nav item, coloured the same as
+// the header's own background so it's invisible by default -- except on
+// whichever section is current, where it's red. Inline style for the same
+// reason navLinkColor() is: needs to win regardless of active state, and
+// a plain Panda class can't override the parent <a>'s color inheritance
+// reliably here either way since this needs its OWN colour, independent
+// of the link text's.
+function navBulletColor(active: boolean): React.CSSProperties {
+  return { color: active ? "#f00" : "var(--colors-fg)" };
+}
+
 export default function Nav() {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -59,31 +70,35 @@ export default function Nav() {
             alignItems: "center",
           })}
         >
-          {primaryLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={navLinkStyle}
-                style={navLinkColor(Boolean(activePath && isActive(activePath, link.href)))}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {primaryLinks.map((link) => {
+            const active = Boolean(activePath && isActive(activePath, link.href));
+            return (
+              <li key={link.href}>
+                <Link href={link.href} className={navLinkStyle} style={navLinkColor(active)}>
+                  <span aria-hidden style={navBulletColor(active)}>
+                    •{" "}
+                  </span>
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
           <li>
             <NavDropdown label="Insights" links={insightsLinks} activePath={activePath} />
           </li>
-          {trailingLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={navLinkStyle}
-                style={navLinkColor(Boolean(activePath && isActive(activePath, link.href)))}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {trailingLinks.map((link) => {
+            const active = Boolean(activePath && isActive(activePath, link.href));
+            return (
+              <li key={link.href}>
+                <Link href={link.href} className={navLinkStyle} style={navLinkColor(active)}>
+                  <span aria-hidden style={navBulletColor(active)}>
+                    •{" "}
+                  </span>
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
         {!isHome && (
           <Link
