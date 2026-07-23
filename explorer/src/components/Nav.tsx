@@ -20,22 +20,23 @@ function isActive(pathname: string, href: string): boolean {
 // color classes without exceptions (see that file) -- which means a
 // component-level "active" class would lose to it too. Inline styles beat
 // both layered and unlayered stylesheet rules, so this is the one way to
-// actually make the active link look different. Uses --colors-bg (white)
-// rather than --colors-fg (black) to match the header's current black
-// background -- EXPERIMENTAL, see globals.css's header a rule.
+// actually make the active link look different. Inactive links fall
+// through to globals.css's header a rule (black, matching the header's
+// white background); active ones are explicitly black + bold here since
+// that rule alone can't add the font-weight.
 function navLinkColor(active: boolean): React.CSSProperties {
-  return active ? { color: "var(--colors-bg)", fontWeight: 600 } : {};
+  return active ? { color: "var(--colors-fg)", fontWeight: 600 } : {};
 }
 
-// EXPERIMENTAL: a bullet before each top-nav item, coloured the same as
-// the header's own background so it's invisible by default -- except on
-// whichever section is current, where it's red. Inline style for the same
-// reason navLinkColor() is: needs to win regardless of active state, and
-// a plain Panda class can't override the parent <a>'s color inheritance
-// reliably here either way since this needs its OWN colour, independent
-// of the link text's.
+// A bullet before each top-nav item, coloured the same as the header's own
+// (white) background so it's invisible by default -- except on whichever
+// section is current, where it's red. Inline style for the same reason
+// navLinkColor() is: needs to win regardless of active state, and a plain
+// Panda class can't override the parent <a>'s color inheritance reliably
+// here either way since this needs its OWN colour, independent of the
+// link text's.
 function navBulletColor(active: boolean): React.CSSProperties {
-  return { color: active ? "#f00" : "var(--colors-fg)" };
+  return { color: active ? "#f00" : "var(--colors-bg)" };
 }
 
 export default function Nav() {
@@ -46,10 +47,8 @@ export default function Nav() {
   const activePath = isHome ? null : pathname;
 
   return (
-    // EXPERIMENTAL: black header background (paired with globals.css's
-    // header a rule going white-on-black). Revert to bg: "bg" if it
-    // doesn't work out.
-    <header className={css({ bg: "fg" })}>
+    // White header background, black links (globals.css's header a rule).
+    <header className={css({ bg: "bg" })}>
       <nav
         className={css({
           maxWidth: "72rem",
