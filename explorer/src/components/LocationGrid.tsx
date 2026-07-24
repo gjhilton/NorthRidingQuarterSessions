@@ -30,12 +30,15 @@ type Row = Cell[];
 // just column position, but now using the same named steps as every other
 // page rather than this grid's own one-off numbers. XXL is skipped (that's
 // reserved for the page's own <PageTitle> h1); floors at S for anything
-// four or more levels deep.
+// five or more levels deep. Depths 0 and 1 share the same size (XL) --
+// the root row is distinguished from its immediate children by weight
+// (see the fontWeight ternary below), not a separate size step.
 // Panda's kebab-case conversion splits every uppercase letter in an
 // all-caps token name as its own word, so "XL" -> --font-sizes--x-l, not
 // the --font-sizes-XL you'd guess -- verified against the actual compiled
 // stylesheet, not assumed.
 const DEPTH_FONT_SIZES = [
+  "var(--font-sizes--x-l)",
   "var(--font-sizes--x-l)",
   "var(--font-sizes--l)",
   "var(--font-sizes--m)",
