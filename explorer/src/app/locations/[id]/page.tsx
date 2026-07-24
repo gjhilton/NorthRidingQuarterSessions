@@ -125,7 +125,12 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
                 {sentenceCase(offenceType)}{" "}
                 <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
               </h3>
-              <PlaceOffenceTable rows={rows} />
+              <PlaceOffenceTable rows={rows.slice(0, 10)} />
+              {rows.length > 10 && (
+                <p className={css({ fontSize: "S", color: "fgMuted" })}>
+                  Showing the first 10 of {rows.length}.
+                </p>
+              )}
             </div>
           ))}
         </section>
