@@ -126,7 +126,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       {convictions.length > 0 && (
         <section className={css({ display: "flex", flexDirection: "column", gap: "5" })}>
           <h2 className={sectionHeadingStyle}>Offences</h2>
-          {convictionsByType.length > 1 && (
+          {convictionsByType.length > 5 && (
             <p className={css({ fontSize: "M" })}>
               {convictionsByType.map(([offenceType, rows], i) => (
                 <span key={offenceType}>
