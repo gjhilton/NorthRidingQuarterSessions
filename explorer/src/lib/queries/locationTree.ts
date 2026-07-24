@@ -102,19 +102,27 @@ export interface PlaceConvictionRow {
   conviction_date: string | null;
   conviction_date_raw: string;
   charge_description: string;
+  offence_type: string;
 }
 
 // Convictions directly tied to this exact node (as offence or court
 // location) -- not rolled up from descendants, since a node's own
 // rowSpan/breadcrumb already shows where it sits relative to its children.
+// One row per (conviction, offence type) pair -- a conviction tagged with
+// more than one offence type appears once per type, so the detail page can
+// group into sections by offence_type. Every conviction has at least one
+// type tagged, so the join can't silently drop any.
 export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
   return getDb()
     .prepare(
       `
-      SELECT DISTINCT reference_number, conviction_date, conviction_date_raw, charge_description
-      FROM summary_conviction
-      WHERE offence_location_id = ? OR court_location_id = ?
-      ORDER BY conviction_date IS NULL, conviction_date DESC
+      SELECT DISTINCT sc.reference_number, sc.conviction_date, sc.conviction_date_raw, sc.charge_description,
+        ot.name AS offence_type
+      FROM summary_conviction sc
+      JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
+      JOIN offence_type ot ON ot.id = scot.offence_type_id
+      WHERE sc.offence_location_id = ? OR sc.court_location_id = ?
+      ORDER BY ot.name, sc.conviction_date IS NULL, sc.conviction_date DESC
       `
     )
     .all(id, id) as PlaceConvictionRow[];

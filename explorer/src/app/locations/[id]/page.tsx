@@ -11,6 +11,7 @@ import {
   getPlaceDetail,
   getPlacePeople,
   listPlaceIds,
+  type PlaceConvictionRow,
 } from "@/lib/queries/locationTree";
 import { convictionHref } from "@/lib/referenceSlug";
 import { personHref } from "@/lib/links";
@@ -21,6 +22,22 @@ export async function generateStaticParams() {
 }
 
 const sectionHeadingStyle = css({ fontFamily: "serif", fontSize: "display", fontWeight: "600" });
+const offenceTypeHeadingStyle = css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" });
+
+// Groups the (conviction, offence type) rows getPlaceConvictions returns
+// into one bucket per offence type -- a conviction tagged with more than
+// one type appears once in each of its types' buckets. Ordered by bucket
+// size (most common offence type here first), not alphabetically, since
+// "what mostly happens at this place" is the more useful lead.
+function groupByOffenceType(rows: PlaceConvictionRow[]): [string, PlaceConvictionRow[]][] {
+  const groups = new Map<string, PlaceConvictionRow[]>();
+  for (const row of rows) {
+    const group = groups.get(row.offence_type);
+    if (group) group.push(row);
+    else groups.set(row.offence_type, [row]);
+  }
+  return [...groups.entries()].sort((a, b) => b[1].length - a[1].length);
+}
 
 export default async function PlaceDetailPage(props: PageProps<"/locations/[id]">) {
   const { id } = await props.params;
@@ -33,6 +50,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
   const ancestry = getPlaceAncestry(placeId);
   const children = getPlaceChildren(placeId);
   const convictions = getPlaceConvictions(placeId);
+  const convictionsByType = groupByOffenceType(convictions);
   const people = getPlacePeople(placeId);
 
   return (
@@ -84,33 +102,40 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       )}
 
       {convictions.length > 0 && (
-        <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+        <section className={css({ display: "flex", flexDirection: "column", gap: "5" })}>
           <h2 className={sectionHeadingStyle}>Offences</h2>
-          <Table>
-            <thead>
-              <tr>
-                <Th>Reference</Th>
-                <Th>Date</Th>
-                <Th>Charge</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {convictions.map((c) => (
-                <tr key={c.reference_number}>
-                  <Td>
-                    <Link
-                      href={convictionHref(c.reference_number)}
-                      className={css({ color: "fgAccent", fontWeight: "600" })}
-                    >
-                      {c.reference_number}
-                    </Link>
-                  </Td>
-                  <Td>{formatDate(c.conviction_date) ?? c.conviction_date_raw}</Td>
-                  <Td>{c.charge_description}</Td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          {convictionsByType.map(([offenceType, rows]) => (
+            <div key={offenceType} className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
+              <h3 className={offenceTypeHeadingStyle}>
+                {offenceType} <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
+              </h3>
+              <Table>
+                <thead>
+                  <tr>
+                    <Th>Reference</Th>
+                    <Th>Date</Th>
+                    <Th>Charge</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((c) => (
+                    <tr key={`${c.reference_number}-${offenceType}`}>
+                      <Td>
+                        <Link
+                          href={convictionHref(c.reference_number)}
+                          className={css({ color: "fgAccent", fontWeight: "600" })}
+                        >
+                          {c.reference_number}
+                        </Link>
+                      </Td>
+                      <Td>{formatDate(c.conviction_date) ?? c.conviction_date_raw}</Td>
+                      <Td>{c.charge_description}</Td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          ))}
         </section>
       )}
 
