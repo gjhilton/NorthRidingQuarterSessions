@@ -11,6 +11,8 @@ import {
   type DetailInvolvedPerson,
   getConvictionOffences,
   type ConvictionOffence,
+  getConvictionLocation,
+  type ConvictionLocation,
   getConvictionPosition,
   getOtherConvictionCounts,
   getRelatedConvictions,
@@ -18,10 +20,10 @@ import {
 } from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { ConvictionNav } from "@/components/ConvictionNav";
-import { personHref, offenceHref } from "@/lib/links";
+import { personHref, offenceHref, streetHref, placeHref } from "@/lib/links";
 import { convictionHref } from "@/lib/referenceSlug";
 import { formatOffenceCategory, formatPersonName, titleCase } from "@/lib/text";
-import { Roles, ROLE_LABELS, classifyInvolvedPersonRole } from "@/lib/roles";
+import { Roles, roleLabel, classifyInvolvedPersonRole } from "@/lib/roles";
 import { CopyCitationButton } from "@/components/CopyCitationButton";
 import { formatDate } from "@/lib/date";
 
@@ -49,6 +51,21 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
     convictionId
   );
   const offences = getConvictionOffences(convictionId);
+  const offenceTreeNodes = groupOffencesByCategory(offences);
+  const location = getConvictionLocation(convictionId);
+  const locationTreeNodes = locationToTreeNodes(location);
+  // Section headings singular/plural by how many things are actually
+  // listed underneath, not hardcoded -- People counts every individual
+  // across all three role lists combined; Locations counts the town itself
+  // plus its street when one's known (so "Location" alone, "Locations" for
+  // a town-and-street pair).
+  const peopleTitle = pluralize(defendants.length + police.length + otherPersons.length, "Person", "People");
+  const offencesTitle = pluralize(offences.length, "Offence", "Offences");
+  // Always singular: a conviction has at most one offence location, and a
+  // known street is a sub-detail of that same location, not a second one --
+  // unlike People/Offences, there's no scenario where "Locations" (plural)
+  // is actually correct here.
+  const locationsTitle = "Location";
   const relatedConvictions = getRelatedConvictions(convictionId);
   const { prevSlug, nextSlug } = getAdjacentConvictionSlugs(convictionId);
   const { position, total } = getConvictionPosition(convictionId);
@@ -72,19 +89,26 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
           />
         </Suspense>
         <PageTitle
-          subtitle={`Conviction date: ${formatDate(conviction.conviction_date) ?? conviction.conviction_date_raw}`}
+          subtitle={
+            conviction.offence_date || conviction.offence_date_raw
+              ? `Offence date: ${formatDate(conviction.offence_date) ?? conviction.offence_date_raw}`
+              : undefined
+          }
         >
           {conviction.reference_number}
         </PageTitle>
+        <p className={css({ fontSize: "M", color: "fg" })}>
+          Conviction date: {formatDate(conviction.conviction_date) ?? conviction.conviction_date_raw}
+        </p>
         {conviction.court_town_name && (
-          <p className={css({ fontSize: "heading", color: "fg" })}>
+          <p className={css({ fontSize: "M", color: "fg" })}>
             Court: {titleCase(conviction.court_town_name)}
           </p>
         )}
       </div>
 
       <Card bg="bgSurface" borderWidth="0">
-        <p className={css({ fontSize: "heading", fontWeight: "600", color: "fg", whiteSpace: "pre-wrap" })}>
+        <p className={css({ fontSize: "L", fontWeight: "600", color: "fg", whiteSpace: "pre-wrap" })}>
           &ldquo;{conviction.raw_record}&rdquo;
         </p>
         <div className={css({ display: "flex", justifyContent: "flex-end", mt: "3" })}>
@@ -92,7 +116,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
             href={conviction.archive_url}
             target="_blank"
             rel="noopener noreferrer"
-            className={css({ fontSize: "body", color: "fgAccent" })}
+            className={css({ fontSize: "M", color: "fgAccent" })}
           >
             View original record at NYCRO →
           </a>
@@ -100,7 +124,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
       </Card>
 
       <Section title="Citing this record">
-        <p className={css({ fontSize: "body", fontStyle: "italic" })}>
+        <p className={css({ fontSize: "M", fontStyle: "italic" })}>
           Please cite the original record held by NYCRO, not this website (
           <Link href="/about" className={css({ color: "fgAccent" })}>
             why?
@@ -108,7 +132,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
           )
         </p>
         <div className={css({ display: "flex", alignItems: "flex-start", gap: "3" })}>
-          <p className={css({ fontSize: "body", overflowWrap: "break-word" })}>
+          <p className={css({ fontSize: "M", overflowWrap: "break-word" })}>
             {citationPrefix}{" "}
             <a
               href={conviction.archive_url}
@@ -125,9 +149,9 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
       </Section>
 
       {(defendants.length > 0 || involvedPersons.length > 0) && (
-        <Section title="People" titleSize="display">
+        <Section title={peopleTitle}>
         {defendants.length > 0 && (
-          <SubSection title={ROLE_LABELS[Roles.offender]}>
+          <SubSection title={roleLabel(Roles.offender, defendants.length)}>
           <ul className={personListStyle}>
             {defendants.map((d) => (
               <li key={d.id}>
@@ -148,28 +172,34 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
         )}
 
         {police.length > 0 && (
-          <SubSection title={ROLE_LABELS[Roles.police]}>
+          <SubSection title={roleLabel(Roles.police, police.length)}>
           <PersonList people={police} showRole={false} otherConvictionCounts={otherConvictionCounts} />
           </SubSection>
         )}
 
         {otherPersons.length > 0 && (
-          <SubSection title={ROLE_LABELS[Roles.other]}>
+          <SubSection title={roleLabel(Roles.other, otherPersons.length)}>
           <PersonList people={otherPersons} otherConvictionCounts={otherConvictionCounts} />
           </SubSection>
         )}
         </Section>
       )}
 
-      {offences.length > 0 && (
-        <Section title="Offences" titleSize="display">
-          <OffenceTree offences={offences} />
+      {offenceTreeNodes.length > 0 && (
+        <Section title={offencesTitle}>
+          <Tree nodes={offenceTreeNodes} unit="conviction" />
+        </Section>
+      )}
+
+      {locationTreeNodes.length > 0 && (
+        <Section title={locationsTitle}>
+          <Tree nodes={locationTreeNodes} unit="conviction" />
         </Section>
       )}
 
       {relatedConvictions.length > 0 && (
         <Section title="Related cases">
-          <p className={css({ fontSize: "small", color: "fgMuted", mt: "-2" })}>
+          <p className={css({ fontSize: "M", color: "fgMuted", mt: "-2"})}>
             Detected automatically (same defendant on the same date, or several
             defendants charged with the same wording on the same date and street) —
             a suggestion worth checking, not a certainty.
@@ -183,12 +213,12 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
                 >
                   {rc.reference_number}
                 </Link>
-                <p className={css({ fontSize: "small", color: "fgMuted", mt: "1" })}>
+                <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
                   {formatDate(rc.conviction_date) ?? rc.conviction_date_raw}
                 </p>
-                <p className={css({ fontSize: "body", mt: "1" })}>{rc.charge_description}</p>
+                <p className={css({ fontSize: "M", mt: "1" })}>{rc.charge_description}</p>
                 {rc.note && (
-                  <p className={css({ fontSize: "small", color: "fgMuted", mt: "2" })}>{rc.note}</p>
+                  <p className={css({ fontSize: "M", color: "fgMuted", mt: "2" })}>{rc.note}</p>
                 )}
               </Card>
             ))}
@@ -203,24 +233,68 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
 // Nulls (unnamed people, rare) sort last rather than first -- localeCompare
 // so accented surnames sort where a reader would expect them, not by raw
 // char code.
+function pluralize(count: number, singular: string, plural: string): string {
+  return count === 1 ? singular : plural;
+}
+
 function bySurname(a: { last_name: string | null }, b: { last_name: string | null }): number {
   if (!a.last_name) return b.last_name ? 1 : 0;
   if (!b.last_name) return -1;
   return a.last_name.localeCompare(b.last_name);
 }
 
-function Section({
-  title,
-  titleSize = "heading",
-  children,
-}: {
-  title: string;
-  titleSize?: "heading" | "display";
-  children: React.ReactNode;
-}) {
+function groupOffencesByCategory(offences: ConvictionOffence[]): TreeParent[] {
+  const categories = new Map<string, { count: number; types: ConvictionOffence[] }>();
+  for (const o of offences) {
+    const existing = categories.get(o.category_name);
+    if (existing) existing.types.push(o);
+    else categories.set(o.category_name, { count: o.category_count, types: [o] });
+  }
+  return [...categories.entries()].map(([categoryName, { count, types }]) => ({
+    key: categoryName,
+    label: formatOffenceCategory(categoryName),
+    href: offenceHref(categoryName),
+    count,
+    children: types.map((t) => ({
+      key: t.id,
+      label: t.type_name,
+      href: offenceHref(t.category_name),
+      count: t.type_count,
+    })),
+  }));
+}
+
+// A conviction has at most one offence town/street (not a many-tagged
+// relationship like offence types), so this is always 0 or 1 top-level
+// node -- still built as a Tree node list for the same shared rendering,
+// rather than a bespoke one-off layout, so Locations looks and behaves
+// exactly like Offences.
+function locationToTreeNodes(location: ConvictionLocation | undefined): TreeParent[] {
+  if (!location?.town_id || !location.town_name) return [];
+  const children: TreeLeaf[] = [];
+  if (location.street_id && location.street_name) {
+    children.push({
+      key: location.street_id,
+      label: titleCase(location.street_name),
+      href: streetHref(location.street_id),
+      count: location.street_count,
+    });
+  }
+  return [
+    {
+      key: location.town_id,
+      label: location.town_name.toUpperCase(),
+      href: placeHref(location.town_id),
+      count: location.town_count,
+      children,
+    },
+  ];
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: titleSize, fontWeight: "600" })}>{title}</h2>
+      <h2 className={css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" })}>{title}</h2>
       {children}
     </section>
   );
@@ -229,7 +303,7 @@ function Section({
 function SubSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h3 className={css({ fontFamily: "serif", fontSize: "body", fontWeight: "600" })}>{title}</h3>
+      <h3 className={css({ fontFamily: "serif", fontSize: "M", fontWeight: "600" })}>{title}</h3>
       {children}
     </div>
   );
@@ -277,29 +351,36 @@ function PersonList({
 // pointing at each leaf, same visual idiom as a file-tree view. Genuinely
 // nested <ul><li> markup underneath the styling, not just visually
 // indented flat items, so it degrades to a normal nested list with CSS off.
-function OffenceTree({ offences }: { offences: ConvictionOffence[] }) {
-  const categories = new Map<string, { count: number; types: ConvictionOffence[] }>();
-  for (const o of offences) {
-    const existing = categories.get(o.category_name);
-    if (existing) existing.types.push(o);
-    else categories.set(o.category_name, { count: o.category_count, types: [o] });
-  }
+interface TreeLeaf {
+  key: string | number;
+  label: string;
+  href?: string;
+  count: number;
+}
 
+interface TreeParent extends TreeLeaf {
+  children: TreeLeaf[];
+}
+
+// Shared two-level tree rendering (parent -> children, with a stem line +
+// corner-bullet leaf marker) -- used by both the Offences section
+// (category -> type) and the Locations section (town -> street) below, so
+// the visual/structural pattern stays identical between the two rather
+// than being duplicated per section.
+function Tree({ nodes, unit }: { nodes: TreeParent[]; unit: string }) {
   return (
     <ul className={personListStyle}>
-      {[...categories.entries()].map(([categoryName, { count, types }]) => {
-        const href = offenceHref(categoryName);
-        const label = formatOffenceCategory(categoryName);
-        return (
-          <li key={categoryName}>
-            {href ? (
-              <Link href={href} className={css({ color: "fgAccent" })}>
-                {label}
-              </Link>
-            ) : (
-              label
-            )}{" "}
-            <CountNote count={count} unit="conviction" />
+      {nodes.map((node) => (
+        <li key={node.key}>
+          {node.href ? (
+            <Link href={node.href} className={css({ color: "fgAccent" })}>
+              {node.label}
+            </Link>
+          ) : (
+            node.label
+          )}{" "}
+          <CountNote count={node.count} unit={unit} />
+          {node.children.length > 0 && (
             <ul
               className={css({
                 display: "flex",
@@ -314,49 +395,32 @@ function OffenceTree({ offences }: { offences: ConvictionOffence[] }) {
                 borderLeftColor: "fgMuted",
               })}
             >
-              {types.map((t) => (
-                <li
-                  key={t.id}
-                  className={css({
-                    position: "relative",
-                    pl: "8",
-                    _before: {
-                      content: '""',
-                      position: "absolute",
-                      left: "-2rem",
-                      top: "0.7em",
-                      width: "1.75rem",
-                      height: "0",
-                      borderTopWidth: "lineweight_normal",
-                      borderTopStyle: "solid",
-                      borderTopColor: "fgMuted",
-                    },
-                  })}
-                >
+              {node.children.map((leaf) => (
+                <li key={leaf.key} className={css({ pl: "8" })}>
                   <span aria-hidden className={css({ color: "fgMuted" })}>
                     └─{" "}
                   </span>
-                  {href ? (
-                    <Link href={href} className={css({ color: "fgAccent" })}>
-                      {t.type_name}
+                  {leaf.href ? (
+                    <Link href={leaf.href} className={css({ color: "fgAccent" })}>
+                      {leaf.label}
                     </Link>
                   ) : (
-                    t.type_name
+                    leaf.label
                   )}{" "}
-                  <CountNote count={t.type_count} unit="conviction" />
+                  <CountNote count={leaf.count} unit={unit} />
                 </li>
               ))}
             </ul>
-          </li>
-        );
-      })}
+          )}
+        </li>
+      ))}
     </ul>
   );
 }
 
 function CountNote({ count, unit }: { count: number; unit: string }) {
   return (
-    <span className={css({ fontSize: "small", color: "fgMuted" })}>
+    <span className={css({ fontSize: "M", color: "fgMuted" })}>
       <strong>{count.toLocaleString()}</strong> {unit}
       {count === 1 ? "" : "s"}
     </span>
@@ -366,7 +430,7 @@ function CountNote({ count, unit }: { count: number; unit: string }) {
 function MentionCount({ count }: { count: number | undefined }) {
   if (!count) return null;
   return (
-    <span className={css({ fontSize: "small", color: "fgMuted" })}>
+    <span className={css({ fontSize: "M", color: "fgMuted" })}>
       mentioned in <strong>{count.toLocaleString()}</strong> other record{count === 1 ? "" : "s"}
     </span>
   );
@@ -377,5 +441,5 @@ const personListStyle = css({
   flexDirection: "column",
   gap: "2",
   listStyle: "none",
-  fontSize: "body",
+  fontSize: "M",
 });

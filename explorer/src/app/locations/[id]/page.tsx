@@ -21,8 +21,8 @@ export async function generateStaticParams() {
   return listPlaceIds().map((id) => ({ id: String(id) }));
 }
 
-const sectionHeadingStyle = css({ fontFamily: "serif", fontSize: "display", fontWeight: "600" });
-const offenceTypeHeadingStyle = css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" });
+const sectionHeadingStyle = css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" });
+const offenceTypeHeadingStyle = css({ fontFamily: "serif", fontSize: "M", fontWeight: "600" });
 
 // Groups the (conviction, offence type) rows getPlaceConvictions returns
 // into one bucket per offence type -- a conviction tagged with more than
@@ -56,7 +56,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
   return (
     <PageContainer>
       <div>
-        <nav className={css({ fontSize: "body", color: "fgMuted" })}>
+        <nav className={css({ fontSize: "M", color: "fgMuted" })}>
           {ancestry.map((a, i) => (
             <span key={a.id}>
               {i > 0 && " → "}
@@ -71,7 +71,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       {children.length > 0 && (
         <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
           <h2 className={sectionHeadingStyle}>Children</h2>
-          <p className={css({ fontSize: "body" })}>
+          <p className={css({ fontSize: "M" })}>
             {children.map((c, i) => (
               <span key={c.id}>
                 {i > 0 && "; "}
@@ -150,7 +150,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
                 <Link href={personHref(p.name_key)} className={css({ color: "fgAccent", fontWeight: "600" })}>
                   {p.display_name}
                 </Link>
-                <span className={css({ color: "fgMuted", fontSize: "small" })}>
+                <span className={css({ color: "fgMuted", fontSize: "M" })}>
                   {" "}
                   ({p.mentions} mention{p.mentions === 1 ? "" : "s"})
                 </span>

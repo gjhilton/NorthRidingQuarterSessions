@@ -7,7 +7,7 @@ import { SiteTitle } from "@/components/SiteTitle";
 import { primaryLinks, trailingLinks } from "@/lib/navLinks";
 
 const navLinkStyle = css({
-  fontSize: "body",
+  fontSize: "M",
 });
 
 function isActive(pathname: string, href: string): boolean {
@@ -83,7 +83,7 @@ export default function Nav() {
             href="/"
             className={css({
               fontFamily: "serif",
-              fontSize: "heading",
+              fontSize: "M",
               fontWeight: "600",
               fontStyle: "italic",
               color: "fg",

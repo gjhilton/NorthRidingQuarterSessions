@@ -23,7 +23,6 @@ export function Footer() {
           display: "flex",
           flexDirection: "column",
           gap: "3",
-          fontSize: "small",
         })}
       >
         <button
@@ -63,7 +62,7 @@ export function Footer() {
           )}
         >
           <ArrowUpIcon size={32} />
-          <span className={cx("top-label", css({ fontSize: "body", fontWeight: "600" }))}>go to top</span>
+          <span className={cx("top-label", css({ fontSize: "M", fontWeight: "600" }))}>go to top</span>
         </button>
 
         <div
@@ -81,10 +80,9 @@ export function Footer() {
               flexDirection: "column",
               gap: "0.5",
               color: "fgMuted",
-              fontSize: "0.875rem",
             })}
           >
-            <p>
+            <p className={css({ fontSize: "M" })}>
               Source data:{" "}
               <a
                 href="https://archivesunlocked.northyorks.gov.uk"
@@ -96,7 +94,15 @@ export function Footer() {
               </a>
               , North Yorkshire County Record Office.
             </p>
-            <p className={css({ display: "flex", alignItems: "center", gap: "3", flexWrap: "wrap" })}>
+            <p
+              className={css({
+                display: "flex",
+                alignItems: "center",
+                gap: "3",
+                flexWrap: "wrap",
+                fontSize: "S",
+              })}
+            >
               &copy; {new Date().getFullYear()} G.J. Hilton / Funeral Games.
               <a
                 href="https://github.com/gjhilton/NorthRidingQuarterSessions"

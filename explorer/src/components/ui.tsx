@@ -30,7 +30,7 @@ export function PageTitle({
       <h1
         className={css({
           fontFamily: "serif",
-          fontSize: "pageTitle",
+          fontSize: "XXL",
           fontWeight: "600",
           color: "fg",
         })}
@@ -38,7 +38,7 @@ export function PageTitle({
         {children}
       </h1>
       {subtitle && (
-        <p className={css({ color: "fg", fontSize: "heading", mt: "1" })}>{subtitle}</p>
+        <p className={css({ color: "fg", fontSize: "M", mt: "1" })}>{subtitle}</p>
       )}
     </div>
   );

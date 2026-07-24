@@ -206,7 +206,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
       <div
         role="radiogroup"
         aria-label="Which locations to show"
-        className={css({ display: "flex", alignItems: "center", gap: "8", fontSize: "heading" })}
+        className={css({ display: "flex", alignItems: "center", gap: "8", fontSize: "M" })}
       >
         <label className={radioLabelStyle}>
           <input
@@ -236,7 +236,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
           display: "flex",
           flexDirection: "column",
           gap: "1",
-          fontSize: "body",
+          fontSize: "M",
           color: "fgMuted",
           maxWidth: "24rem",
         })}
@@ -277,7 +277,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
         </div>
       </label>
       {filteredRoots.length === 0 ? (
-        <p className={css({ fontSize: "small", color: "fgMuted" })}>No locations match.</p>
+        <p className={css({ fontSize: "M", color: "fgMuted" })}>No locations match.</p>
       ) : (
     <div
       className={cx(
@@ -292,7 +292,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
       )}
     >
       <table
-        className={css({ width: "100%", tableLayout: "fixed", borderCollapse: "collapse", fontSize: "body" })}
+        className={css({ width: "100%", tableLayout: "fixed", borderCollapse: "collapse", fontSize: "M" })}
       >
         {/* table-layout:fixed only respects the FIRST row's cell widths by
             default, and that row's cells are full of rowSpan/colSpan --

@@ -5,7 +5,7 @@ export const tokens = defineTokens({
     bg: { value: "#fff" },
     fg: { value: "#000" },
     fgMuted: { value: "#563a15" },
-    fgAccent: { value: "#c00000" },
+    fgAccent: { value: "#d50000" },
     bgSurface: { value: "#f3f3f3" },
 
     // Chart/map series palette. Recharts and Leaflet take raw color strings
@@ -39,5 +39,17 @@ export const tokens = defineTokens({
     display: { value: "2rem" }, // the big number in a stat tile, homepage subtitle
     pageTitle: { value: "4rem" }, // every page's <PageTitle> h1 -- see components/ui.tsx
     hero: { value: "3rem" }, // homepage title only -- see src/app/page.tsx
+    // The named 5-tier scale (XXL/XL/L/M/S), same underlying rem values as
+    // the tokens above -- introduced for the conviction page/Nav/Footer/
+    // PageTitle first, not yet a full site-wide rename (small/body/heading/
+    // display/pageTitle/hero above are still used in ~140 other places).
+    // XXL: main page title. XL: h2 section headings. L: hero/lead text
+    // (e.g. a conviction's verbatim record). S: the footer's final
+    // copyright line. M: everything else.
+    XXL: { value: "4rem" },
+    XL: { value: "2rem" },
+    L: { value: "1.5rem" },
+    M: { value: "1.3125rem" },
+    S: { value: "1.125rem" },
   },
 });

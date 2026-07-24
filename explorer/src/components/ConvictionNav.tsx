@@ -82,29 +82,31 @@ export function ConvictionNav({
   const total = searchNav ? searchNav.total : serverTotal;
 
   return (
-    <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
-      <Link href={backHref} className={css({ fontSize: "body", color: "fgMuted" })}>
+    <div className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
+      <Link href={backHref} className={css({ fontSize: "M", color: "fgMuted" })}>
         {backLabel}
       </Link>
-      <p className={css({ fontSize: "small", color: "fgMuted", flex: "1", textAlign: "center" })}>
-        Record {position.toLocaleString()} of {total.toLocaleString()}
-        {searchNav ? ` ${searchNav.label}` : ""}
-      </p>
-      <div className={css({ display: "flex", gap: "3", fontSize: "body" })}>
-        {prevSlug !== null ? (
-          <Link href={`${convictionHrefFromSlug(prevSlug)}${linkQs}`} className={css({ color: "fgAccent" })}>
-            ← Previous
-          </Link>
-        ) : (
-          <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
-        )}
-        {nextSlug !== null ? (
-          <Link href={`${convictionHrefFromSlug(nextSlug)}${linkQs}`} className={css({ color: "fgAccent" })}>
-            Next →
-          </Link>
-        ) : (
-          <span className={css({ color: "fgMuted", opacity: 0.5 })}>Next →</span>
-        )}
+      <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
+        <p className={css({ fontSize: "M", color: "fgMuted" })}>
+          Record {position.toLocaleString()} of {total.toLocaleString()}
+          {searchNav ? ` ${searchNav.label}` : ""}
+        </p>
+        <div className={css({ display: "flex", gap: "3", fontSize: "M" })}>
+          {prevSlug !== null ? (
+            <Link href={`${convictionHrefFromSlug(prevSlug)}${linkQs}`} className={css({ color: "fgAccent" })}>
+              ← Previous
+            </Link>
+          ) : (
+            <span className={css({ color: "fgMuted", opacity: 0.5 })}>← Previous</span>
+          )}
+          {nextSlug !== null ? (
+            <Link href={`${convictionHrefFromSlug(nextSlug)}${linkQs}`} className={css({ color: "fgAccent" })}>
+              Next →
+            </Link>
+          ) : (
+            <span className={css({ color: "fgMuted", opacity: 0.5 })}>Next →</span>
+          )}
+        </div>
       </div>
     </div>
   );
