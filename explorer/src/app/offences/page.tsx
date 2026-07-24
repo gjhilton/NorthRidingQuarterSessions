@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { listOffenceTypesAlphabetical } from "@/lib/queries/offences";
-import { Card, EmptyState, PageContainer, PageTitle, Pill } from "@/components/ui";
+import { Card, EmptyState, PageContainer, PageTitle } from "@/components/ui";
 import { sentenceCase } from "@/lib/text";
 
 // Same master-list convention as /streets: one Card per row, a Pill with
@@ -12,7 +12,7 @@ export default function OffencesPage() {
 
   return (
     <PageContainer>
-      <PageTitle subtitle="Every offence type in the taxonomy, alphabetical">Offences</PageTitle>
+      <PageTitle>Offences</PageTitle>
 
       {offenceTypes.length === 0 ? (
         <EmptyState>No offence types found.</EmptyState>
@@ -29,9 +29,9 @@ export default function OffencesPage() {
                 })}
               >
                 <span className={css({ fontWeight: "600" })}>{sentenceCase(o.name)}</span>
-                <Pill>
-                  {o.count} conviction{o.count === 1 ? "" : "s"}
-                </Pill>
+                <span className={css({ color: "fgMuted", fontSize: "M" })}>
+                  <strong>{o.count}</strong> conviction{o.count === 1 ? "" : "s"}
+                </span>
               </Card>
             </Link>
           ))}
