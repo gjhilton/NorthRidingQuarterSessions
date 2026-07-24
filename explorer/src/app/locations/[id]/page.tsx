@@ -52,7 +52,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
 
       {children.length > 0 && (
         <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-          <h2 className={sectionHeadingStyle}>Includes</h2>
+          <h2 className={sectionHeadingStyle}>Sub-locations</h2>
           <p className={css({ fontSize: "body" })}>
             {children.map((c, i) => (
               <span key={c.id}>
