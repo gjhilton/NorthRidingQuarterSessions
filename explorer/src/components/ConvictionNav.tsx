@@ -74,7 +74,7 @@ export function ConvictionNav({
   }, []);
 
   const backHref = searchNav ? `/convictions?${searchNav.qs}` : "/convictions";
-  const backLabel = searchNav ? "← Back to search results" : "← Back to convictions";
+  const backLabel = searchNav ? "← Back to search results" : "← Back to search";
   const prevSlug = searchNav ? searchNav.prevSlug : serverPrevSlug;
   const nextSlug = searchNav ? searchNav.nextSlug : serverNextSlug;
   const linkQs = searchNav ? `?${searchNav.qs}` : "";
