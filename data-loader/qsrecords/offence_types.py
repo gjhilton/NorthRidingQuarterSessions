@@ -88,7 +88,13 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
     # Split out of the old "Drink & Public Order" -- indecency/immorality/
     # religious-order offences with no drink element at all.
     ("Public Morals", [
-        ("obscene language", []),
+        # Renamed from "obscene language" to match the exact charge phrasing
+        # ("using obscene/indecent/profane language") -- also absorbed 42
+        # records that real charge_description text showed were purely this
+        # charge (nothing else described) but had been inconsistently
+        # tagged breach of the peace/public order by earlier extraction
+        # passes.
+        ("using obscene language", ["obscene language"]),
         ("indecent behaviour", []),
         ("indecent exposure", []),
         # The status element of "being a common prostitute and behaving
