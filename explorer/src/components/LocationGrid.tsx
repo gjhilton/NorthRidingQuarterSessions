@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { css, cx } from "styled-system/css";
-import { formInputStyle, PageTitle, Td } from "@/components/ui";
+import { Card, formInputStyle, PageTitle, Td } from "@/components/ui";
 import { XIcon } from "@/components/icons/XIcon";
 import type { PlaceNode } from "@/lib/queries/locationTree";
 
@@ -203,79 +203,83 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
   return (
     <div className={css({ display: "flex", flexDirection: "column", gap: "4" })}>
       <PageTitle>Locations</PageTitle>
-      <div
-        role="radiogroup"
-        aria-label="Which locations to show"
-        className={css({ display: "flex", alignItems: "center", gap: "8", fontSize: "M" })}
-      >
-        <label className={radioLabelStyle}>
-          <input
-            type="radio"
-            name="location-filter"
-            checked={!includeAll}
-            onChange={() => setIncludeAll(false)}
-            className={srOnlyStyle}
-          />
-          <RadioDot checked={!includeAll} />
-          <span className={css({ fontWeight: "600" })}>Locations of offences</span>
-        </label>
-        <label className={radioLabelStyle}>
-          <input
-            type="radio"
-            name="location-filter"
-            checked={includeAll}
-            onChange={() => setIncludeAll(true)}
-            className={srOnlyStyle}
-          />
-          <RadioDot checked={includeAll} />
-          <span className={css({ fontWeight: "600" })}>Locations of people</span>
-        </label>
-      </div>
-      <label
-        className={css({
-          display: "flex",
-          flexDirection: "column",
-          gap: "1",
-          fontSize: "M",
-          color: "fgMuted",
-          maxWidth: "24rem",
-        })}
-      >
-        Filter by name
-        <div className={css({ position: "relative" })}>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="e.g. Whitby, Church Street…"
-            className={css(formInputStyle, { width: "100%", pr: search ? "8" : "3" })}
-          />
-          {search && (
-            <button
-              type="button"
-              aria-label="Clear filter"
-              onClick={() => setSearch("")}
-              className={css({
-                position: "absolute",
-                right: "2",
-                top: "50%",
-                transform: "translateY(-50%)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bg: "transparent",
-                border: "none",
-                p: "1",
-                color: "fgMuted",
-                cursor: "pointer",
-                _hover: { color: "fgAccent" },
-              })}
-            >
-              <XIcon size={14} />
-            </button>
-          )}
+      <Card bg="bgSurface" borderWidth="0">
+        <div className={css({ display: "flex", flexDirection: "column", gap: "4" })}>
+          <div
+            role="radiogroup"
+            aria-label="Which locations to show"
+            className={css({ display: "flex", alignItems: "center", gap: "8", fontSize: "M" })}
+          >
+            <label className={radioLabelStyle}>
+              <input
+                type="radio"
+                name="location-filter"
+                checked={!includeAll}
+                onChange={() => setIncludeAll(false)}
+                className={srOnlyStyle}
+              />
+              <RadioDot checked={!includeAll} />
+              <span className={css({ fontWeight: "600" })}>Locations of offences</span>
+            </label>
+            <label className={radioLabelStyle}>
+              <input
+                type="radio"
+                name="location-filter"
+                checked={includeAll}
+                onChange={() => setIncludeAll(true)}
+                className={srOnlyStyle}
+              />
+              <RadioDot checked={includeAll} />
+              <span className={css({ fontWeight: "600" })}>Locations of people</span>
+            </label>
+          </div>
+          <label
+            className={css({
+              display: "flex",
+              flexDirection: "column",
+              gap: "1",
+              fontSize: "M",
+              color: "fgMuted",
+              maxWidth: "24rem",
+            })}
+          >
+            Filter by name
+            <div className={css({ position: "relative" })}>
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="e.g. Whitby, Church Street…"
+                className={css(formInputStyle, { width: "100%", pr: search ? "8" : "3" })}
+              />
+              {search && (
+                <button
+                  type="button"
+                  aria-label="Clear filter"
+                  onClick={() => setSearch("")}
+                  className={css({
+                    position: "absolute",
+                    right: "2",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    bg: "transparent",
+                    border: "none",
+                    p: "1",
+                    color: "fgMuted",
+                    cursor: "pointer",
+                    _hover: { color: "fgAccent" },
+                  })}
+                >
+                  <XIcon size={14} />
+                </button>
+              )}
+            </div>
+          </label>
         </div>
-      </label>
+      </Card>
       {filteredRoots.length === 0 ? (
         <p className={css({ fontSize: "M", color: "fgMuted" })}>No locations match.</p>
       ) : (
