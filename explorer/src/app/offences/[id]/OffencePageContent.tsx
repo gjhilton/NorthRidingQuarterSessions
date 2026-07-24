@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
 import { PageContainer, PageTitle } from "@/components/ui";
-import { OffenceConvictionTable } from "@/components/OffenceConvictionTable";
+import { ConvictionsTable } from "@/components/ConvictionsTable";
 import {
   OFFENCE_PAGE_SIZE,
   getOffenceTypeConvictionCount,
@@ -37,7 +37,7 @@ export function OffencePageContent({ id, page }: { id: number; page: number }) {
         {sentenceCase(offenceType.name)}
       </PageTitle>
 
-      <OffenceConvictionTable rows={convictions} />
+      <ConvictionsTable rows={convictions} peopleLabel="Defendant(s)" />
 
       {totalPages > 1 && (
         <nav className={css({ display: "flex", gap: "3", alignItems: "center" })}>

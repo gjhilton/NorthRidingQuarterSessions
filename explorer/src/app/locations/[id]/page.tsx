@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { css } from "styled-system/css";
 import { PageContainer, PageTitle } from "@/components/ui";
 import { MapViewLoader } from "@/components/MapViewLoader";
-import { PlaceOffenceTable } from "@/components/PlaceOffenceTable";
+import { ConvictionsTable } from "@/components/ConvictionsTable";
 import { PlacePeopleTable } from "@/components/PlacePeopleTable";
 import {
   getPlaceAncestry,
@@ -145,7 +145,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
                 {sentenceCase(offenceType)}{" "}
                 <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
               </h3>
-              <PlaceOffenceTable rows={rows.slice(0, 10)} />
+              <ConvictionsTable rows={rows.slice(0, 10)} />
               {rows.length > 10 && (
                 <p className={css({ fontSize: "S", color: "fgMuted" })}>
                   Showing the first 10 of {rows.length}.

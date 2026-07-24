@@ -89,7 +89,7 @@ export interface OffenceConvictionRow {
 }
 
 // Earliest-first, same convention as the Locations page's own offence
-// tables -- see PlaceOffenceTable/getPlaceConvictions.
+// tables -- see ConvictionsTable/getPlaceConvictions.
 export function getOffenceTypeConvictions(id: number, page: number): OffenceConvictionRow[] {
   return getDb()
     .prepare(

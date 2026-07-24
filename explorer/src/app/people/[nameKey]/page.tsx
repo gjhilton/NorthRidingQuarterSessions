@@ -4,6 +4,7 @@ import { css } from "styled-system/css";
 import { getPersonNetwork, listNameKeys, type CaseMention } from "@/lib/queries/peopleNetwork";
 import { NetworkView } from "@/components/network/NetworkView";
 import { Card, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
+import { ClickableTr, referenceCellStyle, StopPropagation } from "@/components/ClickableRow";
 import { fromSlug, toSlug } from "@/lib/slug";
 import { convictionHref } from "@/lib/referenceSlug";
 import { titleCase } from "@/lib/text";
@@ -48,7 +49,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
       </div>
 
       <Section title={`Cases (${network.cases.length})`}>
-        <Table>
+        <Table fontSize="M">
           <thead>
             <tr>
               <Th>Reference</Th>
@@ -62,33 +63,28 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
             {network.cases.map((c) => {
               const details = caseDetails(c);
               return (
-                <tr key={`${c.summary_conviction_id}-${c.role}`}>
-                  <Td>
-                    <Link
-                      href={convictionHref(c.reference_number)}
-                      className={css({ color: "fgAccent", fontWeight: "600" })}
-                    >
-                      {c.reference_number}
-                    </Link>
-                  </Td>
-                  <Td>{formatDate(c.conviction_date) ?? "—"}</Td>
-                  <Td>
+                <ClickableTr key={`${c.summary_conviction_id}-${c.role}`} href={convictionHref(c.reference_number)}>
+                  <Td verticalAlign="middle" className={referenceCellStyle}>{c.reference_number}</Td>
+                  <Td verticalAlign="middle">{formatDate(c.conviction_date) ?? "—"}</Td>
+                  <Td verticalAlign="middle">
                     <Pill>{c.role}</Pill>
                   </Td>
-                  <Td>{c.charge_description}</Td>
-                  <Td>
+                  <Td verticalAlign="middle">{c.charge_description}</Td>
+                  <Td verticalAlign="middle">
                     {details && <span>{details}</span>}
                     {c.town_name && (
                       <>
                         {details && " · "}
-                        <Link href="/map" className={css({ color: "fgAccent" })}>
-                          {titleCase(c.town_name)}
-                        </Link>
+                        <StopPropagation>
+                          <Link href="/map" className={css({ color: "fgAccent" })}>
+                            {titleCase(c.town_name)}
+                          </Link>
+                        </StopPropagation>
                       </>
                     )}
                     {!details && !c.town_name && "—"}
                   </Td>
-                </tr>
+                </ClickableTr>
               );
             })}
           </tbody>
@@ -107,7 +103,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "heading", fontWeight: "600" })}>{title}</h2>
+      <h2 className={css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" })}>{title}</h2>
       {children}
     </section>
   );

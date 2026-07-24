@@ -21,6 +21,7 @@ import { convictionHref } from "@/lib/referenceSlug";
 import { titleCase, formatPersonName } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 import { Card, EmptyState, IconButton, Table, Th, Td, formInputStyle } from "@/components/ui";
+import { ClickableTr, referenceCellStyle } from "@/components/ClickableRow";
 import { SearchField } from "@/components/SearchField";
 import { FilterIcon } from "@/components/icons/FilterIcon";
 import { DownloadIcon } from "@/components/icons/DownloadIcon";
@@ -580,17 +581,11 @@ export function BrowseExplorer({
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr
+              <ClickableTr
                 key={r.id}
-                onClick={() =>
-                  router.push(`${convictionHref(r.reference_number)}${rowLinkQs ? `?${rowLinkQs}` : ""}`)
-                }
-                className={css({
-                  cursor: "pointer",
-                  _hover: { bg: "#fffef5" },
-                })}
+                href={`${convictionHref(r.reference_number)}${rowLinkQs ? `?${rowLinkQs}` : ""}`}
               >
-                <Td verticalAlign="middle" className={css({ fontSize: "0.8rem", lineHeight: "1.1" })}>{r.reference_number}</Td>
+                <Td verticalAlign="middle" className={referenceCellStyle}>{r.reference_number}</Td>
                 <Td verticalAlign="middle">{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
                 <Td verticalAlign="middle">{formatDefendantNames(r.defendant_names_json)}</Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>{r.offence_type_names ?? "—"}</Td>
@@ -600,7 +595,7 @@ export function BrowseExplorer({
                     ? titleCase(r.offence_town_name ?? r.court_town_name!)
                     : "—"}
                 </Td>
-              </tr>
+              </ClickableTr>
             ))}
           </tbody>
         </Table>

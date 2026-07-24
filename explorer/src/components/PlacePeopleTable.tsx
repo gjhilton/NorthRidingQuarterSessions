@@ -1,17 +1,14 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { css } from "styled-system/css";
 import { Table, Th, Td } from "@/components/ui";
+import { ClickableTr, referenceCellStyle } from "@/components/ClickableRow";
 import { convictionHref } from "@/lib/referenceSlug";
 import { formatDate } from "@/lib/date";
 import type { PlacePersonRow } from "@/lib/queries/locationTree";
 
-// Same row-is-a-link behaviour as PlaceOffenceTable (and the Convictions
-// page's own table): whole row clickable via router.push, cursor pointer,
-// #fffef5 hover, reference number in the same small/tight font.
+// One row per (person, conviction) appearance, not per conviction -- a
+// different granularity from ConvictionsTable (which joins all defendants
+// into one cell), so it stays its own component, but shares the same
+// row-click and reference-cell styling.
 export function PlacePeopleTable({ rows }: { rows: PlacePersonRow[] }) {
-  const router = useRouter();
   return (
     <Table>
       <thead>
@@ -24,18 +21,14 @@ export function PlacePeopleTable({ rows }: { rows: PlacePersonRow[] }) {
       </thead>
       <tbody>
         {rows.map((p, i) => (
-          <tr
-            key={`${p.reference_number}-${p.name_key}-${i}`}
-            onClick={() => router.push(convictionHref(p.reference_number))}
-            className={css({ cursor: "pointer", _hover: { bg: "#fffef5" } })}
-          >
+          <ClickableTr key={`${p.reference_number}-${p.name_key}-${i}`} href={convictionHref(p.reference_number)}>
             <Td verticalAlign="middle">{formatDate(p.offence_date) ?? p.offence_date_raw ?? "—"}</Td>
             <Td verticalAlign="middle">{p.display_name}</Td>
             <Td verticalAlign="middle">{p.role}</Td>
-            <Td verticalAlign="middle" className={css({ fontSize: "0.8rem", lineHeight: "1.1" })}>
+            <Td verticalAlign="middle" className={referenceCellStyle}>
               {p.reference_number}
             </Td>
-          </tr>
+          </ClickableTr>
         ))}
       </tbody>
     </Table>
