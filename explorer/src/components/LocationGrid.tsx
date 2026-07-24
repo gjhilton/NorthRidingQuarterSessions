@@ -25,13 +25,25 @@ interface Cell {
 }
 type Row = Cell[];
 
-// Fixed modular scale (ratio 1.15, same shape as LocationTree's but
-// gentler -- the type size itself carries the hierarchy, not just column
-// position), floor of 1rem for anything six or more levels deep.
-const DEPTH_FONT_REMS = [2.011, 1.749, 1.521, 1.323, 1.15, 1];
+// The site's own XXL/XL/L/M/S scale (theme/tokens.ts), not a bespoke
+// modular ratio -- the type size itself still carries the hierarchy, not
+// just column position, but now using the same named steps as every other
+// page rather than this grid's own one-off numbers. XXL is skipped (that's
+// reserved for the page's own <PageTitle> h1); floors at S for anything
+// four or more levels deep.
+// Panda's kebab-case conversion splits every uppercase letter in an
+// all-caps token name as its own word, so "XL" -> --font-sizes--x-l, not
+// the --font-sizes-XL you'd guess -- verified against the actual compiled
+// stylesheet, not assumed.
+const DEPTH_FONT_SIZES = [
+  "var(--font-sizes--x-l)",
+  "var(--font-sizes--l)",
+  "var(--font-sizes--m)",
+  "var(--font-sizes--s)",
+];
 
 function fontSizeForDepth(depth: number): string {
-  return `${DEPTH_FONT_REMS[Math.min(depth, DEPTH_FONT_REMS.length - 1)]}rem`;
+  return DEPTH_FONT_SIZES[Math.min(depth, DEPTH_FONT_SIZES.length - 1)];
 }
 
 function maxDepth(node: PlaceNode, depth = 0): number {
@@ -357,7 +369,11 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                     })}
                   >
                     {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
-                    {!includeAll && cell.node.offenceCount > 0 && ` (${cell.node.offenceCount})`}
+                    {!includeAll && cell.node.offenceCount > 0 && (
+                      <span className={css({ display: "block", fontSize: "M", fontWeight: "400" })}>
+                        {cell.node.offenceCount}
+                      </span>
+                    )}
                   </Link>
                 </Td>
               ))}
