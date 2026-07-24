@@ -41,6 +41,13 @@ function zoomForDepth(depth: number) {
   return ZOOM_BY_DEPTH[Math.min(depth, ZOOM_BY_DEPTH.length - 1)];
 }
 
+// Anchor id for an offence-type section's <h3> -- offence_type names are
+// plain lowercase phrases (spaces, the odd slash), so a simple non-word ->
+// hyphen swap is enough, no need for a general slugifier.
+function offenceTypeAnchor(offenceType: string): string {
+  return `offence-${offenceType.replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "").toLowerCase()}`;
+}
+
 // Groups the (conviction, offence type) rows getPlaceConvictions returns
 // into one bucket per offence type -- a conviction tagged with more than
 // one type appears once in each of its types' buckets. Ordered by bucket
@@ -119,9 +126,21 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       {convictions.length > 0 && (
         <section className={css({ display: "flex", flexDirection: "column", gap: "5" })}>
           <h2 className={sectionHeadingStyle}>Offences</h2>
+          {convictionsByType.length > 1 && (
+            <p className={css({ fontSize: "M" })}>
+              {convictionsByType.map(([offenceType], i) => (
+                <span key={offenceType}>
+                  {i > 0 && "; "}
+                  <a href={`#${offenceTypeAnchor(offenceType)}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
+                    {sentenceCase(offenceType)}
+                  </a>
+                </span>
+              ))}
+            </p>
+          )}
           {convictionsByType.map(([offenceType, rows]) => (
             <div key={offenceType} className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
-              <h3 className={offenceTypeHeadingStyle}>
+              <h3 id={offenceTypeAnchor(offenceType)} className={offenceTypeHeadingStyle}>
                 {sentenceCase(offenceType)}{" "}
                 <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
               </h3>
