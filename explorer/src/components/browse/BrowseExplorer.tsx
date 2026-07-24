@@ -608,24 +608,31 @@ export function BrowseExplorer({
 
       {totalPages > 1 && (
         <nav className={css({ display: "flex", gap: "3", alignItems: "center" })}>
-          <IconButton
-            icon={<span aria-hidden>←</span>}
-            onClick={() => goToPage(Math.max(1, filters.page - 1))}
-            disabled={filters.page <= 1 || isPending}
-          >
-            Prev
-          </IconButton>
+          {filters.page > 1 && !isPending ? (
+            <button
+              type="button"
+              onClick={() => goToPage(Math.max(1, filters.page - 1))}
+              className={css({ fontSize: "M", color: "fgAccent", bg: "transparent", border: "none", p: "0", cursor: "pointer" })}
+            >
+              ← Previous
+            </button>
+          ) : (
+            <span className={css({ fontSize: "M", color: "fgMuted", opacity: 0.5 })}>← Previous</span>
+          )}
           <span className={css({ fontSize: "M", color: "fgMuted" })}>
             Page {filters.page} of {totalPages}
           </span>
-          <IconButton
-            icon={<span aria-hidden>→</span>}
-            iconPosition="right"
-            onClick={() => goToPage(Math.min(totalPages, filters.page + 1))}
-            disabled={filters.page >= totalPages || isPending}
-          >
-            Next
-          </IconButton>
+          {filters.page < totalPages && !isPending ? (
+            <button
+              type="button"
+              onClick={() => goToPage(Math.min(totalPages, filters.page + 1))}
+              className={css({ fontSize: "M", color: "fgAccent", bg: "transparent", border: "none", p: "0", cursor: "pointer" })}
+            >
+              Next →
+            </button>
+          ) : (
+            <span className={css({ fontSize: "M", color: "fgMuted", opacity: 0.5 })}>Next →</span>
+          )}
         </nav>
       )}
     </div>
