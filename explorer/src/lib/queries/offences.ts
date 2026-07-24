@@ -31,6 +31,41 @@ export function listOffenceTypesAlphabetical(): OffenceTypeListRow[] {
     .all() as OffenceTypeListRow[];
 }
 
+export interface OffenceCategoryGroup {
+  category: string;
+  types: OffenceTypeListRow[];
+}
+
+// For the master /offences listing -- types grouped under their category,
+// categories in the taxonomy's own defined order (offence_category.sort_order),
+// types alphabetical within each category. listOffenceTypesAlphabetical
+// (flat, no category) stays as the generateStaticParams source for the
+// detail routes, which don't care about grouping.
+export function listOffenceTypesByCategory(): OffenceCategoryGroup[] {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT ot.id, ot.name, oc.name AS category, oc.sort_order,
+        COUNT(scot.summary_conviction_id) AS count
+      FROM offence_type ot
+      JOIN offence_category oc ON oc.id = ot.category_id
+      LEFT JOIN summary_conviction_offence_type scot ON scot.offence_type_id = ot.id
+      GROUP BY ot.id
+      ORDER BY oc.sort_order, ot.name
+      `
+    )
+    .all() as (OffenceTypeListRow & { category: string; sort_order: number })[];
+
+  const groups: OffenceCategoryGroup[] = [];
+  for (const row of rows) {
+    const last = groups[groups.length - 1];
+    const entry = { id: row.id, name: row.name, count: row.count };
+    if (last && last.category === row.category) last.types.push(entry);
+    else groups.push({ category: row.category, types: [entry] });
+  }
+  return groups;
+}
+
 export function getOffenceTypeDetail(id: number): { id: number; name: string } | undefined {
   return getDb().prepare(`SELECT id, name FROM offence_type WHERE id = ?`).get(id) as
     | { id: number; name: string }
