@@ -13,6 +13,14 @@ export function titleCase(s: string): string {
   return s.replace(/(^|[\s-])\w/g, (c) => c.toUpperCase()).replace(/-Cum-/g, "-cum-");
 }
 
+// Offence type names are stored lowercase too (e.g. "drunk and
+// disorderly") -- capitalizes just the first letter, unlike titleCase's
+// every-word capitalization, since these are ordinary phrases rather than
+// proper nouns.
+export function sentenceCase(s: string): string {
+  return s.length === 0 ? s : s[0].toUpperCase() + s.slice(1);
+}
+
 // Site-wide name display rule: "SURNAME, Firstname [qualifier] (occupation)",
 // or "SURNAME, Firstname [qualifier] (occupation: Town)" wherever `town` is
 // passed -- that extended form is opt-in per call site (list-of-people

@@ -16,6 +16,7 @@ import {
 import { convictionHref } from "@/lib/referenceSlug";
 import { personHref } from "@/lib/links";
 import { formatDate } from "@/lib/date";
+import { sentenceCase } from "@/lib/text";
 
 export async function generateStaticParams() {
   return listPlaceIds().map((id) => ({ id: String(id) }));
@@ -107,7 +108,8 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
           {convictionsByType.map(([offenceType, rows]) => (
             <div key={offenceType} className={css({ display: "flex", flexDirection: "column", gap: "2" })}>
               <h3 className={offenceTypeHeadingStyle}>
-                {offenceType} <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
+                {sentenceCase(offenceType)}{" "}
+                <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
               </h3>
               <Table>
                 <thead>
