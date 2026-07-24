@@ -314,7 +314,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                       fontWeight: cell.depth === 0 ? "600" : "400",
                     })}
                   >
-                    {cell.node.name}
+                    {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
                     {!includeAll && cell.node.offenceCount > 0 && ` (${cell.node.offenceCount})`}
                   </Link>
                 </Td>
