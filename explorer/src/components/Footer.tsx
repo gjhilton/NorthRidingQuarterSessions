@@ -30,20 +30,40 @@ export function Footer() {
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Back to top"
-          title="Back to top"
           className={cx(
             footerLinkStyle,
             css({
               alignSelf: "flex-start",
               display: "inline-flex",
+              alignItems: "center",
               bg: "transparent",
               border: "none",
               p: "0",
               cursor: "pointer",
+              // The label is a sibling span, not this element's own text, so
+              // its reveal has to be driven by the button's :hover matching
+              // a descendant selector -- Panda passes "& x" keys through as
+              // real CSS nesting.
+              "& > .top-label": {
+                display: "inline-block",
+                maxWidth: "0",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                opacity: "0",
+                transition: "max-width 0.2s ease, opacity 0.2s ease, margin-left 0.2s ease",
+              },
+              _hover: {
+                "& > .top-label": {
+                  maxWidth: "10rem",
+                  opacity: "1",
+                  ml: "2",
+                },
+              },
             })
           )}
         >
           <ArrowUpIcon size={32} />
+          <span className={cx("top-label", css({ fontSize: "body", fontWeight: "600" }))}>go to top</span>
         </button>
 
         <div
