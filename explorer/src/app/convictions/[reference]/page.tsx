@@ -390,9 +390,6 @@ function Tree({ nodes, unit }: { nodes: TreeParent[]; unit: string }) {
                 mt: "2",
                 ml: "3",
                 pl: "8",
-                borderLeftWidth: "lineweight_normal",
-                borderLeftStyle: "solid",
-                borderLeftColor: "fgMuted",
               })}
             >
               {node.children.map((leaf) => (
