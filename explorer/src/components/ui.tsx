@@ -156,8 +156,9 @@ export function Th({ children, ...props }: React.ThHTMLAttributes<HTMLTableCellE
 export function Td({
   children,
   className,
+  verticalAlign = "top",
   ...props
-}: React.TdHTMLAttributes<HTMLTableCellElement>) {
+}: React.TdHTMLAttributes<HTMLTableCellElement> & { verticalAlign?: "top" | "middle" | "bottom" }) {
   return (
     <td
       {...props}
@@ -167,7 +168,7 @@ export function Td({
           px: "3",
           borderBottomWidth: "lineweight_normal", borderBottomStyle: "solid",
           borderColor: "fg",
-          verticalAlign: "top",
+          verticalAlign,
         }),
         className
       )}

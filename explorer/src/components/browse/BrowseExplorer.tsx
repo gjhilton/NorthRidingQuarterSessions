@@ -590,12 +590,12 @@ export function BrowseExplorer({
                   _hover: { bg: "bgSurface" },
                 })}
               >
-                <Td className={css({ fontSize: "0.8rem", lineHeight: "1.1" })}>{r.reference_number}</Td>
-                <Td>{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
-                <Td>{formatDefendantNames(r.defendant_names_json)}</Td>
-                <Td className={truncateCellStyle}>{r.offence_type_names ?? "—"}</Td>
-                <Td className={truncateCellStyle}>{formatDate(r.offence_date) ?? r.offence_date_raw ?? "—"}</Td>
-                <Td className={truncateCellStyle}>
+                <Td verticalAlign="middle" className={css({ fontSize: "0.8rem", lineHeight: "1.1" })}>{r.reference_number}</Td>
+                <Td verticalAlign="middle">{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
+                <Td verticalAlign="middle">{formatDefendantNames(r.defendant_names_json)}</Td>
+                <Td verticalAlign="middle" className={truncateCellStyle}>{r.offence_type_names ?? "—"}</Td>
+                <Td verticalAlign="middle" className={truncateCellStyle}>{formatDate(r.offence_date) ?? r.offence_date_raw ?? "—"}</Td>
+                <Td verticalAlign="middle" className={truncateCellStyle}>
                   {r.offence_town_name || r.court_town_name
                     ? titleCase(r.offence_town_name ?? r.court_town_name!)
                     : "—"}
