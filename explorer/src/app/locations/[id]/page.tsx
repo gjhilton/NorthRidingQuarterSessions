@@ -32,8 +32,8 @@ const offenceTypeHeadingStyle = css({ fontFamily: "serif", fontSize: "M", fontWe
 // for anything shallower/deeper than it covers.
 const ZOOM_BY_DEPTH: { zoom: number; minZoom: number; maxZoom: number }[] = [
   { zoom: 9, minZoom: 7, maxZoom: 12 }, // depth 0: root regions
-  { zoom: 12, minZoom: 10, maxZoom: 15 }, // depth 1: parishes/towns
-  { zoom: 14, minZoom: 12, maxZoom: 17 }, // depth 2: districts within a town
+  { zoom: 10, minZoom: 8, maxZoom: 13 }, // depth 1: parishes/towns -- pulled out to show more surrounding area
+  { zoom: 12, minZoom: 10, maxZoom: 15 }, // depth 2: villages/districts within a town -- same
   { zoom: 15, minZoom: 14, maxZoom: 18 }, // depth 3+: streets/yards
 ];
 
