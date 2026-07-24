@@ -43,10 +43,10 @@ export default function Home() {
       <p className={css({ fontSize: "body" })}>
         The Justices of the Peace at Whitby&rsquo;s Quarter Sessions convicted people of
         everyday offences —{" "}
-        <Link href="/offences/poaching-fishing">poaching</Link>,{" "}
-        <Link href="/offences/drink-public-order">drunkenness</Link>,{" "}
-        <Link href="/offences/vagrancy-begging">vagrancy</Link>,{" "}
-        <Link href="/offences/assault-resisting-authority">assault</Link>, and dozens more —
+        <Link href="/offences/8">poaching</Link>,{" "}
+        <Link href="/offences/1">drunkenness</Link>,{" "}
+        <Link href="/offences/5">vagrancy</Link>,{" "}
+        <Link href="/offences/2">assault</Link>, and dozens more —
         each case recorded as a short summary in the archive&rsquo;s own catalogue. This site
         makes those Summary Conviction records searchable, browsable, and explorable, drawn
         from{" "}

@@ -4,7 +4,6 @@
 // convictionHref for why (a repo-wide grep-and-fix every time the URL
 // scheme needs to change is a sign the scheme wasn't centralized).
 import { toSlug } from "@/lib/slug";
-import { offenceCategorySlug } from "@/lib/offenceCategorySlugs";
 
 export function personHref(nameKey: string): string {
   return `/people/${toSlug(nameKey)}`;
@@ -14,10 +13,19 @@ export function streetHref(id: number): string {
   return `/streets/${id}`;
 }
 
-// The /offences/[slug] pages themselves don't exist yet (see TODO.md) --
-// returns undefined for a category with no slug mapping yet, so callers can
-// render plain text instead of a link to nowhere.
-export function offenceHref(categoryName: string): string | undefined {
-  const slug = offenceCategorySlug(categoryName);
-  return slug ? `/offences/${slug}` : undefined;
+// The /places/[id] page (a town/place overview -- distinct from
+// /streets/[id]) doesn't exist yet, same TBC status as offenceHref's
+// category pages. Numeric id, not a name-derived slug, since town already
+// has a stable id (same reasoning as streetHref) -- no lookup table needed.
+export function placeHref(id: number): string {
+  return `/places/${id}`;
+}
+
+// One page per offence *type* (the 55 taxonomy leaves), not per category --
+// resolves TODO.md's open "type or category?" question the way the actual
+// /offences section was built: a page per specific offence, categories are
+// just the grouping Taxonomy/conviction-detail pages already show. Numeric
+// id (offence_type.id), same reasoning as streetHref/placeHref.
+export function offenceHref(offenceTypeId: number): string {
+  return `/offences/${offenceTypeId}`;
 }

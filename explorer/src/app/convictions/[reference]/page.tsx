@@ -253,12 +253,15 @@ function groupOffencesByCategory(offences: ConvictionOffence[]): TreeParent[] {
   return [...categories.entries()].map(([categoryName, { count, types }]) => ({
     key: categoryName,
     label: formatOffenceCategory(categoryName),
-    href: offenceHref(categoryName),
+    // No category-level page (see TODO.md's resolved "type or category?"
+    // question -- it's type) -- undefined here means the Tree component
+    // renders this as plain text, not a link to nowhere.
+    href: undefined,
     count,
     children: types.map((t) => ({
       key: t.id,
       label: t.type_name,
-      href: offenceHref(t.category_name),
+      href: offenceHref(t.id),
       count: t.type_count,
     })),
   }));
