@@ -24,6 +24,23 @@ export async function generateStaticParams() {
 const sectionHeadingStyle = css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" });
 const offenceTypeHeadingStyle = css({ fontFamily: "serif", fontSize: "M", fontWeight: "600" });
 
+// A root-level region (North Riding of Yorkshire, County Durham, ...) needs
+// a wide view; a parish (Whitby) a medium one; a street (Baxtergate) a
+// tight one -- scales the map's zoom by how deep this place sits in the
+// tree (ancestry length, 0 at the root) rather than one fixed zoom for
+// every place regardless of scale. Floors/ceils at the ends of the array
+// for anything shallower/deeper than it covers.
+const ZOOM_BY_DEPTH: { zoom: number; minZoom: number; maxZoom: number }[] = [
+  { zoom: 9, minZoom: 7, maxZoom: 12 }, // depth 0: root regions
+  { zoom: 12, minZoom: 10, maxZoom: 15 }, // depth 1: parishes/towns
+  { zoom: 14, minZoom: 12, maxZoom: 17 }, // depth 2: districts within a town
+  { zoom: 15, minZoom: 14, maxZoom: 18 }, // depth 3+: streets/yards
+];
+
+function zoomForDepth(depth: number) {
+  return ZOOM_BY_DEPTH[Math.min(depth, ZOOM_BY_DEPTH.length - 1)];
+}
+
 // Groups the (conviction, offence type) rows getPlaceConvictions returns
 // into one bucket per offence type -- a conviction tagged with more than
 // one type appears once in each of its types' buckets. Ordered by bucket
@@ -74,9 +91,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
             <MapViewLoader
               points={[{ name: place.name, count: 1, lat: place.latitude, lon: place.longitude }]}
               center={[place.latitude, place.longitude]}
-              zoom={15}
-              minZoom={14}
-              maxZoom={18}
+              {...zoomForDepth(ancestry.length - 1)}
               height="100%"
               interactive={false}
               markerColor="#f00"
