@@ -1,35 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { css, cx } from "styled-system/css";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
-import { primaryLinks, trailingLinks } from "@/lib/navLinks";
-
-const footerNavLinks = [...primaryLinks, ...trailingLinks];
+import { ArrowUpIcon } from "@/components/icons/ArrowUpIcon";
 
 const footerLinkStyle = css({ color: "fg", _hover: { color: "fgAccent" } });
 
-// Same active-section logic as Nav.tsx, so the footer's nav highlights the
-// current section the same way the header's does.
-function isActive(pathname: string, href: string): boolean {
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
-
-// Inline style, not a Panda class: globals.css's `footer a { color: ... }`
-// rule is deliberately unlayered (see that file), which beats a
-// component-level "active" class too. Inline styles beat both layered and
-// unlayered stylesheet rules, so this is the one way to actually make the
-// active link look different -- see Nav.tsx for the same technique.
-function footerLinkColor(active: boolean): React.CSSProperties {
-  return active ? { fontWeight: 600 } : {};
-}
-
 export function Footer() {
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-  const activePath = isHome ? null : pathname;
-
   return (
     <footer
       className={css({
@@ -49,50 +26,25 @@ export function Footer() {
           fontSize: "small",
         })}
       >
-        <nav aria-label="Footer">
-          <ul
-            className={css({
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "4",
-              listStyle: "none",
-              fontSize: "body",
-            })}
-          >
-            {footerNavLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className={footerLinkStyle}
-                  style={footerLinkColor(Boolean(activePath && isActive(activePath, link.href)))}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <ul
-          className={css({
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "4",
-            listStyle: "none",
-            fontSize: "0.875rem",
-          })}
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Back to top"
+          title="Back to top"
+          className={cx(
+            footerLinkStyle,
+            css({
+              alignSelf: "flex-start",
+              display: "inline-flex",
+              bg: "transparent",
+              border: "none",
+              p: "0",
+              cursor: "pointer",
+            })
+          )}
         >
-          <li>
-            <Link href="/cookies" className={footerLinkStyle}>
-              Cookies policy
-            </Link>
-          </li>
-          <li>
-            <Link href="/accessibility" className={footerLinkStyle}>
-              Accessibility
-            </Link>
-          </li>
-        </ul>
+          <ArrowUpIcon size={32} />
+        </button>
 
         <div
           className={css({
