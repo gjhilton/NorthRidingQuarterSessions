@@ -49,29 +49,43 @@ export function getPlaceChildren(id: number): { id: number; name: string }[] {
 export interface PlacePersonRow {
   name_key: string;
   display_name: string;
-  mentions: number;
+  role: string;
+  reference_number: string;
+  offence_date: string | null;
+  offence_date_raw: string | null;
 }
 
 // Defendants and other involved persons whose own location_id is this exact
 // node -- i.e. people who lived here, not people merely convicted of an
-// offence that happened here (that's getPlaceConvictions' job). Same
-// defendant+person union/dedup-by-name_key shape as peopleList.ts's
-// listAllPeople, just filtered to one place instead of every record.
+// offence that happened here (that's getPlaceConvictions' job). One row per
+// (person, conviction) appearance -- same "don't collapse to one row per
+// identity" shape as getPlaceConvictions, so the table behaves the same way
+// (sortable by offence date, links to the specific record).
 export function getPlacePeople(id: number): PlacePersonRow[] {
   return getDb()
     .prepare(
       `
-      SELECT name_key, MAX(display_name) AS display_name, COUNT(*) AS mentions
+      SELECT name_key, display_name, role, reference_number, offence_date, offence_date_raw
       FROM (
-        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name
-        FROM defendant WHERE location_id = ?
+        SELECT d.name_key,
+          TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')) AS display_name,
+          'defendant' AS role, sc.reference_number, sc.offence_date, sc.offence_date_raw
+        FROM defendant d
+        JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
+        JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
+        WHERE d.location_id = ?
         UNION ALL
-        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name
-        FROM person WHERE location_id = ?
+        SELECT p.name_key,
+          TRIM(COALESCE(p.first_name,'') || ' ' || COALESCE(p.last_name,'')) AS display_name,
+          COALESCE(NULLIF(TRIM(ip.role), ''), 'other') AS role,
+          sc.reference_number, sc.offence_date, sc.offence_date_raw
+        FROM person p
+        JOIN involved_persons ip ON ip.person_id = p.id
+        JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
+        WHERE p.location_id = ?
       )
       WHERE name_key IS NOT NULL AND TRIM(name_key) != ''
-      GROUP BY name_key
-      ORDER BY display_name
+      ORDER BY offence_date IS NULL, offence_date ASC
       `
     )
     .all(id, id) as PlacePersonRow[];
@@ -101,6 +115,8 @@ export interface PlaceConvictionRow {
   reference_number: string;
   conviction_date: string | null;
   conviction_date_raw: string;
+  offence_date: string | null;
+  offence_date_raw: string | null;
   charge_description: string;
   offence_type: string;
   // Comma-joined "First Last" -- same shape/expression as browseList.ts's
@@ -121,7 +137,8 @@ export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
   return getDb()
     .prepare(
       `
-      SELECT DISTINCT sc.reference_number, sc.conviction_date, sc.conviction_date_raw, sc.charge_description,
+      SELECT DISTINCT sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
+        sc.offence_date, sc.offence_date_raw, sc.charge_description,
         ot.name AS offence_type,
         (
           SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
@@ -133,7 +150,7 @@ export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
       JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
       JOIN offence_type ot ON ot.id = scot.offence_type_id
       WHERE sc.offence_location_id = ? OR sc.court_location_id = ?
-      ORDER BY ot.name, sc.conviction_date IS NULL, sc.conviction_date DESC
+      ORDER BY ot.name, sc.offence_date IS NULL, sc.offence_date ASC
       `
     )
     .all(id, id) as PlaceConvictionRow[];

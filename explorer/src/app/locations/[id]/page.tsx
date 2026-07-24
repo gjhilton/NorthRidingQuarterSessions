@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { css } from "styled-system/css";
-import { PageContainer, PageTitle, Table, Th, Td } from "@/components/ui";
+import { PageContainer, PageTitle } from "@/components/ui";
 import { MapViewLoader } from "@/components/MapViewLoader";
+import { PlaceOffenceTable } from "@/components/PlaceOffenceTable";
+import { PlacePeopleTable } from "@/components/PlacePeopleTable";
 import {
   getPlaceAncestry,
   getPlaceChildren,
@@ -13,9 +15,6 @@ import {
   listPlaceIds,
   type PlaceConvictionRow,
 } from "@/lib/queries/locationTree";
-import { convictionHref } from "@/lib/referenceSlug";
-import { personHref } from "@/lib/links";
-import { formatDate } from "@/lib/date";
 import { sentenceCase } from "@/lib/text";
 
 export async function generateStaticParams() {
@@ -111,33 +110,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
                 {sentenceCase(offenceType)}{" "}
                 <span className={css({ color: "fgMuted", fontWeight: "400" })}>({rows.length})</span>
               </h3>
-              <Table>
-                <thead>
-                  <tr>
-                    <Th>Reference</Th>
-                    <Th>Date</Th>
-                    <Th>Defendant(s)</Th>
-                    <Th>Charge</Th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((c) => (
-                    <tr key={`${c.reference_number}-${offenceType}`}>
-                      <Td>
-                        <Link
-                          href={convictionHref(c.reference_number)}
-                          className={css({ color: "fgAccent", fontWeight: "600" })}
-                        >
-                          {c.reference_number}
-                        </Link>
-                      </Td>
-                      <Td>{formatDate(c.conviction_date) ?? c.conviction_date_raw}</Td>
-                      <Td>{c.defendant_names ?? "—"}</Td>
-                      <Td>{c.charge_description}</Td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              <PlaceOffenceTable rows={rows} />
             </div>
           ))}
         </section>
@@ -146,19 +119,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       {people.length > 0 && (
         <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
           <h2 className={sectionHeadingStyle}>People</h2>
-          <ul className={css({ display: "flex", flexDirection: "column", gap: "1" })}>
-            {people.map((p) => (
-              <li key={p.name_key}>
-                <Link href={personHref(p.name_key)} className={css({ color: "fgAccent", fontWeight: "600" })}>
-                  {p.display_name}
-                </Link>
-                <span className={css({ color: "fgMuted", fontSize: "M" })}>
-                  {" "}
-                  ({p.mentions} mention{p.mentions === 1 ? "" : "s"})
-                </span>
-              </li>
-            ))}
-          </ul>
+          <PlacePeopleTable rows={people} />
         </section>
       )}
     </PageContainer>
