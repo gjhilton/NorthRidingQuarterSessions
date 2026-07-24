@@ -32,9 +32,13 @@ similar-looking names turned out to cover genuinely distinct offences
 (`obstruction`, 97 records, turned out to mean *highway* obstruction
 -- "obstructing Church Street", "placing drapery goods on the footway" --
 completely different from `obstructing police`/`resisting a constable`,
-which are about resisting an officer). Where sampled content was
-irreducibly mixed (`animal offence`, `animal damage`) the old name is kept
-as its own small leaf rather than force-merged into a wrong bucket.
+which are about resisting an officer). `animal offence`/`animal damage`
+were an earlier example of this same mixed-content problem, later
+actually resolved rather than left as unmerged residual leaves: their
+records split cleanly into `cruelty to animals` (ill-treating/torturing)
+and a new `allowing an animal to worry livestock` leaf (a dog causing
+damage to someone else's livestock -- not the same offence as generic
+property damage).
 """
 
 from sqlmodel import Session, select
@@ -145,10 +149,7 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("straying animals", ["animal straying"]),
         ("animal disease offence", []),
         ("dog licence offence", []),
-        # Residual, not force-merged -- sampled content was a genuine mix
-        # (dog worrying a lamb, cat killed, cat tortured); see module docstring.
-        ("animal offence", []),
-        ("animal damage", []),
+        ("allowing an animal to worry livestock", []),
     ]),
     ("Maritime & Customs", [
         ("smuggling", []),
