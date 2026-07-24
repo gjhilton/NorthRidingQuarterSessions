@@ -55,7 +55,17 @@ UNCLASSIFIED = "unclassified"
 # categories first. A leaf whose own canonical name was never a distinct
 # old name (nothing to merge) just gets an empty merge list.
 OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
-    ("Drink & Public Order", [
+    # Redesigned wholesale from the original flat "Drink & Public Order"
+    # (which lumped drink offences in with unrelated indecency/nuisance/
+    # sabbath-breaking leaves just because they were all vaguely "public
+    # order"-ish) -- every category below was checked against real
+    # charge_description text for its weakest/smallest members before being
+    # kept, merged, or split, not just judged by name. Two single-member
+    # circular categories ("Public Health" containing only "public health
+    # offence", "Miscellaneous Regulatory" as an undifferentiated grab-bag
+    # of firearms/mining/militia) are gone; every category now has a real
+    # multi-member theme.
+    ("Drink & Disorder", [
         ("drunkenness", []),
         ("drunk and disorderly", []),
         ("breach of the peace", []),
@@ -68,17 +78,27 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         # described indecent conduct or just disorder.
         ("disorderly behaviour", []),
         ("public order", ["public order offence"]),
-        ("obscene language", []),
-        ("indecent behaviour", []),
-        ("indecent exposure", []),
-        ("public nuisance", ["nuisance"]),
-        ("sabbath breaking", []),
         # About the drunk patron's own conduct (refusing to leave when
         # told), not the licensee's regulatory compliance -- belongs here
         # with drunkenness/drunk and disorderly, not with Licensing &
         # Gaming's trading-without-a-licence/opening-hours/dog-licence
         # offences.
         ("refusal to quit licensed premises", []),
+    ]),
+    # Split out of the old "Drink & Public Order" -- indecency/immorality/
+    # religious-order offences with no drink element at all.
+    ("Public Morals", [
+        ("obscene language", []),
+        ("indecent behaviour", []),
+        ("indecent exposure", []),
+        # The status element of "being a common prostitute and behaving
+        # [indecently/riotously]" -- always tagged alongside whichever
+        # behaviour leaf actually matches the record (indecent behaviour, in
+        # this category, or disorderly behaviour, in Drink & Disorder).
+        ("prostitution", []),
+        # "Playing marbles on a Sunday" -- moral/religious-order offence,
+        # nothing to do with drink.
+        ("sabbath breaking", []),
     ]),
     ("Assault & Resisting Authority", [
         ("assault", ["attempted assault"]),
@@ -110,13 +130,8 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("causing children to beg", []),
         ("loitering/suspected person", ["loitering with intent", "suspected person"]),
         ("fortune telling", []),
-        # The status element of "being a common prostitute and behaving
-        # [indecently/riotously]" -- always tagged alongside whichever
-        # behaviour leaf actually matches the record (indecent behaviour or
-        # disorderly behaviour), never on its own.
-        ("prostitution", []),
     ]),
-    ("Poor Law & Workhouse", [
+    ("Poor Law & Family Maintenance", [
         ("failure to maintain family", []),
         ("failure to maintain bastard children", []),
         ("refusing workhouse labour", []),
@@ -135,7 +150,7 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ),
         ("illegal child employment", ["education/employment offence", "employment of children", "illegal employment of a child"]),
     ]),
-    ("Master & Servant / Desertion of Service", [
+    ("Employment Law", [
         (
             "master and servant offence",
             [
@@ -149,12 +164,17 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
             ],
         ),
     ]),
-    ("Weights, Measures, Food & Trade", [
+    # Merged with the old standalone "Public Health" (a single-member
+    # category that just restated its own leaf's name) -- building
+    # regulation, weights/measures, food safety, and public health were all
+    # enforced the same way: a local-authority inspector (surveyor,
+    # inspector of weights and measures, inspector of nuisances, inspector
+    # of common lodging houses) checking compliance, a genuinely coherent
+    # theme once you look at who's doing the enforcing.
+    ("Trade & Public Health Regulation", [
         ("false weights or measures", ["using false weights or measures", "weights and measures", "weights and measures offence"]),
         ("unfit or adulterated food", ["food safety", "unwholesome food offence", "unfit food for sale", "selling adulterated goods"]),
         ("building regulation offence", []),
-    ]),
-    ("Public Health", [
         ("public health offence", []),
     ]),
     ("Animals", [
@@ -164,19 +184,35 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("dog licence offence", []),
         ("allowing an animal to worry livestock", []),
     ]),
-    ("Maritime & Customs", [
+    # "public nuisance" moved in from the old "Drink & Public Order" --
+    # sampled its charge_description text and 5 of 6 records are literally
+    # harbour obstruction ("throwing rubbish into Whitby harbour",
+    # "refusing to remove wreckage...after being given notice by the harbour
+    # master"), reported by the harbour master, nothing to do with drink.
+    ("Maritime, Customs & Harbour", [
         ("smuggling", []),
         ("customs offence", []),
         ("maritime offence", []),
+        ("public nuisance", ["nuisance"]),
     ]),
-    ("Miscellaneous Regulatory", [
+    # New category, merged out of the old "Miscellaneous Regulatory" grab-
+    # bag (which had no actual common thread between firearms/mining/
+    # militia) -- firearms and mining share a real theme, physical-hazard
+    # regulation (wanton firing near a public highway; unsafe blasting
+    # practice under the Coal Mines Regulation Act). Militia moved to
+    # Administrative & Public Duty instead, below.
+    ("Public Safety", [
         ("firearms offence", []),
         ("mining offence", []),
-        ("militia offence", []),
     ]),
-    ("Administrative / Public Office", [
+    # Militia moved in from the old "Miscellaneous Regulatory" -- failing a
+    # civic duty owed to the state (militia service, reporting to police,
+    # serving in a public office) is the same theme as this category's
+    # existing members, not a firearms/mining physical-hazard matter.
+    ("Administrative & Public Duty", [
         ("public office offence", ["misconduct in public office", "refusing civic office"]),
         ("penal servitude reporting offence", []),
+        ("militia offence", []),
     ]),
     ("Unclassified", [
         (UNCLASSIFIED, []),
