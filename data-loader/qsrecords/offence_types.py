@@ -59,6 +59,14 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("drunkenness", []),
         ("drunk and disorderly", []),
         ("breach of the peace", []),
+        # Riotous/disorderly conduct with no drink involved -- distinct from
+        # drunk and disorderly (that's specifically drink + disorder) and
+        # from breach of the peace (threats, not disorderly conduct itself).
+        # Split out from indecent behaviour: "being a common prostitute and
+        # behaving riotously/in a disorderly manner" was previously tagged
+        # indecent behaviour regardless of whether the record actually
+        # described indecent conduct or just disorder.
+        ("disorderly behaviour", []),
         ("public order", ["public order offence"]),
         ("obscene language", []),
         ("indecent behaviour", []),
@@ -102,6 +110,11 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("causing children to beg", []),
         ("loitering/suspected person", ["loitering with intent", "suspected person"]),
         ("fortune telling", []),
+        # The status element of "being a common prostitute and behaving
+        # [indecently/riotously]" -- always tagged alongside whichever
+        # behaviour leaf actually matches the record (indecent behaviour or
+        # disorderly behaviour), never on its own.
+        ("prostitution", []),
     ]),
     ("Poor Law & Workhouse", [
         ("failure to maintain family", []),
