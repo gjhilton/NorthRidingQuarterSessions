@@ -56,7 +56,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
           <p className={css({ fontSize: "body" })}>
             {children.map((c, i) => (
               <span key={c.id}>
-                {i > 0 && ", "}
+                {i > 0 && "; "}
                 <Link href={`/locations/${c.id}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
                   {c.name}
                 </Link>
