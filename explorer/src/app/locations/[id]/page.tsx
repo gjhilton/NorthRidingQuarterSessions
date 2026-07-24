@@ -51,16 +51,19 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       </div>
 
       {children.length > 0 && (
-        <p className={css({ fontSize: "body" })}>
-          {children.map((c, i) => (
-            <span key={c.id}>
-              {i > 0 && ", "}
-              <Link href={`/locations/${c.id}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
-                {c.name}
-              </Link>
-            </span>
-          ))}
-        </p>
+        <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+          <h2 className={sectionHeadingStyle}>Includes</h2>
+          <p className={css({ fontSize: "body" })}>
+            {children.map((c, i) => (
+              <span key={c.id}>
+                {i > 0 && ", "}
+                <Link href={`/locations/${c.id}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
+                  {c.name}
+                </Link>
+              </span>
+            ))}
+          </p>
+        </section>
       )}
 
       {place.latitude != null && place.longitude != null && (
