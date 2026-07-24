@@ -28,18 +28,18 @@ type Row = Cell[];
 // The site's own XXL/XL/L/M/S scale (theme/tokens.ts), not a bespoke
 // modular ratio -- the type size itself still carries the hierarchy, not
 // just column position, but now using the same named steps as every other
-// page rather than this grid's own one-off numbers. XXL is skipped (that's
-// reserved for the page's own <PageTitle> h1); floors at S for anything
-// five or more levels deep. Depths 0 and 1 share the same size (XL) --
-// the root row is distinguished from its immediate children by weight
-// (see the fontWeight ternary below), not a separate size step.
+// page rather than this grid's own one-off numbers. L is the largest size
+// used here (XXL/XL are reserved for <PageTitle> and other page-level
+// headings); floors at S for anything three or more levels deep. Depths 0
+// and 1 share the same size (L) -- the root row is distinguished from its
+// immediate children by weight (see the fontWeight ternary below), not a
+// separate size step.
 // Panda's kebab-case conversion splits every uppercase letter in an
 // all-caps token name as its own word, so "XL" -> --font-sizes--x-l, not
 // the --font-sizes-XL you'd guess -- verified against the actual compiled
 // stylesheet, not assumed.
 const DEPTH_FONT_SIZES = [
-  "var(--font-sizes--x-l)",
-  "var(--font-sizes--x-l)",
+  "var(--font-sizes--l)",
   "var(--font-sizes--l)",
   "var(--font-sizes--m)",
   "var(--font-sizes--s)",
@@ -368,7 +368,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                       py: "2",
                       px: "3",
                       boxSizing: "border-box",
-                      fontWeight: cell.depth === 0 ? "600" : "400",
+                      fontWeight: cell.depth === 0 ? "800" : "400",
                     })}
                   >
                     {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
