@@ -123,7 +123,11 @@ export function Footer() {
             className={css({ flexShrink: "0" })}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/funeral-games-logo.svg" alt="Funeral Games" className={css({ height: "2rem" })} />
+            <img
+              src="/images/funeral-games-logo.svg"
+              alt="Funeral Games"
+              className={css({ height: "2rem", mt: "1" })}
+            />
           </a>
         </div>
       </div>
