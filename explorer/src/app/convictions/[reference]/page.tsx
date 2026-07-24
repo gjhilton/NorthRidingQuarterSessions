@@ -388,12 +388,12 @@ function Tree({ nodes, unit }: { nodes: TreeParent[]; unit: string }) {
                 gap: "2",
                 listStyle: "none",
                 mt: "2",
-                ml: "3",
-                pl: "8",
+                ml: "2",
+                pl: "2",
               })}
             >
               {node.children.map((leaf) => (
-                <li key={leaf.key} className={css({ pl: "8" })}>
+                <li key={leaf.key}>
                   <span aria-hidden className={css({ color: "fgMuted" })}>
                     └─{" "}
                   </span>
