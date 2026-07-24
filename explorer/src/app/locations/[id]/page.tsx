@@ -128,12 +128,13 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
           <h2 className={sectionHeadingStyle}>Offences</h2>
           {convictionsByType.length > 1 && (
             <p className={css({ fontSize: "M" })}>
-              {convictionsByType.map(([offenceType], i) => (
+              {convictionsByType.map(([offenceType, rows], i) => (
                 <span key={offenceType}>
                   {i > 0 && "; "}
                   <a href={`#${offenceTypeAnchor(offenceType)}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
                     {sentenceCase(offenceType)}
-                  </a>
+                  </a>{" "}
+                  <span className={css({ color: "fgMuted" })}>({rows.length})</span>
                 </span>
               ))}
             </p>
