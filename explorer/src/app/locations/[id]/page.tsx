@@ -46,7 +46,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
             </span>
           ))}
         </nav>
-        <PageTitle subtitle={place.type}>{place.name}</PageTitle>
+        <PageTitle>{place.name}</PageTitle>
         {place.notes_public && <p className={css({ color: "fgMuted" })}>{place.notes_public}</p>}
       </div>
 
