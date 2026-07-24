@@ -104,7 +104,7 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("licensing offence", []),
         ("gaming/gambling offence", ["illegal gambling", "gaming", "gaming offence", "illegal lottery"]),
     ]),
-    ("Vagrancy, Begging & Rogue-and-Vagabond Offences", [
+    ("Vagrancy & Begging", [
         ("vagrancy", []),
         ("begging", []),
         ("causing children to beg", []),
