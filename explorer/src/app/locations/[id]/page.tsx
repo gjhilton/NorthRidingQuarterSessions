@@ -69,15 +69,15 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
       </div>
 
       {place.latitude != null && place.longitude != null && (
-        <div className={css({ maxWidth: "28rem" })}>
+        <div className={css({ width: "50%", aspectRatio: "1" })}>
           <Suspense fallback={null}>
             <MapViewLoader
               points={[{ name: place.name, count: 1, lat: place.latitude, lon: place.longitude }]}
               center={[place.latitude, place.longitude]}
-              zoom={13}
-              minZoom={9}
-              maxZoom={17}
-              height="20rem"
+              zoom={15}
+              minZoom={14}
+              maxZoom={18}
+              height="100%"
               interactive={false}
               markerColor="#f00"
             />
