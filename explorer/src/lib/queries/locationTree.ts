@@ -23,6 +23,8 @@ export interface PlaceDetail {
   name: string;
   type: string;
   notes_public: string | null;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 export function listPlaceIds(): number[] {
@@ -31,8 +33,48 @@ export function listPlaceIds(): number[] {
 
 export function getPlaceDetail(id: number): PlaceDetail | undefined {
   return getDb()
-    .prepare(`SELECT id, name, type, notes_public FROM place WHERE id = ?`)
+    .prepare(`SELECT id, name, type, notes_public, latitude, longitude FROM place WHERE id = ?`)
     .get(id) as PlaceDetail | undefined;
+}
+
+// Direct children only (one level down) -- the detail page shows these as a
+// short flowing sentence, not the full recursive grid the /locations page
+// already covers.
+export function getPlaceChildren(id: number): { id: number; name: string }[] {
+  return getDb()
+    .prepare(`SELECT id, name FROM place WHERE parent_id = ? ORDER BY name`)
+    .all(id) as { id: number; name: string }[];
+}
+
+export interface PlacePersonRow {
+  name_key: string;
+  display_name: string;
+  mentions: number;
+}
+
+// Defendants and other involved persons whose own location_id is this exact
+// node -- i.e. people who lived here, not people merely convicted of an
+// offence that happened here (that's getPlaceConvictions' job). Same
+// defendant+person union/dedup-by-name_key shape as peopleList.ts's
+// listAllPeople, just filtered to one place instead of every record.
+export function getPlacePeople(id: number): PlacePersonRow[] {
+  return getDb()
+    .prepare(
+      `
+      SELECT name_key, MAX(display_name) AS display_name, COUNT(*) AS mentions
+      FROM (
+        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name
+        FROM defendant WHERE location_id = ?
+        UNION ALL
+        SELECT name_key, TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS display_name
+        FROM person WHERE location_id = ?
+      )
+      WHERE name_key IS NOT NULL AND TRIM(name_key) != ''
+      GROUP BY name_key
+      ORDER BY display_name
+      `
+    )
+    .all(id, id) as PlacePersonRow[];
 }
 
 // The chain from the root parish down to this place, for a breadcrumb --
