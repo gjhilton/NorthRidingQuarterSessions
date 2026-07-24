@@ -587,7 +587,7 @@ export function BrowseExplorer({
                 }
                 className={css({
                   cursor: "pointer",
-                  _hover: { bg: "bgSurface" },
+                  _hover: { bg: "#fffef5" },
                 })}
               >
                 <Td verticalAlign="middle" className={css({ fontSize: "0.8rem", lineHeight: "1.1" })}>{r.reference_number}</Td>
