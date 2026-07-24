@@ -114,6 +114,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
                   <tr>
                     <Th>Reference</Th>
                     <Th>Date</Th>
+                    <Th>Defendant(s)</Th>
                     <Th>Charge</Th>
                   </tr>
                 </thead>
@@ -129,6 +130,7 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
                         </Link>
                       </Td>
                       <Td>{formatDate(c.conviction_date) ?? c.conviction_date_raw}</Td>
+                      <Td>{c.defendant_names ?? "—"}</Td>
                       <Td>{c.charge_description}</Td>
                     </tr>
                   ))}

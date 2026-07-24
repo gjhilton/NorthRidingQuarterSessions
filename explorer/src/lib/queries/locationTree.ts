@@ -103,6 +103,11 @@ export interface PlaceConvictionRow {
   conviction_date_raw: string;
   charge_description: string;
   offence_type: string;
+  // Comma-joined "First Last" -- same shape/expression as browseList.ts's
+  // DEFENDANT_SORT_EXPR, so the Convictions page and this one show
+  // defendants the same way (that page's richer per-defendant JSON with
+  // occupation/qualifier is overkill here, this page never sorts by it).
+  defendant_names: string | null;
 }
 
 // Convictions directly tied to this exact node (as offence or court
@@ -117,7 +122,13 @@ export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
     .prepare(
       `
       SELECT DISTINCT sc.reference_number, sc.conviction_date, sc.conviction_date_raw, sc.charge_description,
-        ot.name AS offence_type
+        ot.name AS offence_type,
+        (
+          SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
+          FROM summary_conviction_defendant scd
+          JOIN defendant d ON d.id = scd.defendant_id
+          WHERE scd.summary_conviction_id = sc.id
+        ) AS defendant_names
       FROM summary_conviction sc
       JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
       JOIN offence_type ot ON ot.id = scot.offence_type_id
