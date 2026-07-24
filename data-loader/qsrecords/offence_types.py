@@ -74,7 +74,7 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
     ]),
     ("Assault & Resisting Authority", [
         ("assault", ["attempted assault"]),
-        ("assault on a constable", ["assault on police"]),
+        ("assaulting a police officer", ["assault on a constable", "assault on police"]),
         ("obstructing/resisting a constable", ["obstructing police", "resisting a constable"]),
     ]),
     ("Highway, Traffic & Railways", [
