@@ -371,7 +371,7 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                     {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
                     {!includeAll && cell.node.offenceCount > 0 && (
                       <span className={css({ display: "block", fontSize: "M", fontWeight: "400" })}>
-                        {cell.node.offenceCount}
+                        {cell.node.offenceCount} offence{cell.node.offenceCount === 1 ? "" : "s"}
                       </span>
                     )}
                   </Link>
