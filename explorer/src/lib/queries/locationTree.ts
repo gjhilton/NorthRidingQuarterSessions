@@ -1,15 +1,20 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 
-// Placeholder query for the new self-referencing place tree (see
-// data-loader/qsrecords/models/reference.py::Place), which is replacing the
-// old flat Town/Street pair. Only Whitby's subtree is populated so far --
-// the migration is still in progress, one parish at a time.
+// Query for the self-referencing place tree (see
+// data-loader/qsrecords/models/reference.py::Place), which replaced the old
+// flat Town/Street pair.
 export interface PlaceNode {
   id: number;
   name: string;
   parent_id: number | null;
   type: string;
+  // How many convictions have this exact node (not its descendants) as
+  // their offence location -- lets the Locations page toggle between "all
+  // locations" (including ones only ever referenced as a person's
+  // residence) and "only locations where an offence was committed", and
+  // show the count for the latter.
+  offenceCount: number;
   children: PlaceNode[];
 }
 
@@ -76,9 +81,22 @@ export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
 export function listPlaceTree(): PlaceNode[] {
   const rows = getDb()
     .prepare(`SELECT id, name, parent_id, type FROM place ORDER BY name`)
-    .all() as Omit<PlaceNode, "children">[];
+    .all() as Omit<PlaceNode, "children" | "offenceCount">[];
 
-  const byId = new Map<number, PlaceNode>(rows.map((r) => [r.id, { ...r, children: [] }]));
+  const offenceCounts = new Map(
+    (
+      getDb()
+        .prepare(
+          `SELECT offence_location_id AS id, COUNT(*) AS count FROM summary_conviction
+           WHERE offence_location_id IS NOT NULL GROUP BY offence_location_id`
+        )
+        .all() as { id: number; count: number }[]
+    ).map((r) => [r.id, r.count])
+  );
+
+  const byId = new Map<number, PlaceNode>(
+    rows.map((r) => [r.id, { ...r, offenceCount: offenceCounts.get(r.id) ?? 0, children: [] }])
+  );
   const roots: PlaceNode[] = [];
   for (const node of byId.values()) {
     if (node.parent_id !== null && byId.has(node.parent_id)) {

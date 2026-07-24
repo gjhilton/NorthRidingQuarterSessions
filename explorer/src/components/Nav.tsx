@@ -24,7 +24,7 @@ function isActive(pathname: string, href: string): boolean {
 // white background); active ones are explicitly black + bold here since
 // that rule alone can't add the font-weight.
 function navLinkColor(active: boolean): React.CSSProperties {
-  return active ? { color: "var(--colors-fg)", fontWeight: 600 } : {};
+  return active ? { color: "var(--colors-fg)", fontWeight: 800 } : {};
 }
 
 export default function Nav() {
