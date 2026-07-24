@@ -49,6 +49,13 @@ function fontSizeForDepth(depth: number): string {
   return DEPTH_FONT_SIZES[Math.min(depth, DEPTH_FONT_SIZES.length - 1)];
 }
 
+// Whether this depth's name renders at the smallest (S) step -- i.e. it's
+// clamped past the end of DEPTH_FONT_SIZES, same condition fontSizeForDepth
+// itself floors on.
+function isSmallestDepth(depth: number): boolean {
+  return depth >= DEPTH_FONT_SIZES.length - 1;
+}
+
 function maxDepth(node: PlaceNode, depth = 0): number {
   if (node.children.length === 0) return depth;
   return Math.max(...node.children.map((c) => maxDepth(c, depth + 1)));
@@ -373,7 +380,13 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                   >
                     {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
                     {!includeAll && cell.node.offenceCount > 0 && (
-                      <span className={css({ display: "block", fontSize: "M", fontWeight: "400" })}>
+                      <span
+                        className={css({
+                          display: "block",
+                          fontSize: isSmallestDepth(cell.depth) ? "S" : "M",
+                          fontWeight: "400",
+                        })}
+                      >
                         {cell.node.offenceCount} offence{cell.node.offenceCount === 1 ? "" : "s"}
                       </span>
                     )}
