@@ -16,7 +16,7 @@ export function ArrowUpIcon({ size = 16 }: { size?: number }) {
       focusable="false"
     >
       <path d="M3 3h10" />
-      <path d="M4 11.5 8 7.5l4 4" />
+      <path d="M4 9 8 3l4 6" />
     </svg>
   );
 }
