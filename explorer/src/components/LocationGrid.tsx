@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { css, cx } from "styled-system/css";
 import { formInputStyle, PageTitle, Td } from "@/components/ui";
+import { XIcon } from "@/components/icons/XIcon";
 import type { PlaceNode } from "@/lib/queries/locationTree";
 
 // A different alternative again: one flat grid, not nested tables. Every
@@ -230,14 +231,51 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
           <span className={css({ fontWeight: "600" })}>Locations of people</span>
         </label>
       </div>
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Filter by name…"
-        aria-label="Filter locations by name"
-        className={css(formInputStyle, { maxWidth: "24rem" })}
-      />
+      <label
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "1",
+          fontSize: "body",
+          color: "fgMuted",
+          maxWidth: "24rem",
+        })}
+      >
+        Filter by name
+        <div className={css({ position: "relative" })}>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="e.g. Whitby, Church Street…"
+            className={css(formInputStyle, { width: "100%", pr: search ? "8" : "3" })}
+          />
+          {search && (
+            <button
+              type="button"
+              aria-label="Clear filter"
+              onClick={() => setSearch("")}
+              className={css({
+                position: "absolute",
+                right: "2",
+                top: "50%",
+                transform: "translateY(-50%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                bg: "transparent",
+                border: "none",
+                p: "1",
+                color: "fgMuted",
+                cursor: "pointer",
+                _hover: { color: "fgAccent" },
+              })}
+            >
+              <XIcon size={14} />
+            </button>
+          )}
+        </div>
+      </label>
       {filteredRoots.length === 0 ? (
         <p className={css({ fontSize: "small", color: "fgMuted" })}>No locations match.</p>
       ) : (
