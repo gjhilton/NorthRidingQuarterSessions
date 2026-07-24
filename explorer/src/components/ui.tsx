@@ -207,7 +207,7 @@ export const formInputStyle = css.raw({
   borderRadius: "corner",
   px: "3",
   py: "2",
-  fontSize: "body",
+  fontSize: "M",
   bg: "bg",
   color: "fg",
 });

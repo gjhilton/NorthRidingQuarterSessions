@@ -228,7 +228,7 @@ export function BrowseExplorer({
         })}
       >
         {label}
-        <span aria-hidden className={css({ fontSize: "small", opacity: column === effectiveSortBy ? 1 : 0.35 })}>
+        <span aria-hidden className={css({ fontSize: "M", opacity: column === effectiveSortBy ? 1 : 0.35 })}>
           {column === effectiveSortBy && effectiveSortDir === "asc" ? "▲" : "▼"}
         </span>
       </button>
@@ -247,7 +247,7 @@ export function BrowseExplorer({
         >
           <SearchField type="text" name="q" defaultValue={filters.q ?? ""} placeholder="name, reference, charge…" />
 
-          <details className={css({ fontSize: "body" })}>
+          <details className={css({ fontSize: "M" })}>
             <summary
               className={css({
                 display: "flex",
@@ -296,7 +296,7 @@ export function BrowseExplorer({
                   gap: "1",
                 })}
               >
-                <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
+                <legend className={css({ fontSize: "M", color: "fgMuted", fontWeight: "600", p: "0" })}>
                   Offence location
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
@@ -350,7 +350,7 @@ export function BrowseExplorer({
                   gap: "1",
                 })}
               >
-                <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
+                <legend className={css({ fontSize: "M", color: "fgMuted", fontWeight: "600", p: "0" })}>
                   Offence
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
@@ -406,7 +406,7 @@ export function BrowseExplorer({
                   gap: "1",
                 })}
               >
-                <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
+                <legend className={css({ fontSize: "M", color: "fgMuted", fontWeight: "600", p: "0" })}>
                   Offence date
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
@@ -445,7 +445,7 @@ export function BrowseExplorer({
                   gap: "1",
                 })}
               >
-                <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
+                <legend className={css({ fontSize: "M", color: "fgMuted", fontWeight: "600", p: "0" })}>
                   Conviction date
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
@@ -484,7 +484,7 @@ export function BrowseExplorer({
                   gap: "1",
                 })}
               >
-                <legend className={css({ fontSize: "small", color: "fgMuted", fontWeight: "600", p: "0" })}>
+                <legend className={css({ fontSize: "M", color: "fgMuted", fontWeight: "600", p: "0" })}>
                   Offenders
                 </legend>
                 <div className={css({ display: "flex", gap: "3" })}>
@@ -518,7 +518,7 @@ export function BrowseExplorer({
       </Card>
 
       <div className={css({ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "3" })}>
-        <p className={css({ fontSize: "body", color: "fgMuted" })}>
+        <p className={css({ fontSize: "M", color: "fgMuted" })}>
           {total === 1 ? (
             <>
               Showing <strong className={css({ color: "fg" })}>1</strong> matching record
@@ -548,11 +548,11 @@ export function BrowseExplorer({
                 lineHeight: "1.15",
               })}
             >
-              <span className={css({ fontSize: "body" })}>
+              <span className={css({ fontSize: "M" })}>
                 {isExporting ? "Preparing…" : "Download CSV"}
               </span>
               {!isExporting && (
-                <span className={css({ fontSize: "small", opacity: 0.7 })}>
+                <span className={css({ fontSize: "M", opacity: 0.7 })}>
                   {total.toLocaleString()} row{total === 1 ? "" : "s"}
                 </span>
               )}
@@ -564,7 +564,7 @@ export function BrowseExplorer({
       {rows.length === 0 ? (
         <EmptyState>No records match these filters.</EmptyState>
       ) : (
-        <Table borderWidth="lineweight_heavy" fontSize="small">
+        <Table borderWidth="lineweight_heavy" fontSize="M">
           <thead>
             <tr>
               <Th rowSpan={2}>Record ID</Th>
@@ -615,7 +615,7 @@ export function BrowseExplorer({
           >
             Prev
           </IconButton>
-          <span className={css({ fontSize: "body", color: "fgMuted" })}>
+          <span className={css({ fontSize: "M", color: "fgMuted" })}>
             Page {filters.page} of {totalPages}
           </span>
           <IconButton
@@ -648,7 +648,7 @@ function FormField({
           display: "flex",
           flexDirection: "column",
           gap: "1",
-          fontSize: "small",
+          fontSize: "M",
           color: "fgMuted",
         }),
         className
