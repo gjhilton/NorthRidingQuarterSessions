@@ -68,22 +68,6 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
         {place.notes_public && <p className={css({ color: "fgMuted" })}>{place.notes_public}</p>}
       </div>
 
-      {children.length > 0 && (
-        <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-          <h2 className={sectionHeadingStyle}>Children</h2>
-          <p className={css({ fontSize: "M" })}>
-            {children.map((c, i) => (
-              <span key={c.id}>
-                {i > 0 && "; "}
-                <Link href={`/locations/${c.id}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
-                  {c.name}
-                </Link>
-              </span>
-            ))}
-          </p>
-        </section>
-      )}
-
       {place.latitude != null && place.longitude != null && (
         <div className={css({ maxWidth: "28rem" })}>
           <Suspense fallback={null}>
@@ -99,6 +83,22 @@ export default async function PlaceDetailPage(props: PageProps<"/locations/[id]"
             />
           </Suspense>
         </div>
+      )}
+
+      {children.length > 0 && (
+        <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
+          <h2 className={sectionHeadingStyle}>Children</h2>
+          <p className={css({ fontSize: "M" })}>
+            {children.map((c, i) => (
+              <span key={c.id}>
+                {i > 0 && "; "}
+                <Link href={`/locations/${c.id}`} className={css({ color: "fgAccent", fontWeight: "600" })}>
+                  {c.name}
+                </Link>
+              </span>
+            ))}
+          </p>
+        </section>
       )}
 
       {convictions.length > 0 && (
