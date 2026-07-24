@@ -375,7 +375,12 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
                       py: "2",
                       px: "3",
                       boxSizing: "border-box",
-                      fontWeight: cell.depth === 0 ? "800" : "400",
+                      // EXPERIMENTAL: every depth bold, not just the root --
+                      // root stays the heaviest (800), everything else a
+                      // lighter bold (600). Revert to
+                      // `cell.depth === 0 ? "800" : "400"` if it doesn't
+                      // work out.
+                      fontWeight: cell.depth === 0 ? "800" : "600",
                     })}
                   >
                     {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
