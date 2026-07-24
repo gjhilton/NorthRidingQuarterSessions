@@ -100,7 +100,6 @@ OFFENCE_TAXONOMY: list[tuple[str, list[tuple[str, list[str]]]]] = [
         ("fortune telling", []),
     ]),
     ("Poor Law & Workhouse", [
-        ("poor law offence", []),
         ("failure to maintain family", []),
         ("failure to maintain bastard children", []),
         ("refusing workhouse labour", []),
