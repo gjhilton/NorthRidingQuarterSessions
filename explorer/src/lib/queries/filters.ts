@@ -106,6 +106,88 @@ export function listOffenceCategories(): Option[] {
     });
 }
 
+// Every distinct role a name (defendant or involved person) can be filtered
+// by on the People page -- "offender" (the synthetic defendant role, not a
+// real involved_persons.role value) pinned first since it's the most common
+// and most likely to be picked, the real role text alphabetical after it.
+// Blank/NULL roles are excluded -- there's nothing to pick.
+export function listPersonRoles(): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT DISTINCT NULLIF(TRIM(role), '') AS role
+      FROM involved_persons
+      WHERE NULLIF(TRIM(role), '') IS NOT NULL
+      ORDER BY role
+      `
+    )
+    .all() as { role: string }[];
+  return ["offender", ...rows.map((r) => r.role)];
+}
+
+// Every distinct leading surname letter across defendants and involved
+// persons -- drives the People page's A-Z nav. Static/enumerable, unlike the
+// filtered result set itself, so it's queried once here rather than derived
+// client-side from whichever page of results happens to be loaded.
+export function listPersonNameLetters(): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT DISTINCT UPPER(SUBSTR(COALESCE(last_name, first_name, name_key), 1, 1)) AS letter
+      FROM (
+        SELECT name_key, first_name, last_name FROM defendant
+        UNION ALL
+        SELECT name_key, first_name, last_name FROM person
+      )
+      WHERE name_key IS NOT NULL AND TRIM(name_key) != ''
+      ORDER BY letter
+      `
+    )
+    .all() as { letter: string }[];
+  return rows.map((r) => r.letter);
+}
+
+// Every town used as a defendant's or involved person's own residence --
+// distinct from listTowns() above, which is scoped to offence locations,
+// not residence.
+export function listResidenceTowns(): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT DISTINCT t.name AS name
+      FROM town t
+      WHERE t.id IN (
+        SELECT town_id FROM defendant WHERE town_id IS NOT NULL
+        UNION
+        SELECT town_id FROM person WHERE town_id IS NOT NULL
+      )
+      ORDER BY t.name
+      `
+    )
+    .all() as { name: string }[];
+  return rows.map((r) => r.name);
+}
+
+// Every distinct occupation string across defendants and involved persons --
+// real free text, not a curated taxonomy (unlike offence_type), so this list
+// is as long and as messy as the underlying data actually is (~400 values).
+export function listOccupations(): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+      SELECT DISTINCT occupation FROM (
+        SELECT NULLIF(TRIM(occupation), '') AS occupation FROM defendant
+        UNION
+        SELECT NULLIF(TRIM(occupation), '') AS occupation FROM person
+      )
+      WHERE occupation IS NOT NULL
+      ORDER BY occupation
+      `
+    )
+    .all() as { occupation: string }[];
+  return rows.map((r) => r.occupation);
+}
+
 export interface OffenceTypeOption extends Option {
   categoryId: number | null;
 }
