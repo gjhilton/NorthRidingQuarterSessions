@@ -5,7 +5,7 @@ export const primaryLinks = [
   { href: "/convictions", label: "Convictions" },
   { href: "/people", label: "People" },
   { href: "/locations", label: "Locations" },
-  { href: "/offences", label: "Offences" },
+  // { href: "/offences", label: "Offences" }, // TODO: re-enable once the offences section is reworked
 ];
 
 export const trailingLinks = [{ href: "/about", label: "About" }];
