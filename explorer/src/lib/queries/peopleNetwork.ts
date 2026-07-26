@@ -4,6 +4,7 @@
 // of what used to be a single people.ts.
 import "server-only";
 import { getDb, selectColumn } from "@/lib/db";
+import { formatPersonName } from "@/lib/text";
 
 export interface CaseMention {
   summary_conviction_id: number;
@@ -20,8 +21,8 @@ export interface CaseMention {
   marital_status: string | null;
   relationship_type: string | null;
   related_to_name: string | null;
-  town_id: number | null;
-  town_name: string | null;
+  location_id: number | null;
+  location_name: string | null;
 }
 
 export interface Connection {
@@ -66,11 +67,11 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       SELECT
         sc.id AS summary_conviction_id, sc.reference_number, sc.conviction_date, sc.charge_description,
         d.occupation, d.age, d.marital_status, d.relationship_type, d.related_to_name,
-        d.town_id, t.name AS town_name
+        d.location_id, pl.name AS location_name
       FROM defendant d
       JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
       JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
-      LEFT JOIN town t ON t.id = d.town_id
+      LEFT JOIN place pl ON pl.id = d.location_id
       WHERE d.name_key = ?
       `
     )
@@ -82,11 +83,11 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       SELECT
         sc.id AS summary_conviction_id, sc.reference_number, sc.conviction_date, sc.charge_description, ip.role,
         p.occupation, p.age, p.marital_status, p.relationship_type, p.related_to_name,
-        p.town_id, t.name AS town_name
+        p.location_id, pl.name AS location_name
       FROM person p
       JOIN involved_persons ip ON ip.person_id = p.id
       JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
-      LEFT JOIN town t ON t.id = p.town_id
+      LEFT JOIN place pl ON pl.id = p.location_id
       WHERE p.name_key = ?
       `
     )
@@ -95,7 +96,9 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
   if (asDefendant.length === 0 && asInvolved.length === 0) return undefined;
 
   const cases: CaseMention[] = [
-    ...asDefendant.map((c) => ({ ...c, role: "defendant" })),
+    // "offender" -- the same synthetic role used across the People listing
+    // (see peopleList.ts), not the raw table name this row came from.
+    ...asDefendant.map((c) => ({ ...c, role: "offender" })),
     ...asInvolved,
   ].sort((a, b) => (a.conviction_date ?? "").localeCompare(b.conviction_date ?? ""));
 
@@ -103,12 +106,14 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
 
   const displayNameRow = db
     .prepare(
-      `SELECT TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS name FROM defendant WHERE name_key = ?
+      `SELECT first_name, last_name, name_qualifier FROM defendant WHERE name_key = ?
        UNION ALL
-       SELECT TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,'')) AS name FROM person WHERE name_key = ?
+       SELECT first_name, last_name, name_qualifier FROM person WHERE name_key = ?
        LIMIT 1`
     )
-    .get(nameKey, nameKey) as { name: string } | undefined;
+    .get(nameKey, nameKey) as
+    | { first_name: string | null; last_name: string | null; name_qualifier: string | null }
+    | undefined;
 
   const aliases = caseIds.length
     ? (db
@@ -130,7 +135,7 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
     const coDefendants = db
       .prepare(
         `
-        SELECT d.name_key, TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')) AS display_name, scd.summary_conviction_id, sc.reference_number
+        SELECT d.name_key, d.first_name, d.last_name, d.name_qualifier, scd.summary_conviction_id, sc.reference_number
         FROM summary_conviction_defendant scd
         JOIN defendant d ON d.id = scd.defendant_id
         JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
@@ -139,7 +144,9 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       )
       .all(...caseIds, nameKey) as {
       name_key: string;
-      display_name: string;
+      first_name: string | null;
+      last_name: string | null;
+      name_qualifier: string | null;
       summary_conviction_id: number;
       reference_number: string;
     }[];
@@ -147,7 +154,7 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
     const coInvolved = db
       .prepare(
         `
-        SELECT p.name_key, TRIM(COALESCE(p.first_name,'') || ' ' || COALESCE(p.last_name,'')) AS display_name, ip.role, ip.summary_conviction_id, sc.reference_number
+        SELECT p.name_key, p.first_name, p.last_name, p.name_qualifier, ip.role, ip.summary_conviction_id, sc.reference_number
         FROM involved_persons ip
         JOIN person p ON p.id = ip.person_id
         JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
@@ -156,7 +163,9 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       )
       .all(...caseIds, nameKey) as {
       name_key: string;
-      display_name: string;
+      first_name: string | null;
+      last_name: string | null;
+      name_qualifier: string | null;
       role: string | null;
       summary_conviction_id: number;
       reference_number: string;
@@ -169,9 +178,13 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       } else {
         connectionsMap.set(row.name_key, {
           name_key: row.name_key,
-          display_name: row.display_name,
+          display_name: formatPersonName({
+            firstName: row.first_name,
+            lastName: row.last_name,
+            nameQualifier: row.name_qualifier,
+          }),
           kind: "defendant",
-          role: "co-defendant",
+          role: "co-offender",
           shared_cases: [row.reference_number],
         });
       }
@@ -183,7 +196,11 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       } else {
         connectionsMap.set(row.name_key, {
           name_key: row.name_key,
-          display_name: row.display_name,
+          display_name: formatPersonName({
+            firstName: row.first_name,
+            lastName: row.last_name,
+            nameQualifier: row.name_qualifier,
+          }),
           kind: "person",
           role: row.role,
           shared_cases: [row.reference_number],
@@ -196,7 +213,13 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
     (a, b) => b.shared_cases.length - a.shared_cases.length
   );
 
-  const displayName = displayNameRow?.name ?? nameKey;
+  const displayName = displayNameRow
+    ? formatPersonName({
+        firstName: displayNameRow.first_name,
+        lastName: displayNameRow.last_name,
+        nameQualifier: displayNameRow.name_qualifier,
+      })
+    : nameKey;
 
   const graph: NetworkGraph = {
     nodes: [

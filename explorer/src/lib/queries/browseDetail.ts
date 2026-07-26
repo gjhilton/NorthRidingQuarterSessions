@@ -5,6 +5,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { referenceToSlug } from "@/lib/referenceSlug";
+import { getPlaceAncestry } from "@/lib/queries/locationTree";
 
 export interface ConvictionDetail {
   id: number;
@@ -19,8 +20,6 @@ export interface ConvictionDetail {
   sentencing: string | null;
   raw_record: string;
   archive_url: string;
-  offence_town_name: string | null;
-  offence_street_name: string | null;
   court_town_name: string | null;
   // Self-reported by the LLM at extraction time -- null for records
   // extracted before this was captured, not a sign of anything wrong.
@@ -171,17 +170,13 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
         sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
         sc.offence_date, sc.offence_date_raw, sc.offence_day_of_week, sc.offence_time,
         sc.charge_description, sc.sentencing, sc.raw_record, sc.archive_url,
-        ot_town.name AS offence_town_name,
-        st.name AS offence_street_name,
-        court_town.name AS court_town_name,
+        court_place.name AS court_town_name,
         sc.extraction_confidence, sc.uncertain_fields,
         psd.name AS petty_sessional_division_name,
         sc.monetary_value_raw, sc.game_species, sc.correction_note,
         sc.of_especial_interest
       FROM summary_conviction sc
-      LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
-      LEFT JOIN street st ON st.id = sc.offence_location_street_id
-      LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
+      LEFT JOIN place court_place ON court_place.id = sc.court_location_id
       LEFT JOIN petty_sessional_division psd ON psd.id = sc.petty_sessional_division_id
       WHERE sc.id = ?
       `
@@ -196,6 +191,32 @@ export function getConvictionDetail(id: number): ConvictionDetail | undefined {
     ...rest,
     of_especial_interest: Boolean(of_especial_interest),
   };
+}
+
+export interface ConvictionLocation {
+  // Root-to-leaf chain (see locationTree.ts's getPlaceAncestry) -- the
+  // conviction's own offence location is the last entry; everything before
+  // it is that place's ancestry, for a breadcrumb matching the one
+  // /locations/[id] itself renders.
+  ancestry: { id: number; name: string }[];
+  // Archive-wide total convictions at this exact leaf place.
+  count: number;
+}
+
+export function getConvictionLocation(convictionId: number): ConvictionLocation | undefined {
+  const row = getDb()
+    .prepare(`SELECT offence_location_id AS id FROM summary_conviction WHERE id = ?`)
+    .get(convictionId) as { id: number | null } | undefined;
+  if (!row?.id) return undefined;
+
+  const ancestry = getPlaceAncestry(row.id);
+  if (ancestry.length === 0) return undefined;
+
+  const { count } = getDb()
+    .prepare(`SELECT COUNT(*) AS count FROM summary_conviction WHERE offence_location_id = ?`)
+    .get(row.id) as { count: number };
+
+  return { ancestry, count };
 }
 
 export interface ConvictionOffence {

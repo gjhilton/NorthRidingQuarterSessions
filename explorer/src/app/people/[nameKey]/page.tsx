@@ -7,6 +7,7 @@ import { Card, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/component
 import { ClickableTr, referenceCellStyle, StopPropagation } from "@/components/ClickableRow";
 import { fromSlug, toSlug } from "@/lib/slug";
 import { convictionHref } from "@/lib/referenceSlug";
+import { locationHref } from "@/lib/links";
 import { titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 
@@ -36,7 +37,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
   return (
     <PageContainer>
       <div>
-        <Link href="/people" className={css({ fontSize: "body", color: "fgMuted" })}>
+        <Link href="/people" className={css({ fontSize: "M", color: "fgMuted" })}>
           ← Back to search
         </Link>
         <PageTitle
@@ -67,22 +68,22 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
                   <Td verticalAlign="middle" className={referenceCellStyle}>{c.reference_number}</Td>
                   <Td verticalAlign="middle">{formatDate(c.conviction_date) ?? "—"}</Td>
                   <Td verticalAlign="middle">
-                    <Pill>{c.role}</Pill>
+                    <Pill>{titleCase(c.role)}</Pill>
                   </Td>
                   <Td verticalAlign="middle">{c.charge_description}</Td>
                   <Td verticalAlign="middle">
                     {details && <span>{details}</span>}
-                    {c.town_name && (
+                    {c.location_name && c.location_id && (
                       <>
                         {details && " · "}
                         <StopPropagation>
-                          <Link href="/map" className={css({ color: "fgAccent" })}>
-                            {titleCase(c.town_name)}
+                          <Link href={locationHref(c.location_id)} className={css({ color: "fgAccent" })}>
+                            {titleCase(c.location_name)}
                           </Link>
                         </StopPropagation>
                       </>
                     )}
-                    {!details && !c.town_name && "—"}
+                    {!details && !(c.location_name && c.location_id) && "—"}
                   </Td>
                 </ClickableTr>
               );

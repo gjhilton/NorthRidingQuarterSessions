@@ -12,7 +12,6 @@ import {
   getConvictionOffences,
   type ConvictionOffence,
   getConvictionLocation,
-  type ConvictionLocation,
   getConvictionPosition,
   getOtherConvictionCounts,
   getRelatedConvictions,
@@ -20,7 +19,7 @@ import {
 } from "@/lib/queries/browseDetail";
 import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
 import { ConvictionNav } from "@/components/ConvictionNav";
-import { personHref, offenceHref, streetHref, placeHref } from "@/lib/links";
+import { personHref, offenceHref, locationHref } from "@/lib/links";
 import { convictionHref } from "@/lib/referenceSlug";
 import { formatOffenceCategory, formatPersonName, titleCase } from "@/lib/text";
 import { Roles, roleLabel, classifyInvolvedPersonRole } from "@/lib/roles";
@@ -53,19 +52,11 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
   const offences = getConvictionOffences(convictionId);
   const offenceTreeNodes = groupOffencesByCategory(offences);
   const location = getConvictionLocation(convictionId);
-  const locationTreeNodes = locationToTreeNodes(location);
   // Section headings singular/plural by how many things are actually
   // listed underneath, not hardcoded -- People counts every individual
-  // across all three role lists combined; Locations counts the town itself
-  // plus its street when one's known (so "Location" alone, "Locations" for
-  // a town-and-street pair).
+  // across all three role lists combined.
   const peopleTitle = pluralize(defendants.length + police.length + otherPersons.length, "Person", "People");
   const offencesTitle = pluralize(offences.length, "Offence", "Offences");
-  // Always singular: a conviction has at most one offence location, and a
-  // known street is a sub-detail of that same location, not a second one --
-  // unlike People/Offences, there's no scenario where "Locations" (plural)
-  // is actually correct here.
-  const locationsTitle = "Location";
   const relatedConvictions = getRelatedConvictions(convictionId);
   const { prevSlug, nextSlug } = getAdjacentConvictionSlugs(convictionId);
   const { position, total } = getConvictionPosition(convictionId);
@@ -191,9 +182,19 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
         </Section>
       )}
 
-      {locationTreeNodes.length > 0 && (
-        <Section title={locationsTitle}>
-          <Tree nodes={locationTreeNodes} unit="conviction" />
+      {location && (
+        <Section title="Location">
+          <p className={css({ fontSize: "M" })}>
+            {location.ancestry.map((a, i) => (
+              <span key={a.id}>
+                {i > 0 && " → "}
+                <Link href={locationHref(a.id)} className={css({ color: "fgAccent" })}>
+                  {a.name}
+                </Link>
+              </span>
+            ))}
+          </p>
+          <CountNote count={location.count} unit="conviction" />
         </Section>
       )}
 
@@ -265,33 +266,6 @@ function groupOffencesByCategory(offences: ConvictionOffence[]): TreeParent[] {
       count: t.type_count,
     })),
   }));
-}
-
-// A conviction has at most one offence town/street (not a many-tagged
-// relationship like offence types), so this is always 0 or 1 top-level
-// node -- still built as a Tree node list for the same shared rendering,
-// rather than a bespoke one-off layout, so Locations looks and behaves
-// exactly like Offences.
-function locationToTreeNodes(location: ConvictionLocation | undefined): TreeParent[] {
-  if (!location?.town_id || !location.town_name) return [];
-  const children: TreeLeaf[] = [];
-  if (location.street_id && location.street_name) {
-    children.push({
-      key: location.street_id,
-      label: titleCase(location.street_name),
-      href: streetHref(location.street_id),
-      count: location.street_count,
-    });
-  }
-  return [
-    {
-      key: location.town_id,
-      label: location.town_name.toUpperCase(),
-      href: placeHref(location.town_id),
-      count: location.town_count,
-      children,
-    },
-  ];
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {

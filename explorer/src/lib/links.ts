@@ -9,16 +9,11 @@ export function personHref(nameKey: string): string {
   return `/people/${toSlug(nameKey)}`;
 }
 
-export function streetHref(id: number): string {
-  return `/streets/${id}`;
-}
-
-// The /places/[id] page (a town/place overview -- distinct from
-// /streets/[id]) doesn't exist yet, same TBC status as offenceHref's
-// category pages. Numeric id, not a name-derived slug, since town already
-// has a stable id (same reasoning as streetHref) -- no lookup table needed.
-export function placeHref(id: number): string {
-  return `/places/${id}`;
+// The one location system -- every node in the place tree (region, parish,
+// village, street, yard, point) is a page at /locations/[id]. Numeric id,
+// not a name-derived slug, since place already has a stable id.
+export function locationHref(id: number): string {
+  return `/locations/${id}`;
 }
 
 // One page per offence *type* (the 55 taxonomy leaves), not per category --
