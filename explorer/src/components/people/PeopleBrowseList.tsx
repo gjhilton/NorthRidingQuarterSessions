@@ -393,9 +393,11 @@ export function PeopleBrowseList({
                 </Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>
                   {p.roles
-                    .split(",")
-                    .map((r) => titleCase(r))
-                    .join(", ")}
+                    ? p.roles
+                        .split(",")
+                        .map((r) => titleCase(r))
+                        .join(", ")
+                    : "—"}
                 </Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>
                   {p.occupation ? titleCase(p.occupation) : "—"}

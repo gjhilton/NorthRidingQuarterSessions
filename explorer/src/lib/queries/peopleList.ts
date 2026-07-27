@@ -50,13 +50,18 @@ export interface PersonListRow {
 // have. Every filter here operates on these aggregated columns (via HAVING,
 // since they don't exist until after the GROUP BY), not on the raw
 // defendant/person/involved_persons rows underneath.
+// roles is COALESCE'd to '' rather than left NULL below: GROUP_CONCAT of
+// an all-NULL group (a name_key whose only appearances are as an involved
+// person with no recorded role -- role is never 'offender' for those, and
+// NULLIF blanks out an empty involved_persons.role) returns NULL, not '',
+// which crashed the listing's roles.split(',').
 const BASE_QUERY = `
   SELECT
     name_key,
     MAX(first_name) AS first_name,
     MAX(last_name) AS last_name,
     MAX(name_qualifier) AS name_qualifier,
-    GROUP_CONCAT(DISTINCT role) AS roles,
+    COALESCE(GROUP_CONCAT(DISTINCT role), '') AS roles,
     COUNT(*) AS total_mentions,
     MAX(occupation) AS occupation,
     MAX(location_name) AS location_name,
