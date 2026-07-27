@@ -16,20 +16,21 @@ export default function AboutPage() {
         <MarkdownContent>{readContent("about", "process")}</MarkdownContent>
       </Section>
 
-      <Section title="Cookies">
+      <Section title="Cookies" id="cookies">
         <MarkdownContent>{readContent("about", "cookies")}</MarkdownContent>
       </Section>
 
-      <Section title="Accessibility">
+      <Section title="Accessibility" id="accessibility">
         <MarkdownContent>{readContent("about", "accessibility")}</MarkdownContent>
       </Section>
     </PageContainer>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) {
   return (
     <section
+      id={id}
       className={css({ display: "flex", flexDirection: "column", gap: "3", scrollMarginTop: "3rem" })}
     >
       <h2 className={css(sectionHeadingStyle)}>{title}</h2>

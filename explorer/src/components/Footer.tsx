@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { css, cx } from "styled-system/css";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { ArrowUpIcon } from "@/components/icons/ArrowUpIcon";
@@ -113,6 +114,12 @@ export function Footer() {
                 <GitHubIcon size={14} />
                 Source code on GitHub
               </a>
+              <Link href="/about#cookies" className={footerLinkStyle}>
+                Cookies
+              </Link>
+              <Link href="/about#accessibility" className={footerLinkStyle}>
+                Accessibility
+              </Link>
             </p>
           </div>
 
