@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css";
 import { useClientQuery } from "@/lib/useClientQuery";
 import {
   filtersFromSearchParams,
@@ -17,7 +17,17 @@ import {
 } from "@/lib/queries/peopleList";
 import { personHref } from "@/lib/links";
 import { formatPersonName, titleCase } from "@/lib/text";
-import { Card, EmptyState, Table, Th, Td, formInputStyle } from "@/components/ui";
+import {
+  Card,
+  EmptyState,
+  FormField,
+  PaginationNav,
+  Table,
+  Th,
+  Td,
+  filterInputStyle,
+  formInputStyle,
+} from "@/components/ui";
 import { ClickableTr } from "@/components/ClickableRow";
 import { FilterIcon } from "@/components/icons/FilterIcon";
 import { PeopleSearch } from "@/components/people/PeopleSearch";
@@ -400,68 +410,18 @@ export function PeopleBrowseList({
         </Table>
       )}
 
-      {totalPages > 1 && (
-        <nav className={css({ display: "flex", gap: "3", alignItems: "center" })}>
-          {filters.page > 1 && !isPending ? (
-            <button
-              type="button"
-              onClick={() => goToPage(Math.max(1, filters.page - 1))}
-              className={css({ fontSize: "M", color: "fgAccent", bg: "transparent", border: "none", p: "0", cursor: "pointer" })}
-            >
-              ← Previous
-            </button>
-          ) : (
-            <span className={css({ fontSize: "M", color: "fgMuted", opacity: 0.5 })}>← Previous</span>
-          )}
-          <span className={css({ fontSize: "M", color: "fgMuted" })}>
-            Page {filters.page} of {totalPages}
-          </span>
-          {filters.page < totalPages && !isPending ? (
-            <button
-              type="button"
-              onClick={() => goToPage(Math.min(totalPages, filters.page + 1))}
-              className={css({ fontSize: "M", color: "fgAccent", bg: "transparent", border: "none", p: "0", cursor: "pointer" })}
-            >
-              Next →
-            </button>
-          ) : (
-            <span className={css({ fontSize: "M", color: "fgMuted", opacity: 0.5 })}>Next →</span>
-          )}
-        </nav>
-      )}
+      <PaginationNav
+        page={filters.page}
+        totalPages={totalPages}
+        disabled={isPending}
+        onPrev={() => goToPage(Math.max(1, filters.page - 1))}
+        onNext={() => goToPage(Math.min(totalPages, filters.page + 1))}
+      />
     </div>
   );
 }
 
-function FormField({
-  label,
-  children,
-  className,
-}: {
-  label: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <label
-      className={cx(
-        css({
-          display: "flex",
-          flexDirection: "column",
-          gap: "1",
-          fontSize: "M",
-          color: "fgMuted",
-        }),
-        className
-      )}
-    >
-      {label}
-      {children}
-    </label>
-  );
-}
-
-const inputStyle = css(formInputStyle, { px: "2", py: "1.5", width: "100%", colorScheme: "light" });
+const inputStyle = css(formInputStyle, filterInputStyle);
 
 const truncateCellStyle = css({
   maxWidth: "12rem",

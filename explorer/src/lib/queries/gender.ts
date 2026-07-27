@@ -90,51 +90,6 @@ function genderOffenceCategoryRows(): GenderOffenceRow[] {
   return rows.map((r) => ({ ...r, name: titleCase(r.name) }));
 }
 
-export interface GenderYearSeries {
-  seriesKeys: string[];
-  male: { years: number[]; seriesKeys: string[]; data: Record<string, number | string>[] };
-  female: { years: number[]; seriesKeys: string[]; data: Record<string, number | string>[] };
-}
-
-// The two charts (male composition, female composition) share one top-N
-// category set -- selected by combined male+female volume -- so the same
-// legend colour means the same offence type in both charts and "Other"
-// isn't hiding a different mix of categories on each side.
-function genderYearSeriesFromRows(rows: GenderOffenceRow[], topN: number): GenderYearSeries {
-  const totals = new Map<string, number>();
-  for (const r of rows) totals.set(r.name, (totals.get(r.name) ?? 0) + r.count);
-  const topNames = [...totals.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, topN)
-    .map(([name]) => name);
-  const topSet = new Set(topNames);
-  const seriesKeys = [...topNames, "Other"];
-
-  function buildFor(sex: "male" | "female") {
-    const filtered = rows.filter((r) => r.sex === sex);
-    const years = [...new Set(filtered.map((r) => r.year))].sort((a, b) => a - b);
-    const byYear = new Map<number, Record<string, number | string>>(
-      years.map((year) => [year, { year, ...Object.fromEntries(seriesKeys.map((k) => [k, 0])) }])
-    );
-    for (const r of filtered) {
-      const key = topSet.has(r.name) ? r.name : "Other";
-      const point = byYear.get(r.year)!;
-      point[key] = (point[key] as number) + r.count;
-    }
-    return { years, seriesKeys, data: [...byYear.values()] };
-  }
-
-  return { seriesKeys, male: buildFor("male"), female: buildFor("female") };
-}
-
-export function offenceTypeByYearBySex(topN = 6): GenderYearSeries {
-  return genderYearSeriesFromRows(genderOffenceRows(), topN);
-}
-
-export function offenceCategoryByYearBySex(topN = 8): GenderYearSeries {
-  return genderYearSeriesFromRows(genderOffenceCategoryRows(), topN);
-}
-
 export interface GenderTrendPoint {
   year: number;
   male: number;
@@ -149,8 +104,8 @@ export interface OffenceGenderTrend {
 
 // Per-offence-type (or, via genderOffenceCategoryRows, per-category)
 // male/female counts by year, for the single-category explorer -- one
-// entry per top-N name, each with its own full year series (unlike
-// genderYearSeriesFromRows, nothing here gets bucketed into "Other").
+// entry per top-N name, each with its own full year series (nothing here
+// gets bucketed into "Other").
 function genderTrendsFromRows(rows: GenderOffenceRow[], topN: number): OffenceGenderTrend[] {
   const byType = new Map<string, { total: number; byYear: Map<number, GenderTrendPoint> }>();
   for (const r of rows) {

@@ -15,7 +15,7 @@ export interface OnThisDayRow {
 
 // "MM-DD", e.g. "01-12" -- matches SQLite's strftime('%m-%d', ...) output
 // for a date stored as 'YYYY-MM-DD'.
-export function todayMonthDay(date: Date = new Date()): string {
+function todayMonthDay(date: Date = new Date()): string {
   const mm = String(date.getMonth() + 1).padStart(2, "0");
   const dd = String(date.getDate()).padStart(2, "0");
   return `${mm}-${dd}`;

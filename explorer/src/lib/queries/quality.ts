@@ -9,11 +9,6 @@ export interface RepeatedName {
   count: number;
 }
 
-export interface CaseRef {
-  reference_number: string;
-  conviction_date: string | null;
-}
-
 export function repeatedDefendantNames(minOccurrences = 2): RepeatedName[] {
   return getDb()
     .prepare(
@@ -40,36 +35,6 @@ export function repeatedPersonNames(minOccurrences = 2): RepeatedName[] {
       `
     )
     .all(minOccurrences) as RepeatedName[];
-}
-
-export function defendantCaseReferences(nameKey: string): CaseRef[] {
-  return getDb()
-    .prepare(
-      `
-      SELECT sc.reference_number, sc.conviction_date
-      FROM summary_conviction sc
-      JOIN summary_conviction_defendant scd ON scd.summary_conviction_id = sc.id
-      JOIN defendant d ON d.id = scd.defendant_id
-      WHERE d.name_key = ?
-      ORDER BY sc.conviction_date
-      `
-    )
-    .all(nameKey) as CaseRef[];
-}
-
-export function personCaseReferences(nameKey: string): CaseRef[] {
-  return getDb()
-    .prepare(
-      `
-      SELECT sc.reference_number, sc.conviction_date
-      FROM summary_conviction sc
-      JOIN involved_persons ip ON ip.summary_conviction_id = sc.id
-      JOIN person p ON p.id = ip.person_id
-      WHERE p.name_key = ?
-      ORDER BY sc.conviction_date
-      `
-    )
-    .all(nameKey) as CaseRef[];
 }
 
 export interface UnreviewedOffenceType {

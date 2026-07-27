@@ -3,7 +3,7 @@
 // scripts/export-csv.mjs (the full-dataset download, a Node build script)
 // has its own copy rather than sharing this one, since the two run in
 // different module systems (bundled TS vs. a standalone .mjs script).
-export function toCsv<T extends object>(rows: T[]): string {
+function toCsv<T extends object>(rows: T[]): string {
   if (rows.length === 0) return "";
   const columns = Object.keys(rows[0]) as (keyof T)[];
   const escape = (value: unknown): string => {

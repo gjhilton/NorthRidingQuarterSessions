@@ -304,3 +304,92 @@ export function Pill({ children }: { children: React.ReactNode }) {
     </span>
   );
 }
+
+// A labelled form field wrapper -- found byte-for-byte duplicated between
+// BrowseExplorer.tsx and PeopleBrowseList.tsx (each is its own client
+// component with its own filter form, but this part of the shape was
+// never actually different).
+export function FormField({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <label
+      className={cx(
+        css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "1",
+          fontSize: "M",
+          color: "fgMuted",
+        }),
+        className
+      )}
+    >
+      {label}
+      {children}
+    </label>
+  );
+}
+
+// Same story as FormField above -- the extra sizing/colour-scheme on top of
+// formInputStyle was duplicated identically in both filter forms. Not
+// css.raw itself (Panda's raw-merging behaviour for combining two raw
+// objects isn't relied on here) -- callers compose it the same way they
+// already compose formInputStyle: `css(formInputStyle, filterInputStyle)`.
+export const filterInputStyle = { px: "2", py: "1.5", width: "100%", colorScheme: "light" } as const;
+
+// Prev/Next + "Page N of M" -- the whole pagination footer, found
+// byte-for-byte duplicated between BrowseExplorer.tsx and
+// PeopleBrowseList.tsx. Disabled state (isPending) greys out both buttons
+// rather than letting a second click queue up while a query's in flight.
+export function PaginationNav({
+  page,
+  totalPages,
+  disabled,
+  onPrev,
+  onNext,
+}: {
+  page: number;
+  totalPages: number;
+  disabled: boolean;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  if (totalPages <= 1) return null;
+  const linkStyle = css({
+    fontSize: "M",
+    color: "fgAccent",
+    bg: "transparent",
+    border: "none",
+    p: "0",
+    cursor: "pointer",
+  });
+  const disabledStyle = css({ fontSize: "M", color: "fgMuted", opacity: 0.5 });
+  return (
+    <nav className={css({ display: "flex", gap: "3", alignItems: "center" })}>
+      {page > 1 && !disabled ? (
+        <button type="button" onClick={onPrev} className={linkStyle}>
+          ← Previous
+        </button>
+      ) : (
+        <span className={disabledStyle}>← Previous</span>
+      )}
+      <span className={css({ fontSize: "M", color: "fgMuted" })}>
+        Page {page} of {totalPages}
+      </span>
+      {page < totalPages && !disabled ? (
+        <button type="button" onClick={onNext} className={linkStyle}>
+          Next →
+        </button>
+      ) : (
+        <span className={disabledStyle}>Next →</span>
+      )}
+    </nav>
+  );
+}
