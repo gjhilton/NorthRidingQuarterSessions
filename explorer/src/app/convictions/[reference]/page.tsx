@@ -43,8 +43,12 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
 
   const defendants = [...getConvictionDefendants(convictionId)].sort(bySurname);
   const involvedPersons = [...getConvictionInvolvedPersons(convictionId)].sort(bySurname);
-  const police = involvedPersons.filter((p) => classifyInvolvedPersonRole(p.role) === Roles.police);
-  const otherPersons = involvedPersons.filter((p) => classifyInvolvedPersonRole(p.role) === Roles.other);
+  const police = involvedPersons.filter(
+    (p) => classifyInvolvedPersonRole(p.role, p.is_police) === Roles.police
+  );
+  const otherPersons = involvedPersons.filter(
+    (p) => classifyInvolvedPersonRole(p.role, p.is_police) === Roles.other
+  );
   const otherConvictionCounts = getOtherConvictionCounts(
     [...defendants, ...involvedPersons].map((p) => p.name_key),
     convictionId

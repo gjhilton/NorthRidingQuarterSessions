@@ -43,6 +43,29 @@ export interface CaseParticipants {
   other: CaseParticipant[];
 }
 
+// The other identity split off this one by backfill_split_police_names.py
+// (or vice versa) -- a police officer and an offender sharing a common
+// name are essentially certain to be different real people, so they're
+// given separate name_keys (see that script) rather than shown merged on
+// one page. This is the cross-reference back the other way, so each split
+// identity can still be found from the other.
+export interface SameNameAlternate {
+  name_key: string;
+  display_name: string;
+}
+
+// A spouse linked via Defendant/Person.spouse_person_id -- either this
+// name_key's own row names them (forward: "wife of Robert Jackson"), or the
+// other way around (reverse: this name_key IS the Person some other row's
+// spouse_person_id points at). Both directions are surfaced the same way,
+// since from the reader's point of view "who is this person's spouse" is
+// one question regardless of which record happened to carry the
+// relationship_type/related_to_name text.
+export interface SpouseLink {
+  name_key: string;
+  display_name: string;
+}
+
 export interface PersonNetwork {
   name_key: string;
   display_name: string;
@@ -52,6 +75,14 @@ export interface PersonNetwork {
   // person's own row too (the page renders it as plain text instead of a
   // link, rather than this map omitting it).
   participantsByCase: Map<number, CaseParticipants>;
+  sameNameAlternate: SameNameAlternate | undefined;
+  spouses: SpouseLink[];
+  // True if ANY Defendant/Person row under this name_key is flagged
+  // Person.is_police (occupation names a police rank -- see
+  // backfill_is_police.py). A name_key can span many rows across many
+  // cases; one police-occupation mention is enough to call the person
+  // police here, same as elsewhere on the site.
+  isPolice: boolean;
 }
 
 export function listNameKeys(): string[] {
@@ -172,7 +203,7 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
     const involvedRows = db
       .prepare(
         `
-        SELECT ip.summary_conviction_id AS conviction_id, p.name_key, p.first_name, p.last_name, p.name_qualifier, ip.role
+        SELECT ip.summary_conviction_id AS conviction_id, p.name_key, p.first_name, p.last_name, p.name_qualifier, ip.role, p.is_police
         FROM involved_persons ip
         JOIN person p ON p.id = ip.person_id
         WHERE ip.summary_conviction_id IN (${placeholders})
@@ -185,6 +216,7 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       last_name: string | null;
       name_qualifier: string | null;
       role: string | null;
+      is_police: number;
     }[];
 
     for (const row of defendantRows) {
@@ -196,7 +228,10 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       });
     }
     for (const row of involvedRows) {
-      const bucket = classifyInvolvedPersonRole(row.role) === Roles.police ? "police" : "other";
+      const bucket =
+        classifyInvolvedPersonRole(row.role, Boolean(row.is_police)) === Roles.police
+          ? "police"
+          : "other";
       ensure(row.conviction_id)[bucket].push({
         name_key: row.name_key,
         first_name: row.first_name,
@@ -214,11 +249,109 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       })
     : nameKey;
 
+  const alternateNameKey = nameKey.endsWith(" police")
+    ? nameKey.slice(0, -" police".length)
+    : `${nameKey} police`;
+  const alternateNameRow = db
+    .prepare(
+      `SELECT first_name, last_name, name_qualifier FROM defendant WHERE name_key = ?
+       UNION ALL
+       SELECT first_name, last_name, name_qualifier FROM person WHERE name_key = ?
+       LIMIT 1`
+    )
+    .get(alternateNameKey, alternateNameKey) as
+    | { first_name: string | null; last_name: string | null; name_qualifier: string | null }
+    | undefined;
+  const sameNameAlternate: SameNameAlternate | undefined = alternateNameRow
+    ? {
+        name_key: alternateNameKey,
+        display_name: formatPersonName({
+          firstName: alternateNameRow.first_name,
+          lastName: alternateNameRow.last_name,
+          nameQualifier: alternateNameRow.name_qualifier,
+        }),
+      }
+    : undefined;
+
+  const isPolice = Boolean(
+    db
+      .prepare(
+        `SELECT 1 FROM defendant WHERE name_key = ? AND is_police = 1
+         UNION ALL
+         SELECT 1 FROM person WHERE name_key = ? AND is_police = 1
+         LIMIT 1`
+      )
+      .get(nameKey, nameKey)
+  );
+
+  // Forward: this name_key's own rows name a spouse via spouse_person_id.
+  // Reverse: this name_key IS the Person some other row's spouse_person_id
+  // points at (spouse_person_id always targets a person.id, never a
+  // defendant.id, so the reverse lookup only needs this name_key's own
+  // Person ids, not its Defendant ids).
+  const spouseTargetRows = db
+    .prepare(
+      `SELECT spouse_person_id AS id FROM defendant WHERE name_key = ? AND spouse_person_id IS NOT NULL
+       UNION
+       SELECT spouse_person_id AS id FROM person WHERE name_key = ? AND spouse_person_id IS NOT NULL`
+    )
+    .all(nameKey, nameKey) as { id: number }[];
+  const reverseSpouseRows = db
+    .prepare(
+      `SELECT d.name_key AS name_key, d.first_name, d.last_name, d.name_qualifier
+       FROM defendant d
+       WHERE d.spouse_person_id IN (SELECT id FROM person WHERE name_key = ?)
+       UNION
+       SELECT p.name_key AS name_key, p.first_name, p.last_name, p.name_qualifier
+       FROM person p
+       WHERE p.spouse_person_id IN (SELECT id FROM person WHERE name_key = ?)`
+    )
+    .all(nameKey, nameKey) as {
+    name_key: string;
+    first_name: string | null;
+    last_name: string | null;
+    name_qualifier: string | null;
+  }[];
+
+  const spousesByNameKey = new Map<string, SpouseLink>();
+  for (const { id } of spouseTargetRows) {
+    const target = db
+      .prepare(`SELECT name_key, first_name, last_name, name_qualifier FROM person WHERE id = ?`)
+      .get(id) as
+      | { name_key: string; first_name: string | null; last_name: string | null; name_qualifier: string | null }
+      | undefined;
+    if (target && target.name_key !== nameKey) {
+      spousesByNameKey.set(target.name_key, {
+        name_key: target.name_key,
+        display_name: formatPersonName({
+          firstName: target.first_name,
+          lastName: target.last_name,
+          nameQualifier: target.name_qualifier,
+        }),
+      });
+    }
+  }
+  for (const row of reverseSpouseRows) {
+    if (row.name_key !== nameKey) {
+      spousesByNameKey.set(row.name_key, {
+        name_key: row.name_key,
+        display_name: formatPersonName({
+          firstName: row.first_name,
+          lastName: row.last_name,
+          nameQualifier: row.name_qualifier,
+        }),
+      });
+    }
+  }
+
   return {
     name_key: nameKey,
     display_name: displayName,
     aliases: aliases.map((a) => a.alias_name),
     cases,
     participantsByCase,
+    sameNameAlternate,
+    spouses: [...spousesByNameKey.values()],
+    isPolice,
   };
 }

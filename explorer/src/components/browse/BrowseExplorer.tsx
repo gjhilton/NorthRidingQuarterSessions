@@ -63,7 +63,10 @@ function parseDefendantNames(json: string | null): string[] {
 
 function formatDefendantNames(json: string | null): string {
   const names = parseDefendantNames(json);
-  return names.length > 0 ? names.join(", ") : "—";
+  // Semicolons, not commas -- formatPersonName's own "SURNAME, Firstname"
+  // already uses a comma, so a comma-joined list of them is ambiguous about
+  // where one name ends and the next begins.
+  return names.length > 0 ? names.join("; ") : "—";
 }
 
 // A hydrated/pasted URL's locationId could be a town or a more specific

@@ -1,7 +1,7 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import { CircleMarker, MapContainer, Polyline, Popup, TileLayer } from "react-leaflet";
 import { token } from "styled-system/tokens";
 
 export interface MapPoint {
@@ -32,12 +32,27 @@ export function MapView({
   // the view within the range where the map is actually honest.
   minZoom = 8,
   maxZoom = 13,
+  height = "32rem",
+  // For a small single-point "here's roughly where this is" map (e.g. the
+  // conviction detail page's street highlight) rather than the large
+  // explorable regional/town views -- drag/zoom/keyboard all off, so it
+  // reads as a fixed illustration, not an interactive map someone might
+  // expect to pan around a mostly-empty tile set.
+  interactive = true,
+  markerColor = MARKER_COLOR,
+  // Real OSM road geometry (see lib/streetPaths.ts) -- when known, draws
+  // the road's actual shape instead of just a dot at one point on it.
+  path,
 }: {
   points: MapPoint[];
   center?: [number, number];
   zoom?: number;
   minZoom?: number;
   maxZoom?: number;
+  height?: string;
+  interactive?: boolean;
+  markerColor?: string;
+  path?: [number, number][];
 }) {
   return (
     <MapContainer
@@ -46,26 +61,36 @@ export function MapView({
       minZoom={minZoom}
       maxZoom={maxZoom}
       scrollWheelZoom={false}
-      style={{ height: "32rem", width: "100%", borderRadius: MAP_RADIUS }}
+      dragging={interactive}
+      zoomControl={interactive}
+      doubleClickZoom={interactive}
+      touchZoom={interactive}
+      boxZoom={interactive}
+      keyboard={interactive}
+      style={{ height, width: "100%", borderRadius: MAP_RADIUS }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {points.map((p) => (
-        <CircleMarker
-          key={p.name}
-          center={[p.lat, p.lon]}
-          radius={radiusFor(p.count)}
-          pathOptions={{ color: MARKER_COLOR, fillColor: MARKER_COLOR, fillOpacity: 0.6 }}
-        >
-          <Popup>
-            <strong>{p.name}</strong>
-            <br />
-            {p.count} case{p.count === 1 ? "" : "s"}
-          </Popup>
-        </CircleMarker>
-      ))}
+      {path ? (
+        <Polyline positions={path} pathOptions={{ color: markerColor, weight: 4 }} />
+      ) : (
+        points.map((p) => (
+          <CircleMarker
+            key={p.name}
+            center={[p.lat, p.lon]}
+            radius={radiusFor(p.count)}
+            pathOptions={{ color: markerColor, fillColor: markerColor, fillOpacity: 0.6 }}
+          >
+            <Popup>
+              <strong>{p.name}</strong>
+              <br />
+              {p.count} case{p.count === 1 ? "" : "s"}
+            </Popup>
+          </CircleMarker>
+        ))
+      )}
     </MapContainer>
   );
 }

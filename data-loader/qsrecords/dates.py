@@ -32,6 +32,15 @@ _DATE_RE = re.compile(r"^\s*(\d{1,2})\s+([A-Za-z]+)\.?\s+(\d{4})\s*$")
 
 _BRACKET_ANNOTATION_RE = re.compile(r"\[.*?\]")
 _LETTER_DIGIT_BOUNDARY_RE = re.compile(r"([A-Za-z])(\d)")
+# Many raw dates lead with the day of the week ("Sunday 19 July 1835") --
+# stripped here rather than folded into _DATE_RE so that regex stays a pure
+# "D Month YYYY" matcher. The day name itself is never trusted (day_of_week
+# below is always recomputed from the parsed date, never read off this
+# prefix), so a record whose stated weekday is wrong for its own date still
+# parses correctly -- this only unblocks the day/month/year match.
+_DAY_OF_WEEK_PREFIX_RE = re.compile(
+    r"^(?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)[A-Za-z]*\.?\s+", re.IGNORECASE
+)
 
 
 @dataclass(frozen=True)
@@ -43,10 +52,13 @@ class ParsedDate:
 
 
 def _clean(raw: str) -> str:
-    """Strip archival annotations like '[sic]' and fix 'Feb1887' -> 'Feb 1887'."""
+    """Strip archival annotations like '[sic]', a leading day-of-week
+    ('Sunday 19 July 1835' -> '19 July 1835'), and fix 'Feb1887' -> 'Feb 1887'."""
     cleaned = _BRACKET_ANNOTATION_RE.sub("", raw)
     cleaned = _LETTER_DIGIT_BOUNDARY_RE.sub(r"\1 \2", cleaned)
-    return " ".join(cleaned.split())
+    cleaned = " ".join(cleaned.split())
+    cleaned = _DAY_OF_WEEK_PREFIX_RE.sub("", cleaned)
+    return cleaned
 
 
 def parse_historical_date(raw: Optional[str]) -> Optional[ParsedDate]:

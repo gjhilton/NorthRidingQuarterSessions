@@ -8,19 +8,29 @@ export enum Roles {
   other = "other",
 }
 
-export const ROLE_LABELS: Record<Roles, string> = {
-  [Roles.offender]: "Offenders",
-  [Roles.police]: "Police",
-  [Roles.other]: "Other",
-};
+// Singular/plural by actual count -- "Offender"/"Offenders", "Other"/
+// "Others". "Police" doesn't inflect either way (same word for one officer
+// or several), so count is accepted but ignored for that case.
+export function roleLabel(role: Roles, count: number): string {
+  switch (role) {
+    case Roles.offender:
+      return count === 1 ? "Offender" : "Offenders";
+    case Roles.police:
+      return "Police";
+    case Roles.other:
+      return count === 1 ? "Other" : "Others";
+  }
+}
 
-// Only the literal "police"/"police officer" role values count as Police --
-// "informant" (the largest single role in involved_persons by far) is
-// often but not always a constable in this era and isn't reliably
-// distinguishable from the wording alone, so it deliberately stays Other
-// rather than being inferred into Police.
+// The literal role text is almost never "police"/"police officer" -- the
+// informant on a case was very often a constable performing their duty, but
+// involved_persons.role just says "informant" regardless. isPolice (from
+// Person.is_police, backfilled from occupation text -- see
+// backfill_is_police.py) is the reliable signal; the literal role values
+// are kept as a fallback for any row isPolice doesn't cover.
 const POLICE_ROLE_VALUES = new Set(["police", "police officer"]);
 
-export function classifyInvolvedPersonRole(role: string | null): Roles {
-  return role && POLICE_ROLE_VALUES.has(role) ? Roles.police : Roles.other;
+export function classifyInvolvedPersonRole(role: string | null, isPolice?: boolean): Roles {
+  if (isPolice || (role && POLICE_ROLE_VALUES.has(role))) return Roles.police;
+  return Roles.other;
 }

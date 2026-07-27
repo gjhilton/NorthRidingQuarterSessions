@@ -107,6 +107,20 @@ class Defendant(SQLModel, table=True):
     # name", NOT a merge/dedup key. See models/reference.py docstring for the
     # analogous-but-different Town/Street/OffenceType dedup behavior.
     name_key: str = Field(index=True)
+    # Structural link to the spouse named in relationship_type/related_to_name
+    # ("wife" + the husband's name) -- points at a real Person row (created by
+    # backfill_spouses.py, or by mapping.py going forward) rather than leaving
+    # that name as unlinked text. Every named individual should end up as its
+    # own row somewhere in the schema, not just a string on someone else's.
+    spouse_person_id: Optional[int] = Field(default=None, foreign_key="person.id")
+    # Whether occupation names a police rank (constable/sergeant/inspector/
+    # superintendent of police, etc). involved_persons.role is almost never
+    # the literal string "police" -- the informant on a case was very often a
+    # constable performing their duty, but role just says "informant" -- so
+    # role text alone badly undercounts police. Backfilled by
+    # backfill_is_police.py from occupation text; set by mapping.py for new
+    # extractions going forward.
+    is_police: bool = Field(default=False)
 
 
 class Alias(SQLModel, table=True):
@@ -134,6 +148,10 @@ class Person(SQLModel, table=True):
     # See Defendant.location_id above -- same field, same reasoning.
     location_id: Optional[int] = Field(default=None, foreign_key="place.id")
     name_key: str = Field(index=True)
+    # See Defendant.spouse_person_id above -- same field, same reasoning.
+    spouse_person_id: Optional[int] = Field(default=None, foreign_key="person.id")
+    # See Defendant.is_police above -- same field, same reasoning.
+    is_police: bool = Field(default=False)
 
 
 class SummaryConvictionDefendant(SQLModel, table=True):

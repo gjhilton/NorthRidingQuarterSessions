@@ -146,6 +146,18 @@ reference_number is the stable public identifier. Old numeric URLs now
   omitted) alongside one who's a repeat name (count shown, matches the
   About page's own mention-count logic since name_key isn't deduplicated
   identity).
+- Offences and Locations share one generic `Tree`/`TreeParent`/`TreeLeaf`
+  renderer (parent -> children, stem line, corner-bullet leaf, `CountNote`)
+  -- Locations is town -> street, built via `locationToTreeNodes`. Unlike
+  Offences, the street leaf links to a *real* existing page
+  (`streetHref`/`/streets/[id]`), so worth confirming that link actually
+  resolves, not just that it's shaped like one. A conviction can have a
+  town with no street (renders the parent with no nested list, not an
+  empty one) or, per `getConvictionLocation`, in principle neither (whole
+  section omitted) -- worth a case of each. `ConvictionDetail`'s
+  `offence_town_name`/`offence_street_name` fields were removed as
+  dead weight once this superseded them (nothing else on the page used
+  them after the pills card was removed earlier).
 - New "Offences" section (own top-level `<h2>`, same `display`-size
   heading as People): a genuine two-level nested `<ul><li>` tree, one
   category node per distinct category tagged on the conviction, each with

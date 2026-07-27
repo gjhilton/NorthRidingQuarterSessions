@@ -6,7 +6,16 @@
       "Bash(pip3 list *)",
       "Skill(claude-api)",
       "Bash(python3 *)",
-      "Skill(simplify)"
+      "Skill(simplify)",
+      "Bash(sqlite3 *)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(curl -s -A \"Mozilla/5.0\" \"https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1881-Q3%2f10%2f11-58&pos=9803\" -o /tmp/record_raw.html)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -A \"Mozilla/5.0\" \"https://archivesunlocked.northyorks.gov.uk/CalmView/Record.aspx?src=CalmView.Catalog&id=Q%2fSB%2f1874-Q3%2f10%2f8-81&pos=2386\" -o /tmp/record_raw2.html)",
+      "Bash(python3 -c \"import json; print\\(len\\(json.load\\(open\\('data/whitby.json'\\)\\)\\)\\)\")",
+      "Bash(python3 -c \"import csv; print\\(sum\\(1 for _ in csv.DictReader\\(open\\('data/whitby.csv'\\)\\)\\)\\)\")"
     ],
     "deny": []
   }

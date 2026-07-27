@@ -42,6 +42,14 @@ _COLUMN_ADDITIONS = [
     ("summary_conviction", "offence_location_id", "INTEGER"),
     ("summary_conviction", "court_location_id", "INTEGER"),
     ("place", "path_geometry", "TEXT"),
+    # Structural spouse link (see Defendant/Person.spouse_person_id) --
+    # backfilled by backfill_spouses.py for existing relationship_type="wife"
+    # rows, populated going forward by mapping.py for anything new.
+    ("defendant", "spouse_person_id", "INTEGER"),
+    ("person", "spouse_person_id", "INTEGER"),
+    # See Defendant/Person.is_police -- backfilled by backfill_is_police.py.
+    ("defendant", "is_police", "BOOLEAN DEFAULT 0"),
+    ("person", "is_police", "BOOLEAN DEFAULT 0"),
 ]
 
 

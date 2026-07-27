@@ -73,6 +73,7 @@ export interface DetailInvolvedPerson {
   occupation: string | null;
   relationships_and_details: string | null;
   role: string | null;
+  is_police: boolean;
   location_name: string | null;
 }
 
@@ -320,14 +321,14 @@ export function getConvictionDefendants(convictionId: number): DetailDefendant[]
 }
 
 export function getConvictionInvolvedPersons(convictionId: number): DetailInvolvedPerson[] {
-  return getDb()
+  const rows = getDb()
     .prepare(
       `
       SELECT
         p.id, p.name_key, p.first_name, p.last_name, p.name_qualifier,
         p.age, p.marital_status, p.relationship_type, p.related_to_name,
         p.occupation,
-        p.relationships_and_details, ip.role,
+        p.relationships_and_details, ip.role, p.is_police,
         pl.name AS location_name
       FROM involved_persons ip
       JOIN person p ON p.id = ip.person_id
@@ -335,7 +336,8 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
       WHERE ip.summary_conviction_id = ?
       `
     )
-    .all(convictionId) as DetailInvolvedPerson[];
+    .all(convictionId) as (Omit<DetailInvolvedPerson, "is_police"> & { is_police: number })[];
+  return rows.map((row) => ({ ...row, is_police: Boolean(row.is_police) }));
 }
 
 export function getRelatedConvictions(convictionId: number): RelatedConviction[] {

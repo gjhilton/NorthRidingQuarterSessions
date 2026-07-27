@@ -1,3 +1,11 @@
+import { notFound } from "next/navigation";
+
+// Deprecated -- kept for reference, not maintained. Do not fix bugs here.
+export default function TrendsPage() {
+  notFound();
+}
+
+/*
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { offenceCategoryByYear, offenceTypeByYear } from "@/lib/queries/trends";
@@ -81,3 +89,4 @@ export default function TrendsPage() {
     </PageContainer>
   );
 }
+*/

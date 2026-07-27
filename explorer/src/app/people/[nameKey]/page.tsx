@@ -6,25 +6,15 @@ import {
   listNameKeys,
   type CaseMention,
   type CaseParticipant,
+  type CaseParticipants,
 } from "@/lib/queries/peopleNetwork";
-import { PageContainer, PageTitle, Pill, Table, Th, Td, sectionHeadingStyle } from "@/components/ui";
+import { PageContainer, PageTitle, Table, Th, Td, sectionHeadingStyle } from "@/components/ui";
 import { ClickableTr, referenceCellStyle, StopPropagation } from "@/components/ClickableRow";
 import { fromSlug, toSlug } from "@/lib/slug";
 import { convictionHref } from "@/lib/referenceSlug";
-import { personHref, locationHref } from "@/lib/links";
-import { formatPersonName, titleCase } from "@/lib/text";
+import { personHref } from "@/lib/links";
+import { formatPersonName, sentenceCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
-
-function caseDetails(c: CaseMention): string {
-  return [
-    c.occupation,
-    c.age !== null ? `age ${c.age}` : null,
-    c.marital_status,
-    c.relationship_type && c.related_to_name ? `${c.relationship_type} of ${c.related_to_name}` : null,
-  ]
-    .filter(Boolean)
-    .join(", ");
-}
 
 // The set of known name_keys is static (fixed dataset), so every person page
 // can be prerendered -- only the free-text search on /people needs
@@ -33,11 +23,14 @@ export async function generateStaticParams() {
   return listNameKeys().map((nameKey) => ({ nameKey: toSlug(nameKey) }));
 }
 
-// A case's own cast list, comma-joined -- every name links to their own
-// person page except the one whose page this already is (rendered as plain
-// text instead, since a self-link is pointless). Wrapped in StopPropagation
-// so clicking a name navigates there instead of also triggering the row's
-// own click-through to the conviction.
+// A case's own cast list, semicolon-joined -- comma can't be the separator
+// here since formatPersonName's own "SURNAME, Firstname" already uses one
+// (a comma-joined list of two-part names is ambiguous about where one name
+// ends and the next begins; semicolons aren't). Every name links to their
+// own person page except the one whose page this already is (rendered as
+// plain text instead, since a self-link is pointless). Wrapped in
+// StopPropagation so clicking a name navigates there instead of also
+// triggering the row's own click-through to the conviction.
 function ParticipantList({
   people,
   currentNameKey,
@@ -56,7 +49,7 @@ function ParticipantList({
         });
         return (
           <span key={`${p.name_key}-${i}`}>
-            {i > 0 && ", "}
+            {i > 0 && "; "}
             {p.name_key === currentNameKey ? (
               name
             ) : (
@@ -73,10 +66,47 @@ function ParticipantList({
   );
 }
 
+// "offender" first (the most common and most load-bearing role), then every
+// other role this person held, most-frequent first -- roles are kept as
+// separate groups exactly as recorded (e.g. "victim" and "victim/informant"
+// don't get merged into one), since a merged group would blur real
+// distinctions in how the record describes each case.
+function groupCasesByRole(cases: CaseMention[]): [string, CaseMention[]][] {
+  const groups = new Map<string, CaseMention[]>();
+  for (const c of cases) {
+    const list = groups.get(c.role);
+    if (list) list.push(c);
+    else groups.set(c.role, [c]);
+  }
+  return [...groups.entries()].sort(([roleA, casesA], [roleB, casesB]) => {
+    if (roleA === "offender") return -1;
+    if (roleB === "offender") return 1;
+    return casesB.length - casesA.length;
+  });
+}
+
+function roleGroupTitle(role: string, count: number): string {
+  return `As ${sentenceCase(role)} (${count})`;
+}
+
+// Each of the three "who else was on this case" columns only earns a place
+// in a given role-group's table if at least one case in that group actually
+// has someone in it -- a person who only ever shows up as, say, an
+// unaccompanied informant shouldn't carry three empty "—" columns just
+// because other role-groups on other people's pages need them.
+function participantsFor(
+  c: CaseMention,
+  participantsByCase: Map<number, CaseParticipants>
+): CaseParticipants {
+  return participantsByCase.get(c.summary_conviction_id) ?? { offenders: [], police: [], other: [] };
+}
+
 export default async function PersonPage(props: PageProps<"/people/[nameKey]">) {
   const { nameKey } = await props.params;
   const network = getPersonNetwork(fromSlug(nameKey));
   if (!network) notFound();
+
+  const roleGroups = groupCasesByRole(network.cases);
 
   return (
     <PageContainer>
@@ -91,67 +121,98 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
         >
           {network.display_name}
         </PageTitle>
+        {(network.isPolice || network.spouses.length > 0) && (
+          <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
+            {network.isPolice && <span>Police officer</span>}
+            {network.isPolice && network.spouses.length > 0 && <span> · </span>}
+            {network.spouses.length > 0 && (
+              <span>
+                Spouse:{" "}
+                {network.spouses.map((s, i) => (
+                  <span key={s.name_key}>
+                    {i > 0 && "; "}
+                    <Link href={personHref(s.name_key)} className={css({ color: "fgAccent" })}>
+                      {s.display_name}
+                    </Link>
+                  </span>
+                ))}
+              </span>
+            )}
+          </p>
+        )}
+        {network.sameNameAlternate && (
+          <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
+            Same name, different case record:{" "}
+            <Link
+              href={personHref(network.sameNameAlternate.name_key)}
+              className={css({ color: "fgAccent" })}
+            >
+              {network.sameNameAlternate.display_name}
+            </Link>
+            . A shared name between a police officer and an offender is
+            treated as two different people and kept on separate pages,
+            rather than merged into one.
+          </p>
+        )}
       </div>
 
-      <Section title={`Cases (${network.cases.length})`}>
-        <Table fontSize="M">
-          <thead>
-            <tr>
-              <Th>Reference</Th>
-              <Th>Date</Th>
-              <Th>Role</Th>
-              <Th>Offender(s)</Th>
-              <Th>Involved person(s)</Th>
-              <Th>Police</Th>
-              <Th>Charge</Th>
-              <Th>Details</Th>
-            </tr>
-          </thead>
-          <tbody>
-            {network.cases.map((c) => {
-              const details = caseDetails(c);
-              const participants = network.participantsByCase.get(c.summary_conviction_id) ?? {
-                offenders: [],
-                police: [],
-                other: [],
-              };
-              return (
-                <ClickableTr key={`${c.summary_conviction_id}-${c.role}`} href={convictionHref(c.reference_number)}>
-                  <Td verticalAlign="middle" className={referenceCellStyle}>{c.reference_number}</Td>
-                  <Td verticalAlign="middle">{formatDate(c.conviction_date) ?? "—"}</Td>
-                  <Td verticalAlign="middle">
-                    <Pill>{titleCase(c.role)}</Pill>
-                  </Td>
-                  <Td verticalAlign="middle">
-                    <ParticipantList people={participants.offenders} currentNameKey={network.name_key} />
-                  </Td>
-                  <Td verticalAlign="middle">
-                    <ParticipantList people={participants.other} currentNameKey={network.name_key} />
-                  </Td>
-                  <Td verticalAlign="middle">
-                    <ParticipantList people={participants.police} currentNameKey={network.name_key} />
-                  </Td>
-                  <Td verticalAlign="middle">{c.charge_description}</Td>
-                  <Td verticalAlign="middle">
-                    {details && <span>{details}</span>}
-                    {c.location_name && c.location_id && (
-                      <>
-                        {details && " · "}
-                        <StopPropagation>
-                          <Link href={locationHref(c.location_id)} className={css({ color: "fgAccent" })}>
-                            {titleCase(c.location_name)}
-                          </Link>
-                        </StopPropagation>
-                      </>
+      {roleGroups.map(([role, cases]) => {
+        // Just two people-columns -- Police doesn't earn its own column here
+        // (it's still tracked via Person.is_police for the conviction
+        // detail page's own Police section; on this table police and every
+        // other non-offender participant both read as "Involved person(s)").
+        const rows = cases.map((c) => {
+          const participants = participantsFor(c, network.participantsByCase);
+          return {
+            case: c,
+            offenders: participants.offenders,
+            involved: [...participants.other, ...participants.police],
+          };
+        });
+        const showOffenders = rows.some((r) => r.offenders.length > 0);
+        const showInvolved = rows.some((r) => r.involved.length > 0);
+
+        return (
+          <Section key={role} title={roleGroupTitle(role, cases.length)}>
+            <Table fontSize="M">
+              <thead>
+                <tr>
+                  <Th>Reference</Th>
+                  <Th>Date</Th>
+                  {showOffenders && <Th>Offender(s)</Th>}
+                  {showInvolved && <Th>Involved person(s)</Th>}
+                  <Th>Charge</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map(({ case: c, offenders, involved }) => (
+                  <ClickableTr key={c.summary_conviction_id} href={convictionHref(c.reference_number)}>
+                    <Td verticalAlign="middle" className={referenceCellStyle}>
+                      <StopPropagation>
+                        <Link href={convictionHref(c.reference_number)} className={css({ color: "fgAccent" })}>
+                          {c.reference_number}
+                        </Link>
+                      </StopPropagation>
+                    </Td>
+                    <Td verticalAlign="middle">{formatDate(c.conviction_date) ?? "—"}</Td>
+                    {showOffenders && (
+                      <Td verticalAlign="middle">
+                        <ParticipantList people={offenders} currentNameKey={network.name_key} />
+                      </Td>
                     )}
-                    {!details && !(c.location_name && c.location_id) && "—"}
-                  </Td>
-                </ClickableTr>
-              );
-            })}
-          </tbody>
-        </Table>
-      </Section>
+                    {showInvolved && (
+                      <Td verticalAlign="middle">
+                        <ParticipantList people={involved} currentNameKey={network.name_key} />
+                      </Td>
+                    )}
+                    <Td verticalAlign="middle">{c.charge_description}</Td>
+                  </ClickableTr>
+                ))}
+              </tbody>
+            </Table>
+          </Section>
+        );
+      })}
     </PageContainer>
   );
 }
