@@ -1,7 +1,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
-import { buildPlaceIndex, resolveAncestorByName, type PlaceNode } from "@/lib/placeTree";
+import { buildPlaceIndex, resolveAncestorByName, type MinimalPlace } from "@/lib/placeTree";
 
 export interface Option {
   id: number;
@@ -54,8 +54,8 @@ export function listDefendantCounts(): number[] {
 // longer the canonical location field -- see queries/map.ts's header
 // comment for the fuller rationale, shared by every place this pattern is
 // used).
-function loadPlacesAndTownNames(): { byId: Map<number, PlaceNode>; townNames: Set<string> } {
-  const places = getDb().prepare(`SELECT id, name, parent_id FROM place`).all() as PlaceNode[];
+function loadPlacesAndTownNames(): { byId: Map<number, MinimalPlace>; townNames: Set<string> } {
+  const places = getDb().prepare(`SELECT id, name, parent_id FROM place`).all() as MinimalPlace[];
   const townNames = new Set(
     (getDb().prepare(`SELECT name FROM town`).all() as { name: string }[]).map((r) => r.name.toLowerCase())
   );

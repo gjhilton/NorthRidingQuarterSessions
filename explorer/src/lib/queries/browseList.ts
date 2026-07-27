@@ -3,7 +3,7 @@
 // without dragging a native module into the client bundle.
 import type { DbLike } from "@/lib/dbTypes";
 import { referenceToSlug } from "@/lib/referenceSlug";
-import { buildPlaceIndex, descendantIds, type PlaceNode } from "@/lib/placeTree";
+import { buildPlaceIndex, descendantIds, type MinimalPlace } from "@/lib/placeTree";
 
 export const PAGE_SIZE = 25;
 
@@ -98,8 +98,8 @@ interface WhereClause {
 // The place tree is ~350 rows -- loaded fresh per call rather than cached,
 // since this runs against whichever db (build-time better-sqlite3, or the
 // browser's sql.js copy) the caller passed in.
-function loadPlaceIndex(db: DbLike): Map<number, PlaceNode> {
-  const rows = db.prepare(`SELECT id, name, parent_id FROM place`).all() as PlaceNode[];
+function loadPlaceIndex(db: DbLike): Map<number, MinimalPlace> {
+  const rows = db.prepare(`SELECT id, name, parent_id FROM place`).all() as MinimalPlace[];
   return buildPlaceIndex(rows);
 }
 

@@ -1,7 +1,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
-import { buildPlaceIndex, isWithin, resolveAncestorByName, type PlaceNode } from "@/lib/placeTree";
+import { buildPlaceIndex, isWithin, resolveAncestorByName, type MinimalPlace } from "@/lib/placeTree";
 import { topNSeriesByYear, type YearSeries } from "@/lib/queries/chartShapes";
 
 // Both map pages used to source their pins from hand-compiled lookup tables
@@ -22,7 +22,7 @@ export interface MapPointRow {
   lon: number;
 }
 
-interface PlaceRow extends PlaceNode {
+interface PlaceRow extends MinimalPlace {
   latitude: number | null;
   longitude: number | null;
 }

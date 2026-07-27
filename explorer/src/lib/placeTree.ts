@@ -4,13 +4,13 @@
 // (browseList.ts, run in the browser via sql.js) can share one
 // implementation instead of each hand-rolling the same parent_id walk.
 
-export interface PlaceNode {
+export interface MinimalPlace {
   id: number;
   name: string;
   parent_id: number | null;
 }
 
-export function buildPlaceIndex<T extends PlaceNode>(places: T[]): Map<number, T> {
+export function buildPlaceIndex<T extends MinimalPlace>(places: T[]): Map<number, T> {
   return new Map(places.map((p) => [p.id, p]));
 }
 
@@ -19,7 +19,7 @@ export function buildPlaceIndex<T extends PlaceNode>(places: T[]): Map<number, T
 // ancestor matches -- e.g. resolving a specific offence location up to its
 // containing town/parish, using the old `town` table's own names as the
 // recognized set of "town-level" names.
-export function resolveAncestorByName<T extends PlaceNode>(
+export function resolveAncestorByName<T extends MinimalPlace>(
   startId: number,
   byId: Map<number, T>,
   targetNames: Set<string>
@@ -37,7 +37,7 @@ export function resolveAncestorByName<T extends PlaceNode>(
 // True if id is rootId itself or a descendant of it (walks upward from id,
 // same direction as resolveAncestorByName, just checking for a specific
 // ancestor rather than a name match).
-export function isWithin<T extends PlaceNode>(id: number, rootId: number, byId: Map<number, T>): boolean {
+export function isWithin<T extends MinimalPlace>(id: number, rootId: number, byId: Map<number, T>): boolean {
   let current = byId.get(id);
   while (current) {
     if (current.id === rootId) return true;
@@ -50,7 +50,7 @@ export function isWithin<T extends PlaceNode>(id: number, rootId: number, byId: 
 // this place or anything under it" queries. The place tree is small enough
 // (~350 rows) that building a full children-index and walking it in memory
 // is simpler and fast enough, rather than a recursive SQL CTE per call.
-export function descendantIds<T extends PlaceNode>(rootId: number, byId: Map<number, T>): number[] {
+export function descendantIds<T extends MinimalPlace>(rootId: number, byId: Map<number, T>): number[] {
   const children = new Map<number, number[]>();
   for (const p of byId.values()) {
     if (p.parent_id == null) continue;

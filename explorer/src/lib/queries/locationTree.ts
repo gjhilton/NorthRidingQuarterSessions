@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "@/lib/db";
+import { DEFENDANT_NAMES_EXPR } from "@/lib/queries/sqlFragments";
 
 // Query for the self-referencing place tree (see
 // data-loader/qsrecords/models/reference.py::Place), which replaced the old
@@ -140,12 +141,7 @@ export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
       SELECT DISTINCT sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
         sc.offence_date, sc.offence_date_raw, sc.charge_description,
         ot.name AS offence_type,
-        (
-          SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
-          FROM summary_conviction_defendant scd
-          JOIN defendant d ON d.id = scd.defendant_id
-          WHERE scd.summary_conviction_id = sc.id
-        ) AS defendant_names
+        ${DEFENDANT_NAMES_EXPR} AS defendant_names
       FROM summary_conviction sc
       JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
       JOIN offence_type ot ON ot.id = scot.offence_type_id

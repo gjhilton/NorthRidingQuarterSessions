@@ -5,6 +5,7 @@
 // comment) -- an offence type's membership doesn't depend on user input.
 import "server-only";
 import { getDb } from "@/lib/db";
+import { DEFENDANT_NAMES_EXPR } from "@/lib/queries/sqlFragments";
 
 export const OFFENCE_PAGE_SIZE = 25;
 
@@ -96,12 +97,7 @@ export function getOffenceTypeConvictions(id: number, page: number): OffenceConv
       `
       SELECT sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
         sc.offence_date, sc.offence_date_raw,
-        (
-          SELECT GROUP_CONCAT(TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')), ', ')
-          FROM summary_conviction_defendant scd
-          JOIN defendant d ON d.id = scd.defendant_id
-          WHERE scd.summary_conviction_id = sc.id
-        ) AS defendant_names
+        ${DEFENDANT_NAMES_EXPR} AS defendant_names
       FROM summary_conviction sc
       JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
       WHERE scot.offence_type_id = ?
