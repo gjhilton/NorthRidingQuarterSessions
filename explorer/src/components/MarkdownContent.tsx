@@ -18,6 +18,13 @@ const components: Components = {
   strong: ({ children }) => <strong>{children}</strong>,
   em: ({ children }) => <em>{children}</em>,
   code: ({ children }) => <code>{children}</code>,
+  ol: ({ children }) => (
+    <ol className={css({ display: "flex", flexDirection: "column", gap: "2", pl: "5" })}>{children}</ol>
+  ),
+  ul: ({ children }) => (
+    <ul className={css({ display: "flex", flexDirection: "column", gap: "2", pl: "5" })}>{children}</ul>
+  ),
+  li: ({ children }) => <li>{children}</li>,
   // Internal links go through next/link (client-side nav, no full reload);
   // anything else is a real external link, opened in a new tab -- same
   // distinction every hand-written link elsewhere on the site already
