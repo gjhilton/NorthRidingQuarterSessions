@@ -56,8 +56,7 @@ export interface DetailDefendant {
   occupation: string | null;
   relationships_and_details: string | null;
   prior_convictions: string | null;
-  town_name: string | null;
-  street_name: string | null;
+  location_name: string | null;
   aliases: string[];
 }
 
@@ -74,7 +73,7 @@ export interface DetailInvolvedPerson {
   occupation: string | null;
   relationships_and_details: string | null;
   role: string | null;
-  town_name: string | null;
+  location_name: string | null;
 }
 
 export interface RelatedConviction {
@@ -300,7 +299,7 @@ export function getConvictionDefendants(convictionId: number): DetailDefendant[]
         d.age, d.marital_status, d.relationship_type, d.related_to_name,
         d.occupation,
         d.relationships_and_details, d.prior_convictions,
-        t.name AS town_name, st.name AS street_name,
+        pl.name AS location_name,
         (
           SELECT GROUP_CONCAT(a.alias_name, char(31))
           FROM alias a
@@ -308,8 +307,7 @@ export function getConvictionDefendants(convictionId: number): DetailDefendant[]
         ) AS aliases_concat
       FROM summary_conviction_defendant scd
       JOIN defendant d ON d.id = scd.defendant_id
-      LEFT JOIN town t ON t.id = d.town_id
-      LEFT JOIN street st ON st.id = d.street_id
+      LEFT JOIN place pl ON pl.id = d.location_id
       WHERE scd.summary_conviction_id = ?
       `
     )
@@ -330,10 +328,10 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
         p.age, p.marital_status, p.relationship_type, p.related_to_name,
         p.occupation,
         p.relationships_and_details, ip.role,
-        t.name AS town_name
+        pl.name AS location_name
       FROM involved_persons ip
       JOIN person p ON p.id = ip.person_id
-      LEFT JOIN town t ON t.id = p.town_id
+      LEFT JOIN place pl ON pl.id = p.location_id
       WHERE ip.summary_conviction_id = ?
       `
     )

@@ -1,6 +1,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
+import { buildPlaceIndex, isWithin, resolveAncestorByName, type PlaceNode } from "@/lib/placeTree";
 import { topNSeriesByYear, type YearSeries } from "@/lib/queries/chartShapes";
 
 // Both map pages used to source their pins from hand-compiled lookup tables
@@ -10,8 +11,8 @@ import { topNSeriesByYear, type YearSeries } from "@/lib/queries/chartShapes";
 // polygon fetching) has been built on. This file replaces both: every point
 // plotted here comes from place.latitude/longitude (or the nearest
 // ancestor's, when a specific leaf has none of its own), and grouping is
-// resolved by walking the tree rather than joining the legacy town/street
-// tables.
+// resolved by walking the tree (see lib/placeTree.ts) rather than joining
+// the legacy town/street tables.
 
 export interface MapPointRow {
   id: number;
@@ -21,10 +22,7 @@ export interface MapPointRow {
   lon: number;
 }
 
-interface PlaceRow {
-  id: number;
-  name: string;
-  parent_id: number | null;
+interface PlaceRow extends PlaceNode {
   latitude: number | null;
   longitude: number | null;
 }
@@ -35,7 +33,7 @@ function loadPlaces(): Map<number, PlaceRow> {
   const rows = getDb()
     .prepare(`SELECT id, name, parent_id, latitude, longitude FROM place`)
     .all() as PlaceRow[];
-  return new Map(rows.map((r) => [r.id, r]));
+  return buildPlaceIndex(rows);
 }
 
 // Same anchor-point logic as scripts/generate-place-paths.mjs's findAnchor:
@@ -51,26 +49,6 @@ function findCoordinate(id: number, places: Map<number, PlaceRow>): [number, num
     current = current.parent_id != null ? places.get(current.parent_id) : undefined;
   }
   return null;
-}
-
-// Walks upward from a specific offence location until it reaches an
-// ancestor (or itself) whose name matches a known town/parish -- the
-// granularity the archive was originally recorded at (the old `town` table's
-// own vocabulary, still present and still accurate even though it's no
-// longer the canonical location field). Falls back to the starting place
-// itself if no ancestor matches: a handful of old town names (e.g. "Barnby")
-// were disambiguated into more specific places during the place-tree
-// migration with no single umbrella node left above them, so those now show
-// as their own distinct points instead of being silently dropped.
-function resolveTownLevel(startId: number, places: Map<number, PlaceRow>, townNames: Set<string>): PlaceRow {
-  const start = places.get(startId);
-  if (!start) throw new Error(`Unknown place id ${startId}`);
-  let current: PlaceRow | undefined = start;
-  while (current) {
-    if (townNames.has(current.name.toLowerCase())) return current;
-    current = current.parent_id != null ? places.get(current.parent_id) : undefined;
-  }
-  return start;
 }
 
 function loadTownNames(): Set<string> {
@@ -94,7 +72,7 @@ export function allTownCaseCounts(): MapPointRow[] {
 
   const grouped = new Map<number, number>();
   for (const { id, count } of rows) {
-    const resolved = resolveTownLevel(id, places, townNames);
+    const resolved = resolveAncestorByName(id, places, townNames);
     grouped.set(resolved.id, (grouped.get(resolved.id) ?? 0) + count);
   }
 
@@ -124,7 +102,7 @@ export function unmappedTownCaseCount(): number {
     .all() as { id: number; count: number }[];
   let unmapped = 0;
   for (const { id, count } of rows) {
-    const resolved = resolveTownLevel(id, places, townNames);
+    const resolved = resolveAncestorByName(id, places, townNames);
     if (!findCoordinate(resolved.id, places)) unmapped += count;
   }
   return unmapped;
@@ -145,7 +123,7 @@ export function townByYear(topN = 5): YearSeries {
 
   const grouped = new Map<string, { year: number; name: string; count: number }>();
   for (const { id, year } of rows) {
-    const resolved = resolveTownLevel(id, places, townNames);
+    const resolved = resolveAncestorByName(id, places, townNames);
     const key = `${resolved.id}-${year}`;
     const existing = grouped.get(key);
     if (existing) existing.count += 1;
@@ -170,15 +148,6 @@ export function whitbyStreetCaseCounts(): MapPointRow[] {
   if (!whitby) return [];
   const whitbyId = whitby.id;
 
-  function isWithinWhitby(id: number): boolean {
-    let current = places.get(id);
-    while (current) {
-      if (current.id === whitbyId) return true;
-      current = current.parent_id != null ? places.get(current.parent_id) : undefined;
-    }
-    return false;
-  }
-
   const rows = getDb()
     .prepare(
       `SELECT offence_location_id AS id, COUNT(*) AS count FROM summary_conviction
@@ -188,7 +157,7 @@ export function whitbyStreetCaseCounts(): MapPointRow[] {
 
   const points: MapPointRow[] = [];
   for (const { id, count } of rows) {
-    if (id === whitbyId || !isWithinWhitby(id)) continue;
+    if (id === whitbyId || !isWithin(id, whitbyId, places)) continue;
     const coord = findCoordinate(id, places);
     if (!coord) continue;
     points.push({ id, name: titleCase(places.get(id)!.name), count, lat: coord[0], lon: coord[1] });

@@ -55,6 +55,18 @@ function formatDefendantNames(json: string | null): string {
   return names.length > 0 ? names.join(", ") : "—";
 }
 
+// A hydrated/pasted URL's locationId could be a town or a more specific
+// street -- either way, the Street field needs to know which town's list to
+// show. Falls back to treating locationId itself as the town when it
+// doesn't match a known street (i.e. it already is one).
+function deriveSelectedTownId(
+  locationId: number | undefined,
+  streets: StreetOption[]
+): number | undefined {
+  if (locationId === undefined) return undefined;
+  return streets.find((s) => s.id === locationId)?.townId ?? locationId;
+}
+
 export function BrowseExplorer({
   initialRows,
   initialTotal,
@@ -80,10 +92,12 @@ export function BrowseExplorer({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState<BrowseFilters>({ page: 1, pageSize: PAGE_SIZE });
-  // Mirrors filters.townId/offenceCategoryId but updates live as those
-  // fields change (before submit), so the Street/Type fields -- scoped to
-  // whichever town/category is currently selected -- can show/hide/
-  // repopulate immediately rather than only after the next search.
+  // Mirrors which town filters.locationId currently falls under (itself, if
+  // it's a town-level id, or that street's own town if it's more specific)
+  // but updates live as the Town field changes (before submit), so the
+  // Street/Type fields -- scoped to whichever town/category is currently
+  // selected -- can show/hide/repopulate immediately rather than only after
+  // the next search.
   const [selectedTownId, setSelectedTownId] = useState<number | undefined>(undefined);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(undefined);
   // Bumped on reset to remount the form -- the uncontrolled fields (date
@@ -104,7 +118,7 @@ export function BrowseExplorer({
     if (searchParams.size === 0) return;
     const urlFilters = filtersFromSearchParams(searchParams);
     setFilters(urlFilters);
-    setSelectedTownId(urlFilters.townId);
+    setSelectedTownId(deriveSelectedTownId(urlFilters.locationId, streets));
     setSelectedCategoryId(
       urlFilters.offenceCategoryId ?? offenceTypes.find((o) => o.id === urlFilters.offenceTypeId)?.categoryId ?? undefined
     );
@@ -158,10 +172,16 @@ export function BrowseExplorer({
     const data = new FormData(form);
     const field = (name: string) => (data.get(name) as string) || undefined;
     const sex = field("sex");
+    // The more specific field wins when both are set -- street implies its
+    // town, not an additional narrowing.
+    const locationId = field("street")
+      ? Number(field("street"))
+      : field("town")
+        ? Number(field("town"))
+        : undefined;
     return {
       q: field("q"),
-      townId: field("town") ? Number(field("town")) : undefined,
-      streetId: field("street") ? Number(field("street")) : undefined,
+      locationId,
       offenceCategoryId: field("category") ? Number(field("category")) : undefined,
       offenceTypeId: field("offence") ? Number(field("offence")) : undefined,
       dateFrom: field("from"),
@@ -308,7 +328,7 @@ export function BrowseExplorer({
                       onChange={(e) => {
                         const townId = e.target.value ? Number(e.target.value) : undefined;
                         setSelectedTownId(townId);
-                        runQuery(filtersFromForm(e.currentTarget.form!, { townId, streetId: undefined }));
+                        runQuery(filtersFromForm(e.currentTarget.form!, { locationId: townId }));
                       }}
                       className={inputStyle}
                     >
@@ -325,7 +345,11 @@ export function BrowseExplorer({
                       <select
                         key={selectedTownId}
                         name="street"
-                        defaultValue={filters.townId === selectedTownId ? (filters.streetId ?? "") : ""}
+                        defaultValue={
+                          streetsForSelectedTown.some((s) => s.id === filters.locationId)
+                            ? (filters.locationId ?? "")
+                            : ""
+                        }
                         onChange={handleFieldChange}
                         className={inputStyle}
                       >

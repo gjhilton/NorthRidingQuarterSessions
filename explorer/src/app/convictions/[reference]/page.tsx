@@ -152,7 +152,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
                     lastName: d.last_name,
                     occupation: d.occupation,
                     nameQualifier: d.name_qualifier,
-                    town: d.town_name,
+                    town: d.location_name,
                   })}
                 </Link>
                 <MentionCount count={otherConvictionCounts.get(d.name_key)} />
@@ -308,7 +308,7 @@ function PersonList({
               lastName: p.last_name,
               occupation: p.occupation,
               nameQualifier: p.name_qualifier,
-              town: p.town_name,
+              town: p.location_name,
             })}
           </Link>
           {showRole && p.role && <Pill>{p.role}</Pill>}

@@ -3,6 +3,7 @@
 // without dragging a native module into the client bundle.
 import type { DbLike } from "@/lib/dbTypes";
 import { referenceToSlug } from "@/lib/referenceSlug";
+import { buildPlaceIndex, descendantIds, type PlaceNode } from "@/lib/placeTree";
 
 export const PAGE_SIZE = 25;
 
@@ -16,8 +17,13 @@ export type BrowseSortColumn =
 
 export interface BrowseFilters {
   q?: string;
-  townId?: number;
-  streetId?: number;
+  // A town/parish or a more specific place within it (a street, or a yard
+  // nested deeper still) -- matches that place or anything in its subtree
+  // (see lib/placeTree.ts's descendantIds), so selecting a town alone still
+  // finds every conviction recorded against one of its streets. Replaced
+  // the old townId+streetId pair (two separate legacy-table columns) now
+  // that both resolve through the one place tree.
+  locationId?: number;
   offenceCategoryId?: number;
   offenceTypeId?: number;
   dateFrom?: string;
@@ -36,7 +42,7 @@ export interface BrowseFilters {
 // ultimately comes from client-controlled state (and, once URL-synced,
 // straight from the query string) -- this keeps the ORDER BY clause to a
 // fixed set of known-safe expressions.
-const LOCATION_EXPR = "COALESCE(ot_town.name, court_town.name)";
+const LOCATION_EXPR = "COALESCE(ot_place.name, court_place.name)";
 // A plain sortable string (surname-first, comma-joined), computed directly
 // in the ORDER BY rather than reusing the SELECTed defendant_names_json --
 // that's a JSON array now (for per-defendant name formatting on display),
@@ -89,7 +95,15 @@ interface WhereClause {
   params: Record<string, unknown>;
 }
 
-function buildWhere(filters: BrowseFilters): WhereClause {
+// The place tree is ~350 rows -- loaded fresh per call rather than cached,
+// since this runs against whichever db (build-time better-sqlite3, or the
+// browser's sql.js copy) the caller passed in.
+function loadPlaceIndex(db: DbLike): Map<number, PlaceNode> {
+  const rows = db.prepare(`SELECT id, name, parent_id FROM place`).all() as PlaceNode[];
+  return buildPlaceIndex(rows);
+}
+
+function buildWhere(db: DbLike, filters: BrowseFilters): WhereClause {
   const clauses: string[] = [];
   const params: Record<string, unknown> = {};
 
@@ -116,13 +130,16 @@ function buildWhere(filters: BrowseFilters): WhereClause {
     )`);
     params.q = `%${filters.q.toLowerCase()}%`;
   }
-  if (filters.townId) {
-    clauses.push(`sc.offence_location_town_id = @townId`);
-    params.townId = filters.townId;
-  }
-  if (filters.streetId) {
-    clauses.push(`sc.offence_location_street_id = @streetId`);
-    params.streetId = filters.streetId;
+  if (filters.locationId) {
+    // Matches the selected place or anything in its subtree -- a town
+    // filter should still find convictions recorded against one of its
+    // streets, not just ones tagged at the town exactly.
+    const ids = descendantIds(filters.locationId, loadPlaceIndex(db));
+    const placeholders = ids.map((_, i) => `@loc${i}`).join(",");
+    clauses.push(`sc.offence_location_id IN (${placeholders})`);
+    ids.forEach((id, i) => {
+      params[`loc${i}`] = id;
+    });
   }
   if (filters.offenceTypeId) {
     clauses.push(`EXISTS (
@@ -216,8 +233,7 @@ export function filtersFromSearchParams(params: URLSearchParams): BrowseFilters 
   const sex = get("sex");
   return {
     q: get("q"),
-    townId: get("town") ? Number(get("town")) : undefined,
-    streetId: get("street") ? Number(get("street")) : undefined,
+    locationId: get("location") ? Number(get("location")) : undefined,
     offenceCategoryId: get("category") ? Number(get("category")) : undefined,
     offenceTypeId: get("offence") ? Number(get("offence")) : undefined,
     dateFrom: get("from"),
@@ -236,8 +252,7 @@ export function filtersFromSearchParams(params: URLSearchParams): BrowseFilters 
 export function searchParamsFromFilters(filters: BrowseFilters): string {
   const params = new URLSearchParams();
   if (filters.q) params.set("q", filters.q);
-  if (filters.townId) params.set("town", String(filters.townId));
-  if (filters.streetId) params.set("street", String(filters.streetId));
+  if (filters.locationId) params.set("location", String(filters.locationId));
   if (filters.offenceCategoryId) params.set("category", String(filters.offenceCategoryId));
   if (filters.offenceTypeId) params.set("offence", String(filters.offenceTypeId));
   if (filters.dateFrom) params.set("from", filters.dateFrom);
@@ -259,8 +274,7 @@ export function searchParamsFromFilters(filters: BrowseFilters): string {
 export function isFilteredSearch(filters: BrowseFilters): boolean {
   return Boolean(
     filters.q ||
-      filters.townId ||
-      filters.streetId ||
+      filters.locationId ||
       filters.offenceCategoryId ||
       filters.offenceTypeId ||
       filters.dateFrom ||
@@ -282,7 +296,7 @@ export interface ConvictionOrderRow {
 }
 
 export function listConvictionOrder(db: DbLike, filters: BrowseFilters): ConvictionOrderRow[] {
-  const { sql: whereSql, params } = buildWhere(filters);
+  const { sql: whereSql, params } = buildWhere(db, filters);
   const orderBySql = buildOrderBy(filters);
   const rows = db
     .prepare(
@@ -299,7 +313,7 @@ export function listConvictions(
   rows: BrowseRow[];
   total: number;
 } {
-  const { sql: whereSql, params } = buildWhere(filters);
+  const { sql: whereSql, params } = buildWhere(db, filters);
   const orderBySql = buildOrderBy(filters);
   const offset = (filters.page - 1) * filters.pageSize;
 
@@ -320,8 +334,8 @@ export function listConvictions(
           JOIN offence_type ot ON ot.id = scot.offence_type_id
           WHERE scot.summary_conviction_id = sc.id
         ) AS offence_type_names,
-        ot_town.name AS offence_town_name,
-        court_town.name AS court_town_name,
+        ot_place.name AS offence_town_name,
+        court_place.name AS court_town_name,
         (
           SELECT json_group_array(json_object('first_name', d.first_name, 'last_name', d.last_name, 'occupation', d.occupation, 'name_qualifier', d.name_qualifier))
           FROM summary_conviction_defendant scd
@@ -329,8 +343,8 @@ export function listConvictions(
           WHERE scd.summary_conviction_id = sc.id
         ) AS defendant_names_json
       FROM summary_conviction sc
-      LEFT JOIN town ot_town ON ot_town.id = sc.offence_location_town_id
-      LEFT JOIN town court_town ON court_town.id = sc.court_location_town_id
+      LEFT JOIN place ot_place ON ot_place.id = sc.offence_location_id
+      LEFT JOIN place court_place ON court_place.id = sc.court_location_id
       ${whereSql}
       ORDER BY ${orderBySql}
       LIMIT @limit OFFSET @offset

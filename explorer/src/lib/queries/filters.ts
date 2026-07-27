@@ -1,6 +1,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
+import { buildPlaceIndex, resolveAncestorByName, type PlaceNode } from "@/lib/placeTree";
 
 export interface Option {
   id: number;
@@ -46,49 +47,67 @@ export function listDefendantCounts(): number[] {
     .map((r) => (r as { n: number }).n);
 }
 
-// The town table also holds ~90 street/yard-level addresses that were
-// miscategorised as towns during extraction (e.g. "argument's yard, whitby")
-// -- none of those are ever an offence location on any conviction, so
-// scoping to towns actually used as one filters them out for free, rather
-// than needing a separate cleanup pass before the dropdown is usable.
-// Offence location specifically, not court location -- see browseList.ts's
-// townId filter, which this list needs to stay in sync with.
+// Loads the place tree once for both listTowns()/listOffenceStreets() below
+// -- each offence location is resolved up to its containing town/parish by
+// walking the tree (see lib/placeTree.ts), using the old `town` table's own
+// names as the recognized "town-level" vocabulary (still accurate, just no
+// longer the canonical location field -- see queries/map.ts's header
+// comment for the fuller rationale, shared by every place this pattern is
+// used).
+function loadPlacesAndTownNames(): { byId: Map<number, PlaceNode>; townNames: Set<string> } {
+  const places = getDb().prepare(`SELECT id, name, parent_id FROM place`).all() as PlaceNode[];
+  const townNames = new Set(
+    (getDb().prepare(`SELECT name FROM town`).all() as { name: string }[]).map((r) => r.name.toLowerCase())
+  );
+  return { byId: buildPlaceIndex(places), townNames };
+}
+
+// Every town/parish actually used as an offence location (directly or via
+// a more specific descendant place), scoped to real usage so the ~90
+// street/yard-level places that were never an offence location don't
+// clutter the dropdown. Offence location specifically, not court location
+// -- see browseList.ts's locationId filter, which this list needs to stay
+// in sync with.
 export function listTowns(): Option[] {
-  return getDb()
+  const { byId, townNames } = loadPlacesAndTownNames();
+  const rows = getDb()
     .prepare(
-      `
-      SELECT DISTINCT t.id, t.name
-      FROM town t
-      WHERE t.id IN (
-        SELECT offence_location_town_id FROM summary_conviction WHERE offence_location_town_id IS NOT NULL
-      )
-      ORDER BY t.name
-      `
+      `SELECT DISTINCT offence_location_id AS id FROM summary_conviction WHERE offence_location_id IS NOT NULL`
     )
-    .all() as Option[];
+    .all() as { id: number }[];
+
+  const resolvedIds = new Set<number>();
+  for (const { id } of rows) resolvedIds.add(resolveAncestorByName(id, byId, townNames).id);
+
+  return [...resolvedIds]
+    .map((id) => ({ id, name: titleCase(byId.get(id)!.name) }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export interface StreetOption extends Option {
   townId: number;
 }
 
-// Every street actually used as an offence location, tagged with its town
+// Every specific offence location more precise than its own town/parish
+// (a street, or a yard nested deeper still), tagged with its resolved town
 // so the UI can filter this one list client-side per selected town rather
-// than round-tripping for each town change. Scoped to actual usage for the
+// than round-tripping for each town change. Scoped to real usage for the
 // same reason as listTowns() above.
 export function listOffenceStreets(): StreetOption[] {
-  return getDb()
+  const { byId, townNames } = loadPlacesAndTownNames();
+  const rows = getDb()
     .prepare(
-      `
-      SELECT DISTINCT s.id, s.name, s.town_id AS townId
-      FROM street s
-      WHERE s.id IN (
-        SELECT offence_location_street_id FROM summary_conviction WHERE offence_location_street_id IS NOT NULL
-      )
-      ORDER BY s.name
-      `
+      `SELECT DISTINCT offence_location_id AS id FROM summary_conviction WHERE offence_location_id IS NOT NULL`
     )
-    .all() as StreetOption[];
+    .all() as { id: number }[];
+
+  const options: StreetOption[] = [];
+  for (const { id } of rows) {
+    const town = resolveAncestorByName(id, byId, townNames);
+    if (town.id === id) continue; // tagged exactly at town level -- no street to show
+    options.push({ id, name: titleCase(byId.get(id)!.name), townId: town.id });
+  }
+  return options.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // Curated sort_order (e.g. "Drink & Public Order" first), not alphabetical
@@ -154,14 +173,14 @@ export function listResidenceTowns(): string[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT DISTINCT t.name AS name
-      FROM town t
-      WHERE t.id IN (
-        SELECT town_id FROM defendant WHERE town_id IS NOT NULL
+      SELECT DISTINCT pl.name AS name
+      FROM place pl
+      WHERE pl.id IN (
+        SELECT location_id FROM defendant WHERE location_id IS NOT NULL
         UNION
-        SELECT town_id FROM person WHERE town_id IS NOT NULL
+        SELECT location_id FROM person WHERE location_id IS NOT NULL
       )
-      ORDER BY t.name
+      ORDER BY pl.name
       `
     )
     .all() as { name: string }[];

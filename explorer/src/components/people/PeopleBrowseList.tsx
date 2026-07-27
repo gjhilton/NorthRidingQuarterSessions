@@ -391,7 +391,7 @@ export function PeopleBrowseList({
                   {p.occupation ? titleCase(p.occupation) : "—"}
                 </Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>
-                  {p.town_name ? titleCase(p.town_name) : "—"}
+                  {p.location_name ? titleCase(p.location_name) : "—"}
                 </Td>
                 <Td verticalAlign="middle">{p.total_mentions}</Td>
               </ClickableTr>

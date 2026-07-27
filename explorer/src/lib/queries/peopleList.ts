@@ -39,7 +39,7 @@ export interface PersonListRow {
   roles: string;
   total_mentions: number;
   occupation: string | null;
-  town_name: string | null;
+  location_name: string | null;
   sex: string | null;
   min_conviction_date: string | null;
   max_conviction_date: string | null;
@@ -59,7 +59,7 @@ const BASE_QUERY = `
     GROUP_CONCAT(DISTINCT role) AS roles,
     COUNT(*) AS total_mentions,
     MAX(occupation) AS occupation,
-    MAX(town_name) AS town_name,
+    MAX(location_name) AS location_name,
     MAX(sex) AS sex,
     MIN(conviction_date) AS min_conviction_date,
     MAX(conviction_date) AS max_conviction_date
@@ -71,11 +71,11 @@ const BASE_QUERY = `
       d.name_qualifier,
       'offender' AS role,
       d.occupation,
-      t.name AS town_name,
+      pl.name AS location_name,
       d.sex,
       sc.conviction_date
     FROM defendant d
-    LEFT JOIN town t ON t.id = d.town_id
+    LEFT JOIN place pl ON pl.id = d.location_id
     LEFT JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
     LEFT JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
     UNION ALL
@@ -86,11 +86,11 @@ const BASE_QUERY = `
       p.name_qualifier,
       NULLIF(TRIM(ip.role), '') AS role,
       p.occupation,
-      t.name AS town_name,
+      pl.name AS location_name,
       NULL AS sex,
       sc.conviction_date
     FROM person p
-    LEFT JOIN town t ON t.id = p.town_id
+    LEFT JOIN place pl ON pl.id = p.location_id
     LEFT JOIN involved_persons ip ON ip.person_id = p.id
     LEFT JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
   )
@@ -123,7 +123,7 @@ function buildHaving(filters: PeopleFilters): HavingClause {
     params.sex = filters.sex;
   }
   if (filters.town) {
-    clauses.push(`town_name = @town`);
+    clauses.push(`location_name = @town`);
     params.town = filters.town;
   }
   if (filters.occupation) {
