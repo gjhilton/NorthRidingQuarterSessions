@@ -1,0 +1,5 @@
+Every record here starts as a catalogue entry on [Archives Unlocked North Yorkshire](https://archivesunlocked.northyorks.gov.uk), the North Yorkshire County Record Office’s public catalogue for the North Riding Quarter Sessions Bundles (QSB). Each Summary Conviction entry there has a short free-text description written by an archivist summarising the original court document — not the document itself.
+
+That description is what gets processed here: scraped into a spreadsheet, then sent to a large language model (Claude or GPT-4, depending on the run) with instructions to pull out structured fields — offender names, offence type, dates, location, sentencing — into the database this site reads from. Nothing here is transcribed by a human from the original document, and this site is two steps removed from it: archivist’s summary, then LLM extraction from that summary.
+
+**For anything you intend to rely on** — citing in research, confirming a family history detail — follow the “View original record at NYCRO” link on any record back to Archives Unlocked and check it against the original catalogue entry.

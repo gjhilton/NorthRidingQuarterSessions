@@ -19,6 +19,8 @@ import {
 } from "@/lib/queries/quality";
 import { Card, EmptyState, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
 import { personHref } from "@/lib/links";
+import { readContent } from "@/lib/content";
+import { MarkdownContent } from "@/components/MarkdownContent";
 
 export default function AboutPage() {
   const totals = getTotals();
@@ -43,58 +45,11 @@ export default function AboutPage() {
       </PageTitle>
 
       <Section title="Where this data comes from">
-        <p>
-          Every record here starts as a catalogue entry on{" "}
-          <a
-            href="https://archivesunlocked.northyorks.gov.uk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={css({ color: "fgAccent" })}
-          >
-            Archives Unlocked North Yorkshire
-          </a>
-          , the North Yorkshire County Record Office&rsquo;s public catalogue for the North
-          Riding Quarter Sessions Bundles (QSB). Each Summary Conviction entry there has a short
-          free-text description written by an archivist summarising the original court document
-          — not the document itself.
-        </p>
-        <p>
-          That description is what gets processed here: scraped into a spreadsheet, then sent to
-          a large language model (Claude or GPT-4, depending on the run) with instructions to
-          pull out structured fields — offender names, offence type, dates, location, sentencing
-          — into the database this site reads from. Nothing here is transcribed by a human from
-          the original document, and this site is two steps removed from it: archivist&rsquo;s
-          summary, then LLM extraction from that summary.
-        </p>
-        <p>
-          <strong>For anything you intend to rely on</strong> — citing in research, confirming a
-          family history detail — follow the &ldquo;View original record at NYCRO&rdquo; link on
-          any record back to Archives Unlocked and check it against the original catalogue entry.
-        </p>
+        <MarkdownContent>{readContent("about", "data-source")}</MarkdownContent>
       </Section>
 
       <Section title="Two different extraction paths">
-        <p>
-          Six fields — petty sessional division, monetary value, game species, and age/marital
-          status/relationship for offenders and involved persons — were added to the schema
-          partway through this project, after several hundred records had already been extracted
-          without them. Rather than leave those earlier records with permanent gaps, or re-spend
-          API budget re-running them through the pipeline for six fields, records 1&ndash;193 had
-          these six fields specifically backfilled by an LLM (Claude) reading each raw archivist
-          summary directly within a Claude Code development session — the same underlying task the
-          automated pipeline performs, but run once, manually, outside the documented
-          batch-extraction process.
-        </p>
-        <p>
-          This is recorded, not hidden: every summary conviction carries an{" "}
-          <code>extraction_attempt</code> audit row, and the backfilled records are distinguishable
-          from pipeline-extracted ones by <code>provider = &lsquo;claude-code-session&rsquo;</code>{" "}
-          and <code>batch_id = &lsquo;backfill-2026-07-20-6field&rsquo;</code> in that table. The
-          same extraction discipline applied to the automated pipeline applied here — fields were
-          only filled where the source text explicitly stated them, nothing was inferred or
-          guessed — but treat this as one further remove from the source, on top of the two
-          described above.
-        </p>
+        <MarkdownContent>{readContent("about", "extraction-paths")}</MarkdownContent>
       </Section>
 
       <Section title="How much of the archive is covered">
@@ -482,25 +437,11 @@ export default function AboutPage() {
       </Section>
 
       <Section title="Search scope">
-        <p>
-          The search box on{" "}
-          <Link href="/convictions" className={css({ color: "fgAccent" })}>
-            Convictions
-          </Link>{" "}
-          matches against the charge description, reference number, offence type, sentencing text,
-          and offender/involved-person names. It does not currently match against occupation —
-          searching &ldquo;butcher&rdquo; won&rsquo;t find an offender with that occupation unless
-          the word itself appears elsewhere in the record.
-        </p>
+        <MarkdownContent>{readContent("about", "search-scope")}</MarkdownContent>
       </Section>
 
       <Section title="Getting the data">
-        <p>
-          Every field discussed above is in the download, in case you want to analyse it
-          yourself rather than through this site&rsquo;s views: reference number, dates, offence
-          type, charge description, sentencing, location, offender names, extraction confidence,
-          and the archive URL, one row per conviction.
-        </p>
+        <MarkdownContent>{readContent("about", "getting-the-data")}</MarkdownContent>
         <a
           href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/nrqs-dataset.csv`}
           download
