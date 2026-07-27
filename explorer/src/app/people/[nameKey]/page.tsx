@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
-import { getPersonNetwork, listNameKeys, type CaseMention } from "@/lib/queries/peopleNetwork";
-import { NetworkView } from "@/components/network/NetworkView";
-import { Card, PageContainer, PageTitle, Pill, Table, Th, Td, sectionHeadingStyle } from "@/components/ui";
+import {
+  getPersonNetwork,
+  listNameKeys,
+  type CaseMention,
+  type CaseParticipant,
+} from "@/lib/queries/peopleNetwork";
+import { PageContainer, PageTitle, Pill, Table, Th, Td, sectionHeadingStyle } from "@/components/ui";
 import { ClickableTr, referenceCellStyle, StopPropagation } from "@/components/ClickableRow";
 import { fromSlug, toSlug } from "@/lib/slug";
 import { convictionHref } from "@/lib/referenceSlug";
-import { locationHref } from "@/lib/links";
-import { titleCase } from "@/lib/text";
+import { personHref, locationHref } from "@/lib/links";
+import { formatPersonName, titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
 
 function caseDetails(c: CaseMention): string {
@@ -27,6 +31,46 @@ function caseDetails(c: CaseMention): string {
 // client-side SQLite.
 export async function generateStaticParams() {
   return listNameKeys().map((nameKey) => ({ nameKey: toSlug(nameKey) }));
+}
+
+// A case's own cast list, comma-joined -- every name links to their own
+// person page except the one whose page this already is (rendered as plain
+// text instead, since a self-link is pointless). Wrapped in StopPropagation
+// so clicking a name navigates there instead of also triggering the row's
+// own click-through to the conviction.
+function ParticipantList({
+  people,
+  currentNameKey,
+}: {
+  people: CaseParticipant[];
+  currentNameKey: string;
+}) {
+  if (people.length === 0) return <>—</>;
+  return (
+    <>
+      {people.map((p, i) => {
+        const name = formatPersonName({
+          firstName: p.first_name,
+          lastName: p.last_name,
+          nameQualifier: p.name_qualifier,
+        });
+        return (
+          <span key={`${p.name_key}-${i}`}>
+            {i > 0 && ", "}
+            {p.name_key === currentNameKey ? (
+              name
+            ) : (
+              <StopPropagation>
+                <Link href={personHref(p.name_key)} className={css({ color: "fgAccent" })}>
+                  {name}
+                </Link>
+              </StopPropagation>
+            )}
+          </span>
+        );
+      })}
+    </>
+  );
 }
 
 export default async function PersonPage(props: PageProps<"/people/[nameKey]">) {
@@ -56,6 +100,9 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
               <Th>Reference</Th>
               <Th>Date</Th>
               <Th>Role</Th>
+              <Th>Offender(s)</Th>
+              <Th>Involved person(s)</Th>
+              <Th>Police</Th>
               <Th>Charge</Th>
               <Th>Details</Th>
             </tr>
@@ -63,12 +110,26 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
           <tbody>
             {network.cases.map((c) => {
               const details = caseDetails(c);
+              const participants = network.participantsByCase.get(c.summary_conviction_id) ?? {
+                offenders: [],
+                police: [],
+                other: [],
+              };
               return (
                 <ClickableTr key={`${c.summary_conviction_id}-${c.role}`} href={convictionHref(c.reference_number)}>
                   <Td verticalAlign="middle" className={referenceCellStyle}>{c.reference_number}</Td>
                   <Td verticalAlign="middle">{formatDate(c.conviction_date) ?? "—"}</Td>
                   <Td verticalAlign="middle">
                     <Pill>{titleCase(c.role)}</Pill>
+                  </Td>
+                  <Td verticalAlign="middle">
+                    <ParticipantList people={participants.offenders} currentNameKey={network.name_key} />
+                  </Td>
+                  <Td verticalAlign="middle">
+                    <ParticipantList people={participants.other} currentNameKey={network.name_key} />
+                  </Td>
+                  <Td verticalAlign="middle">
+                    <ParticipantList people={participants.police} currentNameKey={network.name_key} />
                   </Td>
                   <Td verticalAlign="middle">{c.charge_description}</Td>
                   <Td verticalAlign="middle">
@@ -90,12 +151,6 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
             })}
           </tbody>
         </Table>
-      </Section>
-
-      <Section title={`Connections (${network.connections.length})`}>
-        <Card>
-          <NetworkView connections={network.connections} graph={network.graph} />
-        </Card>
       </Section>
     </PageContainer>
   );

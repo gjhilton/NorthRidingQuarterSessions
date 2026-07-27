@@ -5,6 +5,7 @@
 import "server-only";
 import { getDb, selectColumn } from "@/lib/db";
 import { formatPersonName } from "@/lib/text";
+import { Roles, classifyInvolvedPersonRole } from "@/lib/roles";
 
 export interface CaseMention {
   summary_conviction_id: number;
@@ -25,17 +26,21 @@ export interface CaseMention {
   location_name: string | null;
 }
 
-export interface Connection {
+// One name in a case's Offender(s)/Involved person(s)/Police column --
+// pre-split into name parts (not a pre-formatted display string) so the
+// page can decide per-name whether to render it as a link, based on
+// whether it's the person whose own page this is.
+export interface CaseParticipant {
   name_key: string;
-  display_name: string;
-  kind: "defendant" | "person";
-  role: string | null;
-  shared_cases: string[];
+  first_name: string | null;
+  last_name: string | null;
+  name_qualifier: string | null;
 }
 
-export interface NetworkGraph {
-  nodes: { id: string; label: string; kind: "center" | "defendant" | "person" }[];
-  links: { source: string; target: string; cases: number }[];
+export interface CaseParticipants {
+  offenders: CaseParticipant[];
+  police: CaseParticipant[];
+  other: CaseParticipant[];
 }
 
 export interface PersonNetwork {
@@ -43,8 +48,10 @@ export interface PersonNetwork {
   display_name: string;
   aliases: string[];
   cases: CaseMention[];
-  connections: Connection[];
-  graph: NetworkGraph;
+  // Every case's full cast, keyed by summary_conviction_id -- includes this
+  // person's own row too (the page renders it as plain text instead of a
+  // link, rather than this map omitting it).
+  participantsByCase: Map<number, CaseParticipants>;
 }
 
 export function listNameKeys(): string[] {
@@ -128,90 +135,76 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
         .all(nameKey) as { alias_name: string }[])
     : [];
 
-  const connectionsMap = new Map<string, Connection>();
+  // Every defendant/involved-person across every one of this person's own
+  // cases, not just the ones excluding them -- unlike the old
+  // connections/network view (which only cared about *other* people), each
+  // case's own columns need the full cast, this person included.
+  const participantsByCase = new Map<number, CaseParticipants>();
   if (caseIds.length > 0) {
     const placeholders = caseIds.map(() => "?").join(",");
 
-    const coDefendants = db
+    function ensure(id: number): CaseParticipants {
+      let entry = participantsByCase.get(id);
+      if (!entry) {
+        entry = { offenders: [], police: [], other: [] };
+        participantsByCase.set(id, entry);
+      }
+      return entry;
+    }
+
+    const defendantRows = db
       .prepare(
         `
-        SELECT d.name_key, d.first_name, d.last_name, d.name_qualifier, scd.summary_conviction_id, sc.reference_number
+        SELECT scd.summary_conviction_id AS conviction_id, d.name_key, d.first_name, d.last_name, d.name_qualifier
         FROM summary_conviction_defendant scd
         JOIN defendant d ON d.id = scd.defendant_id
-        JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
-        WHERE scd.summary_conviction_id IN (${placeholders}) AND d.name_key != ?
+        WHERE scd.summary_conviction_id IN (${placeholders})
         `
       )
-      .all(...caseIds, nameKey) as {
+      .all(...caseIds) as {
+      conviction_id: number;
       name_key: string;
       first_name: string | null;
       last_name: string | null;
       name_qualifier: string | null;
-      summary_conviction_id: number;
-      reference_number: string;
     }[];
 
-    const coInvolved = db
+    const involvedRows = db
       .prepare(
         `
-        SELECT p.name_key, p.first_name, p.last_name, p.name_qualifier, ip.role, ip.summary_conviction_id, sc.reference_number
+        SELECT ip.summary_conviction_id AS conviction_id, p.name_key, p.first_name, p.last_name, p.name_qualifier, ip.role
         FROM involved_persons ip
         JOIN person p ON p.id = ip.person_id
-        JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
-        WHERE ip.summary_conviction_id IN (${placeholders}) AND p.name_key != ?
+        WHERE ip.summary_conviction_id IN (${placeholders})
         `
       )
-      .all(...caseIds, nameKey) as {
+      .all(...caseIds) as {
+      conviction_id: number;
       name_key: string;
       first_name: string | null;
       last_name: string | null;
       name_qualifier: string | null;
       role: string | null;
-      summary_conviction_id: number;
-      reference_number: string;
     }[];
 
-    for (const row of coDefendants) {
-      const existing = connectionsMap.get(row.name_key);
-      if (existing) {
-        existing.shared_cases.push(row.reference_number);
-      } else {
-        connectionsMap.set(row.name_key, {
-          name_key: row.name_key,
-          display_name: formatPersonName({
-            firstName: row.first_name,
-            lastName: row.last_name,
-            nameQualifier: row.name_qualifier,
-          }),
-          kind: "defendant",
-          role: "co-offender",
-          shared_cases: [row.reference_number],
-        });
-      }
+    for (const row of defendantRows) {
+      ensure(row.conviction_id).offenders.push({
+        name_key: row.name_key,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        name_qualifier: row.name_qualifier,
+      });
     }
-    for (const row of coInvolved) {
-      const existing = connectionsMap.get(row.name_key);
-      if (existing) {
-        existing.shared_cases.push(row.reference_number);
-      } else {
-        connectionsMap.set(row.name_key, {
-          name_key: row.name_key,
-          display_name: formatPersonName({
-            firstName: row.first_name,
-            lastName: row.last_name,
-            nameQualifier: row.name_qualifier,
-          }),
-          kind: "person",
-          role: row.role,
-          shared_cases: [row.reference_number],
-        });
-      }
+    for (const row of involvedRows) {
+      const bucket = classifyInvolvedPersonRole(row.role) === Roles.police ? "police" : "other";
+      ensure(row.conviction_id)[bucket].push({
+        name_key: row.name_key,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        name_qualifier: row.name_qualifier,
+      });
     }
   }
-
-  const connections = [...connectionsMap.values()].sort(
-    (a, b) => b.shared_cases.length - a.shared_cases.length
-  );
 
   const displayName = displayNameRow
     ? formatPersonName({
@@ -221,24 +214,11 @@ export function getPersonNetwork(nameKey: string): PersonNetwork | undefined {
       })
     : nameKey;
 
-  const graph: NetworkGraph = {
-    nodes: [
-      { id: nameKey, label: displayName, kind: "center" },
-      ...connections.map((c) => ({ id: c.name_key, label: c.display_name, kind: c.kind })),
-    ],
-    links: connections.map((c) => ({
-      source: nameKey,
-      target: c.name_key,
-      cases: c.shared_cases.length,
-    })),
-  };
-
   return {
     name_key: nameKey,
     display_name: displayName,
     aliases: aliases.map((a) => a.alias_name),
     cases,
-    connections,
-    graph,
+    participantsByCase,
   };
 }

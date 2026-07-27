@@ -17,7 +17,6 @@
     "react": "19.2.4",
     "react-accessible-treeview": "^2.11.2",
     "react-dom": "19.2.4",
-    "react-force-graph-2d": "^1.29.1",
     "react-leaflet": "^5.0.0",
     "react-markdown": "^10.1.0",
     "recharts": "^3.9.2",
