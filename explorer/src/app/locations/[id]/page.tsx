@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { css } from "styled-system/css";
-import { PageContainer, PageTitle } from "@/components/ui";
+import { PageContainer, PageTitle, sectionHeadingStyle as sharedSectionHeadingStyle } from "@/components/ui";
 import { MapViewLoader } from "@/components/MapViewLoader";
 import { ConvictionsTable } from "@/components/ConvictionsTable";
 import { PlacePeopleTable } from "@/components/PlacePeopleTable";
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
   return listPlaceIds().map((id) => ({ id: String(id) }));
 }
 
-const sectionHeadingStyle = css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" });
+const sectionHeadingStyle = css(sharedSectionHeadingStyle);
 const offenceTypeHeadingStyle = css({ fontFamily: "serif", fontSize: "M", fontWeight: "600" });
 
 // A root-level region (North Riding of Yorkshire, County Durham, ...) needs

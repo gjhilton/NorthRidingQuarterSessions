@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { css } from "styled-system/css";
 import { getPersonNetwork, listNameKeys, type CaseMention } from "@/lib/queries/peopleNetwork";
 import { NetworkView } from "@/components/network/NetworkView";
-import { Card, PageContainer, PageTitle, Pill, Table, Th, Td } from "@/components/ui";
+import { Card, PageContainer, PageTitle, Pill, Table, Th, Td, sectionHeadingStyle } from "@/components/ui";
 import { ClickableTr, referenceCellStyle, StopPropagation } from "@/components/ClickableRow";
 import { fromSlug, toSlug } from "@/lib/slug";
 import { convictionHref } from "@/lib/referenceSlug";
@@ -104,7 +104,7 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" })}>{title}</h2>
+      <h2 className={css(sectionHeadingStyle)}>{title}</h2>
       {children}
     </section>
   );

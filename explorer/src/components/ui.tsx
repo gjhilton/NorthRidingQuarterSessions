@@ -194,6 +194,15 @@ export function ChartTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
+// The page-section <h2> style (serif, XL, 600) -- found identically
+// hand-copied into four different detail pages (Convictions, Locations,
+// People, the Offences master list), each maintaining its own local const
+// or inline literal. A raw style object (see formInputStyle below for why),
+// not a wrapping component: callers need it as a plain className on markup
+// they already control (a bare <h2>, or one wrapped in their own <section>
+// with its own gap spacing), not a fixed component shape.
+export const sectionHeadingStyle = css.raw({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" });
+
 // Shared by the client search islands (BrowseExplorer, PeopleSearch, People
 // browse filters) so their forms stay visually identical without each
 // re-declaring the same style literal. A raw style object (css.raw), not a

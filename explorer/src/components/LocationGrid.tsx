@@ -305,104 +305,104 @@ export function LocationGrid({ roots }: { roots: PlaceNode[] }) {
       {filteredRoots.length === 0 ? (
         <p className={css({ fontSize: "M", color: "fgMuted" })}>No locations match.</p>
       ) : (
-    <div
-      className={cx(
-        "location-grid",
-        css({
-          overflowX: "auto",
-          borderWidth: "lineweight_heavy",
-          borderStyle: "solid",
-          borderColor: "fg",
-          borderRadius: "corner",
-        })
-      )}
-    >
-      <table
-        className={css({ width: "100%", tableLayout: "fixed", borderCollapse: "collapse", fontSize: "M" })}
-      >
-        {/* table-layout:fixed only respects the FIRST row's cell widths by
-            default, and that row's cells are full of rowSpan/colSpan --
-            an explicit colgroup is the only reliable way to force every
-            column to the same width regardless of what any row spans. */}
-        <colgroup>
-          {Array.from({ length: columnCount }).map((_, i) => (
-            // eslint-disable-next-line react/no-array-index-key -- columns are positional, no other identity
-            <col key={i} style={{ width: `${100 / columnCount}%` }} />
-          ))}
-        </colgroup>
-        <tbody>
-          {rows.map((row, i) => (
-            // eslint-disable-next-line react/no-array-index-key -- rows have no stable id of their own, only the cells within them do
-            <tr key={i}>
-              {row.map((cell) => (
-                <Td
-                  key={cell.node.id}
-                  rowSpan={cell.rowSpan}
-                  colSpan={cell.colSpan}
-                  onMouseEnter={() => {
-                    setHoveredIds(new Set(cell.subtreeIds));
-                    setHoveredNodeId(cell.node.id);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredIds(new Set());
-                    setHoveredNodeId(null);
-                  }}
-                  className={cx(
-                    css({
-                      p: "0", // the Link below takes the padding instead, so it can fill the whole cell
-                      borderRightWidth: "lineweight_normal",
-                      borderRightStyle: "solid",
-                      borderRightColor: "fg",
-                      cursor: "pointer",
-                    }),
-                    hoveredIds.has(cell.node.id) && css({ bg: "#fffef5" })
-                  )}
-                >
-                  <Link
-                    href={`/locations/${cell.node.id}`}
-                    style={{
-                      fontSize: fontSizeForDepth(cell.depth),
-                      // Inline style so it wins over globals.css's unlayered
-                      // `.location-grid a` rule regardless of cascade layers.
-                      // Only the exact hovered cell, not its descendants --
-                      // the background is what cascades, not the text colour.
-                      color: hoveredNodeId === cell.node.id ? "var(--colors-fg-accent)" : undefined,
-                    }}
-                    className={css({
-                      display: "block",
-                      width: "100%",
-                      height: "100%",
-                      py: "2",
-                      px: "3",
-                      boxSizing: "border-box",
-                      // EXPERIMENTAL: every depth bold, not just the root --
-                      // root stays the heaviest (800), everything else a
-                      // lighter bold (600). Revert to
-                      // `cell.depth === 0 ? "800" : "400"` if it doesn't
-                      // work out.
-                      fontWeight: cell.depth === 0 ? "800" : "600",
-                    })}
-                  >
-                    {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
-                    {!includeAll && cell.node.offenceCount > 0 && (
-                      <span
+        <div
+          className={cx(
+            "location-grid",
+            css({
+              overflowX: "auto",
+              borderWidth: "lineweight_heavy",
+              borderStyle: "solid",
+              borderColor: "fg",
+              borderRadius: "corner",
+            })
+          )}
+        >
+          <table
+            className={css({ width: "100%", tableLayout: "fixed", borderCollapse: "collapse", fontSize: "M" })}
+          >
+            {/* table-layout:fixed only respects the FIRST row's cell widths by
+                default, and that row's cells are full of rowSpan/colSpan --
+                an explicit colgroup is the only reliable way to force every
+                column to the same width regardless of what any row spans. */}
+            <colgroup>
+              {Array.from({ length: columnCount }).map((_, i) => (
+                // eslint-disable-next-line react/no-array-index-key -- columns are positional, no other identity
+                <col key={i} style={{ width: `${100 / columnCount}%` }} />
+              ))}
+            </colgroup>
+            <tbody>
+              {rows.map((row, i) => (
+                // eslint-disable-next-line react/no-array-index-key -- rows have no stable id of their own, only the cells within them do
+                <tr key={i}>
+                  {row.map((cell) => (
+                    <Td
+                      key={cell.node.id}
+                      rowSpan={cell.rowSpan}
+                      colSpan={cell.colSpan}
+                      onMouseEnter={() => {
+                        setHoveredIds(new Set(cell.subtreeIds));
+                        setHoveredNodeId(cell.node.id);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredIds(new Set());
+                        setHoveredNodeId(null);
+                      }}
+                      className={cx(
+                        css({
+                          p: "0", // the Link below takes the padding instead, so it can fill the whole cell
+                          borderRightWidth: "lineweight_normal",
+                          borderRightStyle: "solid",
+                          borderRightColor: "fg",
+                          cursor: "pointer",
+                        }),
+                        hoveredIds.has(cell.node.id) && css({ bg: "#fffef5" })
+                      )}
+                    >
+                      <Link
+                        href={`/locations/${cell.node.id}`}
+                        style={{
+                          fontSize: fontSizeForDepth(cell.depth),
+                          // Inline style so it wins over globals.css's unlayered
+                          // `.location-grid a` rule regardless of cascade layers.
+                          // Only the exact hovered cell, not its descendants --
+                          // the background is what cascades, not the text colour.
+                          color: hoveredNodeId === cell.node.id ? "var(--colors-fg-accent)" : undefined,
+                        }}
                         className={css({
                           display: "block",
-                          fontSize: isSmallestDepth(cell.depth) ? "S" : "M",
-                          fontWeight: "400",
+                          width: "100%",
+                          height: "100%",
+                          py: "2",
+                          px: "3",
+                          boxSizing: "border-box",
+                          // EXPERIMENTAL: every depth bold, not just the root --
+                          // root stays the heaviest (800), everything else a
+                          // lighter bold (600). Revert to
+                          // `cell.depth === 0 ? "800" : "400"` if it doesn't
+                          // work out.
+                          fontWeight: cell.depth === 0 ? "800" : "600",
                         })}
                       >
-                        {cell.node.offenceCount} offence{cell.node.offenceCount === 1 ? "" : "s"}
-                      </span>
-                    )}
-                  </Link>
-                </Td>
+                        {searchQuery ? highlightMatch(cell.node.name, searchQuery) : cell.node.name}
+                        {!includeAll && cell.node.offenceCount > 0 && (
+                          <span
+                            className={css({
+                              display: "block",
+                              fontSize: isSmallestDepth(cell.depth) ? "S" : "M",
+                              fontWeight: "400",
+                            })}
+                          >
+                            {cell.node.offenceCount} offence{cell.node.offenceCount === 1 ? "" : "s"}
+                          </span>
+                        )}
+                      </Link>
+                    </Td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

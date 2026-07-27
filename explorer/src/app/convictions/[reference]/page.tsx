@@ -17,7 +17,7 @@ import {
   getRelatedConvictions,
   listConvictionSlugs,
 } from "@/lib/queries/browseDetail";
-import { Card, PageContainer, PageTitle, Pill } from "@/components/ui";
+import { Card, PageContainer, PageTitle, Pill, sectionHeadingStyle } from "@/components/ui";
 import { ConvictionNav } from "@/components/ConvictionNav";
 import { personHref, offenceHref, locationHref } from "@/lib/links";
 import { convictionHref } from "@/lib/referenceSlug";
@@ -271,7 +271,7 @@ function groupOffencesByCategory(offences: ConvictionOffence[]): TreeParent[] {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={css({ display: "flex", flexDirection: "column", gap: "3" })}>
-      <h2 className={css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" })}>{title}</h2>
+      <h2 className={css(sectionHeadingStyle)}>{title}</h2>
       {children}
     </section>
   );

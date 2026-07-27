@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { css } from "styled-system/css";
 import { listOffenceTypesByCategory } from "@/lib/queries/offences";
-import { Card, EmptyState, PageContainer, PageTitle } from "@/components/ui";
+import { Card, EmptyState, PageContainer, PageTitle, sectionHeadingStyle } from "@/components/ui";
 import { formatOffenceCategory, sentenceCase } from "@/lib/text";
 
-const categoryHeadingStyle = css({ fontFamily: "serif", fontSize: "XL", fontWeight: "600" });
+const categoryHeadingStyle = css(sectionHeadingStyle);
 
-// Same master-list convention as /streets (one Card per row, plain-text
-// count), grouped under each category (taxonomy's own sort_order) rather
-// than one flat alphabetical list -- types alphabetical within each group.
+// One Card per row, plain-text count, grouped under each category
+// (taxonomy's own sort_order) rather than one flat alphabetical list --
+// types alphabetical within each group.
 export default function OffencesPage() {
   const categories = listOffenceTypesByCategory();
 
