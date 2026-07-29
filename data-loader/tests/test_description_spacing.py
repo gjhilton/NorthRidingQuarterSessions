@@ -24,12 +24,9 @@ def _make_raw_case(session, **overrides):
 
 def _make_conviction(session, raw_case, **overrides):
     defaults = dict(
-        raw_case_id=raw_case.id,
-        reference_number=raw_case.reference_number,
-        conviction_date_raw="1 Jan 1880",
+        record_number=raw_case.reference_number,
         charge_description="a charge",
         raw_record=raw_case.description,
-        archive_url=raw_case.archive_url,
     )
     defaults.update(overrides)
     conviction = SummaryConviction(**defaults)

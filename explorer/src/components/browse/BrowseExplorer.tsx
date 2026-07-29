@@ -18,8 +18,9 @@ import {
 } from "@/lib/queries/browseList";
 import type { Option, OffenceTypeOption, StreetOption } from "@/lib/queries/filters";
 import { convictionHref } from "@/lib/referenceSlug";
-import { titleCase, formatPersonName } from "@/lib/text";
+import { titleCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
+import { formatNameRow } from "@/lib/queries/personFragments";
 import {
   Card,
   EmptyState,
@@ -46,19 +47,15 @@ type CsvRow = Omit<BrowseRow, "defendant_names_json"> & { defendant_names: strin
 
 // defendant_names_json is a JSON array (one object per defendant) rather
 // than a pre-joined string, specifically so each name can go through the
-// site's standard SURNAME, Firstname (occupation) formatting instead of a
-// plain "First Last" concatenation done in SQL.
+// site's standard SURNAME, Firstname formatting instead of a plain
+// "First Last" concatenation done in SQL. No occupation here any more --
+// personsJsonExpr (personFragments.ts) deliberately doesn't include it,
+// since it's a real multi-valued join (person_occupation) now rather than a
+// flat column; see browseList.ts's BrowseDefendantName for the full reason.
 function parseDefendantNames(json: string | null): string[] {
   if (!json) return [];
   const defendants = JSON.parse(json) as BrowseDefendantName[];
-  return defendants.map((d) =>
-    formatPersonName({
-      firstName: d.first_name,
-      lastName: d.last_name,
-      occupation: d.occupation,
-      nameQualifier: d.name_qualifier,
-    })
-  );
+  return defendants.map(formatNameRow);
 }
 
 function formatDefendantNames(json: string | null): string {
@@ -203,6 +200,7 @@ export function BrowseExplorer({
       sentenceDateFrom: field("sentenceFrom"),
       sentenceDateTo: field("sentenceTo"),
       sex: sex === "male" || sex === "female" ? sex : undefined,
+      minorDefendant: field("minor") === "on" ? true : undefined,
       defendantCount: field("defendants") ? Number(field("defendants")) : undefined,
       page: 1,
       pageSize: PAGE_SIZE,
@@ -549,6 +547,17 @@ export function BrowseExplorer({
                       ))}
                     </select>
                   </FormField>
+                  <FormField label="Minor" className={css({ flex: "1" })}>
+                    <select
+                      name="minor"
+                      defaultValue={filters.minorDefendant ? "on" : ""}
+                      onChange={handleFieldChange}
+                      className={inputStyle}
+                    >
+                      <option value="">Any</option>
+                      <option value="on">Under 16</option>
+                    </select>
+                  </FormField>
                 </div>
               </fieldset>
             </div>
@@ -624,7 +633,7 @@ export function BrowseExplorer({
                 href={`${convictionHref(r.reference_number)}${rowLinkQs ? `?${rowLinkQs}` : ""}`}
               >
                 <Td verticalAlign="middle" className={referenceCellStyle}>{r.reference_number}</Td>
-                <Td verticalAlign="middle">{formatDate(r.conviction_date) ?? r.conviction_date_raw}</Td>
+                <Td verticalAlign="middle">{formatDate(r.conviction_date) ?? "—"}</Td>
                 <Td verticalAlign="middle">{formatDefendantNames(r.defendant_names_json)}</Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>{r.offence_type_names ?? "—"}</Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>{formatDate(r.offence_date) ?? r.offence_date_raw ?? "—"}</Td>

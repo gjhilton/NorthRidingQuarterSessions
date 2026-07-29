@@ -12,6 +12,7 @@
 import path from "node:path";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
+import Database from "better-sqlite3";
 
 const EXPLORER_ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -23,7 +24,20 @@ const WASM_SRC = path.join(EXPLORER_ROOT, "node_modules", "sql.js", "dist", "sql
 const publicDir = path.join(EXPLORER_ROOT, "public");
 fs.mkdirSync(publicDir, { recursive: true });
 
-fs.copyFileSync(DB_PATH, path.join(publicDir, "db.sqlite"));
+const publicDbPath = path.join(publicDir, "db.sqlite");
+fs.copyFileSync(DB_PATH, publicDbPath);
 fs.copyFileSync(WASM_SRC, path.join(publicDir, "sql-wasm.wasm"));
 
-console.log(`Copied ${DB_PATH} and sql-wasm.wasm into ${publicDir}`);
+// location.notes_private is an internal working-notes scratchpad (unverified
+// coordinates, merge provenance) never meant for display -- must never reach
+// the client-facing sql.js copy the browser fetches directly. Stripped here,
+// on the copy only, so the build-time better-sqlite3 queries against the
+// original data/db.sqlite are unaffected.
+const publicDb = new Database(publicDbPath);
+try {
+  publicDb.prepare("UPDATE location SET notes_private = NULL WHERE notes_private IS NOT NULL").run();
+} finally {
+  publicDb.close();
+}
+
+console.log(`Copied ${DB_PATH} and sql-wasm.wasm into ${publicDir} (location.notes_private stripped)`);

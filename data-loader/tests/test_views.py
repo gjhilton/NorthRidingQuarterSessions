@@ -1,94 +1,148 @@
 from sqlalchemy import text
 
-from qsrecords.models.core import Defendant, Person, InvolvedPerson, SummaryConviction, SummaryConvictionDefendant
-from qsrecords.models.reference import Town
+from qsrecords.models.core import (
+    Person,
+    SummaryConviction,
+    SummaryConvictionLocation,
+    SummaryConvictionPerson,
+)
+from qsrecords.models.reference import Location
 from qsrecords.views import create_views
 
+_next_id = iter(range(1, 10_000))
 
-def _make_town(session, name):
-    town = Town(name=name)
-    session.add(town)
+
+def _make_location(session, name, parent_id=None):
+    location = Location(name=name, parent_id=parent_id)
+    session.add(location)
     session.flush()
-    return town
+    return location
 
 
-_next_raw_case_id = iter(range(1, 10_000))
-
-
-def _make_conviction(session, reference_number, offence_town_id=None, court_town_id=None):
+def _make_conviction(session, record_number):
     conviction = SummaryConviction(
-        raw_case_id=next(_next_raw_case_id),
-        reference_number=reference_number,
-        conviction_date_raw="1 Jan 1850",
+        record_number=record_number,
         charge_description="a charge",
         raw_record="raw",
-        archive_url=f"https://example.org/{reference_number}",
-        offence_location_town_id=offence_town_id,
-        court_location_town_id=court_town_id,
     )
     session.add(conviction)
     session.flush()
     return conviction
 
 
+def _tag_location(session, conviction, location, role):
+    session.add(
+        SummaryConvictionLocation(
+            summary_conviction_id=conviction.id, location_id=location.id, role=role
+        )
+    )
+    session.flush()
+
+
 def test_view_includes_case_with_whitby_offence_location(session):
-    whitby = _make_town(session, "whitby")
-    other = _make_town(session, "pickering")
+    whitby = _make_location(session, "whitby")
+    other = _make_location(session, "pickering")
     create_views(session)
 
-    included = _make_conviction(session, "REF-1", offence_town_id=whitby.id, court_town_id=other.id)
-    excluded = _make_conviction(session, "REF-2", offence_town_id=other.id, court_town_id=other.id)
+    included = _make_conviction(session, "REF-1")
+    _tag_location(session, included, whitby, "location of offence")
+    _tag_location(session, included, other, "court location")
+
+    excluded = _make_conviction(session, "REF-2")
+    _tag_location(session, excluded, other, "location of offence")
+    _tag_location(session, excluded, other, "court location")
     session.commit()
 
-    rows = session.execute(text("SELECT reference_number FROM whitby_connected_conviction")).all()
+    rows = session.execute(text("SELECT record_number FROM whitby_connected_conviction")).all()
     refs = {r[0] for r in rows}
-    assert included.reference_number in refs
-    assert excluded.reference_number not in refs
+    assert included.record_number in refs
+    assert excluded.record_number not in refs
+
+
+def test_view_includes_case_via_whitby_subtree_descendant(session):
+    """A location nested under Whitby in the tree (e.g. a specific street)
+    counts the same as Whitby itself."""
+    whitby = _make_location(session, "whitby")
+    baxtergate = _make_location(session, "baxtergate", parent_id=whitby.id)
+    create_views(session)
+
+    included = _make_conviction(session, "REF-1")
+    _tag_location(session, included, baxtergate, "location of offence")
+    session.commit()
+
+    rows = session.execute(text("SELECT record_number FROM whitby_connected_conviction")).all()
+    refs = {r[0] for r in rows}
+    assert included.record_number in refs
 
 
 def test_view_excludes_court_only_whitby_connection(session):
     # A case heard at Whitby but with no other tie to the town must NOT match.
-    whitby = _make_town(session, "whitby")
-    elsewhere = _make_town(session, "guisborough")
+    whitby = _make_location(session, "whitby")
+    elsewhere = _make_location(session, "guisborough")
     create_views(session)
 
-    court_only = _make_conviction(session, "REF-3", offence_town_id=elsewhere.id, court_town_id=whitby.id)
+    court_only = _make_conviction(session, "REF-3")
+    _tag_location(session, court_only, elsewhere, "location of offence")
+    _tag_location(session, court_only, whitby, "court location")
     session.commit()
 
-    rows = session.execute(text("SELECT reference_number FROM whitby_connected_conviction")).all()
+    rows = session.execute(text("SELECT record_number FROM whitby_connected_conviction")).all()
     refs = {r[0] for r in rows}
-    assert court_only.reference_number not in refs
+    assert court_only.record_number not in refs
 
 
-def test_view_includes_case_via_defendant_town(session):
-    whitby = _make_town(session, "whitby")
-    elsewhere = _make_town(session, "roxby")
+def test_in_scope_view_includes_court_only_whitby_connection(session):
+    # The same case IS in-scope though -- Whitby Petty Sessions jurisdiction
+    # over surrounding townships is squarely in scope.
+    whitby = _make_location(session, "whitby")
+    elsewhere = _make_location(session, "guisborough")
     create_views(session)
 
-    conviction = _make_conviction(session, "REF-4", offence_town_id=elsewhere.id, court_town_id=elsewhere.id)
-    defendant = Defendant(first_name="John", last_name="Smith", town_id=whitby.id, name_key="john smith")
+    court_only = _make_conviction(session, "REF-3")
+    _tag_location(session, court_only, elsewhere, "location of offence")
+    _tag_location(session, court_only, whitby, "court location")
+    session.commit()
+
+    rows = session.execute(text("SELECT record_number FROM whitby_in_scope_conviction")).all()
+    refs = {r[0] for r in rows}
+    assert court_only.record_number in refs
+
+
+def test_view_includes_case_via_defendant_home_location(session):
+    whitby = _make_location(session, "whitby")
+    elsewhere = _make_location(session, "roxby")
+    create_views(session)
+
+    conviction = _make_conviction(session, "REF-4")
+    _tag_location(session, conviction, elsewhere, "location of offence")
+    defendant = Person(first_name="John", last_name="Smith", home_location_id=whitby.id)
     session.add(defendant)
     session.flush()
-    session.add(SummaryConvictionDefendant(summary_conviction_id=conviction.id, defendant_id=defendant.id))
+    session.add(
+        SummaryConvictionPerson(summary_conviction_id=conviction.id, person_id=defendant.id, role="defendant")
+    )
     session.commit()
 
-    rows = session.execute(text("SELECT reference_number FROM whitby_connected_conviction")).all()
+    rows = session.execute(text("SELECT record_number FROM whitby_connected_conviction")).all()
     refs = {r[0] for r in rows}
-    assert conviction.reference_number in refs
+    assert conviction.record_number in refs
 
 
-def test_view_includes_case_via_involved_person_town(session):
-    whitby = _make_town(session, "whitby")
-    elsewhere = _make_town(session, "aislaby")
+def test_view_includes_case_via_involved_person_home_location(session):
+    whitby = _make_location(session, "whitby")
+    elsewhere = _make_location(session, "aislaby")
     create_views(session)
 
-    conviction = _make_conviction(session, "REF-5", offence_town_id=elsewhere.id, court_town_id=elsewhere.id)
-    person = Person(first_name="Jane", last_name="Doe", town_id=whitby.id, name_key="jane doe")
+    conviction = _make_conviction(session, "REF-5")
+    _tag_location(session, conviction, elsewhere, "location of offence")
+    person = Person(first_name="Jane", last_name="Doe", home_location_id=whitby.id)
     session.add(person)
     session.flush()
-    session.add(InvolvedPerson(summary_conviction_id=conviction.id, person_id=person.id, role="witness"))
+    session.add(
+        SummaryConvictionPerson(summary_conviction_id=conviction.id, person_id=person.id, role="witness")
+    )
     session.commit()
 
-    rows = session.execute(text("SELECT reference_number FROM whitby_connected_conviction")).all()
+    rows = session.execute(text("SELECT record_number FROM whitby_connected_conviction")).all()
     refs = {r[0] for r in rows}
-    assert conviction.reference_number in refs
+    assert conviction.record_number in refs

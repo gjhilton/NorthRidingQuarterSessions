@@ -1,130 +1,121 @@
 from qsrecords.models.core import (
-    Defendant,
-    InvolvedPerson,
     Person,
     SummaryConviction,
-    SummaryConvictionDefendant,
-    SummaryConvictionOffenceType,
+    SummaryConvictionCrimeType,
+    SummaryConvictionPerson,
 )
-from qsrecords.models.reference import OffenceCategory, OffenceType
-from qsrecords.reports import (
-    defendant_case_references,
-    person_case_references,
-    repeated_defendant_names,
-    repeated_person_names,
-    unreviewed_offence_types,
-)
+from qsrecords.models.reference import CrimeType
+from qsrecords.reports import case_references, repeated_names, unreviewed_crime_types
 
 
-_next_raw_case_id = iter(range(1, 10_000))
+_next_id = iter(range(1, 10_000))
 
 
-def _make_conviction(session, reference_number):
+def _make_conviction(session, record_number):
     conviction = SummaryConviction(
-        raw_case_id=next(_next_raw_case_id),
-        reference_number=reference_number,
-        conviction_date_raw="1 Jan 1850",
+        record_number=record_number,
         charge_description="a charge",
         raw_record="raw",
-        archive_url=f"https://example.org/{reference_number}",
     )
     session.add(conviction)
     session.flush()
     return conviction
 
 
-def test_repeated_defendant_names_only_returns_names_at_or_above_threshold(session):
+def test_repeated_names_only_returns_names_at_or_above_threshold(session):
     c1 = _make_conviction(session, "REF-1")
     c2 = _make_conviction(session, "REF-2")
-    smith_1 = Defendant(first_name="John", last_name="Smith", name_key="john smith")
-    smith_2 = Defendant(first_name="John", last_name="Smith", name_key="john smith")
-    jones = Defendant(first_name="Mary", last_name="Jones", name_key="mary jones")
+    smith_1 = Person(first_name="John", last_name="Smith")
+    smith_2 = Person(first_name="John", last_name="Smith")
+    jones = Person(first_name="Mary", last_name="Jones")
     session.add_all([smith_1, smith_2, jones])
     session.flush()
-    session.add(SummaryConvictionDefendant(summary_conviction_id=c1.id, defendant_id=smith_1.id))
-    session.add(SummaryConvictionDefendant(summary_conviction_id=c2.id, defendant_id=smith_2.id))
-    session.add(SummaryConvictionDefendant(summary_conviction_id=c1.id, defendant_id=jones.id))
+    session.add(SummaryConvictionPerson(summary_conviction_id=c1.id, person_id=smith_1.id, role="defendant"))
+    session.add(SummaryConvictionPerson(summary_conviction_id=c2.id, person_id=smith_2.id, role="defendant"))
+    session.add(SummaryConvictionPerson(summary_conviction_id=c1.id, person_id=jones.id, role="witness"))
     session.commit()
 
-    rows = repeated_defendant_names(session, min_occurrences=2)
+    rows = repeated_names(session, min_occurrences=2)
     assert rows == [("john smith", 2)]
 
 
-def test_defendant_case_references_lists_all_cases_for_a_name(session):
+def test_repeated_names_spans_any_role(session):
+    """A name recurring once as a defendant and once as a victim is still a
+    real recurrence worth flagging -- the merged Person table no longer
+    distinguishes "defendant names" from "involved-person names"."""
     c1 = _make_conviction(session, "REF-1")
     c2 = _make_conviction(session, "REF-2")
-    smith_1 = Defendant(first_name="John", last_name="Smith", name_key="john smith")
-    smith_2 = Defendant(first_name="John", last_name="Smith", name_key="john smith")
-    session.add_all([smith_1, smith_2])
+    palmer_defendant = Person(first_name="Charles", last_name="Palmer")
+    palmer_victim = Person(first_name="Charles", last_name="Palmer")
+    session.add_all([palmer_defendant, palmer_victim])
     session.flush()
-    session.add(SummaryConvictionDefendant(summary_conviction_id=c1.id, defendant_id=smith_1.id))
-    session.add(SummaryConvictionDefendant(summary_conviction_id=c2.id, defendant_id=smith_2.id))
+    session.add(
+        SummaryConvictionPerson(summary_conviction_id=c1.id, person_id=palmer_defendant.id, role="defendant")
+    )
+    session.add(
+        SummaryConvictionPerson(summary_conviction_id=c2.id, person_id=palmer_victim.id, role="victim")
+    )
     session.commit()
 
-    refs = {r for r, _ in defendant_case_references(session, "john smith")}
-    assert refs == {"REF-1", "REF-2"}
-
-
-def test_repeated_person_names(session):
-    c1 = _make_conviction(session, "REF-1")
-    c2 = _make_conviction(session, "REF-2")
-    palmer_1 = Person(first_name="Charles", last_name="Palmer", name_key="charles palmer")
-    palmer_2 = Person(first_name="Charles", last_name="Palmer", name_key="charles palmer")
-    session.add_all([palmer_1, palmer_2])
-    session.flush()
-    session.add(InvolvedPerson(summary_conviction_id=c1.id, person_id=palmer_1.id, role="landowner"))
-    session.add(InvolvedPerson(summary_conviction_id=c2.id, person_id=palmer_2.id, role="landowner"))
-    session.commit()
-
-    rows = repeated_person_names(session, min_occurrences=2)
+    rows = repeated_names(session, min_occurrences=2)
     assert rows == [("charles palmer", 2)]
 
-    refs = {r for r, _ in person_case_references(session, "charles palmer")}
+
+def test_case_references_lists_all_cases_for_a_name(session):
+    c1 = _make_conviction(session, "REF-1")
+    c2 = _make_conviction(session, "REF-2")
+    smith_1 = Person(first_name="John", last_name="Smith")
+    smith_2 = Person(first_name="John", last_name="Smith")
+    session.add_all([smith_1, smith_2])
+    session.flush()
+    session.add(SummaryConvictionPerson(summary_conviction_id=c1.id, person_id=smith_1.id, role="defendant"))
+    session.add(SummaryConvictionPerson(summary_conviction_id=c2.id, person_id=smith_2.id, role="witness"))
+    session.commit()
+
+    refs = {r for r, _ in case_references(session, "john smith")}
     assert refs == {"REF-1", "REF-2"}
 
 
-def test_unreviewed_offence_types_excludes_categorised(session):
-    category = OffenceCategory(name="drink & public order", sort_order=0)
+def test_unreviewed_crime_types_excludes_seeded(session):
+    category = CrimeType(name="drink & disorder", is_seeded=True, parent_id=None, sort_order=0)
     session.add(category)
     session.flush()
-    categorised = OffenceType(name="drunkenness", is_seeded=True, category_id=category.id)
-    uncategorised = OffenceType(name="poisoning a well", is_seeded=False)
+    categorised = CrimeType(name="drunkenness", is_seeded=True, parent_id=category.id)
+    uncategorised = CrimeType(name="poisoning a well", is_seeded=False)
     session.add_all([categorised, uncategorised])
     session.flush()
 
     c1 = _make_conviction(session, "REF-1")
     session.add(
-        SummaryConvictionOffenceType(summary_conviction_id=c1.id, offence_type_id=uncategorised.id)
+        SummaryConvictionCrimeType(summary_conviction_id=c1.id, crime_type_id=uncategorised.id)
     )
     session.commit()
 
-    rows = unreviewed_offence_types(session)
+    rows = unreviewed_crime_types(session)
     assert rows == [("poisoning a well", 1)]
 
 
-def test_unreviewed_offence_types_counts_convictions_not_offence_mentions(session):
-    """A conviction carrying two offence types (e.g. assault + an
-    uncategorised category) still counts once for the uncategorised
-    category, not twice -- this counts convictions, not (conviction,
-    offence_type) pairs."""
-    category = OffenceCategory(name="assault & resisting authority", sort_order=0)
+def test_unreviewed_crime_types_counts_convictions_not_mentions(session):
+    """A conviction carrying two crime types (e.g. assault + an
+    uncategorised proposal) still counts once for the uncategorised
+    proposal, not twice -- this counts convictions, not (conviction,
+    crime_type) pairs."""
+    category = CrimeType(name="assault & resisting authority", is_seeded=True, parent_id=None, sort_order=0)
     session.add(category)
     session.flush()
-    seeded = OffenceType(name="assault", is_seeded=True, category_id=category.id)
-    proposed = OffenceType(name="poisoning a well", is_seeded=False)
+    seeded = CrimeType(name="assault", is_seeded=True, parent_id=category.id)
+    proposed = CrimeType(name="poisoning a well", is_seeded=False)
     session.add_all([seeded, proposed])
     session.flush()
 
     c1 = _make_conviction(session, "REF-1")
     session.add_all(
         [
-            SummaryConvictionOffenceType(summary_conviction_id=c1.id, offence_type_id=seeded.id),
-            SummaryConvictionOffenceType(
-                summary_conviction_id=c1.id, offence_type_id=proposed.id
-            ),
+            SummaryConvictionCrimeType(summary_conviction_id=c1.id, crime_type_id=seeded.id),
+            SummaryConvictionCrimeType(summary_conviction_id=c1.id, crime_type_id=proposed.id),
         ]
     )
     session.commit()
 
-    rows = unreviewed_offence_types(session)
+    rows = unreviewed_crime_types(session)
     assert rows == [("poisoning a well", 1)]

@@ -1,6 +1,7 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
+import { DEFENDANT_ROLE } from "@/lib/queries/personFragments";
 
 // Every gender-shaped query for the /gender page. Split out of trends.ts
 // once that file grew into a de facto dashboard -- see trends.ts for the
@@ -17,11 +18,11 @@ export function femalePercentByYear(): GenderYearPoint[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT sc.offence_year AS year, LOWER(d.sex) AS sex, COUNT(*) AS count
+      SELECT CAST(strftime('%Y', sc.offence_date) AS INTEGER) AS year, LOWER(p.sex) AS sex, COUNT(*) AS count
       FROM summary_conviction sc
-      JOIN summary_conviction_defendant scd ON scd.summary_conviction_id = sc.id
-      JOIN defendant d ON d.id = scd.defendant_id
-      WHERE sc.offence_year IS NOT NULL AND d.sex IS NOT NULL AND TRIM(d.sex) != ''
+      JOIN summary_conviction_person scp ON scp.summary_conviction_id = sc.id AND scp.role = '${DEFENDANT_ROLE}'
+      JOIN person p ON p.id = scp.person_id
+      WHERE sc.offence_date IS NOT NULL AND p.sex IS NOT NULL AND TRIM(p.sex) != ''
       GROUP BY year, sex
       `
     )
@@ -54,36 +55,38 @@ function genderOffenceRows(): GenderOffenceRow[] {
   return getDb()
     .prepare(
       `
-      SELECT sc.offence_year AS year, LOWER(d.sex) AS sex, COALESCE(ot.name, 'Unclassified') AS name, COUNT(*) AS count
+      SELECT CAST(strftime('%Y', sc.offence_date) AS INTEGER) AS year, LOWER(p.sex) AS sex,
+        COALESCE(leaf.name, 'Unclassified') AS name, COUNT(*) AS count
       FROM summary_conviction sc
-      JOIN summary_conviction_defendant scd ON scd.summary_conviction_id = sc.id
-      JOIN defendant d ON d.id = scd.defendant_id
-      LEFT JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      LEFT JOIN offence_type ot ON ot.id = scot.offence_type_id
-      WHERE sc.offence_year IS NOT NULL AND d.sex IN ('male', 'female')
+      JOIN summary_conviction_person scp ON scp.summary_conviction_id = sc.id AND scp.role = '${DEFENDANT_ROLE}'
+      JOIN person p ON p.id = scp.person_id
+      LEFT JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      LEFT JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      WHERE sc.offence_date IS NOT NULL AND p.sex IN ('male', 'female')
       GROUP BY year, sex, name
       `
     )
     .all() as GenderOffenceRow[];
 }
 
-// Category-level sibling of genderOffenceRows -- same shape, grouped by
-// offence_category instead of the 55-leaf offence_type vocabulary. See
-// offenceCategoryByYear in trends.ts for why category-level is the more
-// legible default view.
+// Category-level sibling of genderOffenceRows -- same shape, grouped by the
+// leaf's parent crime_type (a category, parent_id IS NULL) instead of the
+// 55-leaf vocabulary. See offenceCategoryByYear in trends.ts for why
+// category-level is the more legible default view.
 function genderOffenceCategoryRows(): GenderOffenceRow[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT sc.offence_year AS year, LOWER(d.sex) AS sex, COALESCE(oc.name, 'unclassified') AS name, COUNT(*) AS count
+      SELECT CAST(strftime('%Y', sc.offence_date) AS INTEGER) AS year, LOWER(p.sex) AS sex,
+        COALESCE(cat.name, 'unclassified') AS name, COUNT(*) AS count
       FROM summary_conviction sc
-      JOIN summary_conviction_defendant scd ON scd.summary_conviction_id = sc.id
-      JOIN defendant d ON d.id = scd.defendant_id
-      LEFT JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      LEFT JOIN offence_type ot ON ot.id = scot.offence_type_id
-      LEFT JOIN offence_category oc ON oc.id = ot.category_id
-      WHERE sc.offence_year IS NOT NULL AND d.sex IN ('male', 'female')
-      GROUP BY year, sex, oc.name
+      JOIN summary_conviction_person scp ON scp.summary_conviction_id = sc.id AND scp.role = '${DEFENDANT_ROLE}'
+      JOIN person p ON p.id = scp.person_id
+      LEFT JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      LEFT JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      LEFT JOIN crime_type cat ON cat.id = leaf.parent_id
+      WHERE sc.offence_date IS NOT NULL AND p.sex IN ('male', 'female')
+      GROUP BY year, sex, cat.name
       `
     )
     .all() as GenderOffenceRow[];
@@ -184,14 +187,28 @@ export interface GenderOccupation {
 // shows the combined, male-dominated-by-volume ranking, which buries the
 // female-specific pattern (street trading, "singlewoman"/"common
 // prostitute" as occupation labels) entirely.
+//
+// occupation is now a controlled vocabulary (occupation.name, deduped at
+// get-or-create time) rather than the old free-text defendant.occupation
+// column, so this no longer needs the LOWER(TRIM(...))-keyed grouping the
+// old free-text version did -- occupation.id is already the canonical key.
+// A person can hold more than one occupation now (person_occupation isn't
+// capped at one) -- same design call as occupations.ts's topOccupations():
+// each occupation a defendant holds is counted separately here, so a
+// defendant with 2 occupations contributes to both counts, consistent with
+// the old column's one-row-per-mention counting for the common case of one
+// occupation. Flagged in the port report, not silently decided.
 export function occupationsBySex(sex: "male" | "female", limit = 12): GenderOccupation[] {
   return getDb()
     .prepare(
       `
-      SELECT MIN(TRIM(occupation)) AS occupation, COUNT(*) AS count
-      FROM defendant
-      WHERE sex = ? AND occupation IS NOT NULL AND TRIM(occupation) != ''
-      GROUP BY LOWER(TRIM(occupation))
+      SELECT o.name AS occupation, COUNT(*) AS count
+      FROM summary_conviction_person scp
+      JOIN person p ON p.id = scp.person_id
+      JOIN person_occupation po ON po.person_id = p.id
+      JOIN occupation o ON o.id = po.occupation_id
+      WHERE scp.role = '${DEFENDANT_ROLE}' AND p.sex = ?
+      GROUP BY o.id
       ORDER BY count DESC
       LIMIT ?
       `

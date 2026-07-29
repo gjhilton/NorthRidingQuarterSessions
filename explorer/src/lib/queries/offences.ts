@@ -5,7 +5,7 @@
 // comment) -- an offence type's membership doesn't depend on user input.
 import "server-only";
 import { getDb } from "@/lib/db";
-import { DEFENDANT_NAMES_EXPR } from "@/lib/queries/sqlFragments";
+import { personNamesExpr } from "@/lib/queries/personFragments";
 
 export const OFFENCE_PAGE_SIZE = 25;
 
@@ -18,15 +18,19 @@ export interface OffenceTypeListRow {
 // Alphabetical, not by count -- this is the master index, a reader scans it
 // for a specific offence, not "what's most common" (that's what Trends is
 // for).
+// "Leaf" crime_type rows only (parent_id IS NOT NULL) -- the old offence_type
+// table's equivalent; a top-level crime_type row (parent_id IS NULL) is a
+// category, not an individually-browsable offence type.
 export function listOffenceTypesAlphabetical(): OffenceTypeListRow[] {
   return getDb()
     .prepare(
       `
-      SELECT ot.id, ot.name, COUNT(scot.summary_conviction_id) AS count
-      FROM offence_type ot
-      LEFT JOIN summary_conviction_offence_type scot ON scot.offence_type_id = ot.id
-      GROUP BY ot.id
-      ORDER BY ot.name
+      SELECT ct.id, ct.name, COUNT(scct.summary_conviction_id) AS count
+      FROM crime_type ct
+      LEFT JOIN summary_conviction_crime_type scct ON scct.crime_type_id = ct.id
+      WHERE ct.parent_id IS NOT NULL
+      GROUP BY ct.id
+      ORDER BY ct.name
       `
     )
     .all() as OffenceTypeListRow[];
@@ -46,13 +50,13 @@ export function listOffenceTypesByCategory(): OffenceCategoryGroup[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT ot.id, ot.name, oc.name AS category, oc.sort_order,
-        COUNT(scot.summary_conviction_id) AS count
-      FROM offence_type ot
-      JOIN offence_category oc ON oc.id = ot.category_id
-      LEFT JOIN summary_conviction_offence_type scot ON scot.offence_type_id = ot.id
-      GROUP BY ot.id
-      ORDER BY oc.sort_order, ot.name
+      SELECT leaf.id, leaf.name, cat.name AS category, cat.sort_order,
+        COUNT(scct.summary_conviction_id) AS count
+      FROM crime_type leaf
+      JOIN crime_type cat ON cat.id = leaf.parent_id
+      LEFT JOIN summary_conviction_crime_type scct ON scct.crime_type_id = leaf.id
+      GROUP BY leaf.id
+      ORDER BY cat.sort_order, leaf.name
       `
     )
     .all() as (OffenceTypeListRow & { category: string; sort_order: number })[];
@@ -68,14 +72,14 @@ export function listOffenceTypesByCategory(): OffenceCategoryGroup[] {
 }
 
 export function getOffenceTypeDetail(id: number): { id: number; name: string } | undefined {
-  return getDb().prepare(`SELECT id, name FROM offence_type WHERE id = ?`).get(id) as
+  return getDb().prepare(`SELECT id, name FROM crime_type WHERE id = ?`).get(id) as
     | { id: number; name: string }
     | undefined;
 }
 
 export function getOffenceTypeConvictionCount(id: number): number {
   const row = getDb()
-    .prepare(`SELECT COUNT(*) AS count FROM summary_conviction_offence_type WHERE offence_type_id = ?`)
+    .prepare(`SELECT COUNT(*) AS count FROM summary_conviction_crime_type WHERE crime_type_id = ?`)
     .get(id) as { count: number };
   return row.count;
 }
@@ -83,24 +87,28 @@ export function getOffenceTypeConvictionCount(id: number): number {
 export interface OffenceConvictionRow {
   reference_number: string;
   conviction_date: string | null;
-  conviction_date_raw: string;
   offence_date: string | null;
   offence_date_raw: string | null;
   defendant_names: string | null;
 }
 
 // Earliest-first, same convention as the Locations page's own offence
-// tables -- see ConvictionsTable/getPlaceConvictions.
+// tables -- see ConvictionsTable/getPlaceConvictions. `record_number` is
+// aliased back to `reference_number` -- that's the column's new name in
+// the DB, but every consumer (ConvictionsTable, referenceSlug, etc.) still
+// expects `reference_number`, and none of those are in this port's scope.
+// conviction_date_raw dropped entirely (not just renamed) -- see
+// data-loader/qsrecords/models/core.py's SummaryConviction docstring.
 export function getOffenceTypeConvictions(id: number, page: number): OffenceConvictionRow[] {
   return getDb()
     .prepare(
       `
-      SELECT sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
+      SELECT sc.record_number AS reference_number, sc.conviction_date,
         sc.offence_date, sc.offence_date_raw,
-        ${DEFENDANT_NAMES_EXPR} AS defendant_names
+        ${personNamesExpr()} AS defendant_names
       FROM summary_conviction sc
-      JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      WHERE scot.offence_type_id = ?
+      JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      WHERE scct.crime_type_id = ?
       ORDER BY sc.offence_date IS NULL, sc.offence_date ASC
       LIMIT ? OFFSET ?
       `

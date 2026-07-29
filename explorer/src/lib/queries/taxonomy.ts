@@ -21,20 +21,27 @@ export interface TaxonomyCategory {
 // See data-loader/qsrecords/offence_types.py's OFFENCE_TAXONOMY for how
 // this was built (91 near-duplicate offence_type strings consolidated into
 // 55 canonical leaves under 17 categories).
+//
+// crime_type is a single self-referencing tree now (parent_id IS NULL =
+// category, else a leaf under that category) rather than the old
+// offence_category/offence_type pair -- this page only ever needs the
+// two-level category/leaf shape, so a plain self-join on parent_id covers
+// it without needing tree.ts's general arbitrary-depth walker.
 export function offenceTaxonomyTree(): TaxonomyCategory[] {
   const rows = getDb()
     .prepare(
       `
       SELECT
-        oc.id AS category_id, oc.name AS category_name, oc.sort_order AS sort_order,
-        ot.id AS leaf_id, ot.name AS leaf_name,
+        cat.id AS category_id, cat.name AS category_name, cat.sort_order AS sort_order,
+        leaf.id AS leaf_id, leaf.name AS leaf_name,
         COUNT(DISTINCT sc.id) AS count
-      FROM offence_category oc
-      JOIN offence_type ot ON ot.category_id = oc.id
-      LEFT JOIN summary_conviction_offence_type scot ON scot.offence_type_id = ot.id
-      LEFT JOIN summary_conviction sc ON sc.id = scot.summary_conviction_id
-      GROUP BY oc.id, ot.id
-      ORDER BY oc.sort_order, count DESC
+      FROM crime_type cat
+      JOIN crime_type leaf ON leaf.parent_id = cat.id
+      LEFT JOIN summary_conviction_crime_type scct ON scct.crime_type_id = leaf.id
+      LEFT JOIN summary_conviction sc ON sc.id = scct.summary_conviction_id
+      WHERE cat.parent_id IS NULL
+      GROUP BY cat.id, leaf.id
+      ORDER BY cat.sort_order, count DESC
       `
     )
     .all() as {

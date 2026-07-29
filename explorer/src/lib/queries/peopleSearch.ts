@@ -2,46 +2,51 @@
 // bundled into the browser for PeopleSearch's interactive name search
 // without dragging a native module into the client bundle.
 import type { DbLike } from "@/lib/dbTypes";
+import {
+  DEFENDANT_ROLE,
+  personKeyExpr,
+  personSearchExpr,
+  personOccupationsExpr,
+  type NameRow,
+} from "@/lib/queries/personFragments";
 
-export interface PersonSearchResult {
+export interface PersonSearchResult extends NameRow {
   name_key: string;
-  first_name: string | null;
-  last_name: string | null;
   // A name_key can span multiple mentions with different recorded
   // occupations (rows aren't deduplicated -- see About) -- MAX() picks one
   // representative value, same convention as peopleList.ts. Also true of
-  // name_qualifier: it's deliberately excluded from name_key (see
-  // data-loader's Defendant.name_qualifier), so a group can mix mentions
-  // with and without one.
+  // middle_name/title/name_postfix/alias: none of them are part of the
+  // name_key identity itself (see personKeyExpr), so a group can mix
+  // mentions with and without any of them.
   occupation: string | null;
-  name_qualifier: string | null;
   defendant_mentions: number;
   person_mentions: number;
 }
 
 export function searchPeople(db: DbLike, q: string, limit = 25): PersonSearchResult[] {
   const like = `%${q.toLowerCase()}%`;
+  const key = personKeyExpr("p");
   return db
     .prepare(
       `
       SELECT
-        name_key,
-        MAX(first_name) AS first_name,
-        MAX(last_name) AS last_name,
-        MAX(occupation) AS occupation,
-        MAX(name_qualifier) AS name_qualifier,
-        SUM(CASE WHEN kind = 'defendant' THEN 1 ELSE 0 END) AS defendant_mentions,
-        SUM(CASE WHEN kind = 'person' THEN 1 ELSE 0 END) AS person_mentions
-      FROM (
-        SELECT name_key, first_name, last_name, occupation, name_qualifier, 'defendant' AS kind FROM defendant
-        UNION ALL
-        SELECT name_key, first_name, last_name, occupation, name_qualifier, 'person' AS kind FROM person
-      )
-      WHERE name_key LIKE @like AND TRIM(name_key) != ''
+        ${key} AS name_key,
+        MAX(p.first_name) AS first_name,
+        MAX(p.middle_name) AS middle_name,
+        MAX(p.last_name) AS last_name,
+        MAX(p.title) AS title,
+        MAX(p.name_postfix) AS name_postfix,
+        MAX(p.alias) AS alias,
+        MAX(${personOccupationsExpr("p")}) AS occupation,
+        SUM(CASE WHEN scp.role = @defendantRole THEN 1 ELSE 0 END) AS defendant_mentions,
+        SUM(CASE WHEN scp.role != @defendantRole THEN 1 ELSE 0 END) AS person_mentions
+      FROM person p
+      JOIN summary_conviction_person scp ON scp.person_id = p.id
+      WHERE ${personSearchExpr("p")} LIKE @like AND TRIM(${key}) != ''
       GROUP BY name_key
       ORDER BY (defendant_mentions + person_mentions) DESC, name_key
       LIMIT @limit
       `
     )
-    .all({ like, limit }) as PersonSearchResult[];
+    .all({ like, limit, defendantRole: DEFENDANT_ROLE }) as PersonSearchResult[];
 }

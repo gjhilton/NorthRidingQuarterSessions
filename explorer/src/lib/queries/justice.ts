@@ -21,10 +21,10 @@ export function offenceToConvictionLag(): LagStats {
     .prepare(
       `
       SELECT
-        offence_year AS year,
+        CAST(strftime('%Y', offence_date) AS INTEGER) AS year,
         CAST(julianday(conviction_date) - julianday(offence_date) AS INTEGER) AS lagDays
       FROM summary_conviction
-      WHERE offence_date IS NOT NULL AND conviction_date IS NOT NULL AND offence_year IS NOT NULL
+      WHERE offence_date IS NOT NULL AND conviction_date IS NOT NULL
       `
     )
     .all() as { year: number; lagDays: number }[];

@@ -51,8 +51,13 @@ def backfill_description_spacing(session: Session) -> DescriptionSpacingReport:
 
     session.flush()
 
+    # SummaryConviction.raw_case_id was dropped in the v3 schema migration --
+    # joined on record_number/reference_number instead, the same key
+    # migrate_to_unified_schema.py and scope_filter.py already rely on.
     convictions = session.exec(
-        select(SummaryConviction, RawCase).join(RawCase, RawCase.id == SummaryConviction.raw_case_id)
+        select(SummaryConviction, RawCase).join(
+            RawCase, RawCase.reference_number == SummaryConviction.record_number
+        )
     ).all()
     for conviction, rc in convictions:
         if conviction.raw_record != rc.description:

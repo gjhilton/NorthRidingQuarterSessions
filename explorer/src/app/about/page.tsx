@@ -2,6 +2,8 @@ import { css } from "styled-system/css";
 import { Card, PageContainer, PageTitle, sectionHeadingStyle } from "@/components/ui";
 import { readContent } from "@/lib/content";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import { SchemaERD } from "@/components/SchemaERD";
+import { SCHEMA_ERD } from "@/content/about/schema-erd";
 
 export default function AboutPage() {
   return (
@@ -14,6 +16,10 @@ export default function AboutPage() {
 
       <Section title="How this site is built">
         <MarkdownContent>{readContent("about", "process")}</MarkdownContent>
+      </Section>
+
+      <Section title="Database schema" id="database-schema">
+        <SchemaERD diagram={SCHEMA_ERD} />
       </Section>
 
       <Section title="Cookies" id="cookies">

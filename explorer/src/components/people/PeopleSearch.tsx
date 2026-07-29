@@ -125,9 +125,12 @@ export function PeopleSearch({ autoFocus = true }: { autoFocus?: boolean }) {
               <span className={css({ fontWeight: "600" })}>
                 {formatPersonName({
                   firstName: r.first_name,
+                  middleName: r.middle_name,
                   lastName: r.last_name,
+                  title: r.title,
+                  namePostfix: r.name_postfix,
+                  alias: r.alias,
                   occupation: r.occupation,
-                  nameQualifier: r.name_qualifier,
                 })}
               </span>
             </div>

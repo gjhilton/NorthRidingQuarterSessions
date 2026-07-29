@@ -6,6 +6,13 @@
 // page is meant to behave like a close clone of the Convictions listing,
 // just over people instead of convictions.
 import type { DbLike } from "@/lib/dbTypes";
+import { combineClauses } from "@/lib/queries/queryBuilder";
+import {
+  personKeyExpr,
+  personOccupationsExpr,
+  personNameColumnsSql,
+  type NameRow,
+} from "@/lib/queries/personFragments";
 
 export const PAGE_SIZE = 25;
 
@@ -15,6 +22,7 @@ export interface PeopleFilters {
   letter?: string;
   role?: string;
   sex?: "male" | "female";
+  minor?: boolean;
   town?: string;
   occupation?: string;
   convictedFrom?: string;
@@ -25,90 +33,83 @@ export interface PeopleFilters {
   pageSize: number;
 }
 
-export interface PersonListRow {
+export interface PersonListRow extends NameRow {
   name_key: string;
-  first_name: string | null;
-  last_name: string | null;
-  name_qualifier: string | null;
   // Comma-joined distinct roles this name_key has appeared under across
-  // every case it's in (e.g. "offender,victim,witness") -- a real person can
-  // hold different roles in different cases, so this is a set, not a single
-  // value. "offender" is a synthetic role (defendant rows don't carry a role
-  // column of their own); every other value is the real, unedited
-  // involved_persons.role text.
+  // every case it's in (e.g. "defendant,victim,witness") -- a real person
+  // can hold different roles in different cases, so this is a set, not a
+  // single value. 'defendant' is now the real stored
+  // summary_conviction_person.role value (see personFragments.ts's
+  // DEFENDANT_ROLE), not a synthetic label -- displayed as "Offender" in
+  // the UI (see roles.ts).
   roles: string;
   total_mentions: number;
+  // Comma-joined -- a person can hold more than one occupation at once now
+  // (person_occupation is a real join table). One representative mention's
+  // occupation set, same MAX() convention as the rest of this aggregation.
   occupation: string | null;
   location_name: string | null;
   sex: string | null;
+  is_minor: number;
   min_conviction_date: string | null;
   max_conviction_date: string | null;
 }
 
 // The per-name_key aggregation every query below builds on -- one row per
-// distinct person across every defendant/involved-person appearance they
-// have. Every filter here operates on these aggregated columns (via HAVING,
-// since they don't exist until after the GROUP BY), not on the raw
-// defendant/person/involved_persons rows underneath.
-// roles is COALESCE'd to '' rather than left NULL below: GROUP_CONCAT of
-// an all-NULL group (a name_key whose only appearances are as an involved
-// person with no recorded role -- role is never 'offender' for those, and
-// NULLIF blanks out an empty involved_persons.role) returns NULL, not '',
-// which crashed the listing's roles.split(',').
+// distinct person across every case appearance they have. Every filter here
+// operates on these aggregated columns (via HAVING, since they don't exist
+// until after the GROUP BY), not on the raw person/summary_conviction_person
+// rows underneath. Collapses the old defendant/person UNION ALL entirely --
+// v3 merged those into one `person` table with role living on
+// summary_conviction_person, so this is a single join, not a union of two
+// near-identical queries.
 const BASE_QUERY = `
   SELECT
     name_key,
     MAX(first_name) AS first_name,
+    MAX(middle_name) AS middle_name,
     MAX(last_name) AS last_name,
-    MAX(name_qualifier) AS name_qualifier,
+    MAX(title) AS title,
+    MAX(name_postfix) AS name_postfix,
+    MAX(alias) AS alias,
     COALESCE(GROUP_CONCAT(DISTINCT role), '') AS roles,
     COUNT(*) AS total_mentions,
     MAX(occupation) AS occupation,
     MAX(location_name) AS location_name,
     MAX(sex) AS sex,
+    MAX(is_minor) AS is_minor,
     MIN(conviction_date) AS min_conviction_date,
     MAX(conviction_date) AS max_conviction_date
   FROM (
     SELECT
-      d.name_key,
-      d.first_name,
-      d.last_name,
-      d.name_qualifier,
-      'offender' AS role,
-      d.occupation,
-      pl.name AS location_name,
-      d.sex,
-      sc.conviction_date
-    FROM defendant d
-    LEFT JOIN place pl ON pl.id = d.location_id
-    LEFT JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
-    LEFT JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
-    UNION ALL
-    SELECT
-      p.name_key,
-      p.first_name,
-      p.last_name,
-      p.name_qualifier,
-      NULLIF(TRIM(ip.role), '') AS role,
-      p.occupation,
-      pl.name AS location_name,
-      NULL AS sex,
+      ${personKeyExpr("p")} AS name_key,
+      ${personNameColumnsSql("p")},
+      scp.role AS role,
+      ${personOccupationsExpr("p")} AS occupation,
+      loc.name AS location_name,
+      p.sex,
+      -- v3 dropped age/is_child entirely (see Person.birth_year's comment in
+      -- data-loader/qsrecords/models/core.py) -- "minor" is computed here as
+      -- offence_year - birth_year < 16 for this specific mention's own
+      -- conviction, same formula that comment gives as the canonical way to
+      -- derive age. Unknown either way (no birth_year, or no offence_date on
+      -- this case) reads as not-a-minor rather than guessed.
+      CASE
+        WHEN p.birth_year IS NOT NULL AND sc.offence_date IS NOT NULL
+          AND (CAST(strftime('%Y', sc.offence_date) AS INTEGER) - p.birth_year) < 16
+        THEN 1 ELSE 0
+      END AS is_minor,
       sc.conviction_date
     FROM person p
-    LEFT JOIN place pl ON pl.id = p.location_id
-    LEFT JOIN involved_persons ip ON ip.person_id = p.id
-    LEFT JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
+    JOIN summary_conviction_person scp ON scp.person_id = p.id
+    JOIN summary_conviction sc ON sc.id = scp.summary_conviction_id
+    LEFT JOIN location loc ON loc.id = p.home_location_id
   )
   WHERE name_key IS NOT NULL AND TRIM(name_key) != ''
   GROUP BY name_key
 `;
 
-interface HavingClause {
-  sql: string;
-  params: Record<string, unknown>;
-}
-
-function buildHaving(filters: PeopleFilters): HavingClause {
+function buildHaving(filters: PeopleFilters): { sql: string; params: Record<string, unknown> } {
   const clauses: string[] = [];
   const params: Record<string, unknown> = {};
 
@@ -117,7 +118,7 @@ function buildHaving(filters: PeopleFilters): HavingClause {
     params.letter = filters.letter.toUpperCase();
   }
   if (filters.role) {
-    // roles is a comma-joined set (e.g. "offender,victim") -- padding both
+    // roles is a comma-joined set (e.g. "defendant,victim") -- padding both
     // sides with commas turns a plain substring search into an exact
     // element match, so "victim" doesn't also match "victim/witness".
     clauses.push(`(',' || roles || ',') LIKE '%,' || @role || ',%'`);
@@ -127,12 +128,18 @@ function buildHaving(filters: PeopleFilters): HavingClause {
     clauses.push(`sex = @sex`);
     params.sex = filters.sex;
   }
+  if (filters.minor) {
+    clauses.push(`is_minor = 1`);
+  }
   if (filters.town) {
     clauses.push(`location_name = @town`);
     params.town = filters.town;
   }
   if (filters.occupation) {
-    clauses.push(`occupation = @occupation`);
+    // occupation is a ", "-joined set (personOccupationsExpr) -- same
+    // exact-element-match padding trick as roles above, just with the
+    // ", " separator that expression actually uses.
+    clauses.push(`(', ' || occupation || ', ') LIKE '%, ' || @occupation || ', %'`);
     params.occupation = filters.occupation;
   }
   // A person's own min/max conviction date span every case they're in --
@@ -148,10 +155,7 @@ function buildHaving(filters: PeopleFilters): HavingClause {
     params.convictedTo = filters.convictedTo;
   }
 
-  return {
-    sql: clauses.length ? `HAVING ${clauses.join(" AND ")}` : "",
-    params,
-  };
+  return combineClauses(clauses, params, "HAVING");
 }
 
 const SORT_EXPRESSIONS: Record<PeopleSortColumn, string> = {
@@ -176,6 +180,7 @@ export function filtersFromSearchParams(params: URLSearchParams): PeopleFilters 
     letter: get("letter"),
     role: get("role"),
     sex: sex === "male" || sex === "female" ? sex : undefined,
+    minor: get("minor") === "1" ? true : undefined,
     town: get("town"),
     occupation: get("occupation"),
     convictedFrom: get("from"),
@@ -192,6 +197,7 @@ export function searchParamsFromFilters(filters: PeopleFilters): string {
   if (filters.letter) params.set("letter", filters.letter);
   if (filters.role) params.set("role", filters.role);
   if (filters.sex) params.set("sex", filters.sex);
+  if (filters.minor) params.set("minor", "1");
   if (filters.town) params.set("town", filters.town);
   if (filters.occupation) params.set("occupation", filters.occupation);
   if (filters.convictedFrom) params.set("from", filters.convictedFrom);
@@ -207,6 +213,7 @@ export function isFilteredSearch(filters: PeopleFilters): boolean {
     filters.letter ||
       filters.role ||
       filters.sex ||
+      filters.minor ||
       filters.town ||
       filters.occupation ||
       filters.convictedFrom ||
@@ -232,6 +239,11 @@ export function listLetterCounts(db: DbLike, filters: PeopleFilters): Record<str
   return Object.fromEntries(rows.map((r) => [r.letter, r.n]));
 }
 
+// Not routed through queryBuilder.ts's paginate() -- that helper assumes a
+// flat `${selectSql} ${whereSql}` shape it can also reuse for the count
+// query, but this listing's COUNT needs to wrap the whole aggregated
+// GROUP BY/HAVING subquery (BASE_QUERY itself), not just append a clause
+// after a plain SELECT -- see below.
 export function listPeople(db: DbLike, filters: PeopleFilters): { rows: PersonListRow[]; total: number } {
   const { sql: havingSql, params } = buildHaving(filters);
   const orderBySql = buildOrderBy(filters);

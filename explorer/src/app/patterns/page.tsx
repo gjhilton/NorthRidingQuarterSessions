@@ -2,7 +2,6 @@ import { css } from "styled-system/css";
 import {
   dayOfWeekBreakdown,
   defendantsPerConvictionByCategory,
-  gameSpeciesBreakdown,
   seasonalityByCategory,
 } from "@/lib/queries/patterns";
 import { CategoryBar } from "@/components/charts/CategoryBar";
@@ -14,9 +13,7 @@ export default function PatternsPage() {
   const seasonality = seasonalityByCategory();
   const dayOfWeek = dayOfWeekBreakdown();
   const groupSize = defendantsPerConvictionByCategory();
-  const species = gameSpeciesBreakdown();
   const maxGroupSize = Math.max(...groupSize.map((g) => g.avgDefendants), 1);
-  const maxSpecies = Math.max(...species.map((s) => s.count), 1);
 
   return (
     <PageContainer>
@@ -85,22 +82,6 @@ export default function PatternsPage() {
               max={maxGroupSize}
               formattedValue={g.avgDefendants.toFixed(2)}
             />
-          ))
-        )}
-      </Card>
-
-      <Card>
-        <ChartTitle>What was poached</ChartTitle>
-        <p className={css({ fontSize: "body", color: "fgMuted", mb: "3" })}>
-          Species named in poaching-type offences. Subsistence game (rabbits/conies, hares)
-          outnumbers prestige game (pheasant, partridge) — salmon is the other major target,
-          reflecting the coastal setting.
-        </p>
-        {species.length === 0 ? (
-          <EmptyState>No game species recorded yet.</EmptyState>
-        ) : (
-          species.map((s) => (
-            <MiniBarRow key={s.species} label={s.species} value={s.count} max={maxSpecies} />
           ))
         )}
       </Card>

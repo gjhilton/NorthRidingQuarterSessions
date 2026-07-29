@@ -2,20 +2,36 @@ import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
 import type { CategoryCount } from "@/lib/queries/chartShapes";
+import { DEFENDANT_ROLE } from "@/lib/queries/personFragments";
 
 // Occupation-shaped queries for /occupations. Split out of trends.ts once
 // that file grew into a de facto dashboard -- see gender.ts for the
 // occupation-by-sex breakdown (kept there since it's fundamentally a
 // gender finding) and trends.ts/patterns.ts/justice.ts for the rest.
 
+// occupation is a controlled vocabulary now (get-or-create on a normalized
+// name -- see data-loader/qsrecords/models/reference.py::Occupation),
+// replacing the old free-text defendant.occupation column that had
+// fragmented into 405 raw strings. That means no more LOWER(TRIM(...))
+// grouping key -- occupation.id is already the canonical dedup key -- but
+// it does mean a defendant can hold more than one occupation at once
+// (person_occupation isn't capped at one). DESIGN CALL (not fully
+// specified by the port brief): each occupation a defendant holds is
+// counted separately here (a defendant with 2 occupations contributes to
+// both bars), rather than picking one occupation per person -- this only
+// changes the numbers for the small number of people with >1 recorded
+// occupation, and "count every stated occupation" seemed truer to the data
+// than arbitrarily picking one. Flagged in the port report.
 export function topOccupations(limit = 12): CategoryCount[] {
   return getDb()
     .prepare(
       `
-      SELECT MIN(TRIM(occupation)) AS label, COUNT(*) AS count
-      FROM defendant
-      WHERE occupation IS NOT NULL AND TRIM(occupation) != ''
-      GROUP BY LOWER(TRIM(occupation))
+      SELECT o.name AS label, COUNT(*) AS count
+      FROM summary_conviction_person scp
+      JOIN person_occupation po ON po.person_id = scp.person_id
+      JOIN occupation o ON o.id = po.occupation_id
+      WHERE scp.role = '${DEFENDANT_ROLE}'
+      GROUP BY o.id
       ORDER BY count DESC
       LIMIT ?
       `
@@ -44,23 +60,24 @@ export function occupationByOffenceCategory(
     .prepare(
       `
       SELECT
-        LOWER(TRIM(d.occupation)) AS occ_key,
-        MIN(TRIM(d.occupation)) AS occupation,
-        COALESCE(oc.name, 'unclassified') AS category,
+        o.id AS occ_key,
+        o.name AS occupation,
+        COALESCE(cat.name, 'unclassified') AS category,
         COUNT(*) AS count
-      FROM defendant d
-      JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
-      LEFT JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = scd.summary_conviction_id
-      LEFT JOIN offence_type ot ON ot.id = scot.offence_type_id
-      LEFT JOIN offence_category oc ON oc.id = ot.category_id
-      WHERE d.occupation IS NOT NULL AND TRIM(d.occupation) != ''
+      FROM summary_conviction_person scp
+      JOIN person_occupation po ON po.person_id = scp.person_id
+      JOIN occupation o ON o.id = po.occupation_id
+      LEFT JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = scp.summary_conviction_id
+      LEFT JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      LEFT JOIN crime_type cat ON cat.id = leaf.parent_id
+      WHERE scp.role = '${DEFENDANT_ROLE}'
       GROUP BY occ_key, category
       `
     )
-    .all() as { occ_key: string; occupation: string; category: string; count: number }[];
+    .all() as { occ_key: number; occupation: string; category: string; count: number }[];
 
-  const occTotals = new Map<string, number>();
-  const occLabels = new Map<string, string>();
+  const occTotals = new Map<number, number>();
+  const occLabels = new Map<number, string>();
   const catTotals = new Map<string, number>();
   for (const r of rows) {
     occTotals.set(r.occ_key, (occTotals.get(r.occ_key) ?? 0) + r.count);

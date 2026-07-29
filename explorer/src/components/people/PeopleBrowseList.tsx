@@ -17,6 +17,7 @@ import {
 } from "@/lib/queries/peopleList";
 import { personHref } from "@/lib/links";
 import { formatPersonName, titleCase } from "@/lib/text";
+import { DEFENDANT_ROLE } from "@/lib/queries/personFragments";
 import {
   Card,
   EmptyState,
@@ -31,6 +32,15 @@ import {
 import { ClickableTr } from "@/components/ClickableRow";
 import { FilterIcon } from "@/components/icons/FilterIcon";
 import { PeopleSearch } from "@/components/people/PeopleSearch";
+
+// The DB stores the literal role 'defendant' (see
+// summary_conviction_person.role), but the site's own UI copy has always
+// said "Offender" -- same translation as roles.ts's classifyInvolvedPersonRole,
+// applied here since this file only ever has the raw role string, not a
+// person/case row to run through that classifier.
+function roleDisplayLabel(role: string): string {
+  return role === DEFENDANT_ROLE ? "Offender" : titleCase(role);
+}
 
 // Close clone of BrowseExplorer (the Convictions listing) -- same
 // filter-box/URL-sync/client-query/pagination shape, applied to people
@@ -108,6 +118,7 @@ export function PeopleBrowseList({
       letter: filters.letter,
       role: field("role"),
       sex: sex === "male" || sex === "female" ? sex : undefined,
+      minor: field("minor") === "on" ? true : undefined,
       town: field("town"),
       occupation: field("occupation"),
       convictedFrom: field("from"),
@@ -221,7 +232,7 @@ export function PeopleBrowseList({
                   <option value="">Any role</option>
                   {roles.map((r) => (
                     <option key={r} value={r}>
-                      {titleCase(r)}
+                      {roleDisplayLabel(r)}
                     </option>
                   ))}
                 </select>
@@ -236,6 +247,17 @@ export function PeopleBrowseList({
                   <option value="">Women and men</option>
                   <option value="male">Men</option>
                   <option value="female">Women</option>
+                </select>
+              </FormField>
+              <FormField label="Minor">
+                <select
+                  name="minor"
+                  defaultValue={filters.minor ? "on" : ""}
+                  onChange={handleFieldChange}
+                  className={inputStyle}
+                >
+                  <option value="">Any age</option>
+                  <option value="on">Under 16</option>
                 </select>
               </FormField>
               <FormField label="Town of residence">
@@ -387,15 +409,18 @@ export function PeopleBrowseList({
                 <Td verticalAlign="middle">
                   {formatPersonName({
                     firstName: p.first_name,
+                    middleName: p.middle_name,
                     lastName: p.last_name,
-                    nameQualifier: p.name_qualifier,
+                    title: p.title,
+                    namePostfix: p.name_postfix,
+                    alias: p.alias,
                   })}
                 </Td>
                 <Td verticalAlign="middle" className={truncateCellStyle}>
                   {p.roles
                     ? p.roles
                         .split(",")
-                        .map((r) => titleCase(r))
+                        .map((r) => roleDisplayLabel(r))
                         .join(", ")
                     : "—"}
                 </Td>

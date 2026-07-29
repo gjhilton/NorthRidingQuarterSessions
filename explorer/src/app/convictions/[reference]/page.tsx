@@ -65,11 +65,12 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
   const { prevSlug, nextSlug } = getAdjacentConvictionSlugs(convictionId);
   const { position, total } = getConvictionPosition(convictionId);
   // Chicago Notes-Bibliography style (bibliography form, repository-first),
-  // per CMOS guidance for archival/manuscript collections. Split so the URL
-  // can be rendered as its own monospaced link while the clipboard copy
-  // still gets the whole citation as one plain-text string.
-  const citationPrefix = `North Yorkshire County Record Office. North Riding Quarter Sessions Bundles. ${conviction.reference_number}. Archives Unlocked North Yorkshire.`;
-  const citation = `${citationPrefix} ${conviction.archive_url}.`;
+  // per CMOS guidance for archival/manuscript collections. archive_url is
+  // dropped entirely in v3 (data-loader/qsrecords/models/core.py's
+  // SummaryConviction docstring) -- the citation no longer has a URL to
+  // append, and the "View original record at NYCRO" external link below is
+  // gone for the same reason.
+  const citation = `North Yorkshire County Record Office. North Riding Quarter Sessions Bundles. ${conviction.reference_number}. Archives Unlocked North Yorkshire.`;
 
   return (
     <PageContainer>
@@ -93,7 +94,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
           {conviction.reference_number}
         </PageTitle>
         <p className={css({ fontSize: "M", color: "fg" })}>
-          Conviction date: {formatDate(conviction.conviction_date) ?? conviction.conviction_date_raw}
+          Conviction date: {formatDate(conviction.conviction_date) ?? "—"}
         </p>
         {conviction.court_town_name && (
           <p className={css({ fontSize: "M", color: "fg" })}>
@@ -106,16 +107,6 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
         <p className={css({ fontSize: "L", fontWeight: "600", color: "fg", whiteSpace: "pre-wrap" })}>
           &ldquo;{conviction.raw_record}&rdquo;
         </p>
-        <div className={css({ display: "flex", justifyContent: "flex-end", mt: "3" })}>
-          <a
-            href={conviction.archive_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={css({ fontSize: "M", color: "fgAccent" })}
-          >
-            View original record at NYCRO →
-          </a>
-        </div>
       </Card>
 
       <Section title="Citing this record">
@@ -127,18 +118,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
           )
         </p>
         <div className={css({ display: "flex", alignItems: "flex-start", gap: "3" })}>
-          <p className={css({ fontSize: "M", overflowWrap: "break-word" })}>
-            {citationPrefix}{" "}
-            <a
-              href={conviction.archive_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={css({ color: "fgAccent" })}
-            >
-              {conviction.archive_url}
-            </a>
-            .
-          </p>
+          <p className={css({ fontSize: "M", overflowWrap: "break-word" })}>{citation}</p>
           <CopyCitationButton text={citation} label="Copy citation" />
         </div>
       </Section>
@@ -153,9 +133,12 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
                 <Link href={personHref(d.name_key)} className={css({ color: "fgAccent" })}>
                   {formatPersonName({
                     firstName: d.first_name,
+                    middleName: d.middle_name,
                     lastName: d.last_name,
+                    title: d.title,
+                    namePostfix: d.name_postfix,
+                    alias: d.alias,
                     occupation: d.occupation,
-                    nameQualifier: d.name_qualifier,
                     town: d.location_name,
                   })}
                 </Link>
@@ -219,7 +202,7 @@ export default async function ConvictionDetailPage(props: PageProps<"/conviction
                   {rc.reference_number}
                 </Link>
                 <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
-                  {formatDate(rc.conviction_date) ?? rc.conviction_date_raw}
+                  {formatDate(rc.conviction_date) ?? "—"}
                 </p>
                 <p className={css({ fontSize: "M", mt: "1" })}>{rc.charge_description}</p>
                 {rc.note && (
@@ -309,9 +292,12 @@ function PersonList({
           <Link href={personHref(p.name_key)} className={css({ color: "fgAccent" })}>
             {formatPersonName({
               firstName: p.first_name,
+              middleName: p.middle_name,
               lastName: p.last_name,
+              title: p.title,
+              namePostfix: p.name_postfix,
+              alias: p.alias,
               occupation: p.occupation,
-              nameQualifier: p.name_qualifier,
               town: p.location_name,
             })}
           </Link>

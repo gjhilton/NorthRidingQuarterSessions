@@ -13,11 +13,12 @@ export function offenceTypeByYear(topN = 6): YearSeries {
   const rows = getDb()
     .prepare(
       `
-      SELECT sc.offence_year AS year, COALESCE(ot.name, 'Unclassified') AS name, COUNT(*) AS count
+      SELECT CAST(strftime('%Y', sc.offence_date) AS INTEGER) AS year,
+        COALESCE(leaf.name, 'Unclassified') AS name, COUNT(*) AS count
       FROM summary_conviction sc
-      LEFT JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      LEFT JOIN offence_type ot ON ot.id = scot.offence_type_id
-      WHERE sc.offence_year IS NOT NULL
+      LEFT JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      LEFT JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      WHERE sc.offence_date IS NOT NULL
       GROUP BY year, name
       `
     )
@@ -25,26 +26,28 @@ export function offenceTypeByYear(topN = 6): YearSeries {
   return topNSeriesByYear(rows, topN);
 }
 
-// Category-level equivalent of offenceTypeByYear -- groups by
-// offence_category rather than the 55-leaf offence_type vocabulary. This is
-// the default "Offence type composition over time" view: 17 curated
-// categories (see data-loader/qsrecords/offence_types.py's
-// OFFENCE_TAXONOMY) read far more legibly in a top-N+Other stacked chart
-// than 55 fragmented leaves ever could. A conviction with no offence_type
-// tagged, or a tagged leaf with no category (an uncategorised proposal --
-// see quality.unreviewedOffenceTypes), falls into "Unclassified" rather
-// than being silently dropped.
+// Category-level equivalent of offenceTypeByYear -- groups by the leaf's
+// parent crime_type (a category, parent_id IS NULL) rather than the
+// 55-leaf vocabulary. This is the default "Offence type composition over
+// time" view: 17 curated categories (see
+// data-loader/qsrecords/offence_types.py's OFFENCE_TAXONOMY) read far more
+// legibly in a top-N+Other stacked chart than 55 fragmented leaves ever
+// could. A conviction with no crime_type tagged, or a tagged leaf with no
+// category (an uncategorised proposal -- see
+// quality.unreviewedOffenceTypes), falls into "Unclassified" rather than
+// being silently dropped.
 export function offenceCategoryByYear(topN = 8): YearSeries {
   const rows = getDb()
     .prepare(
       `
-      SELECT sc.offence_year AS year, COALESCE(oc.name, 'unclassified') AS name, COUNT(*) AS count
+      SELECT CAST(strftime('%Y', sc.offence_date) AS INTEGER) AS year,
+        COALESCE(cat.name, 'unclassified') AS name, COUNT(*) AS count
       FROM summary_conviction sc
-      LEFT JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      LEFT JOIN offence_type ot ON ot.id = scot.offence_type_id
-      LEFT JOIN offence_category oc ON oc.id = ot.category_id
-      WHERE sc.offence_year IS NOT NULL
-      GROUP BY year, oc.name
+      LEFT JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      LEFT JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      LEFT JOIN crime_type cat ON cat.id = leaf.parent_id
+      WHERE sc.offence_date IS NOT NULL
+      GROUP BY year, cat.name
       `
     )
     .all() as { year: number; name: string; count: number }[];

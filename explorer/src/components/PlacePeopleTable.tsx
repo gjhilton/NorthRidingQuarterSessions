@@ -2,6 +2,7 @@ import { Table, Th, Td } from "@/components/ui";
 import { ClickableTr, referenceCellStyle } from "@/components/ClickableRow";
 import { convictionHref } from "@/lib/referenceSlug";
 import { formatDate } from "@/lib/date";
+import { formatNameRow } from "@/lib/queries/personFragments";
 import type { PlacePersonRow } from "@/lib/queries/locationTree";
 
 // One row per (person, conviction) appearance, not per conviction -- a
@@ -23,7 +24,7 @@ export function PlacePeopleTable({ rows }: { rows: PlacePersonRow[] }) {
         {rows.map((p, i) => (
           <ClickableTr key={`${p.reference_number}-${p.name_key}-${i}`} href={convictionHref(p.reference_number)}>
             <Td verticalAlign="middle">{formatDate(p.offence_date) ?? p.offence_date_raw ?? "—"}</Td>
-            <Td verticalAlign="middle">{p.display_name}</Td>
+            <Td verticalAlign="middle">{formatNameRow(p)}</Td>
             <Td verticalAlign="middle">{p.role}</Td>
             <Td verticalAlign="middle" className={referenceCellStyle}>
               {p.reference_number}

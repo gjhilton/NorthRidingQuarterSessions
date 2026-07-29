@@ -6,82 +6,70 @@ import "server-only";
 import { getDb } from "@/lib/db";
 import { referenceToSlug } from "@/lib/referenceSlug";
 import { getPlaceAncestry } from "@/lib/queries/locationTree";
+import {
+  DEFENDANT_ROLE,
+  personKeyExpr,
+  personOccupationsExpr,
+  personNameColumnsSql,
+} from "@/lib/queries/personFragments";
 
 export interface ConvictionDetail {
   id: number;
+  // Aliased from sc.record_number -- see browseList.ts's BrowseRow for why
+  // the exposed field name stays reference_number.
   reference_number: string;
   conviction_date: string | null;
-  conviction_date_raw: string;
+  // conviction_date_raw dropped entirely in v3 (not just renamed) -- a
+  // conviction is always a single precise court-sitting day, and
+  // raw_record already preserves the full original text. No text fallback
+  // for conviction_date display any more; see formatDate's callers below.
   offence_date: string | null;
   offence_date_raw: string | null;
-  offence_day_of_week: string | null;
   offence_time: string | null;
   charge_description: string;
-  sentencing: string | null;
   raw_record: string;
-  archive_url: string;
   court_town_name: string | null;
-  // Self-reported by the LLM at extraction time -- null for records
-  // extracted before this was captured, not a sign of anything wrong.
-  extraction_confidence: string | null;
-  uncertain_fields: string | null; // comma-separated field names, or null
-  // Added partway through extraction -- null on records extracted before
-  // these fields existed, and null on any record where the source text
-  // simply didn't state them (most records, for monetary_value_raw and
-  // game_species specifically -- see About).
   petty_sessional_division_name: string | null;
-  monetary_value_raw: string | null;
-  game_species: string | null;
-  // Set only when a field was deliberately extracted *against* a literal
-  // reading of raw_record, because the source text itself was judged to
-  // contain an error -- see About. Null in the overwhelming majority of
-  // records.
-  correction_note: string | null;
-  // Self-reported by the LLM/human extractor -- flags unusually colourful or
-  // notable cases. False for the overwhelming majority of records.
-  of_especial_interest: boolean;
+  // sentencing, archive_url, extraction_confidence, uncertain_fields,
+  // monetary_value_raw, game_species, correction_note, of_especial_interest,
+  // offence_day_of_week: all dropped in v3 -- see
+  // data-loader/qsrecords/models/core.py's SummaryConviction docstring.
 }
 
-export interface DetailDefendant {
+// Shared shape for both defendant and involved-person rows now that they
+// come from the same `person` table -- DetailDefendant/DetailInvolvedPerson
+// below are thin extensions of this, matching the old two-interface shape
+// callers (the conviction detail page) already expect.
+export interface DetailPerson {
   id: number;
   name_key: string;
   first_name: string | null;
+  middle_name: string | null;
   last_name: string | null;
-  name_qualifier: string | null;
+  name_postfix: string | null;
+  title: string | null;
+  // Comma-joined if more than one (max 2 per person) -- see
+  // personFragments.ts's NameRow/formatNameRow, which this matches.
+  alias: string | null;
   sex: string | null;
-  age: number | null;
-  marital_status: string | null;
-  relationship_type: string | null;
-  related_to_name: string | null;
+  // Comma-joined -- a person can hold more than one occupation at once now
+  // (person_occupation is a real join table, not a flat column). See
+  // personFragments.ts's personOccupationsExpr.
   occupation: string | null;
-  relationships_and_details: string | null;
-  prior_convictions: string | null;
   location_name: string | null;
-  aliases: string[];
 }
 
-export interface DetailInvolvedPerson {
-  id: number;
-  name_key: string;
-  first_name: string | null;
-  last_name: string | null;
-  name_qualifier: string | null;
-  age: number | null;
-  marital_status: string | null;
-  relationship_type: string | null;
-  related_to_name: string | null;
-  occupation: string | null;
-  relationships_and_details: string | null;
-  role: string | null;
+export type DetailDefendant = DetailPerson;
+
+export interface DetailInvolvedPerson extends DetailPerson {
+  role: string;
   is_police: boolean;
-  location_name: string | null;
 }
 
 export interface RelatedConviction {
   id: number;
   reference_number: string;
   conviction_date: string | null;
-  conviction_date_raw: string;
   charge_description: string;
   // Explains why this pair was linked -- see qsrecords.related_convictions.
   // Not a claim of certainty, just what matched (same defendant + date, or
@@ -90,17 +78,17 @@ export interface RelatedConviction {
 }
 
 // The URL key for a conviction detail page is a slug derived from its
-// reference_number, not the internal auto-increment id -- ids are extraction
+// record_number, not the internal auto-increment id -- ids are extraction
 // order, not a stable public identifier, and could shift on a future
-// re-import. Verified unique across the whole table before this was
-// introduced (see fix_reference_number_mismatches.py for the two rows whose
-// reference_number had to be corrected first). Built once per build process
-// and cached, since it's looked up once per static page (6,231 of them).
+// re-import. Built once per build process and cached, since it's looked up
+// once per static page (thousands of them).
 let slugToIdCache: Map<string, number> | null = null;
 
 function slugToIdMap(): Map<string, number> {
   if (!slugToIdCache) {
-    const rows = getDb().prepare(`SELECT id, reference_number FROM summary_conviction`).all() as {
+    const rows = getDb()
+      .prepare(`SELECT id, record_number AS reference_number FROM summary_conviction`)
+      .all() as {
       id: number;
       reference_number: string;
     }[];
@@ -129,12 +117,12 @@ export interface AdjacentConvictionSlugs {
 export function getAdjacentConvictionSlugs(id: number): AdjacentConvictionSlugs {
   const prevRow = getDb()
     .prepare(
-      `SELECT reference_number FROM summary_conviction WHERE id = (SELECT MAX(id) FROM summary_conviction WHERE id < ?)`
+      `SELECT record_number AS reference_number FROM summary_conviction WHERE id = (SELECT MAX(id) FROM summary_conviction WHERE id < ?)`
     )
     .get(id) as { reference_number: string } | undefined;
   const nextRow = getDb()
     .prepare(
-      `SELECT reference_number FROM summary_conviction WHERE id = (SELECT MIN(id) FROM summary_conviction WHERE id > ?)`
+      `SELECT record_number AS reference_number FROM summary_conviction WHERE id = (SELECT MIN(id) FROM summary_conviction WHERE id > ?)`
     )
     .get(id) as { reference_number: string } | undefined;
   return {
@@ -163,34 +151,30 @@ export function getConvictionPosition(id: number): ConvictionPosition {
 }
 
 export function getConvictionDetail(id: number): ConvictionDetail | undefined {
-  const row = getDb()
+  return getDb()
     .prepare(
       `
       SELECT
-        sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
-        sc.offence_date, sc.offence_date_raw, sc.offence_day_of_week, sc.offence_time,
-        sc.charge_description, sc.sentencing, sc.raw_record, sc.archive_url,
-        court_place.name AS court_town_name,
-        sc.extraction_confidence, sc.uncertain_fields,
-        psd.name AS petty_sessional_division_name,
-        sc.monetary_value_raw, sc.game_species, sc.correction_note,
-        sc.of_especial_interest
+        sc.id, sc.record_number AS reference_number, sc.conviction_date,
+        sc.offence_date, sc.offence_date_raw, sc.offence_time,
+        sc.charge_description, sc.raw_record,
+        (
+          SELECT loc.name FROM summary_conviction_location scl
+          JOIN location loc ON loc.id = scl.location_id
+          WHERE scl.summary_conviction_id = sc.id AND scl.role = 'court location'
+          LIMIT 1
+        ) AS court_town_name,
+        (
+          SELECT loc.name FROM summary_conviction_location scl
+          JOIN location loc ON loc.id = scl.location_id
+          WHERE scl.summary_conviction_id = sc.id AND scl.role = 'petty sessional division'
+          LIMIT 1
+        ) AS petty_sessional_division_name
       FROM summary_conviction sc
-      LEFT JOIN place court_place ON court_place.id = sc.court_location_id
-      LEFT JOIN petty_sessional_division psd ON psd.id = sc.petty_sessional_division_id
       WHERE sc.id = ?
       `
     )
-    .get(id) as (Omit<ConvictionDetail, "of_especial_interest"> & {
-    of_especial_interest: number;
-  }) | undefined;
-
-  if (!row) return undefined;
-  const { of_especial_interest, ...rest } = row;
-  return {
-    ...rest,
-    of_especial_interest: Boolean(of_especial_interest),
-  };
+    .get(id) as ConvictionDetail | undefined;
 }
 
 export interface ConvictionLocation {
@@ -204,16 +188,24 @@ export interface ConvictionLocation {
 }
 
 export function getConvictionLocation(convictionId: number): ConvictionLocation | undefined {
+  // A conviction may in theory have more than one 'location of offence' row
+  // now (SummaryConvictionLocation isn't capped at one) -- picks the first
+  // for this single breadcrumb display, same simplification browseList.ts
+  // makes for its own offence-location sort/display expression.
   const row = getDb()
-    .prepare(`SELECT offence_location_id AS id FROM summary_conviction WHERE id = ?`)
-    .get(convictionId) as { id: number | null } | undefined;
-  if (!row?.id) return undefined;
+    .prepare(
+      `SELECT location_id AS id FROM summary_conviction_location WHERE summary_conviction_id = ? AND role = 'location of offence' LIMIT 1`
+    )
+    .get(convictionId) as { id: number } | undefined;
+  if (!row) return undefined;
 
   const ancestry = getPlaceAncestry(row.id);
   if (ancestry.length === 0) return undefined;
 
   const { count } = getDb()
-    .prepare(`SELECT COUNT(*) AS count FROM summary_conviction WHERE offence_location_id = ?`)
+    .prepare(
+      `SELECT COUNT(DISTINCT summary_conviction_id) AS count FROM summary_conviction_location WHERE location_id = ? AND role = 'location of offence'`
+    )
     .get(row.id) as { count: number };
 
   return { ancestry, count };
@@ -234,34 +226,36 @@ export function getConvictionOffences(convictionId: number): ConvictionOffence[]
     .prepare(
       `
       SELECT
-        ot.id, ot.name AS type_name, oc.name AS category_name,
+        ct.id, ct.name AS type_name, parent.name AS category_name,
         (
-          SELECT COUNT(DISTINCT scot2.summary_conviction_id)
-          FROM summary_conviction_offence_type scot2
-          WHERE scot2.offence_type_id = ot.id
+          SELECT COUNT(DISTINCT sct2.summary_conviction_id)
+          FROM summary_conviction_crime_type sct2
+          WHERE sct2.crime_type_id = ct.id
         ) AS type_count,
         (
-          SELECT COUNT(DISTINCT scot3.summary_conviction_id)
-          FROM summary_conviction_offence_type scot3
-          JOIN offence_type ot3 ON ot3.id = scot3.offence_type_id
-          WHERE ot3.category_id = oc.id
+          SELECT COUNT(DISTINCT sct3.summary_conviction_id)
+          FROM summary_conviction_crime_type sct3
+          JOIN crime_type ct3 ON ct3.id = sct3.crime_type_id
+          WHERE ct3.parent_id = parent.id
         ) AS category_count
-      FROM summary_conviction_offence_type scot
-      JOIN offence_type ot ON ot.id = scot.offence_type_id
-      JOIN offence_category oc ON oc.id = ot.category_id
-      WHERE scot.summary_conviction_id = ?
-      ORDER BY ot.name
+      FROM summary_conviction_crime_type sct
+      JOIN crime_type ct ON ct.id = sct.crime_type_id
+      JOIN crime_type parent ON parent.id = ct.parent_id
+      WHERE sct.summary_conviction_id = ?
+      ORDER BY ct.name
       `
     )
     .all(convictionId) as ConvictionOffence[];
 }
 
 // How many *other* convictions each of the given name_keys is mentioned in
-// (as either a defendant or an involved person), archive-wide -- name_key
-// is a coarse "every mention of this name" index, not a per-individual
-// dedup key (two different real people can share one), so this counts
-// mentions of the name, same as the People pages' own mention counts.
-// Batched into one query per page render rather than one per person.
+// (in any role -- defendant, victim, informant, ...), archive-wide --
+// name_key is a coarse "every mention of this name" index, not a
+// per-individual dedup key (two different real people can share one), so
+// this counts mentions of the name, same as the People pages' own mention
+// counts. Batched into one query per page render rather than one per
+// person. Collapses the old defendant/involved_persons UNION ALL now that
+// both live in one summary_conviction_person junction table.
 export function getOtherConvictionCounts(
   nameKeys: string[],
   excludeConvictionId: number
@@ -271,53 +265,33 @@ export function getOtherConvictionCounts(
   const rows = getDb()
     .prepare(
       `
-      SELECT name_key, COUNT(DISTINCT summary_conviction_id) AS count
-      FROM (
-        SELECT d.name_key AS name_key, scd.summary_conviction_id AS summary_conviction_id
-        FROM defendant d
-        JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
-        WHERE d.name_key IN (${placeholders})
-        UNION ALL
-        SELECT p.name_key AS name_key, ip.summary_conviction_id AS summary_conviction_id
-        FROM person p
-        JOIN involved_persons ip ON ip.person_id = p.id
-        WHERE p.name_key IN (${placeholders})
-      )
-      WHERE summary_conviction_id != ?
+      SELECT ${personKeyExpr("p")} AS name_key, COUNT(DISTINCT scp.summary_conviction_id) AS count
+      FROM summary_conviction_person scp
+      JOIN person p ON p.id = scp.person_id
+      WHERE ${personKeyExpr("p")} IN (${placeholders}) AND scp.summary_conviction_id != ?
       GROUP BY name_key
       `
     )
-    .all(...nameKeys, ...nameKeys, excludeConvictionId) as { name_key: string; count: number }[];
+    .all(...nameKeys, excludeConvictionId) as { name_key: string; count: number }[];
   return new Map(rows.map((r) => [r.name_key, r.count]));
 }
 
 export function getConvictionDefendants(convictionId: number): DetailDefendant[] {
-  const defendants = getDb()
+  return getDb()
     .prepare(
       `
       SELECT
-        d.id, d.name_key, d.first_name, d.last_name, d.name_qualifier, d.sex,
-        d.age, d.marital_status, d.relationship_type, d.related_to_name,
-        d.occupation,
-        d.relationships_and_details, d.prior_convictions,
-        pl.name AS location_name,
-        (
-          SELECT GROUP_CONCAT(a.alias_name, char(31))
-          FROM alias a
-          WHERE a.defendant_id = d.id
-        ) AS aliases_concat
-      FROM summary_conviction_defendant scd
-      JOIN defendant d ON d.id = scd.defendant_id
-      LEFT JOIN place pl ON pl.id = d.location_id
-      WHERE scd.summary_conviction_id = ?
+        p.id, ${personKeyExpr("p")} AS name_key,
+        ${personNameColumnsSql("p")}, p.sex,
+        ${personOccupationsExpr("p")} AS occupation,
+        loc.name AS location_name
+      FROM summary_conviction_person scp
+      JOIN person p ON p.id = scp.person_id
+      LEFT JOIN location loc ON loc.id = p.home_location_id
+      WHERE scp.summary_conviction_id = ? AND scp.role = ?
       `
     )
-    .all(convictionId) as (Omit<DetailDefendant, "aliases"> & { aliases_concat: string | null })[];
-
-  return defendants.map(({ aliases_concat, ...d }) => ({
-    ...d,
-    aliases: aliases_concat ? aliases_concat.split("\x1f") : [],
-  }));
+    .all(convictionId, DEFENDANT_ROLE) as DetailDefendant[];
 }
 
 export function getConvictionInvolvedPersons(convictionId: number): DetailInvolvedPerson[] {
@@ -325,18 +299,24 @@ export function getConvictionInvolvedPersons(convictionId: number): DetailInvolv
     .prepare(
       `
       SELECT
-        p.id, p.name_key, p.first_name, p.last_name, p.name_qualifier,
-        p.age, p.marital_status, p.relationship_type, p.related_to_name,
-        p.occupation,
-        p.relationships_and_details, ip.role, p.is_police,
-        pl.name AS location_name
-      FROM involved_persons ip
-      JOIN person p ON p.id = ip.person_id
-      LEFT JOIN place pl ON pl.id = p.location_id
-      WHERE ip.summary_conviction_id = ?
+        p.id, ${personKeyExpr("p")} AS name_key,
+        ${personNameColumnsSql("p")}, p.sex,
+        ${personOccupationsExpr("p")} AS occupation,
+        loc.name AS location_name,
+        scp.role,
+        EXISTS (
+          SELECT 1 FROM person_occupation po
+          JOIN occupation o ON o.id = po.occupation_id
+          WHERE po.person_id = p.id AND o.is_police = 1
+        ) AS is_police
+      FROM summary_conviction_person scp
+      JOIN person p ON p.id = scp.person_id
+      LEFT JOIN location loc ON loc.id = p.home_location_id
+      WHERE scp.summary_conviction_id = ? AND scp.role != ?
       `
     )
-    .all(convictionId) as (Omit<DetailInvolvedPerson, "is_police"> & { is_police: number })[];
+    .all(convictionId, DEFENDANT_ROLE) as (Omit<DetailInvolvedPerson, "is_police"> & { is_police: number })[];
+
   return rows.map((row) => ({ ...row, is_police: Boolean(row.is_police) }));
 }
 
@@ -345,7 +325,7 @@ export function getRelatedConvictions(convictionId: number): RelatedConviction[]
     .prepare(
       `
       SELECT
-        sc.id, sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
+        sc.id, sc.record_number AS reference_number, sc.conviction_date,
         sc.charge_description, rc.note
       FROM related_conviction rc
       JOIN summary_conviction sc
