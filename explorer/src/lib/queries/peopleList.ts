@@ -73,7 +73,12 @@ const BASE_QUERY = `
     MAX(name_postfix) AS name_postfix,
     MAX(alias) AS alias,
     COALESCE(GROUP_CONCAT(DISTINCT role), '') AS roles,
-    COUNT(*) AS total_mentions,
+    -- COUNT(role), not COUNT(*): a relationship-only "stub" person (no
+    -- summary_conviction_person row of their own -- see the LEFT JOIN
+    -- below) still produces exactly one row here with role NULL, which
+    -- COUNT(*) would wrongly count as 1 mention. COUNT(role) ignores it,
+    -- correctly reading as 0.
+    COUNT(role) AS total_mentions,
     MAX(occupation) AS occupation,
     MAX(location_name) AS location_name,
     MAX(sex) AS sex,
@@ -100,9 +105,15 @@ const BASE_QUERY = `
         THEN 1 ELSE 0
       END AS is_minor,
       sc.conviction_date
+    -- LEFT, not JOIN: a relationship-only "stub" person (created during the
+    -- schema migration purely to hold a real related_person_id, e.g. a
+    -- stepfather never himself named as a party to any conviction) has no
+    -- summary_conviction_person row at all -- an inner join would silently
+    -- drop them from this listing entirely, even though their own detail
+    -- page (peopleNetwork.ts) is real and reachable.
     FROM person p
-    JOIN summary_conviction_person scp ON scp.person_id = p.id
-    JOIN summary_conviction sc ON sc.id = scp.summary_conviction_id
+    LEFT JOIN summary_conviction_person scp ON scp.person_id = p.id
+    LEFT JOIN summary_conviction sc ON sc.id = scp.summary_conviction_id
     LEFT JOIN location loc ON loc.id = p.home_location_id
   )
   WHERE name_key IS NOT NULL AND TRIM(name_key) != ''

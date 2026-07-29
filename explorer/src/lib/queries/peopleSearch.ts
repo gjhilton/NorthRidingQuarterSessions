@@ -41,7 +41,13 @@ export function searchPeople(db: DbLike, q: string, limit = 25): PersonSearchRes
         SUM(CASE WHEN scp.role = @defendantRole THEN 1 ELSE 0 END) AS defendant_mentions,
         SUM(CASE WHEN scp.role != @defendantRole THEN 1 ELSE 0 END) AS person_mentions
       FROM person p
-      JOIN summary_conviction_person scp ON scp.person_id = p.id
+      -- LEFT, not JOIN: a relationship-only "stub" person (no
+      -- summary_conviction_person row at all -- see peopleList.ts's own
+      -- copy of this reasoning) still needs to be findable here, with both
+      -- mention counts correctly reading 0 (scp.role is NULL, and
+      -- NULL = / != @defendantRole is neither true nor false in SQL, so
+      -- both CASE expressions fall through to their ELSE 0).
+      LEFT JOIN summary_conviction_person scp ON scp.person_id = p.id
       WHERE ${personSearchExpr("p")} LIKE @like AND TRIM(${key}) != ''
       GROUP BY name_key
       ORDER BY (defendant_mentions + person_mentions) DESC, name_key
