@@ -1,7 +1,9 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
-import { buildPlaceIndex, resolveAncestorByName, type MinimalPlace } from "@/lib/placeTree";
+import { buildTreeIndex, resolveAncestorByName, type MinimalTreeNode } from "@/lib/tree";
+import { KNOWN_TOWN_LEVEL_NAMES } from "@/lib/knownTownLevelNames";
+import { DEFENDANT_ROLE } from "@/lib/queries/personFragments";
 
 export interface Option {
   id: number;
@@ -34,32 +36,33 @@ export function listDefendantCounts(): number[] {
     .prepare(
       `
       SELECT DISTINCT n FROM (
-        SELECT COUNT(scd.defendant_id) AS n
+        SELECT COUNT(*) AS n
         FROM summary_conviction sc
-        LEFT JOIN summary_conviction_defendant scd ON scd.summary_conviction_id = sc.id
+        LEFT JOIN summary_conviction_person scp
+          ON scp.summary_conviction_id = sc.id AND scp.role = @defendantRole
         GROUP BY sc.id
       )
       WHERE n > 0
       ORDER BY n
       `
     )
-    .all()
+    .all({ defendantRole: DEFENDANT_ROLE })
     .map((r) => (r as { n: number }).n);
 }
 
-// Loads the place tree once for both listTowns()/listOffenceStreets() below
-// -- each offence location is resolved up to its containing town/parish by
-// walking the tree (see lib/placeTree.ts), using the old `town` table's own
-// names as the recognized "town-level" vocabulary (still accurate, just no
-// longer the canonical location field -- see queries/map.ts's header
-// comment for the fuller rationale, shared by every place this pattern is
-// used).
-function loadPlacesAndTownNames(): { byId: Map<number, MinimalPlace>; townNames: Set<string> } {
-  const places = getDb().prepare(`SELECT id, name, parent_id FROM place`).all() as MinimalPlace[];
-  const townNames = new Set(
-    (getDb().prepare(`SELECT name FROM town`).all() as { name: string }[]).map((r) => r.name.toLowerCase())
-  );
-  return { byId: buildPlaceIndex(places), townNames };
+// Loads the location tree once for both listTowns()/listOffenceStreets()
+// below -- each offence location is resolved up to its containing
+// town/parish by walking the tree (see lib/tree.ts), using the shared
+// KNOWN_TOWN_LEVEL_NAMES list (lib/knownTownLevelNames.ts) to recognize
+// which nodes are town-level -- v3's `location` model deliberately dropped
+// the old `type` column, so there's no structural signal left in the tree
+// itself for this. Previously queried the legacy `town` table directly
+// here, independently of map.ts's own (verified-against-the-live-tree, and
+// therefore more accurate) copy of the same list -- reconciled into one
+// shared export rather than left to drift apart.
+function loadLocations(): Map<number, MinimalTreeNode> {
+  const locations = getDb().prepare(`SELECT id, name, parent_id FROM location`).all() as MinimalTreeNode[];
+  return buildTreeIndex(locations);
 }
 
 // Every town/parish actually used as an offence location (directly or via
@@ -67,17 +70,18 @@ function loadPlacesAndTownNames(): { byId: Map<number, MinimalPlace>; townNames:
 // street/yard-level places that were never an offence location don't
 // clutter the dropdown. Offence location specifically, not court location
 // -- see browseList.ts's locationId filter, which this list needs to stay
-// in sync with.
+// in sync with. Reads via summary_conviction_location now that a
+// conviction's offence location isn't a scalar FK column any more.
 export function listTowns(): Option[] {
-  const { byId, townNames } = loadPlacesAndTownNames();
+  const byId = loadLocations();
   const rows = getDb()
     .prepare(
-      `SELECT DISTINCT offence_location_id AS id FROM summary_conviction WHERE offence_location_id IS NOT NULL`
+      `SELECT DISTINCT location_id AS id FROM summary_conviction_location WHERE role = 'location of offence'`
     )
     .all() as { id: number }[];
 
   const resolvedIds = new Set<number>();
-  for (const { id } of rows) resolvedIds.add(resolveAncestorByName(id, byId, townNames).id);
+  for (const { id } of rows) resolvedIds.add(resolveAncestorByName(id, byId, KNOWN_TOWN_LEVEL_NAMES).id);
 
   return [...resolvedIds]
     .map((id) => ({ id, name: titleCase(byId.get(id)!.name) }))
@@ -94,16 +98,16 @@ export interface StreetOption extends Option {
 // than round-tripping for each town change. Scoped to real usage for the
 // same reason as listTowns() above.
 export function listOffenceStreets(): StreetOption[] {
-  const { byId, townNames } = loadPlacesAndTownNames();
+  const byId = loadLocations();
   const rows = getDb()
     .prepare(
-      `SELECT DISTINCT offence_location_id AS id FROM summary_conviction WHERE offence_location_id IS NOT NULL`
+      `SELECT DISTINCT location_id AS id FROM summary_conviction_location WHERE role = 'location of offence'`
     )
     .all() as { id: number }[];
 
   const options: StreetOption[] = [];
   for (const { id } of rows) {
-    const town = resolveAncestorByName(id, byId, townNames);
+    const town = resolveAncestorByName(id, byId, KNOWN_TOWN_LEVEL_NAMES);
     if (town.id === id) continue; // tagged exactly at town level -- no street to show
     options.push({ id, name: titleCase(byId.get(id)!.name), townId: town.id });
   }
@@ -111,13 +115,12 @@ export function listOffenceStreets(): StreetOption[] {
 }
 
 // Curated sort_order (e.g. "Drink & Public Order" first), not alphabetical
-// -- see data-loader/qsrecords/offence_types.py's OFFENCE_TAXONOMY. All 17
-// categories have at least one real conviction (checked directly), so
-// unlike listTowns()/listOffenceStreets() there's no unused-junk case to
-// filter out here.
+// -- see data-loader/qsrecords/offence_types.py's OFFENCE_TAXONOMY.
+// Top-level crime_type rows (parent_id IS NULL) are the categories, same
+// as the old offence_category table.
 export function listOffenceCategories(): Option[] {
   return getDb()
-    .prepare(`SELECT id, name FROM offence_category ORDER BY sort_order`)
+    .prepare(`SELECT id, name FROM crime_type WHERE parent_id IS NULL ORDER BY sort_order`)
     .all()
     .map((r) => {
       const row = r as Option;
@@ -125,40 +128,39 @@ export function listOffenceCategories(): Option[] {
     });
 }
 
-// Every distinct role a name (defendant or involved person) can be filtered
-// by on the People page -- "offender" (the synthetic defendant role, not a
-// real involved_persons.role value) pinned first since it's the most common
-// and most likely to be picked, the real role text alphabetical after it.
-// Blank/NULL roles are excluded -- there's nothing to pick.
+// Every distinct role a person can be filtered by on the People page --
+// 'defendant' (the real stored role now, not a synthetic one -- see
+// personFragments.ts's DEFENDANT_ROLE) pinned first since it's the most
+// common and most likely to be picked, same ordering the old code gave its
+// synthetic "offender" role. Displayed as "Offender" in the UI (see
+// roles.ts) -- the value stays the literal DB string. Blank/NULL roles are
+// excluded -- there's nothing to pick.
 export function listPersonRoles(): string[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT DISTINCT NULLIF(TRIM(role), '') AS role
-      FROM involved_persons
+      SELECT DISTINCT role
+      FROM summary_conviction_person
       WHERE NULLIF(TRIM(role), '') IS NOT NULL
       ORDER BY role
       `
     )
     .all() as { role: string }[];
-  return ["offender", ...rows.map((r) => r.role)];
+  const roles = rows.map((r) => r.role);
+  return [DEFENDANT_ROLE, ...roles.filter((r) => r !== DEFENDANT_ROLE)];
 }
 
-// Every distinct leading surname letter across defendants and involved
-// persons -- drives the People page's A-Z nav. Static/enumerable, unlike the
-// filtered result set itself, so it's queried once here rather than derived
+// Every distinct leading surname letter across every person mention --
+// drives the People page's A-Z nav. Static/enumerable, unlike the filtered
+// result set itself, so it's queried once here rather than derived
 // client-side from whichever page of results happens to be loaded.
 export function listPersonNameLetters(): string[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT DISTINCT UPPER(SUBSTR(COALESCE(last_name, first_name, name_key), 1, 1)) AS letter
-      FROM (
-        SELECT name_key, first_name, last_name FROM defendant
-        UNION ALL
-        SELECT name_key, first_name, last_name FROM person
-      )
-      WHERE name_key IS NOT NULL AND TRIM(name_key) != ''
+      SELECT DISTINCT UPPER(SUBSTR(COALESCE(last_name, first_name), 1, 1)) AS letter
+      FROM person
+      WHERE COALESCE(last_name, first_name) IS NOT NULL AND TRIM(COALESCE(last_name, first_name)) != ''
       ORDER BY letter
       `
     )
@@ -166,45 +168,31 @@ export function listPersonNameLetters(): string[] {
   return rows.map((r) => r.letter);
 }
 
-// Every town used as a defendant's or involved person's own residence --
-// distinct from listTowns() above, which is scoped to offence locations,
+// Every location used as a person's own residence (person.home_location_id)
+// -- distinct from listTowns() above, which is scoped to offence locations,
 // not residence.
 export function listResidenceTowns(): string[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT DISTINCT pl.name AS name
-      FROM place pl
-      WHERE pl.id IN (
-        SELECT location_id FROM defendant WHERE location_id IS NOT NULL
-        UNION
-        SELECT location_id FROM person WHERE location_id IS NOT NULL
-      )
-      ORDER BY pl.name
+      SELECT DISTINCT loc.name AS name
+      FROM location loc
+      WHERE loc.id IN (SELECT home_location_id FROM person WHERE home_location_id IS NOT NULL)
+      ORDER BY loc.name
       `
     )
     .all() as { name: string }[];
   return rows.map((r) => r.name);
 }
 
-// Every distinct occupation string across defendants and involved persons --
-// real free text, not a curated taxonomy (unlike offence_type), so this list
-// is as long and as messy as the underlying data actually is (~400 values).
+// Every occupation in the controlled vocabulary (see
+// data-loader/qsrecords/models/reference.py::Occupation) -- unlike the old
+// free-text defendant/person.occupation column, this is now a real lookup
+// table, so listing it is a plain SELECT rather than a DISTINCT-over-free-text
+// scan.
 export function listOccupations(): string[] {
-  const rows = getDb()
-    .prepare(
-      `
-      SELECT DISTINCT occupation FROM (
-        SELECT NULLIF(TRIM(occupation), '') AS occupation FROM defendant
-        UNION
-        SELECT NULLIF(TRIM(occupation), '') AS occupation FROM person
-      )
-      WHERE occupation IS NOT NULL
-      ORDER BY occupation
-      `
-    )
-    .all() as { occupation: string }[];
-  return rows.map((r) => r.occupation);
+  const rows = getDb().prepare(`SELECT name FROM occupation ORDER BY name`).all() as { name: string }[];
+  return rows.map((r) => r.name);
 }
 
 export interface OffenceTypeOption extends Option {
@@ -213,17 +201,17 @@ export interface OffenceTypeOption extends Option {
 
 // Flat, tagged with categoryId, so the UI can filter this one list
 // client-side per selected category the same way listOffenceStreets() does
-// for streets-per-town -- see data-loader/qsrecords/offence_types.py's
-// OFFENCE_TAXONOMY for how the 55 leaves here were consolidated from an
-// earlier 91-near-duplicate-string vocabulary.
+// for streets-per-town. Leaf crime_type rows only (parent_id IS NOT NULL) --
+// a top-level row is a category, not an individually-selectable type.
 export function listOffenceTypes(): OffenceTypeOption[] {
   return getDb()
     .prepare(
       `
-      SELECT ot.id AS id, ot.name AS name, ot.category_id AS categoryId
-      FROM offence_type ot
-      LEFT JOIN offence_category oc ON oc.id = ot.category_id
-      ORDER BY COALESCE(oc.sort_order, 999999), ot.name
+      SELECT ct.id AS id, ct.name AS name, ct.parent_id AS categoryId
+      FROM crime_type ct
+      LEFT JOIN crime_type parent ON parent.id = ct.parent_id
+      WHERE ct.parent_id IS NOT NULL
+      ORDER BY COALESCE(parent.sort_order, 999999), ct.name
       `
     )
     .all() as OffenceTypeOption[];

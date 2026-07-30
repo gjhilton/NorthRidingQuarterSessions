@@ -1,31 +1,31 @@
 from .core import (
-    Alias,
-    Defendant,
-    InvolvedPerson,
     Person,
+    PersonOccupation,
+    PersonRelationship,
     RelatedConviction,
     SummaryConviction,
-    SummaryConvictionDefendant,
-    SummaryConvictionOffenceType,
+    SummaryConvictionCrimeType,
+    SummaryConvictionLocation,
+    SummaryConvictionPerson,
 )
 from .raw import ExtractionAttempt, RawCase, RawCaseStatus
-from .reference import OffenceCategory, OffenceType, Place, Street, Town
+from .reference import CrimeType, Location, Occupation, RelationshipType, RelationshipTypeReciprocal
 
 __all__ = [
-    "Alias",
-    "Defendant",
-    "InvolvedPerson",
     "Person",
+    "PersonOccupation",
+    "PersonRelationship",
     "RelatedConviction",
     "SummaryConviction",
-    "SummaryConvictionDefendant",
-    "SummaryConvictionOffenceType",
+    "SummaryConvictionCrimeType",
+    "SummaryConvictionLocation",
+    "SummaryConvictionPerson",
     "ExtractionAttempt",
     "RawCase",
     "RawCaseStatus",
-    "OffenceCategory",
-    "OffenceType",
-    "Place",
-    "Street",
-    "Town",
+    "CrimeType",
+    "Location",
+    "Occupation",
+    "RelationshipType",
+    "RelationshipTypeReciprocal",
 ]

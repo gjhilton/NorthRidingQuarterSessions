@@ -30,7 +30,7 @@ function onThisDayOne(db: DbLike, monthDay: string): OnThisDayRow | null {
   const byOffence = db
     .prepare(
       `
-      SELECT id, reference_number, offence_date, conviction_date, raw_record
+      SELECT id, record_number AS reference_number, offence_date, conviction_date, raw_record
       FROM summary_conviction
       WHERE strftime('%m-%d', offence_date) = @monthDay
       ORDER BY offence_date
@@ -43,7 +43,7 @@ function onThisDayOne(db: DbLike, monthDay: string): OnThisDayRow | null {
   const byConviction = db
     .prepare(
       `
-      SELECT id, reference_number, offence_date, conviction_date, raw_record
+      SELECT id, record_number AS reference_number, offence_date, conviction_date, raw_record
       FROM summary_conviction
       WHERE strftime('%m-%d', conviction_date) = @monthDay
       ORDER BY conviction_date

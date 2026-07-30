@@ -1,7 +1,8 @@
 import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
-import { buildPlaceIndex, isWithin, resolveAncestorByName, type MinimalPlace } from "@/lib/placeTree";
+import { buildTreeIndex, isWithin, resolveAncestorByName, type MinimalTreeNode } from "@/lib/tree";
+import { KNOWN_TOWN_LEVEL_NAMES } from "@/lib/knownTownLevelNames";
 import { topNSeriesByYear, type YearSeries } from "@/lib/queries/chartShapes";
 
 // Both map pages used to source their pins from hand-compiled lookup tables
@@ -9,10 +10,10 @@ import { topNSeriesByYear, type YearSeries } from "@/lib/queries/chartShapes";
 // town/street names -- a second, parallel, much less complete location
 // system alongside the real place tree the rest of the site (Locations,
 // polygon fetching) has been built on. This file replaces both: every point
-// plotted here comes from place.latitude/longitude (or the nearest
+// plotted here comes from location.latitude/longitude (or the nearest
 // ancestor's, when a specific leaf has none of its own), and grouping is
-// resolved by walking the tree (see lib/placeTree.ts) rather than joining
-// the legacy town/street tables.
+// resolved by walking the tree (see lib/tree.ts) rather than joining the
+// legacy town/street tables.
 
 export interface MapPointRow {
   id: number;
@@ -22,25 +23,29 @@ export interface MapPointRow {
   lon: number;
 }
 
-interface PlaceRow extends MinimalPlace {
+interface LocationRow extends MinimalTreeNode {
   latitude: number | null;
   longitude: number | null;
 }
 
+// The stored role value for a summary_conviction_location row that marks
+// where the offence itself happened -- see core.py's SummaryConvictionLocation.
+const OFFENCE_LOCATION_ROLE = "location of offence";
+
 // The whole tree is ~350 rows -- trivial to hold in memory and walk
 // in-process rather than express each lookup as a recursive SQL CTE.
-function loadPlaces(): Map<number, PlaceRow> {
+function loadPlaces(): Map<number, LocationRow> {
   const rows = getDb()
-    .prepare(`SELECT id, name, parent_id, latitude, longitude FROM place`)
-    .all() as PlaceRow[];
-  return buildPlaceIndex(rows);
+    .prepare(`SELECT id, name, parent_id, latitude, longitude FROM location`)
+    .all() as LocationRow[];
+  return buildTreeIndex(rows);
 }
 
 // Same anchor-point logic as scripts/generate-place-paths.mjs's findAnchor:
 // walks upward until it finds a place with its own coordinate. Almost every
 // leaf has one after this session's geolocation pass, but a handful of
 // unmappable path-type places don't, so this still needs the fallback.
-function findCoordinate(id: number, places: Map<number, PlaceRow>): [number, number] | null {
+function findCoordinate(id: number, places: Map<number, LocationRow>): [number, number] | null {
   let current = places.get(id);
   while (current) {
     if (current.latitude != null && current.longitude != null) {
@@ -51,28 +56,29 @@ function findCoordinate(id: number, places: Map<number, PlaceRow>): [number, num
   return null;
 }
 
-function loadTownNames(): Set<string> {
-  return new Set(
-    (getDb().prepare(`SELECT name FROM town`).all() as { name: string }[]).map((r) => r.name.toLowerCase())
-  );
+// Every conviction's offence-location node id, from the new
+// summary_conviction_location junction (role-scoped, replacing the old
+// scalar offence_location_id column) -- shared by every query below that
+// used to select straight off summary_conviction.
+function offenceLocationCounts(): { id: number; count: number }[] {
+  return getDb()
+    .prepare(
+      `SELECT location_id AS id, COUNT(*) AS count FROM summary_conviction_location
+       WHERE role = '${OFFENCE_LOCATION_ROLE}' GROUP BY location_id`
+    )
+    .all() as { id: number; count: number }[];
 }
 
 // The map needs every town/parish with at least one case plotted, not just
 // a top-N slice.
 export function allTownCaseCounts(): MapPointRow[] {
   const places = loadPlaces();
-  const townNames = loadTownNames();
 
-  const rows = getDb()
-    .prepare(
-      `SELECT offence_location_id AS id, COUNT(*) AS count FROM summary_conviction
-       WHERE offence_location_id IS NOT NULL GROUP BY offence_location_id`
-    )
-    .all() as { id: number; count: number }[];
+  const rows = offenceLocationCounts();
 
   const grouped = new Map<number, number>();
   for (const { id, count } of rows) {
-    const resolved = resolveAncestorByName(id, places, townNames);
+    const resolved = resolveAncestorByName(id, places, KNOWN_TOWN_LEVEL_NAMES);
     grouped.set(resolved.id, (grouped.get(resolved.id) ?? 0) + count);
   }
 
@@ -86,23 +92,16 @@ export function allTownCaseCounts(): MapPointRow[] {
   return points.sort((a, b) => b.count - a.count);
 }
 
-// How many cases have a location at all (offence_location_id set) but no
-// town/parish anywhere in their ancestry resolves to a coordinate -- drives
-// the "N not plotted" caveat note, same purpose the old lookup-table gap
-// count served, now measuring a real (much smaller) gap instead of "not yet
-// hand-typed."
+// How many cases have an offence location at all but no town/parish
+// anywhere in their ancestry resolves to a coordinate -- drives the "N not
+// plotted" caveat note, same purpose the old lookup-table gap count served,
+// now measuring a real (much smaller) gap instead of "not yet hand-typed."
 export function unmappedTownCaseCount(): number {
   const places = loadPlaces();
-  const townNames = loadTownNames();
-  const rows = getDb()
-    .prepare(
-      `SELECT offence_location_id AS id, COUNT(*) AS count FROM summary_conviction
-       WHERE offence_location_id IS NOT NULL GROUP BY offence_location_id`
-    )
-    .all() as { id: number; count: number }[];
+  const rows = offenceLocationCounts();
   let unmapped = 0;
   for (const { id, count } of rows) {
-    const resolved = resolveAncestorByName(id, places, townNames);
+    const resolved = resolveAncestorByName(id, places, KNOWN_TOWN_LEVEL_NAMES);
     if (!findCoordinate(resolved.id, places)) unmapped += count;
   }
   return unmapped;
@@ -112,18 +111,19 @@ export function unmappedTownCaseCount(): number {
 // buried in the time-trends page.
 export function townByYear(topN = 5): YearSeries {
   const places = loadPlaces();
-  const townNames = loadTownNames();
 
   const rows = getDb()
     .prepare(
-      `SELECT offence_location_id AS id, offence_year AS year FROM summary_conviction
-       WHERE offence_location_id IS NOT NULL AND offence_year IS NOT NULL`
+      `SELECT scl.location_id AS id, CAST(strftime('%Y', sc.offence_date) AS INTEGER) AS year
+       FROM summary_conviction sc
+       JOIN summary_conviction_location scl ON scl.summary_conviction_id = sc.id AND scl.role = '${OFFENCE_LOCATION_ROLE}'
+       WHERE sc.offence_date IS NOT NULL`
     )
     .all() as { id: number; year: number }[];
 
   const grouped = new Map<string, { year: number; name: string; count: number }>();
   for (const { id, year } of rows) {
-    const resolved = resolveAncestorByName(id, places, townNames);
+    const resolved = resolveAncestorByName(id, places, KNOWN_TOWN_LEVEL_NAMES);
     const key = `${resolved.id}-${year}`;
     const existing = grouped.get(key);
     if (existing) existing.count += 1;
@@ -148,12 +148,7 @@ export function whitbyStreetCaseCounts(): MapPointRow[] {
   if (!whitby) return [];
   const whitbyId = whitby.id;
 
-  const rows = getDb()
-    .prepare(
-      `SELECT offence_location_id AS id, COUNT(*) AS count FROM summary_conviction
-       WHERE offence_location_id IS NOT NULL GROUP BY offence_location_id`
-    )
-    .all() as { id: number; count: number }[];
+  const rows = offenceLocationCounts();
 
   const points: MapPointRow[] = [];
   for (const { id, count } of rows) {

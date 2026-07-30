@@ -1,6 +1,6 @@
-"""Removes summary_conviction rows (and their raw_case, defendant, person,
-alias, involved_persons, and junction-table rows) that the "whitby"
-keyword scrape picked up by pure textual coincidence.
+"""Removes summary_conviction rows (and their raw_case, person, and
+junction-table rows) that the "whitby" keyword scrape picked up by pure
+textual coincidence.
 
 qsrecords.views.whitby_in_scope_conviction is the reproducible rule that
 *generated the candidate list* -- but the actual removal list below was
@@ -15,20 +15,36 @@ confirmed for removal anyway. That's exactly why this is a human-reviewed
 constant, not a live query against the view -- the view finds candidates,
 it doesn't get the final word.
 
-Idempotent: a reference_number already removed simply won't be found on a
+Idempotent: a record_number already removed simply won't be found on a
 second run.
+
+v3 unified schema note: SummaryConviction.raw_case_id is gone (no more
+direct FK from summary_conviction back to raw_case), so the raw_case/
+extraction_attempt cleanup below joins on RawCase.reference_number ==
+SummaryConviction.record_number instead -- the same key
+migrate_to_unified_schema.py's Phase 7 already used to attach raw_case.title
+onto summary_conviction during the schema migration, so it's a proven join.
+Defendant/InvolvedPerson/Alias/Person(old, two separate tables) are also
+gone -- both roles now live as Person rows reached via
+SummaryConvictionPerson, so the person cleanup below deletes that junction
+row and then the Person row itself, UNLESS the same person_id is still
+reachable from some other (in-scope) conviction or is still the target of
+another person's PersonRelationship -- same "don't delete a shared person"
+care as the old code needed, just checked explicitly now that Person is a
+single shared table for every role instead of two tables the old code could
+lean on being naturally per-conviction-scoped.
 """
 
 from sqlmodel import Session, select
 
 from qsrecords.models.core import (
-    Alias,
-    Defendant,
-    InvolvedPerson,
     Person,
+    PersonOccupation,
+    PersonRelationship,
     SummaryConviction,
-    SummaryConvictionDefendant,
-    SummaryConvictionOffenceType,
+    SummaryConvictionCrimeType,
+    SummaryConvictionLocation,
+    SummaryConvictionPerson,
 )
 from qsrecords.models.raw import ExtractionAttempt, RawCase
 
@@ -68,57 +84,87 @@ OUT_OF_SCOPE_REFERENCE_NUMBERS = [
 def find_out_of_scope_convictions(session: Session) -> list[SummaryConviction]:
     return session.exec(
         select(SummaryConviction).where(
-            SummaryConviction.reference_number.in_(OUT_OF_SCOPE_REFERENCE_NUMBERS)
+            SummaryConviction.record_number.in_(OUT_OF_SCOPE_REFERENCE_NUMBERS)
         )
     ).all()
 
 
+def _remove_person_if_unshared(session: Session, person_id: int) -> None:
+    """Deletes a Person row (and its own occupation/relationship rows) --
+    unless it's still reachable from another conviction (shared, e.g. a
+    person mistakenly attached twice) or still targeted by another person's
+    PersonRelationship, in which case it's left entirely alone rather than
+    orphaning that other reference."""
+    still_on_another_conviction = session.exec(
+        select(SummaryConvictionPerson).where(SummaryConvictionPerson.person_id == person_id)
+    ).first()
+    if still_on_another_conviction is not None:
+        return
+
+    still_targeted = session.exec(
+        select(PersonRelationship).where(PersonRelationship.related_person_id == person_id)
+    ).first()
+    if still_targeted is not None:
+        return
+
+    for occupation in session.exec(
+        select(PersonOccupation).where(PersonOccupation.person_id == person_id)
+    ).all():
+        session.delete(occupation)
+
+    for relationship in session.exec(
+        select(PersonRelationship).where(PersonRelationship.person_id == person_id)
+    ).all():
+        session.delete(relationship)
+
+    person = session.get(Person, person_id)
+    if person is not None:
+        session.delete(person)
+
+
 def remove_out_of_scope_convictions(session: Session) -> list[str]:
-    """Returns the reference_numbers actually removed, for the caller to
+    """Returns the record_numbers actually removed, for the caller to
     print/log -- never silent about a deletion."""
     removed = []
     for conviction in find_out_of_scope_convictions(session):
-        removed.append(conviction.reference_number)
-        raw_case_id = conviction.raw_case_id
+        removed.append(conviction.record_number)
 
-        for scd in session.exec(
-            select(SummaryConvictionDefendant).where(
-                SummaryConvictionDefendant.summary_conviction_id == conviction.id
+        person_links = session.exec(
+            select(SummaryConvictionPerson).where(
+                SummaryConvictionPerson.summary_conviction_id == conviction.id
+            )
+        ).all()
+        person_ids = {link.person_id for link in person_links}
+        for link in person_links:
+            session.delete(link)
+        session.flush()
+        for person_id in person_ids:
+            _remove_person_if_unshared(session, person_id)
+
+        for location_link in session.exec(
+            select(SummaryConvictionLocation).where(
+                SummaryConvictionLocation.summary_conviction_id == conviction.id
             )
         ).all():
-            defendant = session.get(Defendant, scd.defendant_id)
-            for alias in session.exec(
-                select(Alias).where(Alias.defendant_id == defendant.id)
-            ).all():
-                session.delete(alias)
-            session.delete(scd)
-            session.delete(defendant)
+            session.delete(location_link)
 
-        for ip in session.exec(
-            select(InvolvedPerson).where(
-                InvolvedPerson.summary_conviction_id == conviction.id
+        for crime_type_link in session.exec(
+            select(SummaryConvictionCrimeType).where(
+                SummaryConvictionCrimeType.summary_conviction_id == conviction.id
             )
         ).all():
-            person = session.get(Person, ip.person_id)
-            session.delete(ip)
-            session.delete(person)
-
-        for scot in session.exec(
-            select(SummaryConvictionOffenceType).where(
-                SummaryConvictionOffenceType.summary_conviction_id == conviction.id
-            )
-        ).all():
-            session.delete(scot)
+            session.delete(crime_type_link)
 
         session.delete(conviction)
         session.flush()
 
-        for attempt in session.exec(
-            select(ExtractionAttempt).where(ExtractionAttempt.raw_case_id == raw_case_id)
+        for raw_case in session.exec(
+            select(RawCase).where(RawCase.reference_number == conviction.record_number)
         ).all():
-            session.delete(attempt)
-        raw_case = session.get(RawCase, raw_case_id)
-        if raw_case is not None:
+            for attempt in session.exec(
+                select(ExtractionAttempt).where(ExtractionAttempt.raw_case_id == raw_case.id)
+            ).all():
+                session.delete(attempt)
             session.delete(raw_case)
 
     return removed

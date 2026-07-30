@@ -3,7 +3,14 @@
 // without dragging a native module into the client bundle.
 import type { DbLike } from "@/lib/dbTypes";
 import { referenceToSlug } from "@/lib/referenceSlug";
-import { buildPlaceIndex, descendantIds, type MinimalPlace } from "@/lib/placeTree";
+import { buildTreeIndex, descendantIds, type MinimalTreeNode } from "@/lib/tree";
+import {
+  DEFENDANT_ROLE,
+  personSearchExpr,
+  personSortExpr,
+  personsJsonExpr,
+  type NameRow,
+} from "@/lib/queries/personFragments";
 
 export const PAGE_SIZE = 25;
 
@@ -19,10 +26,10 @@ export interface BrowseFilters {
   q?: string;
   // A town/parish or a more specific place within it (a street, or a yard
   // nested deeper still) -- matches that place or anything in its subtree
-  // (see lib/placeTree.ts's descendantIds), so selecting a town alone still
-  // finds every conviction recorded against one of its streets. Replaced
-  // the old townId+streetId pair (two separate legacy-table columns) now
-  // that both resolve through the one place tree.
+  // (see lib/tree.ts's descendantIds), so selecting a town alone still
+  // finds every conviction recorded against one of its streets. Matches via
+  // summary_conviction_location (role='location of offence') now that a
+  // conviction's offence location isn't a scalar FK column any more.
   locationId?: number;
   offenceCategoryId?: number;
   offenceTypeId?: number;
@@ -31,6 +38,7 @@ export interface BrowseFilters {
   sentenceDateFrom?: string;
   sentenceDateTo?: string;
   sex?: "male" | "female";
+  minorDefendant?: boolean;
   defendantCount?: number;
   sortBy?: BrowseSortColumn;
   sortDir?: "asc" | "desc";
@@ -42,23 +50,44 @@ export interface BrowseFilters {
 // ultimately comes from client-controlled state (and, once URL-synced,
 // straight from the query string) -- this keeps the ORDER BY clause to a
 // fixed set of known-safe expressions.
-const LOCATION_EXPR = "COALESCE(ot_place.name, court_place.name)";
-// A plain sortable string (surname-first, comma-joined), computed directly
-// in the ORDER BY rather than reusing the SELECTed defendant_names_json --
-// that's a JSON array now (for per-defendant name formatting on display),
-// which would sort by its raw text, not by name.
-const DEFENDANT_SORT_EXPR = `(
-  SELECT GROUP_CONCAT(TRIM(COALESCE(d3.last_name,'') || ' ' || COALESCE(d3.first_name,'')), ', ')
-  FROM summary_conviction_defendant scd3
-  JOIN defendant d3 ON d3.id = scd3.defendant_id
-  WHERE scd3.summary_conviction_id = sc.id
+//
+// Both location roles are resolved via a correlated subquery now (there's
+// no more sc.offence_location_id/court_location_id scalar column to LEFT
+// JOIN place against) -- LIMIT 1 picks an arbitrary one when a conviction
+// has more than one row for a given role, which SummaryConvictionLocation's
+// shape allows but is rare in practice; good enough for a sort/display
+// expression, not a claim there's only ever one.
+const OFFENCE_LOCATION_EXPR = `(
+  SELECT loc.name FROM summary_conviction_location scl_o
+  JOIN location loc ON loc.id = scl_o.location_id
+  WHERE scl_o.summary_conviction_id = sc.id AND scl_o.role = 'location of offence'
+  LIMIT 1
 )`;
+const COURT_LOCATION_EXPR = `(
+  SELECT loc.name FROM summary_conviction_location scl_c
+  JOIN location loc ON loc.id = scl_c.location_id
+  WHERE scl_c.summary_conviction_id = sc.id AND scl_c.role = 'court location'
+  LIMIT 1
+)`;
+const LOCATION_EXPR = `COALESCE(${OFFENCE_LOCATION_EXPR}, ${COURT_LOCATION_EXPR})`;
+// A plain sortable string (surname-first, comma-joined) -- personSortExpr()
+// from personFragments.ts replaces the old locally-defined
+// DEFENDANT_SORT_EXPR now that "defendant" is a role on summary_conviction_person
+// rather than its own table. Computed directly in the ORDER BY rather than
+// reusing the SELECTed defendant_names_json -- that's a JSON array now (for
+// per-defendant name formatting on display), which would sort by its raw
+// text, not by name.
+const DEFENDANT_SORT_EXPR = personSortExpr();
 // valueExpr is the column/expression actually being sorted; nullsExpr (when
 // set) always sorts ascending so NULLs land last regardless of sort
 // direction, rather than jumping to the top when a descending sort is
 // applied to valueExpr.
 const SORT_EXPRESSIONS: Record<BrowseSortColumn, { nullsExpr?: string; valueExpr: string }> = {
-  reference_number: { valueExpr: "sc.reference_number" },
+  // Sort key name kept as "reference_number" even though the underlying
+  // column is now sc.record_number -- this is a URL query-param value
+  // (?sort=reference_number), not a claim about the column name, and
+  // renaming it would break any bookmarked/shared filtered-search URL.
+  reference_number: { valueExpr: "sc.record_number" },
   offence_date: { nullsExpr: "sc.offence_date IS NULL", valueExpr: "sc.offence_date" },
   conviction_date: { nullsExpr: "sc.conviction_date IS NULL", valueExpr: "sc.conviction_date" },
   defendant_names: { nullsExpr: `${DEFENDANT_SORT_EXPR} IS NULL`, valueExpr: DEFENDANT_SORT_EXPR },
@@ -69,20 +98,29 @@ const SORT_EXPRESSIONS: Record<BrowseSortColumn, { nullsExpr?: string; valueExpr
   location: { nullsExpr: `${LOCATION_EXPR} IS NULL`, valueExpr: LOCATION_EXPR },
 };
 
-export interface BrowseDefendantName {
-  first_name: string | null;
-  last_name: string | null;
-  occupation: string | null;
-  name_qualifier: string | null;
+// Per-defendant fields for a conviction's Offender(s) cell -- matches
+// personsJsonExpr()'s own json_object shape (personFragments.ts), which
+// deliberately doesn't include occupation (a real multi-valued join now,
+// via person_occupation, not a flat column) -- the browse table's defendant
+// column no longer shows occupation as a result. See PeopleBrowseList/the
+// conviction detail page for occupation display, where a person is looked
+// at individually rather than as part of a dense summary row.
+export interface BrowseDefendantName extends NameRow {
+  id: number;
+  sex: string | null;
 }
 
 export interface BrowseRow {
   id: number;
+  // Aliased from sc.record_number (the column's new name in the DB) back to
+  // reference_number -- every consumer (BrowseExplorer, ConvictionNav,
+  // referenceToSlug call sites) still expects that name, and renaming it
+  // through the whole app isn't this port's job. Matches the same choice
+  // made in offences.ts's getOffenceTypeConvictions.
   reference_number: string;
   offence_date: string | null;
   offence_date_raw: string | null;
   conviction_date: string | null;
-  conviction_date_raw: string;
   charge_description: string;
   offence_type_names: string | null;
   offence_town_name: string | null;
@@ -95,12 +133,12 @@ interface WhereClause {
   params: Record<string, unknown>;
 }
 
-// The place tree is ~350 rows -- loaded fresh per call rather than cached,
-// since this runs against whichever db (build-time better-sqlite3, or the
-// browser's sql.js copy) the caller passed in.
-function loadPlaceIndex(db: DbLike): Map<number, MinimalPlace> {
-  const rows = db.prepare(`SELECT id, name, parent_id FROM place`).all() as MinimalPlace[];
-  return buildPlaceIndex(rows);
+// The location tree is ~350 rows -- loaded fresh per call rather than
+// cached, since this runs against whichever db (build-time better-sqlite3,
+// or the browser's sql.js copy) the caller passed in.
+function loadLocationIndex(db: DbLike): Map<number, MinimalTreeNode> {
+  const rows = db.prepare(`SELECT id, name, parent_id FROM location`).all() as MinimalTreeNode[];
+  return buildTreeIndex(rows);
 }
 
 function buildWhere(db: DbLike, filters: BrowseFilters): WhereClause {
@@ -110,51 +148,53 @@ function buildWhere(db: DbLike, filters: BrowseFilters): WhereClause {
   if (filters.q) {
     clauses.push(`(
       sc.charge_description LIKE @q
-      OR sc.reference_number LIKE @q
-      OR sc.sentencing LIKE @q
+      OR sc.record_number LIKE @q
       OR EXISTS (
-        SELECT 1 FROM summary_conviction_offence_type scot2
-        JOIN offence_type ot2 ON ot2.id = scot2.offence_type_id
-        WHERE scot2.summary_conviction_id = sc.id AND ot2.name LIKE @q
+        SELECT 1 FROM summary_conviction_crime_type scct2
+        JOIN crime_type ct2 ON ct2.id = scct2.crime_type_id
+        WHERE scct2.summary_conviction_id = sc.id AND ct2.name LIKE @q
       )
       OR EXISTS (
-        SELECT 1 FROM summary_conviction_defendant scd2
-        JOIN defendant d2 ON d2.id = scd2.defendant_id
-        WHERE scd2.summary_conviction_id = sc.id AND d2.name_key LIKE @q
-      )
-      OR EXISTS (
-        SELECT 1 FROM involved_persons ip2
-        JOIN person p2 ON p2.id = ip2.person_id
-        WHERE ip2.summary_conviction_id = sc.id AND p2.name_key LIKE @q
+        SELECT 1 FROM summary_conviction_person scp2
+        JOIN person p2 ON p2.id = scp2.person_id
+        WHERE scp2.summary_conviction_id = sc.id AND ${personSearchExpr("p2")} LIKE @q
       )
     )`);
     params.q = `%${filters.q.toLowerCase()}%`;
   }
   if (filters.locationId) {
-    // Matches the selected place or anything in its subtree -- a town
+    // Matches the selected location or anything in its subtree -- a town
     // filter should still find convictions recorded against one of its
     // streets, not just ones tagged at the town exactly.
-    const ids = descendantIds(filters.locationId, loadPlaceIndex(db));
+    const ids = descendantIds(filters.locationId, loadLocationIndex(db));
     const placeholders = ids.map((_, i) => `@loc${i}`).join(",");
-    clauses.push(`sc.offence_location_id IN (${placeholders})`);
+    clauses.push(`EXISTS (
+      SELECT 1 FROM summary_conviction_location scl2
+      WHERE scl2.summary_conviction_id = sc.id
+        AND scl2.role = 'location of offence'
+        AND scl2.location_id IN (${placeholders})
+    )`);
     ids.forEach((id, i) => {
       params[`loc${i}`] = id;
     });
   }
   if (filters.offenceTypeId) {
     clauses.push(`EXISTS (
-      SELECT 1 FROM summary_conviction_offence_type scot3
-      WHERE scot3.summary_conviction_id = sc.id AND scot3.offence_type_id = @offenceTypeId
+      SELECT 1 FROM summary_conviction_crime_type sct3
+      WHERE sct3.summary_conviction_id = sc.id AND sct3.crime_type_id = @offenceTypeId
     )`);
     params.offenceTypeId = filters.offenceTypeId;
   } else if (filters.offenceCategoryId) {
     // Only applied when no specific leaf type is chosen -- offenceTypeId
-    // alone already implies its category, so this is the "all subcategories
-    // within this category" case, not an additional narrowing.
+    // alone already implies its category, so this is the "all leaves within
+    // this category" case, not an additional narrowing. Also matches the
+    // category id itself directly (ct3b.id = @offenceCategoryId), in case a
+    // conviction was ever tagged at the category node rather than a leaf.
     clauses.push(`EXISTS (
-      SELECT 1 FROM summary_conviction_offence_type scot3b
-      JOIN offence_type ot3b ON ot3b.id = scot3b.offence_type_id
-      WHERE scot3b.summary_conviction_id = sc.id AND ot3b.category_id = @offenceCategoryId
+      SELECT 1 FROM summary_conviction_crime_type sct3b
+      JOIN crime_type ct3b ON ct3b.id = sct3b.crime_type_id
+      WHERE sct3b.summary_conviction_id = sc.id
+        AND (ct3b.parent_id = @offenceCategoryId OR ct3b.id = @offenceCategoryId)
     )`);
     params.offenceCategoryId = filters.offenceCategoryId;
   }
@@ -176,18 +216,37 @@ function buildWhere(db: DbLike, filters: BrowseFilters): WhereClause {
   }
   if (filters.sex) {
     clauses.push(`EXISTS (
-      SELECT 1 FROM summary_conviction_defendant scd4
-      JOIN defendant d4 ON d4.id = scd4.defendant_id
-      WHERE scd4.summary_conviction_id = sc.id AND d4.sex = @sex
+      SELECT 1 FROM summary_conviction_person scp4
+      JOIN person p4 ON p4.id = scp4.person_id
+      WHERE scp4.summary_conviction_id = sc.id AND scp4.role = @defendantRole AND p4.sex = @sex
     )`);
     params.sex = filters.sex;
+    params.defendantRole = DEFENDANT_ROLE;
+  }
+  if (filters.minorDefendant) {
+    // is_child was a stored boolean before; v3 dropped age entirely (see
+    // Person.birth_year's comment in data-loader/qsrecords/models/core.py)
+    // -- "minor" is now computed as offence_year - birth_year < 16, the
+    // same formula that comment gives as the canonical way to derive age.
+    // Only catches defendants with both a known birth_year AND a known
+    // offence_date on this conviction; unknown either way is excluded
+    // rather than assumed, same "don't guess" spirit as the rest of v3.
+    clauses.push(`EXISTS (
+      SELECT 1 FROM summary_conviction_person scp6
+      JOIN person p6 ON p6.id = scp6.person_id
+      WHERE scp6.summary_conviction_id = sc.id AND scp6.role = @defendantRole
+        AND p6.birth_year IS NOT NULL AND sc.offence_date IS NOT NULL
+        AND (CAST(strftime('%Y', sc.offence_date) AS INTEGER) - p6.birth_year) < 16
+    )`);
+    params.defendantRole = DEFENDANT_ROLE;
   }
   if (filters.defendantCount) {
     clauses.push(`(
-      SELECT COUNT(*) FROM summary_conviction_defendant scd5
-      WHERE scd5.summary_conviction_id = sc.id
+      SELECT COUNT(*) FROM summary_conviction_person scp5
+      WHERE scp5.summary_conviction_id = sc.id AND scp5.role = @defendantRole
     ) = @defendantCount`);
     params.defendantCount = filters.defendantCount;
+    params.defendantRole = DEFENDANT_ROLE;
   }
 
   return {
@@ -200,9 +259,9 @@ function buildOrderBy(filters: BrowseFilters): string {
   const { nullsExpr, valueExpr } = SORT_EXPRESSIONS[filters.sortBy ?? "conviction_date"];
   const dir = filters.sortDir === "desc" ? "DESC" : "ASC";
   const terms = nullsExpr ? [`${nullsExpr} ASC`, `${valueExpr} ${dir}`] : [`${valueExpr} ${dir}`];
-  // Reference number as a final tiebreaker keeps the order stable when many
+  // Record number as a final tiebreaker keeps the order stable when many
   // rows share the same sorted value (e.g. the same conviction_date).
-  terms.push("sc.reference_number");
+  terms.push("sc.record_number");
   return terms.join(", ");
 }
 
@@ -241,6 +300,7 @@ export function filtersFromSearchParams(params: URLSearchParams): BrowseFilters 
     sentenceDateFrom: get("sentenceFrom"),
     sentenceDateTo: get("sentenceTo"),
     sex: sex === "male" || sex === "female" ? sex : undefined,
+    minorDefendant: get("minor") === "1" ? true : undefined,
     defendantCount: get("defendants") ? Number(get("defendants")) : undefined,
     sortBy: isSortColumn(params.get("sort")) ? (params.get("sort") as BrowseSortColumn) : undefined,
     sortDir: sortDir === "asc" || sortDir === "desc" ? sortDir : undefined,
@@ -260,6 +320,7 @@ export function searchParamsFromFilters(filters: BrowseFilters): string {
   if (filters.sentenceDateFrom) params.set("sentenceFrom", filters.sentenceDateFrom);
   if (filters.sentenceDateTo) params.set("sentenceTo", filters.sentenceDateTo);
   if (filters.sex) params.set("sex", filters.sex);
+  if (filters.minorDefendant) params.set("minor", "1");
   if (filters.defendantCount) params.set("defendants", String(filters.defendantCount));
   if (filters.sortBy) params.set("sort", filters.sortBy);
   if (filters.sortDir) params.set("dir", filters.sortDir);
@@ -282,6 +343,7 @@ export function isFilteredSearch(filters: BrowseFilters): boolean {
       filters.sentenceDateFrom ||
       filters.sentenceDateTo ||
       filters.sex ||
+      filters.minorDefendant ||
       filters.defendantCount
   );
 }
@@ -300,7 +362,7 @@ export function listConvictionOrder(db: DbLike, filters: BrowseFilters): Convict
   const orderBySql = buildOrderBy(filters);
   const rows = db
     .prepare(
-      `SELECT sc.id, sc.reference_number FROM summary_conviction sc ${whereSql} ORDER BY ${orderBySql}`
+      `SELECT sc.id, sc.record_number AS reference_number FROM summary_conviction sc ${whereSql} ORDER BY ${orderBySql}`
     )
     .all(params) as { id: number; reference_number: string }[];
   return rows.map((r) => ({ id: r.id, slug: referenceToSlug(r.reference_number) }));
@@ -322,29 +384,21 @@ export function listConvictions(
       `
       SELECT
         sc.id,
-        sc.reference_number,
+        sc.record_number AS reference_number,
         sc.offence_date,
         sc.offence_date_raw,
         sc.conviction_date,
-        sc.conviction_date_raw,
         sc.charge_description,
         (
-          SELECT GROUP_CONCAT(ot.name, ', ')
-          FROM summary_conviction_offence_type scot
-          JOIN offence_type ot ON ot.id = scot.offence_type_id
-          WHERE scot.summary_conviction_id = sc.id
+          SELECT GROUP_CONCAT(ct.name, ', ')
+          FROM summary_conviction_crime_type scct
+          JOIN crime_type ct ON ct.id = scct.crime_type_id
+          WHERE scct.summary_conviction_id = sc.id
         ) AS offence_type_names,
-        ot_place.name AS offence_town_name,
-        court_place.name AS court_town_name,
-        (
-          SELECT json_group_array(json_object('first_name', d.first_name, 'last_name', d.last_name, 'occupation', d.occupation, 'name_qualifier', d.name_qualifier))
-          FROM summary_conviction_defendant scd
-          JOIN defendant d ON d.id = scd.defendant_id
-          WHERE scd.summary_conviction_id = sc.id
-        ) AS defendant_names_json
+        ${OFFENCE_LOCATION_EXPR} AS offence_town_name,
+        ${COURT_LOCATION_EXPR} AS court_town_name,
+        ${personsJsonExpr()} AS defendant_names_json
       FROM summary_conviction sc
-      LEFT JOIN place ot_place ON ot_place.id = sc.offence_location_id
-      LEFT JOIN place court_place ON court_place.id = sc.court_location_id
       ${whereSql}
       ORDER BY ${orderBySql}
       LIMIT @limit OFFSET @offset

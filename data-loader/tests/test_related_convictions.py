@@ -3,12 +3,13 @@ from datetime import date
 from sqlmodel import select
 
 from qsrecords.models.core import (
-    Defendant,
+    Person,
     RelatedConviction,
     SummaryConviction,
-    SummaryConvictionDefendant,
+    SummaryConvictionLocation,
+    SummaryConvictionPerson,
 )
-from qsrecords.models.reference import Street
+from qsrecords.models.reference import Location
 from qsrecords.related_convictions import (
     backfill_related_convictions,
     detect_same_defendant_same_date_clusters,
@@ -16,17 +17,14 @@ from qsrecords.related_convictions import (
     link_convictions,
 )
 
-_next_raw_case_id = iter(range(1, 10_000))
+_next_id = iter(range(1, 10_000))
 
 
 def _make_conviction(session, **overrides):
     defaults = dict(
-        raw_case_id=next(_next_raw_case_id),
-        reference_number=f"REF-{next(_next_raw_case_id)}",
-        conviction_date_raw="1 Jan 1880",
+        record_number=f"REF-{next(_next_id)}",
         charge_description="a charge",
         raw_record="raw",
-        archive_url=f"https://example.org/{next(_next_raw_case_id)}",
     )
     defaults.update(overrides)
     conviction = SummaryConviction(**defaults)
@@ -35,19 +33,19 @@ def _make_conviction(session, **overrides):
     return conviction
 
 
-def _make_defendant(session, name_key="john smith", **overrides):
-    defaults = dict(first_name="John", last_name="Smith", name_key=name_key)
+def _make_defendant(session, first_name="John", last_name="Smith", **overrides):
+    defaults = dict(first_name=first_name, last_name=last_name)
     defaults.update(overrides)
-    defendant = Defendant(**defaults)
-    session.add(defendant)
+    person = Person(**defaults)
+    session.add(person)
     session.flush()
-    return defendant
+    return person
 
 
-def _attach(session, conviction, defendant):
+def _attach(session, conviction, person, role="defendant"):
     session.add(
-        SummaryConvictionDefendant(
-            summary_conviction_id=conviction.id, defendant_id=defendant.id
+        SummaryConvictionPerson(
+            summary_conviction_id=conviction.id, person_id=person.id, role=role
         )
     )
     session.flush()
@@ -103,26 +101,45 @@ def test_detects_same_defendant_same_date_cluster(session):
     assert len(matching) == 1
 
 
+def test_same_defendant_same_date_ignores_non_defendant_roles(session):
+    """A witness sharing a name and date with a defendant elsewhere isn't
+    the "same defendant, same arrest" pattern this detector targets."""
+    smith = _make_defendant(session)
+    c1 = _make_conviction(session, offence_date=date(1880, 1, 1))
+    c2 = _make_conviction(session, offence_date=date(1880, 1, 1))
+    _attach(session, c1, smith, role="defendant")
+    _attach(session, c2, smith, role="witness")
+
+    clusters = detect_same_defendant_same_date_clusters(session)
+
+    assert not any(set(c) == {c1.id, c2.id} for c in clusters)
+
+
 def test_detects_shared_incident_cluster_requires_two_defendants(session):
-    street = Street(name="church street", town_id=None)
-    session.add(street)
+    location = Location(name="church street")
+    session.add(location)
     session.flush()
 
-    smith = _make_defendant(session, name_key="john smith")
-    jones = _make_defendant(session, first_name="Mary", last_name="Jones", name_key="mary jones")
+    smith = _make_defendant(session, first_name="John", last_name="Smith")
+    jones = _make_defendant(session, first_name="Mary", last_name="Jones")
 
     c1 = _make_conviction(
         session,
         offence_date=date(1880, 1, 1),
-        offence_location_street_id=street.id,
         charge_description="throwing stones",
     )
     c2 = _make_conviction(
         session,
         offence_date=date(1880, 1, 1),
-        offence_location_street_id=street.id,
         charge_description="throwing stones",
     )
+    for c in (c1, c2):
+        session.add(
+            SummaryConvictionLocation(
+                summary_conviction_id=c.id, location_id=location.id, role="location of offence"
+            )
+        )
+    session.flush()
     _attach(session, c1, smith)
     _attach(session, c2, jones)
 
@@ -133,26 +150,59 @@ def test_detects_shared_incident_cluster_requires_two_defendants(session):
 
 
 def test_shared_incident_cluster_excludes_single_defendant_groups(session):
-    street = Street(name="church street", town_id=None)
-    session.add(street)
+    location = Location(name="church street")
+    session.add(location)
     session.flush()
 
-    smith = _make_defendant(session, name_key="john smith")
+    smith = _make_defendant(session)
 
     c1 = _make_conviction(
         session,
         offence_date=date(1880, 1, 1),
-        offence_location_street_id=street.id,
         charge_description="being drunk",
     )
     c2 = _make_conviction(
         session,
         offence_date=date(1880, 1, 1),
-        offence_location_street_id=street.id,
         charge_description="being drunk",
     )
+    for c in (c1, c2):
+        session.add(
+            SummaryConvictionLocation(
+                summary_conviction_id=c.id, location_id=location.id, role="location of offence"
+            )
+        )
+    session.flush()
     _attach(session, c1, smith)
     _attach(session, c2, smith)
+
+    clusters = detect_shared_incident_clusters(session)
+
+    assert not any(set(c) == {c1.id, c2.id} for c in clusters)
+
+
+def test_shared_incident_cluster_ignores_court_location_role(session):
+    """Two unrelated convictions merely heard at the same court on the same
+    day, with the same charge wording by coincidence, shouldn't cluster --
+    only the offence location counts here."""
+    location = Location(name="whitby petty sessions")
+    session.add(location)
+    session.flush()
+
+    smith = _make_defendant(session, first_name="John", last_name="Smith")
+    jones = _make_defendant(session, first_name="Mary", last_name="Jones")
+
+    c1 = _make_conviction(session, offence_date=date(1880, 1, 1), charge_description="drunkenness")
+    c2 = _make_conviction(session, offence_date=date(1880, 1, 1), charge_description="drunkenness")
+    for c in (c1, c2):
+        session.add(
+            SummaryConvictionLocation(
+                summary_conviction_id=c.id, location_id=location.id, role="court location"
+            )
+        )
+    session.flush()
+    _attach(session, c1, smith)
+    _attach(session, c2, jones)
 
     clusters = detect_shared_incident_clusters(session)
 

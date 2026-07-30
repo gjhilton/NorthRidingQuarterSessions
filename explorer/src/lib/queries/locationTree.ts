@@ -1,15 +1,17 @@
 import "server-only";
 import { getDb } from "@/lib/db";
-import { DEFENDANT_NAMES_EXPR } from "@/lib/queries/sqlFragments";
+import { personKeyExpr, personNamesExpr, personNameColumnsSql, type NameRow } from "@/lib/queries/personFragments";
 
-// Query for the self-referencing place tree (see
-// data-loader/qsrecords/models/reference.py::Place), which replaced the old
-// flat Town/Street pair.
+// Query for the self-referencing location tree (see
+// data-loader/qsrecords/models/reference.py::Location), which replaced the
+// old flat Town/Street pair AND the old `place` tree it's renamed from --
+// both folded into one self-referential (id, name, parent_id) tree. `type`
+// dropped entirely -- the old `place.type` column isn't in the new schema
+// and nothing here or in LocationGrid.tsx actually read it.
 export interface PlaceNode {
   id: number;
   name: string;
   parent_id: number | null;
-  type: string;
   // How many convictions have this exact node (not its descendants) as
   // their offence location -- lets the Locations page toggle between "all
   // locations" (including ones only ever referenced as a person's
@@ -22,19 +24,25 @@ export interface PlaceNode {
 export interface PlaceDetail {
   id: number;
   name: string;
-  type: string;
   notes_public: string | null;
   latitude: number | null;
   longitude: number | null;
 }
 
+// The stored role value for a summary_conviction_location row that marks
+// where the offence itself happened (as opposed to 'court location' or
+// 'petty sessional division') -- see core.py's SummaryConvictionLocation.
+const OFFENCE_LOCATION_ROLE = "location of offence";
+
 export function listPlaceIds(): number[] {
-  return (getDb().prepare(`SELECT id FROM place`).all() as { id: number }[]).map((r) => r.id);
+  return (getDb().prepare(`SELECT id FROM location`).all() as { id: number }[]).map((r) => r.id);
 }
 
+// notes_private deliberately never selected -- see reference.py's Location
+// docstring: it must never reach the client-facing build.
 export function getPlaceDetail(id: number): PlaceDetail | undefined {
   return getDb()
-    .prepare(`SELECT id, name, type, notes_public, latitude, longitude FROM place WHERE id = ?`)
+    .prepare(`SELECT id, name, notes_public, latitude, longitude FROM location WHERE id = ?`)
     .get(id) as PlaceDetail | undefined;
 }
 
@@ -43,56 +51,56 @@ export function getPlaceDetail(id: number): PlaceDetail | undefined {
 // already covers.
 export function getPlaceChildren(id: number): { id: number; name: string }[] {
   return getDb()
-    .prepare(`SELECT id, name FROM place WHERE parent_id = ? ORDER BY name`)
+    .prepare(`SELECT id, name FROM location WHERE parent_id = ? ORDER BY name`)
     .all(id) as { id: number; name: string }[];
 }
 
-export interface PlacePersonRow {
+export interface PlacePersonRow extends NameRow {
   name_key: string;
-  display_name: string;
   role: string;
   reference_number: string;
   offence_date: string | null;
   offence_date_raw: string | null;
 }
 
-// Defendants and other involved persons whose own location_id is this exact
-// node -- i.e. people who lived here, not people merely convicted of an
-// offence that happened here (that's getPlaceConvictions' job). One row per
-// (person, conviction) appearance -- same "don't collapse to one row per
-// identity" shape as getPlaceConvictions, so the table behaves the same way
-// (sortable by offence date, links to the specific record).
+// Every person (any role -- defendant, victim, witness, etc.) whose own
+// home_location_id is this exact node -- i.e. people who lived here, not
+// people merely convicted of an offence that happened here (that's
+// getPlaceConvictions' job). One row per (person, conviction) appearance --
+// same "don't collapse to one row per identity" shape as
+// getPlaceConvictions, so the table behaves the same way (sortable by
+// offence date, links to the specific record).
+//
+// v3 merges defendant/person into one table and summary_conviction_defendant/
+// involved_persons into one summary_conviction_person junction with a real
+// `role` column always populated (including 'defendant') -- so this no
+// longer needs the old UNION ALL of two differently-shaped queries, nor the
+// COALESCE(NULLIF(...), 'other') fallback (that only existed because
+// involved_persons.role could be blank; summary_conviction_person.role never is).
+// Returns raw name fields (personNameColumnsSql) rather than a pre-built
+// display string -- format via formatNameRow (personFragments.ts) at the
+// call site, the same convention as every other person-name query, instead
+// of re-deriving a "First Last" string in SQL (which used to skip
+// middle_name/title/name_postfix/alias entirely).
 export function getPlacePeople(id: number): PlacePersonRow[] {
   return getDb()
     .prepare(
       `
-      SELECT name_key, display_name, role, reference_number, offence_date, offence_date_raw
-      FROM (
-        SELECT d.name_key,
-          TRIM(COALESCE(d.first_name,'') || ' ' || COALESCE(d.last_name,'')) AS display_name,
-          'defendant' AS role, sc.reference_number, sc.offence_date, sc.offence_date_raw
-        FROM defendant d
-        JOIN summary_conviction_defendant scd ON scd.defendant_id = d.id
-        JOIN summary_conviction sc ON sc.id = scd.summary_conviction_id
-        WHERE d.location_id = ?
-        UNION ALL
-        SELECT p.name_key,
-          TRIM(COALESCE(p.first_name,'') || ' ' || COALESCE(p.last_name,'')) AS display_name,
-          COALESCE(NULLIF(TRIM(ip.role), ''), 'other') AS role,
-          sc.reference_number, sc.offence_date, sc.offence_date_raw
-        FROM person p
-        JOIN involved_persons ip ON ip.person_id = p.id
-        JOIN summary_conviction sc ON sc.id = ip.summary_conviction_id
-        WHERE p.location_id = ?
-      )
-      WHERE name_key IS NOT NULL AND TRIM(name_key) != ''
+      SELECT ${personKeyExpr("p")} AS name_key,
+        ${personNameColumnsSql("p")},
+        scp.role AS role,
+        sc.record_number AS reference_number, sc.offence_date, sc.offence_date_raw
+      FROM person p
+      JOIN summary_conviction_person scp ON scp.person_id = p.id
+      JOIN summary_conviction sc ON sc.id = scp.summary_conviction_id
+      WHERE p.home_location_id = ? AND name_key IS NOT NULL AND TRIM(name_key) != ''
       ORDER BY offence_date IS NULL, offence_date ASC
       `
     )
-    .all(id, id) as PlacePersonRow[];
+    .all(id) as PlacePersonRow[];
 }
 
-// The chain from the root parish down to this place, for a breadcrumb --
+// The chain from the root region down to this place, for a breadcrumb --
 // walks parent_id upward (the whole point of the tree: one id recovers
 // the full ancestry).
 export function getPlaceAncestry(id: number): { id: number; name: string }[] {
@@ -100,10 +108,10 @@ export function getPlaceAncestry(id: number): { id: number; name: string }[] {
     .prepare(
       `
       WITH RECURSIVE ancestry(id, name, parent_id, depth) AS (
-        SELECT id, name, parent_id, 0 FROM place WHERE id = ?
+        SELECT id, name, parent_id, 0 FROM location WHERE id = ?
         UNION ALL
-        SELECT p.id, p.name, p.parent_id, a.depth + 1
-        FROM place p JOIN ancestry a ON p.id = a.parent_id
+        SELECT l.id, l.name, l.parent_id, a.depth + 1
+        FROM location l JOIN ancestry a ON l.id = a.parent_id
       )
       SELECT id, name FROM ancestry ORDER BY depth DESC
       `
@@ -115,7 +123,6 @@ export function getPlaceAncestry(id: number): { id: number; name: string }[] {
 export interface PlaceConvictionRow {
   reference_number: string;
   conviction_date: string | null;
-  conviction_date_raw: string;
   offence_date: string | null;
   offence_date_raw: string | null;
   charge_description: string;
@@ -127,42 +134,52 @@ export interface PlaceConvictionRow {
   defendant_names: string | null;
 }
 
-// Convictions directly tied to this exact node (as offence or court
-// location) -- not rolled up from descendants, since a node's own
-// rowSpan/breadcrumb already shows where it sits relative to its children.
-// One row per (conviction, offence type) pair -- a conviction tagged with
-// more than one offence type appears once per type, so the detail page can
-// group into sections by offence_type. Every conviction has at least one
-// type tagged, so the join can't silently drop any.
+// Convictions directly tied to this exact node (any summary_conviction_location
+// role -- offence or court location, matching the old offence_location_id OR
+// court_location_id check) -- not rolled up from descendants, since a node's
+// own rowSpan/breadcrumb already shows where it sits relative to its
+// children. One row per (conviction, offence type) pair -- a conviction
+// tagged with more than one offence type appears once per type, so the
+// detail page can group into sections by offence_type. Every conviction has
+// at least one type tagged, so the join can't silently drop any.
+//
+// `record_number` aliased back to `reference_number` and
+// `conviction_date_raw` dropped -- see offences.ts's getOffenceTypeConvictions
+// for the same two calls, made for the same reason (ConvictionsTable, which
+// both this page and /offences/[id] share, expects `reference_number` and
+// never reads conviction_date_raw).
 export function getPlaceConvictions(id: number): PlaceConvictionRow[] {
   return getDb()
     .prepare(
       `
-      SELECT DISTINCT sc.reference_number, sc.conviction_date, sc.conviction_date_raw,
+      SELECT DISTINCT sc.record_number AS reference_number, sc.conviction_date,
         sc.offence_date, sc.offence_date_raw, sc.charge_description,
-        ot.name AS offence_type,
-        ${DEFENDANT_NAMES_EXPR} AS defendant_names
+        ct.name AS offence_type,
+        ${personNamesExpr()} AS defendant_names
       FROM summary_conviction sc
-      JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      JOIN offence_type ot ON ot.id = scot.offence_type_id
-      WHERE sc.offence_location_id = ? OR sc.court_location_id = ?
-      ORDER BY ot.name, sc.offence_date IS NULL, sc.offence_date ASC
+      JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      JOIN crime_type ct ON ct.id = scct.crime_type_id
+      WHERE EXISTS (
+        SELECT 1 FROM summary_conviction_location scl
+        WHERE scl.summary_conviction_id = sc.id AND scl.location_id = ?
+      )
+      ORDER BY ct.name, sc.offence_date IS NULL, sc.offence_date ASC
       `
     )
-    .all(id, id) as PlaceConvictionRow[];
+    .all(id) as PlaceConvictionRow[];
 }
 
 export function listPlaceTree(): PlaceNode[] {
   const rows = getDb()
-    .prepare(`SELECT id, name, parent_id, type FROM place ORDER BY name`)
+    .prepare(`SELECT id, name, parent_id FROM location ORDER BY name`)
     .all() as Omit<PlaceNode, "children" | "offenceCount">[];
 
   const offenceCounts = new Map(
     (
       getDb()
         .prepare(
-          `SELECT offence_location_id AS id, COUNT(*) AS count FROM summary_conviction
-           WHERE offence_location_id IS NOT NULL GROUP BY offence_location_id`
+          `SELECT location_id AS id, COUNT(*) AS count FROM summary_conviction_location
+           WHERE role = '${OFFENCE_LOCATION_ROLE}' GROUP BY location_id`
         )
         .all() as { id: number; count: number }[]
     ).map((r) => [r.id, r.count])

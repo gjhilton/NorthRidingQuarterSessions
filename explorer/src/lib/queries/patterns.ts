@@ -2,12 +2,16 @@ import "server-only";
 import { getDb } from "@/lib/db";
 import { titleCase } from "@/lib/text";
 import type { CategoryCount } from "@/lib/queries/chartShapes";
+import { DEFENDANT_ROLE } from "@/lib/queries/personFragments";
 
 // Seasonal/social-pattern queries for /patterns. dayOfWeekBreakdown moved
 // here from trends.ts once that file grew into a de facto dashboard --
-// seasonalityByCategory, defendantsPerConvictionByCategory, and
-// gameSpeciesBreakdown are new, added alongside it since they're the same
-// kind of "temporal/social rhythm" fact.
+// seasonalityByCategory and defendantsPerConvictionByCategory are new,
+// added alongside it since they're the same kind of "temporal/social
+// rhythm" fact. (gameSpeciesBreakdown -- "What was poached" -- used to
+// live here too; game_species was dropped entirely in the v3 schema, not
+// renamed or derivable from anything else stored, so that chart is gone.
+// See patterns/page.tsx for where its card was removed.)
 
 const DAY_ORDER = [
   "Monday",
@@ -19,26 +23,28 @@ const DAY_ORDER = [
   "Sunday",
 ];
 
+// SQLite's strftime('%w', ...) is 0=Sunday..6=Saturday -- index into this to
+// get the day name, then re-order into DAY_ORDER (Monday-first, for the
+// chart). offence_day_of_week was dropped as a stored column (derivable,
+// see core.py's SummaryConviction docstring) -- computed here instead of
+// the old free-text-matching logic, which existed only to tolerate
+// inconsistent capitalization/spelling in a hand/LLM-written day name.
+const SQLITE_DOW_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 export function dayOfWeekBreakdown(): CategoryCount[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT offence_day_of_week AS day, COUNT(*) AS count
+      SELECT CAST(strftime('%w', offence_date) AS INTEGER) AS dow, COUNT(*) AS count
       FROM summary_conviction
-      WHERE offence_day_of_week IS NOT NULL AND TRIM(offence_day_of_week) != ''
-      GROUP BY day
+      WHERE offence_date IS NOT NULL
+      GROUP BY dow
       `
     )
-    .all() as { day: string; count: number }[];
+    .all() as { dow: number; count: number }[];
 
-  const normalized = new Map<string, number>();
-  for (const r of rows) {
-    const key = r.day.trim();
-    const canonical = DAY_ORDER.find((d) => d.toLowerCase() === key.toLowerCase()) ?? key;
-    normalized.set(canonical, (normalized.get(canonical) ?? 0) + r.count);
-  }
-
-  return DAY_ORDER.map((day) => ({ label: day, count: normalized.get(day) ?? 0 }));
+  const byDay = new Map(rows.map((r) => [SQLITE_DOW_NAMES[r.dow], r.count]));
+  return DAY_ORDER.map((day) => ({ label: day, count: byDay.get(day) ?? 0 }));
 }
 
 const MONTH_NAMES = [
@@ -64,11 +70,11 @@ export function seasonalityByCategory(topN = 8): CategorySeasonality[] {
   const rows = getDb()
     .prepare(
       `
-      SELECT oc.name AS category, CAST(strftime('%m', sc.offence_date) AS INTEGER) AS month, COUNT(*) AS count
+      SELECT cat.name AS category, CAST(strftime('%m', sc.offence_date) AS INTEGER) AS month, COUNT(*) AS count
       FROM summary_conviction sc
-      JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      JOIN offence_type ot ON ot.id = scot.offence_type_id
-      JOIN offence_category oc ON oc.id = ot.category_id
+      JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      JOIN crime_type cat ON cat.id = leaf.parent_id
       WHERE sc.offence_date IS NOT NULL
       GROUP BY category, month
       `
@@ -116,18 +122,19 @@ export function defendantsPerConvictionByCategory(minConvictions = 20): Category
   const rows = getDb()
     .prepare(
       `
-      SELECT oc.name AS category, COUNT(DISTINCT sc.id) AS convictions,
+      SELECT cat.name AS category, COUNT(DISTINCT sc.id) AS convictions,
              ROUND(AVG(dcount.n), 2) AS avgDefendants
       FROM summary_conviction sc
-      JOIN summary_conviction_offence_type scot ON scot.summary_conviction_id = sc.id
-      JOIN offence_type ot ON ot.id = scot.offence_type_id
-      JOIN offence_category oc ON oc.id = ot.category_id
+      JOIN summary_conviction_crime_type scct ON scct.summary_conviction_id = sc.id
+      JOIN crime_type leaf ON leaf.id = scct.crime_type_id
+      JOIN crime_type cat ON cat.id = leaf.parent_id
       JOIN (
         SELECT summary_conviction_id, COUNT(*) AS n
-        FROM summary_conviction_defendant
+        FROM summary_conviction_person
+        WHERE role = '${DEFENDANT_ROLE}'
         GROUP BY summary_conviction_id
       ) dcount ON dcount.summary_conviction_id = sc.id
-      GROUP BY oc.name
+      GROUP BY cat.name
       HAVING COUNT(DISTINCT sc.id) >= ?
       ORDER BY avgDefendants DESC
       `
@@ -135,24 +142,4 @@ export function defendantsPerConvictionByCategory(minConvictions = 20): Category
     .all(minConvictions) as { category: string; convictions: number; avgDefendants: number }[];
 
   return rows.map((r) => ({ ...r, category: titleCase(r.category) }));
-}
-
-export interface SpeciesCount {
-  species: string;
-  count: number;
-}
-
-export function gameSpeciesBreakdown(limit = 10): SpeciesCount[] {
-  return getDb()
-    .prepare(
-      `
-      SELECT MIN(TRIM(game_species)) AS species, COUNT(*) AS count
-      FROM summary_conviction
-      WHERE game_species IS NOT NULL AND TRIM(game_species) != ''
-      GROUP BY LOWER(TRIM(game_species))
-      ORDER BY count DESC
-      LIMIT ?
-      `
-    )
-    .all(limit) as SpeciesCount[];
 }

@@ -13,8 +13,9 @@ import { ClickableTr, referenceCellStyle, StopPropagation } from "@/components/C
 import { fromSlug, toSlug } from "@/lib/slug";
 import { convictionHref } from "@/lib/referenceSlug";
 import { personHref } from "@/lib/links";
-import { formatPersonName, sentenceCase } from "@/lib/text";
+import { sentenceCase } from "@/lib/text";
 import { formatDate } from "@/lib/date";
+import { DEFENDANT_ROLE, formatNameRow } from "@/lib/queries/personFragments";
 
 // The set of known name_keys is static (fixed dataset), so every person page
 // can be prerendered -- only the free-text search on /people needs
@@ -42,11 +43,7 @@ function ParticipantList({
   return (
     <>
       {people.map((p, i) => {
-        const name = formatPersonName({
-          firstName: p.first_name,
-          lastName: p.last_name,
-          nameQualifier: p.name_qualifier,
-        });
+        const name = formatNameRow(p);
         return (
           <span key={`${p.name_key}-${i}`}>
             {i > 0 && "; "}
@@ -66,7 +63,9 @@ function ParticipantList({
   );
 }
 
-// "offender" first (the most common and most load-bearing role), then every
+// 'defendant' first (the most common and most load-bearing role -- the
+// literal stored summary_conviction_person.role value now, not a synthetic
+// "offender" label; see personFragments.ts's DEFENDANT_ROLE), then every
 // other role this person held, most-frequent first -- roles are kept as
 // separate groups exactly as recorded (e.g. "victim" and "victim/informant"
 // don't get merged into one), since a merged group would blur real
@@ -79,14 +78,19 @@ function groupCasesByRole(cases: CaseMention[]): [string, CaseMention[]][] {
     else groups.set(c.role, [c]);
   }
   return [...groups.entries()].sort(([roleA, casesA], [roleB, casesB]) => {
-    if (roleA === "offender") return -1;
-    if (roleB === "offender") return 1;
+    if (roleA === DEFENDANT_ROLE) return -1;
+    if (roleB === DEFENDANT_ROLE) return 1;
     return casesB.length - casesA.length;
   });
 }
 
+// The DB's 'defendant' role reads as "Offender" here too -- same
+// translation as roles.ts's classifyInvolvedPersonRole/PeopleBrowseList's
+// roleDisplayLabel, applied locally since this page only has the raw role
+// string per group, not a person/case row to run through that classifier.
 function roleGroupTitle(role: string, count: number): string {
-  return `As ${sentenceCase(role)} (${count})`;
+  const label = role === DEFENDANT_ROLE ? "Offender" : sentenceCase(role);
+  return `As ${label} (${count})`;
 }
 
 // Each of the three "who else was on this case" columns only earns a place
@@ -114,13 +118,10 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
         <Link href="/people" className={css({ fontSize: "M", color: "fgMuted" })}>
           ← Back to search
         </Link>
-        <PageTitle
-          subtitle={
-            network.aliases.length > 0 ? `also known as ${network.aliases.join(", ")}` : undefined
-          }
-        >
-          {network.display_name}
-        </PageTitle>
+        {/* No separate "also known as" subtitle -- network.display_name
+            (formatPersonName) already renders any alias inline, quoted, as
+            part of the canonical name itself. */}
+        <PageTitle>{network.display_name}</PageTitle>
         {(network.isPolice || network.spouses.length > 0) && (
           <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
             {network.isPolice && <span>Police officer</span>}
@@ -138,6 +139,24 @@ export default async function PersonPage(props: PageProps<"/people/[nameKey]">) 
                 ))}
               </span>
             )}
+          </p>
+        )}
+        {network.relationships.length > 0 && (
+          <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
+            {network.relationships.map((r, i) => (
+              <span key={`${r.name_key}-${r.label}`}>
+                {i > 0 && " · "}
+                {r.label}{" "}
+                <Link href={personHref(r.name_key)} className={css({ color: "fgAccent" })}>
+                  {r.display_name}
+                </Link>
+              </span>
+            ))}
+          </p>
+        )}
+        {network.cases.length === 0 && (
+          <p className={css({ fontSize: "M", color: "fgMuted", mt: "1" })}>
+            No case appearances on record for this person.
           </p>
         )}
         {network.sameNameAlternate && (

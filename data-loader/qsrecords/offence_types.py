@@ -8,8 +8,7 @@ not an offence category). This module seeds a canonical vocabulary (drawn
 from the archive's own bundle-level category descriptions) and defensively
 redirects the exact junk value already observed in production data to a
 sentinel. Fuzzy deduplication of new LLM-proposed near-duplicates is
-deferred to a later manual review pass (`WHERE category_id IS NULL`), not
-blocked on here.
+deferred to a later manual review pass, not blocked on here.
 
 v2 adds a taxonomy: get_or_create_offence_type's exact-string matching has
 no synonym awareness, so an extended manual-entry pass grew the vocabulary
@@ -21,10 +20,7 @@ six different spellings of "child not sent to school": "education offence",
 *employment*, not truancy). OFFENCE_TAXONOMY is the single source of truth
 for the fix: a curated (category, [(canonical leaf, [old names to merge
 into it])]) structure, seeded via seed_offence_taxonomy and applied to
-already-existing duplicate rows via migrate_offence_taxonomy (see
-qsrecords.db.init_db, which calls both on every startup -- so the merge is
-self-healing across every entry point, not a script someone has to
-remember to run).
+already-existing duplicate rows via migrate_offence_taxonomy.
 
 Every merge below was verified against real charge_description text before
 being included, not inferred from name similarity alone -- some very
@@ -39,12 +35,27 @@ records split cleanly into `cruelty to animals` (ill-treating/torturing)
 and a new `allowing an animal to worry livestock` leaf (a dog causing
 damage to someone else's livestock -- not the same offence as generic
 property damage).
+
+v3 unified schema: OffenceCategory + OffenceType (a two-table pair) merge
+into one self-referential `CrimeType` tree, mirroring Location's shape --
+`parent_id IS NULL` marks a top-level category, non-NULL marks a leaf filed
+under that category. The two old get-or-create functions (one per table)
+collapse into a single get_or_create_crime_type(session, name, parent_id).
+Distinguishing "a top-level category row" from "a leaf nobody has
+categorised yet" (both have parent_id IS NULL) relies on is_seeded: every
+row seed_offence_taxonomy creates -- category AND leaf alike -- is
+is_seeded=True; a bare LLM-proposed name created via get_or_create_crime_type
+with no parent defaults to is_seeded=False. So "parent_id IS NULL AND
+is_seeded" is the category/leaf tell, not parent_id alone. This convention
+only holds because nothing else in this module ever creates an
+is_seeded=True row without immediately giving it the right parent_id.
 """
 
+from sqlalchemy.orm import aliased
 from sqlmodel import Session, select
 
-from qsrecords.models.core import SummaryConvictionOffenceType
-from qsrecords.models.reference import OffenceCategory, OffenceType
+from qsrecords.models.core import SummaryConvictionCrimeType
+from qsrecords.models.reference import CrimeType
 from qsrecords.text import normalize_key
 
 UNCLASSIFIED = "unclassified"
@@ -237,18 +248,57 @@ SEED_OFFENCE_TYPES: list[str] = [
 _REJECTED_VALUES = {"summary conviction", "conviction", ""}
 
 
+def get_or_create_crime_type(
+    session: Session,
+    raw_name: str,
+    parent_id: int | None = None,
+    is_seeded: bool = False,
+) -> CrimeType:
+    """Get-or-create against the unified CrimeType tree -- replaces the old
+    get_or_create_offence_category/get_or_create_offence_type pair. Used for
+    both top-level categories (parent_id=None) and leaves (parent_id=the
+    category's id) since they're now the same table."""
+    key = normalize_key(raw_name or "")
+    if key in _REJECTED_VALUES:
+        key = UNCLASSIFIED
+
+    existing = session.exec(select(CrimeType).where(CrimeType.name == key)).first()
+    if existing:
+        return existing
+
+    crime_type = CrimeType(name=key, parent_id=parent_id, is_seeded=is_seeded)
+    session.add(crime_type)
+    session.flush()
+    return crime_type
+
+
 def seed_offence_taxonomy(session: Session) -> None:
     """Idempotently insert every OFFENCE_TAXONOMY category and canonical
-    leaf (get-or-create per name), and make sure every leaf's category_id
+    leaf (get-or-create per name), and make sure every leaf's parent_id
     points at its category -- whether the leaf row already existed
     (pre-dating the taxonomy) or is being created fresh here."""
     for order, (category_name, leaves) in enumerate(OFFENCE_TAXONOMY):
-        category = get_or_create_offence_category(session, category_name, sort_order=order)
+        category = get_or_create_crime_type(session, category_name, parent_id=None, is_seeded=True)
+        if category.sort_order != order:
+            category.sort_order = order
+            session.add(category)
         for leaf_name, _merge_from in leaves:
-            offence_type = get_or_create_offence_type(session, leaf_name, is_seeded=True)
-            if offence_type.category_id != category.id:
-                offence_type.category_id = category.id
-                session.add(offence_type)
+            crime_type = get_or_create_crime_type(
+                session, leaf_name, parent_id=category.id, is_seeded=True
+            )
+            if crime_type.id == category.id:
+                # Category and its own leaf share a normalized name (e.g.
+                # the "Unclassified" category and its "unclassified" leaf)
+                # -- CrimeType.name is unique across the whole tree, so
+                # get_or_create_crime_type resolved both calls to the same
+                # physical row. That row stays a top-level (parent_id=NULL)
+                # node serving as both category and its own sole leaf;
+                # setting its parent_id to itself would violate the
+                # self-reference CHECK constraint.
+                continue
+            if crime_type.parent_id != category.id:
+                crime_type.parent_id = category.id
+                session.add(crime_type)
     session.flush()
 
 
@@ -261,20 +311,19 @@ def seed_offence_types(session: Session) -> None:
 
 def migrate_offence_taxonomy(session: Session) -> None:
     """One-time-per-database, idempotent merge of pre-taxonomy duplicate
-    offence_type rows into their canonical leaf, per OFFENCE_TAXONOMY's
-    merge lists. Must run after seed_offence_taxonomy (the canonical rows
-    need to already exist).
+    crime_type rows into their canonical leaf, per OFFENCE_TAXONOMY's merge
+    lists. Must run after seed_offence_taxonomy (the canonical rows need to
+    already exist).
 
     For each old name that still exists as its own (different) row: every
-    summary_conviction_offence_type tag pointing at the old id is
-    re-pointed at the canonical id -- using an existence check rather than a
-    blind INSERT, since a conviction already tagged with both names would
-    otherwise violate the (summary_conviction_id, offence_type_id)
-    composite primary key -- then the now-orphaned old row is deleted.
-    Nothing left to do on a second call: by then every old name's row is
-    already gone.
+    summary_conviction_crime_type tag pointing at the old id is re-pointed
+    at the canonical id -- using an existence check rather than a blind
+    INSERT, since a conviction already tagged with both names would
+    otherwise violate the (summary_conviction_id, crime_type_id) composite
+    primary key -- then the now-orphaned old row is deleted. Nothing left to
+    do on a second call: by then every old name's row is already gone.
     """
-    canonical_by_name = {row.name: row for row in session.exec(select(OffenceType)).all()}
+    canonical_by_name = {row.name: row for row in session.exec(select(CrimeType)).all()}
 
     for _category_name, leaves in OFFENCE_TAXONOMY:
         for leaf_name, merge_from in leaves:
@@ -287,20 +336,20 @@ def migrate_offence_taxonomy(session: Session) -> None:
                     continue
 
                 tagged = session.exec(
-                    select(SummaryConvictionOffenceType).where(
-                        SummaryConvictionOffenceType.offence_type_id == old.id
+                    select(SummaryConvictionCrimeType).where(
+                        SummaryConvictionCrimeType.crime_type_id == old.id
                     )
                 ).all()
                 for tag in tagged:
                     already_tagged = session.get(
-                        SummaryConvictionOffenceType,
+                        SummaryConvictionCrimeType,
                         (tag.summary_conviction_id, canonical.id),
                     )
                     if already_tagged is None:
                         session.add(
-                            SummaryConvictionOffenceType(
+                            SummaryConvictionCrimeType(
                                 summary_conviction_id=tag.summary_conviction_id,
-                                offence_type_id=canonical.id,
+                                crime_type_id=canonical.id,
                             )
                         )
                     session.delete(tag)
@@ -313,10 +362,20 @@ def migrate_offence_taxonomy(session: Session) -> None:
 
 
 def list_offence_type_names(session: Session) -> list[str]:
-    """Every offence type the model should be shown as a candidate category,
-    seeded and previously-proposed alike.
+    """Every crime type the model should be shown as a candidate category,
+    seeded and previously-proposed alike -- top-level categories excluded,
+    since a category name itself is never a valid charge tag.
 
-    Passing only SEED_OFFENCE_TYPES here (as extract_batch used to) means the
+    "Is this row a category" is answered by whether anything else in the
+    tree has parent_id pointing at it (a category always has at least one
+    leaf underneath), NOT by parent_id IS NULL alone -- "Unclassified" the
+    category and "unclassified" the sentinel leaf normalize to the same
+    name (CrimeType.name is unique across the whole tree), so they collapse
+    to one physical row that stays parent_id IS NULL forever; a childless
+    row like that is exactly a leaf, not a category, regardless of its own
+    parent_id.
+
+    Passing only seeded leaf names (as extract_batch used to) means the
     model can never reuse a category an earlier batch proposed and had
     accepted (e.g. "straying animals") -- it has no way to know that
     category already exists, so it either re-proposes a near-duplicate or,
@@ -330,50 +389,17 @@ def list_offence_type_names(session: Session) -> list[str]:
     "seeded first" order, which scattered a category's own siblings apart
     based on which happened to be seeded vs. later proposed.
     """
+    Parent = aliased(CrimeType)
+    Child = aliased(CrimeType)
     rows = session.exec(
-        select(OffenceType.name, OffenceCategory.sort_order)
-        .join(OffenceCategory, OffenceCategory.id == OffenceType.category_id, isouter=True)
+        select(CrimeType.name, Parent.sort_order)
+        .join(Parent, Parent.id == CrimeType.parent_id, isouter=True)
+        .join(Child, Child.parent_id == CrimeType.id, isouter=True)
+        .where(Child.id.is_(None))
         .order_by(
-            OffenceCategory.sort_order.is_(None),
-            OffenceCategory.sort_order,
-            OffenceType.name,
+            Parent.sort_order.is_(None),
+            Parent.sort_order,
+            CrimeType.name,
         )
     ).all()
     return [name for name, _sort_order in rows]
-
-
-def get_or_create_offence_category(
-    session: Session, raw_name: str, sort_order: int = 0
-) -> OffenceCategory:
-    # Stored lowercase/normalized like Town/Street/OffenceType -- the
-    # nicely-cased strings in OFFENCE_TAXONOMY are display text only; the
-    # explorer applies its own titleCase() at render time (see
-    # explorer/src/lib/text.ts), same as it already does for town/street names.
-    key = normalize_key(raw_name)
-    existing = session.exec(
-        select(OffenceCategory).where(OffenceCategory.name == key)
-    ).first()
-    if existing:
-        return existing
-
-    category = OffenceCategory(name=key, sort_order=sort_order)
-    session.add(category)
-    session.flush()
-    return category
-
-
-def get_or_create_offence_type(
-    session: Session, raw_name: str, is_seeded: bool = False
-) -> OffenceType:
-    key = normalize_key(raw_name or "")
-    if key in _REJECTED_VALUES:
-        key = UNCLASSIFIED
-
-    existing = session.exec(select(OffenceType).where(OffenceType.name == key)).first()
-    if existing:
-        return existing
-
-    offence_type = OffenceType(name=key, is_seeded=is_seeded)
-    session.add(offence_type)
-    session.flush()
-    return offence_type
