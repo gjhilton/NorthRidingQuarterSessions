@@ -1,0 +1,589 @@
+# Places taxonomy -- draft v2, built from your first-pass annotations on
+# street-candidates.txt (committed). No geolocation performed -- every
+# coordinate/description you already typed is preserved verbatim below as
+# a note. Nothing has been deleted; rejects/merges are logged, not erased.
+#
+# Structure: PARISH -> (VILLAGE ->) ROAD | POINT
+# PARISH = the existing town-table name (this is what the archive/DB
+#   already calls the "town", and mostly matches real historical civil
+#   parish names in this area, so it's the least-invented starting point --
+#   flag any of these that are actually wrong).
+# VILLAGE = promoted from your 🏘️ markers (a real distinct settlement
+#   within the parish, not just a street name).
+#
+# Legend (yours, same meanings):
+#   ❌ NOT MAPPABLE (cannot be geolocated as a point/road -- e.g. an "X and
+#      Y highway" name with no fixed spot; NOT a deletion marker, the
+#      underlying street/conviction data stays exactly as-is. Corrected
+#      here after I'd been reading it as "reject the entry" throughout this
+#      draft -- fixing every label below to match.)
+#   🔄 MERGED INTO   🏘️ VILLAGE   📍 POINT   /┆\ ROAD   ⚠️ PROBLEM
+# Mine, added this pass:
+#   UNREVIEWED   = you haven't marked this one yet -- left exactly as-is,
+#                  still under its original parish, not reclassified by me.
+#   MY FLAG      = something I noticed while transcribing (likely dupe,
+#                  inconsistent classification, cross-parish oddity) --
+#                  not acted on, just surfaced for your next pass.
+#   MOVED FROM   = relocated per your explicit note.
+#
+# ============================================================
+#
+# CONFIRMED GEOGRAPHY (researched pass, ~1889 cutoff per your instruction)
+# Sources: VCH North Riding vol 2 (british-history.ac.uk), Bulmer's 1890
+# Directory (via GENUKI/WebSearch summary -- direct GENUKI fetch blocked,
+# 403), Vision of Britain. Applied below as PARISH/VILLAGE moves, each
+# tagged with what changed and why -- nothing silently altered.
+#
+# - WHITBY ancient parish (1831): townships Whitby, Aislaby, Hawsker cum
+#   Stainsacre, Newholm cum Dunsley, Ruswarp, Ugglebarnby + chapelry
+#   Eskdaleside. Separated as their OWN ecclesiastical parishes before
+#   1889: Aislaby (1865), Ruswarp (1870), Hawsker cum Stainsacre (1878) --
+#   kept as their own top-level PARISH entries below, unchanged, since
+#   townships were the poor-law/civil unit and these were almost certainly
+#   already administratively distinct too. Eskdaleside + Ugglebarnby
+#   united as ONE civil parish "Eskdaleside cum Ugglebarnby" in 1885 --
+#   i.e. BEFORE our 1889 cutoff, so this draft's three separate entries
+#   (ESKDALESIDE / ESKDALESIDE-CUM-UGGLEBARNBY / UGGLEBARNBY) are merged
+#   below into one, per this dated evidence, not just my earlier "MY FLAG"
+#   suspicion.
+# - LYTHE civil parish (1889): townships Lythe itself (+ hamlets Sandsend,
+#   Goldsborough, Kettleness), Barnby, Borrowby, Ellerby, Hutton Mulgrave,
+#   Mickleby, Newton Mulgrave, Ugthorpe. Confirmed via a dated 1894 Local
+#   Government Act order (2 May 1894, effective 17 Dec 1894) that these
+#   townships were STILL grouped under Lythe at that point -- i.e. every
+#   one of them postdates our 1889 cutoff for separate civil-parish
+#   status. This draft's separate top-level PARISH entries for BARNBY,
+#   BORROWBY, ELLERBY, MICKLEBY, UGTHORPE are merged into LYTHE below as
+#   villages, per this dated evidence.
+# - ROXBY: NOT part of Lythe/Borrowby for parish purposes, despite a
+#   Domesday-era (1086) manorial link to Borrowby I'd misread earlier as a
+#   parish fact -- VCH's own Hinderwell chapter is explicit: "This parish
+#   [Hinderwell] contains the townships of Hinderwell (including Runswick
+#   and part of Staithes) and Roxby." Moved from its own top-level PARISH
+#   entry to a village under HINDERWELL below.
+# - SNEATON: confirmed its own parish, coterminous with the township (no
+#   change needed -- already correct in this draft).
+# - FYLINGDALES: confirmed its own parish (chapelry since 1786, functions
+#   as its own township), containing villages Robin Hood's Bay and
+#   Fylingthorpe (already correct) plus hamlets Normanby, Parkgate,
+#   Ramsdale, Raw, Stoupe Brow (Stoupe Brow already present below).
+# - EGTON: confirmed its own parish, separated from Lythe well before 1831
+#   (no change needed). Contains Egton (town), Egton Bridge. Grosmont
+#   straddles the parish boundary with Eskdaleside cum Ugglebarnby (the
+#   Esk divides it) -- this is the likely explanation for the malformed
+#   `town` row "Grosmont, Eskdaleside" found separately (see the town-table
+#   composite-string bug), not a scraping artifact.
+# - GLAISDALE: confirmed its own parish since ~1860 (separated from
+#   Danby), well before 1889 (no change needed).
+# - LOFTUS: confirmed its own small parish (no change needed). LIVERTON
+#   doesn't appear anywhere in this dataset's town list, so not pursued
+#   further.
+#
+# ============================================================
+
+PARISH: AISLABY
+  MERGED (no separate street -- folded to "general Aislaby"): aislaby street, aislaby town street
+  POINT: Woodlands
+    notes (private): 54°27′36″N 0°40′22″W (decimal 54.4601°N, 0.6728°W)
+  NOT MAPPABLE: whitby and guisborough highway
+
+PARISH: EGTON
+  VILLAGE: Egton Bridge
+    MERGED (general "Egton Bridge" point): egton bridge town street
+    POINT: Egton Bridge railway station
+      notes (private): 54.43677°N, 0.76398°W / OS grid NZ804052
+  MERGED (general "Egton" point): egton street, egton town street
+  POINT: Lease Rigg
+    notes (private): 54.42660°N, -0.74590°W / DMS 54°25'35"N 0°44'45"W
+  POINT: Wilks Farm
+    notes (private): OS grid NZ 478387 508550 / postcode YO21 2AA
+  NOT MAPPABLE: egton and rosedale highway, egton white house, glaisdale and egton highway, pickering and stape highway
+  PROBLEM (⚠️ unresolved): esk valley
+    your note: "Esk Valley is the whole area around all of these places in
+    the db including whitby -- this is a TOP level geography and cannot
+    be mapped [as a single point]." Left unclassified -- needs a decision
+    on how (or whether) to represent a region rather than a point/road.
+
+PARISH: ESKDALESIDE CUM UGGLEBARNBY
+  DONE (executed against the DB, not just this draft): Eskdaleside +
+  Ugglebarnby united as one civil parish in 1885, before our 1889 cutoff
+  -- see the CONFIRMED GEOGRAPHY note near the top of this file. The three
+  underlying DB town rows (eskdaleside, ugglebarnby, eskdaleside-cum-
+  ugglebarnby) are now actually merged into one
+  (data-loader/merge_eskdaleside_ugglebarnby.py) -- 354 defendant/person/
+  conviction rows reassigned, duplicate street rows sharing a name across
+  the three old towns (sleights, grosmont town street, blue bank, sleights
+  town street) merged into one each, everything else re-homed. Tagged
+  below by original source for traceability.
+  VILLAGE: Grosmont
+    MERGED (general "Grosmont" point): grosmont street, grosmont town, grosmont town street (from ESKDALESIDE), grosmont town street (from ESKDALESIDE-CUM-UGGLEBARNBY, duplicate)
+    POINT: Grosmont Bridge
+      notes (private): 54.4376°N, 0.7307°W (54°26'15.5"N, 0°43'50.5"W) / OS grid NZ 82426 05432
+    note: Grosmont straddles this parish's boundary with EGTON (the Esk
+    divides it) -- likely explains the malformed town-table row "Grosmont,
+    Eskdaleside" found separately (see the composite-string bug).
+  VILLAGE: Sleights
+    MERGED (general "Sleights" point): sleights town street (from ESKDALESIDE), sleights town street (from ESKDALESIDE-CUM-UGGLEBARNBY, duplicate), sleights town street (from former UGGLEBARNBY entry -- your note there: "🔄 sleights town street => SLEIGHTS")
+    POINT: Blue Bank
+      notes (private): NZ 868 061 / 54.4437°N, 0.6627°W
+      MOVED FROM: former top-level UGGLEBARNBY entry -- your note there
+      was explicit: "🔄 blue bank => is in SLEIGHTS", so this nests under
+      the village, not at parish level like I'd wrongly had it before.
+  POINT: Littlebeck
+    MOVED FROM: former top-level UGGLEBARNBY entry (your note: "is a tiny hamlet")
+  ROAD: Ugglebarnby Lane
+    MOVED FROM: former top-level UGGLEBARNBY entry
+  POINT: Mallyan (Spout)
+    MERGED FROM: mohlan (your read, likely correct) -- only DB reference
+    is QSB 1889 3/10/9/9: "Thomas Wood of Mohlan in the township of
+    Eskdaleside cum Ugglebarnby, a miner employed at the Grosmont Mine,
+    for fighting with Frank Lyth the younger at the mine." Mallyan Spout
+    (waterfall) and the Mallyan Spout Hotel (built 1892, so the place name
+    predates it) are both real, well-established Goathland names; Goathland
+    itself was administratively grouped into the "Electoral Division of
+    Eskdaleside" per Bulmer's 1890, which explains a Goathland-area
+    resident being recorded under Eskdaleside cum Ugglebarnby. Not yet
+    geolocated, but no longer treated as a mis-scan of an unknown place.
+  NOT MAPPABLE: eskdaleside highway, sleights and grosmont highway, whitby and pickering highway, new street, ugglebarnby and littlebeck highway
+
+PARISH: FYLINGDALES
+  PROBLEM (⚠️ unresolved, unclear even with your marker): raw
+  PROBLEM (⚠️ unresolved, unclear even with your marker): raw pasture
+  PROBLEM (⚠️ unresolved, unclear even with your marker): raw town street
+  VILLAGE: Robin Hood's Bay
+    NOT MAPPABLE (explicitly marked, not merged elsewhere): robin hood's bay town street
+  ROAD: Station Road
+  POINT: Stoupe Brow
+    notes (private): 54.402717°N, 0.516022°W / OS grid NZ96430182
+    MERGED (alternative spelling): stow brow
+  VILLAGE: Fylingthorpe
+    MERGED FROM: thorpe (your note: "🏘️ FYLINGTHORPE which is a town")
+    MERGED (general "Fylingthorpe" point): thorpe town street
+  POINT: The Sands (Fylingdales)
+    RESOLVED: your guess was right -- confirmed via 2 records both "drunk
+    and disorderly on the sands", offence at the township of Fylingdales.
+    The local beach, likely Robin Hood's Bay's shore. Kept as its own
+    point (not merged with Newholm/Ruswarp's "sands" below) since these
+    are genuinely different stretches of shoreline, one per township.
+  NOT MAPPABLE: robin hood's bay and hawsker highway, robin hood's bay and whitby highway, robin hood's bay lane, thorpe and robin hood's bay highway, whitby and robin hood's bay highway
+
+PARISH: GLAISDALE
+  ROAD: Carr Lane
+  MERGED (general "Glaisdale" point): glaisdale end, glaisdale street, glaisdale town street
+  VILLAGE: Lealholm
+    RESOLVED (spelling): going with "Lealholm" -- the real place name (VCH,
+    Bulmer's, and the "Lealholm Bridge" hamlet cited in Glaisdale's own
+    VCH entry all use this spelling); your "LEAHOLM" target was likely
+    just a typo, not a deliberate rename.
+    MERGED FROM: lealholm bridge
+    MERGED (general "Lealholm" point): lealholm bridge town street, lealholm lane, lealholm town street
+  POINT: Stonegate
+    your note: tiny hamlet in Glaisdale, effectively a point
+  NOT MAPPABLE: glaisdale and rosedale highway, glaisdale highway, lealholm and fryup highway, lealholm and glaisdale highway, lealholm and stonegate highway
+
+PARISH: HAWSKER-CUM-STAINSACRE
+  your note: many sub-locations need moving to WHITBY -- done below, each
+  tagged MOVED FROM so it's traceable.
+  VILLAGE: Hawsker
+    MERGED (general "Hawsker" point): hawsker town street
+  NOT MAPPABLE: hawsker and robin hood's bay highway, new gardens footpath,
+    timber hill (your note: was real, in Hawsker, no longer extant),
+    whitby and hawsker highway, whitby and robin hood's bay highway,
+    whitby and stainsacre highway, whitehall
+
+PARISH: HINDERWELL
+  CONFIRMED (VCH, Hinderwell chapter, verbatim): "This parish contains the
+  townships of Hinderwell (including Runswick and part of Staithes) and
+  Roxby." So Runswick and Staithes are sub-settlements of the Hinderwell
+  township itself (not separately promotable villages), and Roxby is a
+  genuine sibling village -- moved here from its own former top-level
+  PARISH: ROXBY entry (that entry had no surviving street-level data of
+  its own, just three highway rejects, folded in below).
+  VILLAGE: Roxby
+    MOVED FROM: former top-level PARISH: ROXBY entry (VCH confirms it as
+    a Hinderwell township, not its own parish, despite an unrelated
+    Domesday-era (1086) manorial link to Borrowby that I'd misread earlier
+    as a parish fact)
+  MERGED (general "Hinderwell" point): hinderwell street, hinderwell town street, mickleby town street
+    note: "mickleby town street" is also a separate DB row filed under the
+    Mickleby town_id itself (see VILLAGE: Mickleby under LYTHE below) --
+    two distinct streets sharing a name, each merging into its OWN
+    parent's general point per your notes on each entry. Not a duplicate
+    bug, resolves my earlier flag on this.
+  POINT: Dale House
+    notes (private): DMS 54°32'43.1"N 0°48'13.3"W
+    DONE (executed against the DB, not just this draft): this merges the
+    "dale house, hinderwell" and "dale house, borrowby" DB rows into one
+    street, on your call that they're likely the same place -- the two
+    source records disagree on which township it's in: George Codling's
+    (QSB 1888 2/10/11/6) says "in the township of Hinderwell", James
+    Smith's (QSB 1887 2/10/10/16, "begging in Dale House") says "at the
+    township of Borrowby". Kept the raw_record text on both convictions
+    exactly as scraped either way -- only the normalized town/street
+    fields were merged, onto Hinderwell (arbitrary pick between the two;
+    say the word if you'd rather it sit under Borrowby instead).
+  VILLAGE: Staithes
+    ROAD: Church Street
+      MOVED FROM: church street (your note: "is in STAITHES")
+    ROAD: High Street
+      MOVED FROM: staithes high street (your note: "is a road but move to STAITHES")
+      POINT: The Black Lion Public House
+        MOVED FROM: the black lion public house (your note: "point location on STAITHES: HIGH STREET")
+    MERGED (general "Staithes" point): staithes lane, staithes lane end, staithes station, staithes street, staithes town street
+  VILLAGE: Runswick Bay
+    MERGED (general point): runswick bank, runswick bank top, runswick lane, runswick town street
+    note: "runswick lane" is also a separate DB row filed under the
+    Mickleby town_id, where your note reads "is a road but actually in
+    HINDERWELL" -- i.e. you've already identified that copy as mis-filed;
+    logged under VILLAGE: Mickleby (LYTHE) too. Worth actually moving that
+    DB row's town_id when this gets implemented, not just noting it here.
+  POINT: Port Mulgrave
+    MERGED (general point): port mulgrave town street
+  ROAD: Rosedale Lane
+    MERGED FROM: rosedale street
+  POINT: The Red Lion Public House
+    your note: "Geolocate The Stiddy YO21 3RT"
+  NOT MAPPABLE: staithes and hinderwell highway, staithes highway, roxby and guisborough highway, roxby highway, whitby and guisborough highway, runswick and ellerby highway
+
+PARISH: LOFTUS
+  DONE (executed against the DB): renamed "6 north terrace" to "north
+  terrace", staying under Loftus. Resolved via the raw record (QSB 1874
+  1/10/10/63): "John Richard Saunders of 6 North Terrace, Loftus, miner" --
+  genuinely local to Loftus, not a cross-reference to Ruswarp's separate
+  North Terrace as I'd worried before. Just a house-number strip, no
+  cross-parish merge.
+
+PARISH: LYTHE
+  CONFIRMED (dated 1894 Local Government Act order, effective 17 Dec 1894
+  -- see CONFIRMED GEOGRAPHY note near the top of this file): Barnby,
+  Borrowby, Ellerby, Mickleby and Ugthorpe were still townships within
+  Lythe civil parish as of our 1889 cutoff, only separating in 1894. Their
+  former top-level PARISH entries are folded in below as villages, each
+  tagged with what it carried over.
+  VILLAGE: East Barnby
+    MOVED FROM: former top-level PARISH: BARNBY entry
+    MERGED (general "East Barnby" point): east barnby town street
+    NOT MAPPABLE (from BARNBY entry): lythe and barnby highway, whitby and guisborough highway
+  VILLAGE: Borrowby
+    MOVED FROM: former top-level PARISH: BORROWBY entry
+    note: Dale House (your original coords for this entry) is now filed
+    under PARISH: HINDERWELL instead -- see there for why.
+  VILLAGE: Ellerby
+    MOVED FROM: former top-level PARISH: ELLERBY entry
+    POINT: Ellerby Bank Top
+      notes (private): WGS84 54.51253°N, 0.77217°W / OS grid NZ 79595 13715 (general area NZ 795 137)
+    MERGED (general "Ellerby" point): ellerby town street
+    NOT MAPPABLE (from ELLERBY entry): runswick and ellerby highway
+  VILLAGE: Mickleby
+    MOVED FROM: former top-level PARISH: MICKLEBY entry
+    MERGED (general "Mickleby" point): mickleby town street
+    DONE (executed against the DB): the "runswick lane" street row filed
+    here has been moved to VILLAGE: Runswick Bay under PARISH: HINDERWELL,
+    per your note "is a road but actually in HINDERWELL" -- it's no
+    longer under Mickleby at all now (5 conviction references carried
+    over to the existing Hinderwell "runswick lane" row).
+    NOT MAPPABLE (from MICKLEBY entry): whitby and guisborough highway
+  VILLAGE: Ugthorpe
+    MOVED FROM: former top-level PARISH: UGTHORPE entry
+    ROAD: Broom House Lane
+    MERGED (general "Ugthorpe" point): ugthorpe town street
+  POINT: Goldsborough
+    your note: "is a tiny hamlet"
+    MERGED (general point): goldsborough town street
+    note: hamlet of Lythe township itself (per VCH: "Lythe township
+    comprises the hamlets of Goldsborough and Kettleness and the village
+    of Sandsend") -- not its own separate settlement outside the parish.
+  DIFFICULTY -- not yet actioned: landsend road
+    Checked the DB: no "Sandsend Road" street row exists, only "sandsend
+    town street" -- contradicts your note ("is a typo for SANDSEND ROAD,
+    which is a road and which exists"). Not sure whether you meant (a)
+    fold "landsend road" into the general Sandsend point (i.e. treat it
+    the same as "sandsend town street"), or (b) it should become its own
+    new "Sandsend Road" street. Left unmerged pending your call.
+  MERGED (general "Lythe" point): lythe bank, lythe town street
+  POINT: Overdale
+    notes (private): 54.51599°N, 0.6931°W (54°30'58"N, 0°41'35"W)
+  VILLAGE: Sandsend
+    MERGED (general point): sandsend town street
+    MOVED FROM NEWHOLM-CUM-DUNSLEY: raithwaite (your note there: "is in SANDSEND")
+    note: VCH calls this "the village of Sandsend" within Lythe township
+    itself -- not a separate settlement outside the parish.
+  NOT MAPPABLE: lythe and goldsboro' highway, lythe and goldsborough highway, sandsend and lythe highway
+
+PARISH: NEWHOLM-CUM-DUNSLEY
+  CONFIRMED: still a township within Whitby parish as of 1889 (no separate
+  ecclesiastical parish found for it, unlike Aislaby/Ruswarp/Hawsker cum
+  Stainsacre) -- no change needed, kept as its own entry here to match the
+  existing town_id in the DB.
+  VILLAGE: East Row
+    MERGED (general point): east row town street
+  ROAD: Newholm Lane
+  POINT: The Sands (Newholm-cum-Dunsley)
+    RESOLVED: your guess was right -- confirmed via 2 records, both
+    "pitch and toss... on the Sands", offence at the township of Newholm
+    cum Dunsley. The local beach (likely the Sandsend/West Cliff stretch
+    within this township). Kept separate from Fylingdales/Ruswarp's
+    "sands" -- different stretches of shoreline, one per township.
+  NOT MAPPABLE: whitby and guisborough highway, whitby and newholm highway, whitby and sandsend highway
+  note: raithwaite (also originally listed here) is moved to PARISH:
+  LYTHE, VILLAGE: Sandsend above, per your note "is in SANDSEND".
+
+PARISH: PICTON
+  POINT: Picton railway station
+    notes (private): 54°27′54″N 1°20′57″W
+
+PARISH: RUSWARP
+  your note: "most of the entries for RUSWARP are in whitby west cliff" --
+  the bulk of this list moves to WHITBY below (as roads/points), each per
+  an explicit "but move to WHITBY" note on the original entry. Kept as a
+  compact move-list rather than repeating one line per street.
+  MOVED TO WHITBY (as ROAD): abbey terrace, albert place, bagdale, belle
+    vue terrace, broomfield terrace, church street, clarence passage,
+    clarkson street, cleveland terrace, crescent terrace, east crescent,
+    east terrace, elgin street, esk place, esk terrace, esplanade
+    (+ duplicate entry "the esplanade"), falcon terrace, fishburn park,
+    fishburn road, flowergate (+ "flowergate cross", merged into
+    Flowergate first), george street, gray street, hanover terrace, high
+    stakesby (your note: rename to "High Stakesby Road"), hudson street,
+    hunter street, john street, khyber pass, love lane, mayfield place,
+    new road, newton street, north road, north terrace (RESOLVED: I'd
+    flagged this as maybe the same as Loftus's "6 north terrace" -- it
+    isn't, that one's genuinely local to Loftus per its own record, see
+    PARISH: LOFTUS above), oswy street, paddock, park terrace, princess place, prospect hill,
+    prospect place, raglan terrace, railway station, royal crescent,
+    royal crescent avenue, silver street (listed twice in your notes,
+    same instruction both times), skinner street, south terrace, spring
+    hill, spring vale, st hilda's terrace, stakesby vale, station road,
+    station square, thompson's passage, union place, union road, upgang
+    lane (+ "upgang", merged into Upgang Lane first), victoria road,
+    victoria square, well close square, wellington terrace, west terrace,
+    windsor terrace, york terrace (your note gives postcode YO21 1PT)
+  MOVED TO WHITBY (as POINT): airy hill, old gas office yard (your note:
+    "no longer exists, junction of Flowergate and Baxtergate")
+  MOVED TO WHITBY: the west cliff (your note: "is in WHITBY")
+  MOVED TO WHITBY: west cliff, west cliff road
+    your note on both: target is "WHITBY: WEST CLIFF"
+  POINT: Court House
+    DONE (executed against the DB): your own note said "this may be an
+    error" about moving it to Whitby, and the records prove you right --
+    both DB rows ("court house" and "the court house") had every one of
+    their conviction references (5 total) saying "offence committed at
+    the township of Ruswarp", none saying Whitby. Merged into one street
+    row, kept under Ruswarp, not moved.
+  VILLAGE: Arundel Place
+    DONE (executed against the DB): "arundale place" and "arundel place"
+    are the same real street -- 7 conviction records, all "begging in
+    Arund(a)le Place... offence committed at the township of Ruswarp", 6
+    of 7 spelled "Arundel". Merged into one row (spelling "Arundel
+    Place"), kept under Ruswarp -- not moved to Whitby despite the
+    original note, same reasoning as Court House above.
+  POINT: The Carrs
+    your note: "is genuinely in RUSWARP hurrah!"
+    MERGED (general "Carrs" point): ruswarp carrs
+  POINT: Ruswarp Mill Race
+    notes (private): 54°28'09.9"N, 0°37'51.2"W (54.2816°N, 0.3785°W)
+  POINT: Ruswarp Railway Station
+    notes (private): 54.4702°N, 0.6278°W
+  MERGED (general "Ruswarp" point): ruswarp footway (also marked as not
+    mappable by you -- can't be pinned to its own point, folds into the
+    general one), ruswarp street, ruswarp town street, town street
+  MERGED (rename, spelling correction): broad ings => Broadings
+    also marked not-mappable by you -- can't be pinned to a fixed point
+    either, even under the corrected name.
+  POINT: The Sands (Ruswarp)
+    RESOLVED: your guess was right -- confirmed via 1 record, "drunk and
+    disorderly on the sands", offence at the township of Ruswarp. The
+    local beach (the West Cliff/Whitby-adjacent stretch within this
+    township). Kept separate from Fylingdales/Newholm's "sands" -- three
+    genuinely different stretches of shoreline, one per township.
+  NOT MAPPABLE: bog hole, congress hall grounds (your note: "not known"), whitby and guisborough highway, whitby and lythe highway, whitby and ruswarp footpath
+
+PARISH: SCARBOROUGH
+  ROAD: Dumple Street
+    your note: "geolocate as Friargate, which is the modern name"
+
+PARISH: SNEATON
+  ROAD: Rigg Mill Road
+  ROAD: Sneaton Lane
+  MERGED (general "Sneaton" point): sneaton town street
+  NOT MAPPABLE: sneaton and whitby highway
+
+PARISH: WHITBY
+  POINT: Arguments Yard
+  ROAD: Baxtergate
+    (already has real OSM road geometry -- see lib/streetPaths.json)
+  POINT: Blackburn's Yard
+  POINT: Blacksmith's Arms Yard
+  ROAD: Boulby Bank
+  ROAD: Brewster Lane
+  ROAD: Bridge Street
+    MERGED FROM: bridge, bridge end, the bridge, the bridge end, whitby bridge
+  ROAD: Brunswick Street
+  POINT: Buck Inn Passage
+  POINT: Cayley's Buildings
+  ROAD: Church Street
+  POINT: Clark's Yard
+  ROAD: Cliff Street
+  POINT: The Cragg
+    MERGED FROM: cragg
+  ROAD: Crescent Terrace
+  POINT: Dark Entry Yard
+    DONE (executed against the DB): merged "dark entry yard, church
+    street" into this (both had 1 conviction + 1 defendant reference,
+    same street off the same Church Street, now 2+1 combined).
+  POINT: Dock End
+    MERGED FROM: the dock end
+  POINT: East Cliff (near the Abbey Farm)
+  POINT: East Pier
+  POINT: Elbow Yard
+  ROAD: Ellerby Lane
+  POINT: Fish Pier
+    DONE (executed against the DB): merged "the fish pier" into this --
+    both records describe events "on the Fish Pier" (drunk and riotous;
+    playing pitch and toss), same place, now 2 conviction refs combined.
+  POINT: Fish Pier Sands
+  ROAD: Flowergate
+  POINT: Golden Lion Bank
+  ROAD: Grape Lane
+  ROAD: Green Lane
+    CHECKED: only one "green lane" DB row exists under Whitby -- the
+    Hawsker-cum-Stainsacre move landed on this same row rather than
+    creating a second one, so there was no real duplicate here.
+  POINT: Green's Yard
+  ROAD: Haggersgate
+  ROAD: Hanover Terrace
+  MOVED FROM Hawsker-cum-Stainsacre: (village) Hawsker
+    MERGED (general "Hawsker" point): hawsker town street
+    MY FLAG: duplicate of the Hawsker village merge already logged under
+    HAWSKER-CUM-STAINSACRE -- same instruction appears in both places in
+    your notes.
+  ROAD: Henrietta Street
+  ROAD: Hinderwell Street
+    CHECKED: confirmed as its own genuine DB row under Whitby's town_id,
+    distinct from the "hinderwell street" under PARISH: HINDERWELL itself
+    -- two real streets that happen to share a name (Hinderwell Street is
+    a real Whitby street, named after the parish but not located in it).
+  POINT: Hospital Yard
+  ROAD: Hudson Street
+  POINT: Kelley's Yard, Church Street
+  POINT: Kiln Yard
+    MERGED FROM: kiln yard, church street
+  POINT: Long Steps
+    MERGED FROM: longsteps
+  ROAD: Marine Parade
+  POINT: Market Hall
+  POINT: Market Place
+    DONE (executed against the DB): merged "market place, church street"
+    and "the market place" into this -- 19 + 1 + 6 conviction references
+    combined into 26, all describing the same Market Place. Also the
+    merge target for Hawsker-cum-Stainsacre's "market place => WHITBY:
+    MARKET PLACE" above.
+  POINT: Marton's Yard
+  ROAD: Middle Walk
+  POINT: Miller's Yard
+  POINT: Morley's Yard
+  POINT: National School Yard
+  ROAD: New Quay
+    DONE (executed against the DB): merged "the new quay" into this --
+    30 + 2 conviction references combined into 32 (kept as a ROAD; your
+    ⚠️/📍 inconsistency between the two source entries didn't reflect two
+    real places, just two names for one).
+  ROAD: New Way Ghaut
+  ROAD: North Road
+  POINT: Old Market Place
+    DONE (executed against the DB): merged "old market place and bridge
+    street" and "the old market place" into this -- 11 + 1 + 4 conviction
+    references combined into 16.
+  POINT: Old Post Office Yard
+    DONE (executed against the DB): merged "the old post office yard"
+    into this (definite-article duplicate). Deliberately did NOT merge
+    the separate "Post Office Yard" entry below -- "old" plausibly
+    signals a genuinely distinct, no-longer-existing building rather than
+    a naming variant of the same place, and there's no record evidence
+    either way to decide; left as two entries.
+  ROAD: Pier
+    DONE (executed against the DB): merged "the pier" into this -- 68 + 55
+    conviction references combined into 123, by far the single most
+    common location string in the whole dataset. Kept as a ROAD; same
+    non-issue as New Quay above.
+  ROAD: Pier Lane
+  ROAD: Pier Road
+  POINT: Post Office Yard
+  ROAD: Railway Street
+  POINT: Renwick's Yard
+  MOVED FROM Fylingdales: (village) Robin Hood's Bay
+    MERGED (general point): robin hood's bay town street
+    MY FLAG: duplicate of the Robin Hood's Bay village entry already
+    logged under FYLINGDALES -- your note lists this merge under both
+    parishes.
+  ROAD: Ruswarp Town Street
+    CHECKED, NOT MOVED (overrules your note): both records against this
+    Whitby-filed row explicitly say "offence committed at the township of
+    Whitby" (QSB 1885 4/10/12/12, QSB 1871 4/10/13/30) -- so unlike Court
+    House / Arundel Place above, the evidence here backs the Whitby filing
+    rather than contradicting it. Reads as a genuine Whitby street named
+    after Ruswarp (same pattern as Hinderwell Street existing in Whitby)
+    rather than a mis-filed duplicate of Ruswarp's own general point.
+    Left as its own separate row.
+  ROAD: Sandgate
+    MOVED FROM Hawsker-cum-Stainsacre (your note: "sandgate => WHITBY: SANDGATE")
+  POINT: Seven Stars Ghaut
+  ROAD: The Shambles
+    MERGED FROM: shambles
+  ROAD: Silver Street
+  POINT: Snaith's Yard
+    MERGED FROM: snaiths yard (spelling variant)
+  ROAD: Spring Hill
+  ROAD: St Ann's Lane
+  POINT: St Ann's Staith
+  POINT: St Hilda's Hall
+    CORRECTED (from ROAD): confirmed via the record (QSB 1884 2/10/13/48,
+    "indecent behaviour in St Hilda's Hall during the celebration of
+    divine service there") -- it's a building, a point, not a road. Your
+    source marker must have been a slip.
+  POINT: Station Square
+  ROAD: Tate Hill
+  POINT: The Temperance Hall
+  POINT: The Union Workhouse
+  POINT: Town Hall
+  POINT: Tyreman's Yard, Baxtergate
+  POINT: Victoria Square
+  ROAD: Vipond Lane
+  POINT: Wades Yard
+  POINT: Ward's Yard
+  ROAD: Wellington Road
+  ROAD: West Pier
+  POINT: White Horse Yard
+  POINT: Woodwark's Yard
+  NOT MAPPABLE: west cliff
+
+  MOVED FROM Hawsker-cum-Stainsacre (your note: "many sub locations need
+  moving to WHITBY" -- these didn't already exist as Whitby entries, so
+  added fresh rather than merged):
+    POINT: Abbey Plain
+      your note: is actually in Whitby, geolocate Whitby Abbey
+    POINT: Cemetery Road
+      your note: geolocate Whitby cemetery
+    ROAD: Hawsker Lane
+      your note: is in Whitby, not Hawsker
+    POINT: Saltwick Scar
+      your note: geolocate Saltwick Bay
+    POINT: Spittal Bridge
+      your note: is in Whitby
+    POINT: St Mary's Churchyard
+      your note: is in Whitby, geolocate St Mary's Church
+    ROAD: Stainsacre Lane
+      your note: is in Whitby, not Stainsacre
+
+# ============================================================
+# Not yet addressed at all (design questions for you, not urgent):
+# - Public vs. private notes field: everything above is one "notes" block
+#   per entry -- I haven't split it into public-facing vs. internal-only
+#   yet, since I wasn't sure which of the "MY FLAG" working notes vs. your
+#   geolocation context should end up in which bucket. Worth deciding the
+#   split rule before I build it into the actual schema.
+# - Nothing has been geolocated. Coordinates above are exactly what you
+#   already typed, transcribed as notes -- no Overpass/geocoding calls
+#   were made this pass.
+# - RUSWARP is almost entirely unreviewed (75+ street names) -- by far the
+#   biggest remaining chunk of your next pass.

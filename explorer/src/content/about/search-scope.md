@@ -1,0 +1,1 @@
+The search box on [Convictions](/convictions) matches against the charge description, reference number, offence type, sentencing text, and offender/involved-person names. It does not currently match against occupation — searching “butcher” won’t find an offender with that occupation unless the word itself appears elsewhere in the record.

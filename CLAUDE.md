@@ -3,46 +3,52 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
-This is a Python-based scraper for historical court records from the North Riding Quarter Sessions archives. The project extracts, processes, and stores Summary Conviction records from Whitby historical court documents into a structured SQLite database.
+This is a Python-based scraper and structured-data pipeline for historical court records from the North Riding Quarter Sessions archives, plus a static Next.js explorer site for browsing and analysing the result. The project extracts, processes, and stores Summary Conviction records from Whitby historical court documents into a structured SQLite database, then serves them at `explorer/`.
 
 ## Core Workflow
-The project follows a multi-step data processing pipeline:
+The project is a multi-step data processing pipeline followed by a presentation layer. As of 2026-07, the pipeline has run to completion: all 6,257 staged Summary Conviction records are extracted (`raw_case.status = 'done'` for every row) — this is the full set of Summary Conviction records identified by the scrape, not a sample. Re-running the pipeline is idempotent/resumable and would only pick up genuinely new raw cases (e.g. after a fresh scrape) or retry rows that fail.
 
 ### Phase 1: Data Extraction (Complete)
-1. **01_list_resources.py** - Searches the archives website and generates JSON files of matching resource IDs and URLs
-2. **02_fetch_resources.py** - Downloads individual records from the cached JSON file and generates CSV data 
-3. **03_postprocess_resources.py** - Extracts Summary conviction records from CSV and saves to individual text files
+1. **scraper/01_list_resources.py** - Searches the archives website and generates JSON files of matching resource IDs and URLs
+2. **scraper/02_fetch_resources.py** - Downloads individual records from the cached JSON file and generates CSV data
 
-### Phase 2: Data Parsing (Planned - LLM-Based)
-4. **LLM Parsing Pipeline** - Parse unstructured text files into structured JSON using Large Language Models:
-   - Process each summary conviction text file individually
-   - Extract structured data elements (defendants, charges, dates, locations, etc.)
-   - Output standardized JSON format matching database schema
-   - Handle edge cases and validation
+### Phase 2: Data Parsing (Complete - LLM-Based)
+3. **data-loader/03_load_raw_cases.py** / **04_extract_structured_data.py** - Stage Summary Conviction rows and extract structured data via LLM (Anthropic/OpenAI, pluggable providers):
+   - Process records in cost-estimated, confirmed batches (see `qsrecords/cost_estimate.py`)
+   - Extract structured data elements (defendants, charges, dates, locations, offence taxonomy, etc.) against the schema in `qsrecords/models/extraction_schema.py`
+   - Self-reported confidence and uncertain-field flags travel with each record (see `SummaryConviction.extraction_confidence`/`uncertain_fields`)
 
-### Phase 3: Database Ingestion (Planned)
-5. **JSON to Database Import** - Ingest structured JSON into SQLite database following the relational schema
+### Phase 3: Database Ingestion (Complete)
+4. **JSON to Database Import** - `qsrecords/mapping.py::persist_extracted_record` ingests each extracted record into the normalized SQLModel schema (`qsrecords/models/`) — see `court-records-erd.md` for the current entity-relationship diagram.
+
+### Phase 4: Explorer / analysis site (Ongoing)
+5. **explorer/** - Static Next.js export (`npm run build`) reading `data/db.sqlite` at build time (`src/lib/db.ts`) for most pages, with two client-side search islands (Browse, People) that ship a copy of the database via sql.js for arbitrary free-text queries a static build can't enumerate in advance. Pages: Browse, Trends, People, Streets, Map, Taxonomy, About. See `explorer/AGENTS.md` before touching Next.js-specific code — this project pins a version with breaking API changes from the training-data-era Next.js.
 
 ## Key Commands
 
 ### Running the Pipeline
 ```bash
 # Step 1: Search and list resources
-python3 01_list_resources.py
+python3 scraper/01_list_resources.py
 
 # Step 2: Fetch individual records  
-python3 02_fetch_resources.py
+python3 scraper/02_fetch_resources.py
 
-# Step 3: Extract Summary conviction records
-python3 -m 03_postprocess_resources.py
+# Step 3+: Stage records and run LLM extraction (data-loader/ -- see
+# data-loader/qsrecords for the SQLModel schema, pluggable LLM providers,
+# and cost-estimate-before-you-spend confirmation prompt)
+python3 data-loader/03_load_raw_cases.py
+python3 data-loader/04_extract_structured_data.py --provider anthropic
+
+# Data-quality reports (repeated names, unreviewed offence categories)
+python3 data-loader/report.py
 ```
 
 ### Database Operations
 ```bash
-# Initialize the database with schema
-python3 scratch/initialize_db.py
-
-# Database file location
+# Database file location (shared by 01/02's CSV output and data-loader/'s
+# SQLModel schema -- data-loader/ is one part of a larger project built on
+# top of this shared data/ directory)
 data/db.sqlite
 ```
 
@@ -79,9 +85,10 @@ The database implements a relational model with these core entities:
 - **OFFENCE_TYPE**: Standardized offense categorization
 
 ### File Structure
-- `data/` - Contains output files (JSON, CSV, SQLite database)
-- `scratch/` - Database initialization scripts and schema
-- Root level - Main processing scripts (01_, 02_, 03_)
+- `data/` - Shared output files (JSON, CSV, SQLite database), used by both `scraper/` and `data-loader/`
+- `scraper/` - The archive-scraping scripts: `01_list_resources.py`, `02_fetch_resources.py`
+- `data-loader/` - The SQLModel/LLM-extraction pipeline (steps 3+): `qsrecords/` package, its tests, `03_load_raw_cases.py`, `04_extract_structured_data.py`, `report.py`. Self-contained (own `pyproject.toml`, `.env`) -- one part of a larger project
+- Root level - Shared docs (`CLAUDE.md`, `README.md`, `court-records-erd.md`) and `data/`
 
 ## Important Implementation Details
 
@@ -134,6 +141,16 @@ Based on sample records, typical offenses include:
 - Licensing violations (Sunday sales, drunkenness)
 - Weights and measures fraud
 - Public order offenses
+
+The database has a real two-level taxonomy for this: `offence_category` →
+`offence_type` (see `data-loader/qsrecords/offence_types.py`'s
+`OFFENCE_TAXONOMY`, and `/taxonomy` in the explorer for the browsable
+version). **Before extracting or hand-entering a record's `offence_types`,
+check `OFFENCE_TAXONOMY` (or the live `offence_type` table) for an existing
+leaf that fits** rather than inventing new phrasing for the same charge --
+that's exactly how the vocabulary fragmented to 91 near-duplicate strings
+the first time (six different names for "child not sent to school" alone)
+before the taxonomy migration collapsed it back to 55 canonical leaves.
 
 ## LLM Parsing Implementation Guide
 

@@ -1,0 +1,404 @@
+LEGEND
+❌ = DO NOT ATTEMPT to geolocate
+🔄 = This is incoerrecrly labeled - change or merge THIS INTO A DIFFERENT TOWN (IE CHANGE X INTO TOWN Y X => Y)
+🏘️ = is a separate town not a street in a town
+📍 = isnt a street, is a point location - show a marker instead 
+/┆\ = is a road - needs a polygon fetching
+⚠️ = has major problem read description - all the entries that are 'sands' are a potential problem. we need to check the context but they ar likely to be the beach - whic hcan be a geolocated ppint
+
+NB: most of the entires for RUSWARP are in whitby west cliff
+most of the entries for hawsker are in whitby east cliff
+
+NB: most of the geolocation of points nad towns can be done using googel.
+
+----- 8<---------
+
+AISLABY
+  🔄 aislaby street => AISLABY
+  🔄 aislaby town street => AISLABY
+  ❌ whitby and guisborough highway
+  📍 woodlands => 54°27′36″N 0°40′22″W (decimal coordinates 54.4601°N, 0.6728°W
+
+BARNBY
+  🏘️ east barnby
+  🔄 east barnby town street => EAST BARNBY
+  ❌ lythe and barnby highway
+  ❌ whitby and guisborough highway
+
+BORROWBY
+  📍 dale house - Degrees, Minutes, Seconds (DMS): 54°32'43.1"N 0°48'13.3"W
+
+EGTON
+  ❌ egton and rosedale highway
+  📍 egton bridge railway station  54.43677° N, 0.76398° W (latitude and longitude) or OS grid reference NZ804052. 
+  📍 egton bridge town street => EGTON BRIDGE => 54.43677° N, 0.76398° W (latitude and longitude) or OS grid reference NZ804052. 
+  🔄 egton street => EGTON
+  🔄 egton town street => EGTON
+  ❌ egton white house
+  ⚠️ esk valley - Esk Valley is the whole area around all of theese places in the db including whitby/ this is a TOP level geography and cannot be mapped
+  ❌ glaisdale and egton highway
+  📍 lease rigg  Latitude/Longitude (Decimal): 54.42660° N, -0.74590° WLatitude Longitude (DMS): 54° 25' 35" N, 0° 44' 45" W
+  ❌ pickering and stape highway
+  📍 wilks farm NZ 478 508 (Full reference: NZ 478387 508550)  YO21 2AA
+
+ELLERBY
+  📍 ellerby bank top Latitude/Longitude (WGS84): 54.51253° N, 0.77217° W OS Grid Reference: NZ 79595 13715 (General area NZ 795 137)
+  🔄 ellerby town street => ELLERBY
+  ❌ runswick and ellerby highway
+
+ESKDALESIDE
+  📍 blue bank  NZ 868 061 and latitude-longitude coordinates 54.4437° N, 0.6627° W.
+  🏘️ grosmont
+  📍 grosmont bridge => 54.4376° N, 0.7307° W (54°26'15.5"N, 0°43'50.5"W) or National Grid Reference NZ 82426 05432
+  🔄 grosmont street => GROSMONT
+  🔄 grosmont town => GROSMONT
+  🔄 grosmont town street => GROSMONT
+  ❌ new street
+  🏘️ sleights
+  🔄 sleights town street => SLEIGHTS
+
+ESKDALESIDE-CUM-UGGLEBARNBY
+  ❌ eskdaleside highway
+  🔄 grosmont town street => GROSMONT
+  mohlan
+  🏘️ sleights
+  ❌ sleights and grosmont highway
+  🔄 sleights town street => SLEIGHTS
+  ❌ whitby and pickering highway
+
+FYLINGDALES
+  ⚠️ raw ?????
+  ⚠️ raw pasture ?????
+  ⚠️ raw town street ?????
+  🏘️ robin hood's bay
+  ❌ robin hood's bay and hawsker highway
+  ❌ robin hood's bay and whitby highway
+  ❌ robin hood's bay lane
+  ❌ robin hood's bay town street
+  ⚠️  sands ???
+  /┆\ station road
+  📍 stoupe brow => Latitude 54.402717° N, Longitude 0.516022° W (or Ordnance Survey grid reference NZ96430182), 
+  🔄 stow brow => alternative spelling of Stoupe brow
+  🔄 thorpe => 🏘️ FYLINGTHORPE which is a town
+  ❌ thorpe and robin hood's bay highway
+  🔄 thorpe town street => FYLINGTHORPE
+  ❌ whitby and robin hood's bay highway
+
+GLAISDALE
+  /┆\ carr lane
+  ❌ glaisdale and rosedale highway
+  🔄 glaisdale end
+  ❌ glaisdale highway
+  🔄 glaisdale street => GLAISDALE
+  🔄 glaisdale town street => GLAISDALE
+  ❌ lealholm and fryup highway
+  ❌ lealholm and glaisdale highway
+  ❌ lealholm and stonegate highway
+  🔄 lealholm bridge => 🏘️ LEAHOLM
+  🔄 lealholm bridge town street => 🏘️ LEAHOLM
+  🔄 lealholm lane => 🏘️ LEAHOLM
+  🔄 lealholm town street => 🏘️ LEAHOLM
+  📍 stonegate => is a tiny hmalet in glaisdale so effectiely a point
+
+HAWSKER-CUM-STAINSACRE (many sub locations need moving to WHITBY)
+  📍abbey plain => is actually in whitby geolocate whitby abbey
+  📍 cemetery road => geolocate whitby cemetry
+  /┆\ green lane  =>  but move to WHITBY not Hawsker
+  ❌ hawsker and robin hood's bay highway
+  /┆\ hawsker lane => but it is in WHITBY
+   🔄 hawsker town street => HAWSKER
+  🔄  market place => WHITBY: MARKET PLACE
+  ❌ new gardens footpath
+  📍 cemetery road => geolocate whitby cemetry
+  📍 saltwick scar => geolocate Saltwick bay
+  🔄 sandgate => WHITBY: SANDGATE
+  📍 spittal bridge => is in WHITBY
+  📍 st mary's churchyard => is in WHITBY - geolocate st amrys church
+  /┆\ stainsacre lane => but move to WHITBY
+   ❌ timber hill (was real and was in hawsker but no longer extant)
+  ❌ whitby and hawsker highway
+  ❌ whitby and robin hood's bay highway
+  ❌ whitby and stainsacre highway
+  ❌ whitehall
+
+HINDERWELL
+  /┆\ church street => is in STAITHES
+  🔄 hinderwell street => HINDERWELL
+  🔄 hinderwell town street => HINDERWELL
+  🔄 mickleby town street => HINDERWELL
+  📍  port mulgrave
+  🔄 port mulgrave town street => PORT MULGRAVE
+  /┆\ rosedale lane
+  /┆\ rosedale street => ROSEDALE LANE
+   ❌ runswick and ellerby highway
+  🔄 runswick bank => point location in RUNSWICK BAY
+  🔄 runswick bank top => point location in RUNSWICK BAY
+  🔄 runswick lane => RUNSWICK BAY
+  🔄 runswick town street => RUNSWICK BAY
+  ❌ staithes and hinderwell highway
+  /┆\ staithes high street => is a road but move to STAITHES
+  ❌ staithes highway
+  🔄 staithes lane  => STAITHES
+  🔄 staithes lane end  => STAITHES
+  🔄 staithes station => is a point location in STAITHES
+  🔄 staithes street => STAITHES
+  🔄 staithes town street  => STAITHES
+  🔄📍 the black lion public house => point location on STAITHES: HIGH STREET
+  📍 the red lion public house => Geolocate The Stidddy YO21 3RT
+
+LOFTUS
+  🔄 6 north terrace => NORTH TERRACE
+
+LYTHE
+  📍 goldsborough (is a tiny hmalet)
+  🔄 goldsborough town street => goldsborough
+  🔄 landsend road => is a type for SANDSEND ROAD (whic his a road and which exists)_
+  ❌ lythe and goldsboro' highway
+  ❌ lythe and goldsborough highway
+  🔄 lythe bank => LYTHE
+  🔄 lythe town street => LYTHE
+  📍 overdale =>  54.51599° N, 0.6931° W (54° 30′ 58″ N, 0° 41′ 35″ W). 
+  ❌ sandsend and lythe highway
+  🔄 sandsend town street => SANDSEND
+
+MICKLEBY
+  🔄 mickleby town street => MICKLEBY
+  🔄 runswick lane => is a road but actually in HINDERWELL
+  ❌ whitby and guisborough highway
+
+NEWHOLM-CUM-DUNSLEY
+  🏘️ east row
+  🔄 east row town street
+  /┆\ newholm lane
+  📍 raithwaite => is in SANDSEND
+  ⚠️ sands => ???? would need context from the redord. likely means the beach?
+  ❌ whitby and guisborough highway
+  ❌ whitby and newholm highway
+  ❌ whitby and sandsend highway
+
+PICTON
+  📍 picton railway station => : 54°27′54″N 1°20′57″W
+
+ROXBY
+  ❌ roxby and guisborough highway
+  ❌ roxby highway
+  ❌ whitby and guisborough highway
+
+RUSWARP
+  🔄 abbey terrace => /┆\ but move to WHITBY
+  🔄 airy hill => 📍 but move to WHITBY
+  🔄 albert place => /┆\ but move to WHITBY
+  🔄 arundale place => ARUNDALE PLACE 
+  🔄 arundel place   => /┆\ but move to WHITBY
+  🔄 bagdale  => /┆\ but move to WHITBY
+  🔄 belle vue terrace  => /┆\ but move to WHITBY
+  ❌ bog hole
+  🔄❌ broad ings => but is BROADINGS
+  🔄 broomfield terrace  => /┆\ but move to WHITBY
+  🔄  church street  => /┆\ but move to WHITBY
+  🔄  clarence passage  => /┆\ but move to WHITBY
+  🔄  clarkson street  => /┆\ but move to WHITBY
+  🔄  cleveland terrace  => /┆\ but move to WHITBY
+  ❌ congress hall grounds ?? not known
+   🔄 court house => WHITBY: The Court House but also double check because this may be an error
+  🔄 crescent terrace  => /┆\ but move to WHITBY
+  🔄 east crescent  => /┆\ but move to WHITBY
+  🔄 east terrace  => /┆\ but move to WHITBY
+  🔄 elgin street  => /┆\ but move to WHITBY
+  🔄 esk place  => /┆\ but move to WHITBY
+  🔄 esk terrace   => /┆\ but move to WHITBY
+  🔄 esplanade  => /┆\ but move to WHITBY
+  🔄  falcon terrace  => /┆\ but move to WHITBY
+  🔄  fishburn park  => /┆\ but move to WHITBY
+  🔄  fishburn road  => /┆\ but move to WHITBY
+  🔄 flowergate  => /┆\ but move to WHITBY
+  🔄 flowergate cross  => FLOWERGATE but move to WHITBY
+  🔄  george street  => /┆\ but move to WHITBY
+  🔄  gray street  => /┆\ but move to WHITBY
+  🔄  hanover terrace  => /┆\ but move to WHITBY
+  🔄 high stakesby => /┆\ but move to WHITBY: HIGH STAKESBY ROAD
+  🔄hudson street => /┆\ but move to WHITBY
+  🔄hunter street => /┆\ but move to WHITBY
+  🔄john street => /┆\ but move to WHITBY
+  🔄 khyber pass  => /┆\ but move to WHITBY
+  🔄love lane => /┆\ but move to WHITBY
+  🔄mayfield place => /┆\ but move to WHITBY
+  🔄new road => /┆\ but move to WHITBY
+  🔄newton street => /┆\ but move to WHITBY
+  🔄north road => /┆\ but move to WHITBY
+  🔄north terrace => /┆\ but move to WHITBY
+  📍 old gas office yard => is in WHITBY. no longer exists. junction of flowergate and baxtergate
+  oswy street => /┆\ but move to WHITBY
+  🔄 paddock  => /┆\ but move to WHITBY
+  🔄 park terrace  => /┆\ but move to WHITBY
+  🔄 princess place  => /┆\ but move to WHITBY
+  🔄 prospect hill  => /┆\ but move to WHITBY
+  🔄 prospect place  => /┆\ but move to WHITBY
+  🔄 raglan terrace  => /┆\ but move to WHITBY
+  🔄 railway station  => /┆\ but move to WHITBY
+  🔄 royal crescent  => /┆\ but move to WHITBY
+  🔄 royal crescent avenue  => /┆\ but move to WHITBY
+  🔄 ruswarp carrs => THE CARRS
+ ❌ ruswarp footway => RUSWARP
+   📍 ruswarp mill race =>  54°28'09.9"N, 0°37'51.2"W (54.2816° N, 0.3785° W)
+  📍 ruswarp railway station => 54.4702° N, 0.6278° W (or decimal 54.470200, -0.627766). 
+  🔄ruswarp street => RUSWARP
+  🔄ruswarp town street => RUSWARP
+  ⚠️ sands
+  🔄 silver street  => /┆\ but move to WHITBY
+  🔄 skinner street  => /┆\ but move to WHITBY
+  🔄 south terrace  => /┆\ but move to WHITBY
+  🔄spring hill => /┆\ but move to WHITBY
+  🔄spring vale => /┆\ but move to WHITBY
+  🔄st hilda's terrace  => /┆\ but move to WHITBY
+  🔄stakesby vale  => /┆\ but move to WHITBY
+  🔄station road  => /┆\ but move to WHITBY
+  🔄station square   => /┆\ but move to WHITBY
+  📍 the carrs => is genuinelt in RUSWARP hurrah!
+   ⚠️the court house => need to check record this looks like a mistake
+  🔄the esplanade => /┆\ but move to WHITBY
+  🔄the west cliff  => is in WHITBY
+  🔄thompson's passage  => /┆\ but move to WHITBY
+  🔄 silver street  => /┆\ but move to WHITBY
+  🔄 town street => RUSWARP
+  🔄union place  => /┆\ but move to WHITBY 
+  🔄union road  => /┆\ but move to WHITBY 
+  🔄upgang   => UPGANG LANE
+  🔄upgang lane  => /┆\ but move to WHITBY
+  🔄victoria road  => /┆\ but move to WHITBY 
+  🔄victoria square   => /┆\ but move to WHITBY 
+  🔄well close square    => /┆\ but move to WHITBY 
+  🔄wellington terrace  => /┆\ but move to WHITBY 
+  ❌ west cliff => WHITBY: WEST CLIFF
+  ❌ west cliff road => WHITBY: WEST CLIFF
+  🔄west terrace  => /┆\ but move to WHITBY
+  ❌ whitby and guisborough highway
+  ❌ whitby and lythe highway
+  ❌ whitby and ruswarp footpath
+  🔄windsor terrace => /┆\ but move to WHITBY 
+  🔄york terrace  => /┆\ but move to WHITBY YO21 1PT
+
+SCARBOROUGH
+  /┆\ dumple street => geolocate as FRiargate which is the modern name
+
+SNEATON
+  /┆\ rigg mill road
+  ❌ sneaton and whitby highway
+  /┆\ sneaton lane
+  🔄 sneaton town street => SNEATON
+
+UGGLEBARNBY
+  🔄 blue bank => is in SLEIGHTS
+  📍 littlebeck => (is a tiny hamlet)
+  🔄 sleights town street => SLEIGHTS
+  ❌ ugglebarnby and littlebeck highway
+  /┆\ ugglebarnby lane
+
+UGTHORPE
+  /┆\  broom house lane
+  🔄 ugthorpe town street => UGTHORPE
+
+WHITBY
+  📍  arguments yard
+  /┆\ baxtergate
+  📍  blackburn's yard
+  📍 blacksmith's arms yard
+  /┆\ boulby bank
+  /┆\ brewster lane
+  🔄 bridge => BRIDGE STREET
+  🔄 bridge end => BRIDGE STREET
+  /┆\ bridge street
+  /┆\ brunswick street
+  📍  buck inn passage
+  📍 cayley's buildings
+  /┆\ church street
+  📍  clark's yard
+  /┆\ cliff street
+  🔄 cragg => the cragg
+  /┆\ crescent terrace
+  📍  dark entry yard
+  📍 dark entry yard, church street
+  📍 dock end
+  📍 east cliff near the abbey farm
+  📍 east pier
+  📍 elbow yard
+  /┆\ ellerby lane
+  📍 fish pier
+  📍 fish pier sands
+  /┆\ flowergate
+  📍 golden lion bank
+  /┆\ grape lane
+  /┆\ green lane
+  📍  green's yard
+  /┆\ haggersgate
+  /┆\ hanover terrace
+  🔄 hawsker town street => HAWSKER
+  /┆\ henrietta street
+  /┆\ hinderwell street
+  📍  hospital yard
+  /┆\ hudson street
+  📍  kelley's yard, church street
+  📍 kiln yard
+  🔄 kiln yard, church street => KILN YARD
+  📍 long steps
+  🔄 longsteps => LONG STEPS
+  /┆\ marine parade
+  📍 market hall
+  📍 market place
+  📍market place, church street
+  📍 marton's yard
+  /┆\ middle walk
+  📍 miller's yard
+  📍 morley's yard
+  📍 national school yard
+  /┆\ new quay
+  /┆\ new way ghaut
+  /┆\ north road
+  📍 old market place
+  📍 old market place and bridge street => OLD MARKET PLACE
+  📍 old post office yard
+  /┆\ pier
+  /┆\ pier lane
+  /┆\ pier road
+  📍 post office yard
+  /┆\ railway street
+  📍 renwick's yard
+  🔄 robin hood's bay town street => ROBIN HOOD'S bay
+  🔄 ruswarp town street => RUSWARP
+  /┆\ sandgate
+  📍 seven stars ghaut
+  🔄 shambles => THE SHAMBLES
+  /┆\ silver street
+  📍 snaith's yard
+  📍 snaiths yard => SNAITH's YARD
+  /┆\ spring hill
+  /┆\ st ann's lane
+  📍 st ann's staith
+  /┆\ st hilda's hall
+  📍 station square
+  /┆\ tate hill
+  🔄  the bridge => BRIDGE STREET
+  🔄 the bridge end => BRIDGE STREET
+  📍 the cragg
+  📍 the dock end => DOCK END
+  📍 the fish pier
+  📍 the market place
+  📍 the new quay
+  📍 the old market place
+  📍 the old post office yard
+  📍 the pier
+  /┆\ the shambles
+  📍 the temperance hall
+  📍 the union workhouse
+  📍 town hall
+  📍 tyreman's yard, baxtergate
+  📍victoria square
+  /┆\ vipond lane
+  📍 wades yard
+  📍 ward's yard
+  /┆\ wellington road
+  ❌ west cliff
+  /┆\ west pier
+   🔄 whitby bridge => BRIDGE STREET
+  📍 white horse yard
+  📍 woodwark's yard

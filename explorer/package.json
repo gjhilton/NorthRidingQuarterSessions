@@ -1,0 +1,46 @@
+{
+  "name": "explorer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run copy-db && npm run export-csv && (npm run panda:watch &) && next dev",
+    "panda:watch": "panda codegen --watch",
+    "copy-db": "node scripts/copy-db.mjs",
+    "export-csv": "node scripts/export-csv.mjs",
+    "build": "npm run copy-db && npm run export-csv && next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "mermaid": "^11.16.0",
+    "next": "16.2.10",
+    "react": "19.2.4",
+    "react-accessible-treeview": "^2.11.2",
+    "react-dom": "19.2.4",
+    "react-leaflet": "^5.0.0",
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.9.2",
+    "server-only": "^0.0.1",
+    "sql.js": "^1.14.1"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^1.11.4",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sql.js": "^1.4.11",
+    "better-sqlite3": "^12.11.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "typescript": "^5"
+  },
+  "allowScripts": {
+    "better-sqlite3@12.11.1": true,
+    "esbuild@0.25.12": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.12.2": true
+  }
+}

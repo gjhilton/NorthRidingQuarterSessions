@@ -1,0 +1,73 @@
+@layer reset, base, tokens, recipes, utilities;
+
+html {
+  /* The root all rem-based sizing (including every fontSizes token in
+     theme/tokens.ts) scales from. 100% respects the browser/user default
+     (and any zoom/accessibility text-size setting) rather than pinning an
+     absolute px value -- change this to resize the whole app at once. */
+  font-size: 100%;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--colors-bg);
+  color: var(--colors-fg);
+  font-family: var(--fonts-sans);
+  /* The actual default: unstyled text (anything that doesn't set its own
+     fontSize) should already be the correct body copy size, not the
+     browser's 1rem -- forgetting an explicit fontSize: "body" on some
+     element shouldn't be able to silently render undersized text. Every
+     component that needs a *different* size (headings, small print) still
+     overrides this via its own more-specific class. */
+  font-size: var(--font-sizes-body);
+}
+
+/* Site-wide convention: every link is the accent red, never underlined --
+   deliberately unlayered (not @layer base) so it overrides both Panda's
+   reset and any component's own color/hover utility classes, without
+   needing this set on every individual Link/anchor across src/. Unlayered
+   CSS always beats layered CSS regardless of source order, per the cascade
+   layers spec -- see the @layer statement at the top of this file for the
+   layers this is deliberately outside of. */
+a {
+  color: var(--colors-fg-accent);
+  text-decoration: none;
+}
+
+/* Header nav: black links on a white header background, red only on
+   rollover. More specific than the bare `a` rule above (and still
+   unlayered, so it still beats any component-level utility classes),
+   which is what lets it win without touching the general site-wide link
+   rule. */
+header a {
+  color: var(--colors-fg);
+}
+/* A brighter, more "primary" red than the site's usual accent colour --
+   specifically for nav rollover, not a token, deliberately distinct from
+   --colors-fg-accent. */
+header a:hover {
+  color: #f00;
+}
+
+/* Footer links get the same treatment as header links -- black by default,
+   red on rollover -- for the same reason the header does: the bare `a`
+   rule above would otherwise always win. */
+footer a {
+  color: var(--colors-fg);
+}
+footer a:hover {
+  color: var(--colors-fg-accent);
+}
+
+/* /locations grid (LocationGrid.tsx) gets the same black-by-default,
+   red-on-rollover treatment, same reasoning as header/footer above. */
+.location-grid a {
+  color: var(--colors-fg);
+}
+.location-grid a:hover {
+  color: var(--colors-fg-accent);
+}

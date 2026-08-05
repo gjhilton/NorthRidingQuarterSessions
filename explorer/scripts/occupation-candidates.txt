@@ -1,0 +1,403 @@
+acting sergeant of police   =>   sergeant of police (acting)                                         9
+actor                                                                  1
+agent for the trustees of the piers and harbour of whitby   => business agent + note of employer          1
+agent of the north eastern railway company             => business agent +note of employer               2
+agent of the whitby iron company                => business agent + note of employer                        1
+agent to the bagnalls               => business agent + note of employer                                   1
+ale and porter dealer                                                  1
+alehouse keeper                                                        7
+apprentice                                                             4
+apprentice cabinet maker  => apprentice + cabinet maker                                             1
+apprentice seaman        > apprentice + seaman                                                   3
+apprentice shoemaker    > apprentice +shoemaker                                                  1
+apprentice to the sea service   > apprentice + sea service                                         1
+artist                                                                 1
+assistant chemist                            => assistant + chemist                            1
+assistant constable                       => assistant +contable                              1
+assistant fitter                 => assistant + fitter                                       1
+assistant overseer       => assistant + overseer                                              1
+attorney's clerk                                                       1
+auctioneer                                                             2
+bacon factor                                                           1
+bacon seller                                                           3
+baker                                                                  18
+baker's apprentice    > apprentice + note of trade                                                  2
+ballast heaver                                                         1
+banksman                                                               1
+barber's assistant  => assitant + barber                                                   2
+barmaid                                                                1
+barman                                                                 1
+baronet                                                                6
+basket maker                                                           1
+beer house keeper      => publican                                                              10
+beerhouse keeper    => publican                                                     2
+blacksmith                                                             50
+block and mast maker                                                   1
+boat builder                                                           4
+boiler maker                                                           1
+book binder                                                            1
+book hawker                                                            1
+boot closer                                                            2
+botanist                                                               1
+brass finisher                                                         2
+brass moulder                                                          1
+brick maker   => brickmaker                                                          2
+brick manufacturer     => brickmaker                                                 1
+bricklayer                                                             44
+brickmaker                                                             2
+builder                                                                1
+butcher                                                                105
+butcher and milk seller    => Butcher + milk seller                                            1
+butcher's assistant    => butcher + assistant                                                1
+butter and bacon seller                                                1
+butter seller                                                          1
+cab driver                                                             37
+cab proprietor     => cab driver                                                      3
+cabinet maker                                                          11
+carpenter                                                              58
+carpenter's apprentice                                                 1
+carriage driver     =>   cab driver                                                  7
+carrier                                                                14
+cart driver  => carter                                                    1
+carter                                                                 1
+cartman       => carter                                                           39
+cartwright                                                             5
+carver and gilder                                                      1
+cattle dealer                                                          7
+caulker                                                                3
+chair maker                                                            1
+chimney sweep                                                          6
+chiropodist                                                            1
+clerk of the local board for the district of hinderwell     => clerk + note of employer           1
+clerk to hinderwell local board         => clerk + note of employer                                  1
+clogger                                                                1
+clown                                                                  1
+coachmaker                                                             1
+coal dealer   => cola merchant                                                         6
+coal leader                                                            1
+coal merchant                                                          3
+coal miner                                                             1
+coal porter                                                            17
+collector of rates and dues for the harbour of whitby        => rate collector           8
+collector of rates and dues of the harbour of whitby   => rate collector                1
+collector of tolls on the whitby and pickering railway   => railway ticket imspector              3
+common brewer   =>  brewer                                                         1
+common carrier   =>  brewer                                                        3
+common lodging house keeper     => lodging house keeper                                         18
+common prostitute   => prostitute                                                   27
+compositor                                                             1
+confectioner                                                           3
+constable                                                              12
+constable for the north riding  => constable + note of beat                                       62
+constable of the north riding   => constable + note of beat                                            23
+constable of the township of whitby    => constable + note of beat                                      1
+constable of whitby           => constable + note of beat                                               1
+cooper                                                                 1
+costermonger                                                           2
+currier                                                                2
+cutler                                                                 1
+dealer in patent medicines                                             1
+decorator                                                              1
+dentist                                                                1
+detective in the service of the north eastern railway company   => detective + npte of employer       1
+doctor of medicine       => medical doctor                                              1
+doctor's assistant       => medical doctor + assistant                                              1
+domestic servant                                                       8
+drainer                                                                2
+draper                                                                 1
+draper's apprentice    => draper + apprentice                                                3
+draper's assistant    => draper + assistant                                               1
+drayman                                                                1
+dressmaker                                                             1
+driller                                                                2
+driver in a coal mine   => driver                                               1
+druggist                                                               1
+dyer                                                                   1
+earthenware dealer                                                     2
+engine cleaner                                                         3
+engine driver                                                          6
+engine fitter                                                          1
+engineer                                                               1
+engraver                                                               2
+errand boy                                                             3
+esquire                                                                15
+excise officer                                                         5
+farm labourer                                                          8
+farm servant  => farm labourer                                                            49
+farmer                                                                 134
+fettler                                                                1
+fireman                                                                11
+fish buyer          => fish merchant                                                        5
+fish curer                                                             2
+fish dealer     => fish merchant                                                         9
+fish hawker      => fishmonger                                                      35
+fish merchant                                                          1
+fish packer                                                            4
+fisherman                                                              319
+fishmonger                                                             4
+fitter                                                                 6
+flaxdresser                                                            1
+foreman                                                                1
+foreman platelayer     => foreman                                                1
+foreman scavenger        => foreman                                              1
+forester                                                               1
+french polisher                                                        1
+fruit dealer                                                           1
+fruit hawker                                                           1
+fruiterer                                                              49
+furnaceman                                                             10
+furniture broker   => furniture dealer                                                    2
+furniture dealer                                                       1
+furrier                                                                1
+game dealer                                                            3
+game watcher   => gamekeeper                                                         13
+gamekeeper                                                             9
+gamewatcher   => gamekeeper                                                          1
+ganger                                                                 1
+gardener                                                               9
+gas fitter                                                             3
+gate keeper      => gatekeeper                                                       1
+gatekeeper                                                             1
+gentleman   => DELETE                                                           15
+gilder                                                                 1
+glazier                                                                1
+greengrocer                                                            3
+grinder                                                                1
+grocer                                                                 25
+grocer and beer house keeper   => grocer + publican                                        1
+groom                                                                  17
+gunsmith                                                               1
+hackney carriage driver          => cab driver                                      1
+hairdresser                                                            2
+harbour master                                                         4
+harbour master of the port of whitby  => harbour master                                 1
+hatter                                                                 1
+hawker                                                                 73
+hawker and pedlar       => hawker                                               3
+hawker and trading person going from house to house on foot   => hawker              1
+hawker, pedlar and petty chapman                     => hawker                      1
+heater                                                                 1
+helper                                                                 2
+herbalist                                                              1
+herdsman                                                               1
+herring packer                                                         1
+highway surveyor                                                       1
+hind     => DELETE                                                              2
+horse dealer                                                           1
+horse driver                                                           1
+huckster                                                               1
+innkeeper  => PUBLICAN                                                            87
+innkeeper and farmer  => PUBLICAN  + farmer                                                 1
+innkeeper of the fox and hounds inn, ainthorpe   => PUBLICAN + note                       1
+inspector of nuisances                                                 7
+inspector of nuisances for whitby urban district  => inspector of nuisances                         1
+inspector of police                                                    51
+inspector of weights and measures                                      9
+iron moulder                                                           2
+iron shipbuilder's apprentice  => apprentice + shipbuilder                                        1
+iron worker => ironworker                                                            6
+ironstone miner                                                        3
+ironworker                                                             4
+jet apprentice =>    jet worker    + apprentice                                                 2
+jet dealer                                                             1
+jet merchant                                                           1
+jet miner                                                              1
+jet ornament manufacturer                            =>    jet worker                       33
+jet ornament manufacturer's apprentice    =>    jet worker    + apprentice                                  2
+jet turner      => jet worker                                                        1
+jet worker                                                             1048
+jet worker apprentice       =>    jet worker    + apprentice                                               1
+jeweller                                                               3
+joiner                                                                 53
+joiner and cartwright        => joiner + cartwright                                          1
+joiner's apprentice       => joiner , apprentice                                             1
+labourer                                                               1319
+labourer and hawker   => labourer + hawker                                                 1
+labourer, destitute wayfarer      => labourer + destitute                                      3
+labourer, destitute wayfarer and wanderer              => labourer + destitute                    3
+land surveyor                                                          4
+late farmer          => farmer                                                  1
+late innkeeper  => publican                                                        2
+leather dresser                                                        2
+letter carrier                                                         2
+licensed beer house keeper      => publican                                           1
+licensed hawker          => hawker                                              3
+licensed victualler        => victualer                                            138
+lodging house keeper                                                   2
+lord of the manor of skelton                                           1
+manager of ironstone mines                                             1
+marine store dealer                                                    4
+marine store dealer and dealer in old metals                           2
+mariner                                                                38
+mariner and master of the vessel william ash                           1
+mariner, master of the vessel anns                                     1
+mariner, master of the vessel dependent                                1
+mariner, master of the vessel two brothers                             1
+mason                                                                  2
+master and owner of the steam tug rambler                              1
+master mariner                                                         10
+master of the fishing boat thomas and william                          1
+meal seller                                                            3
+medical officer of health                                              1
+merchant's clerk                                                       1
+metal carrier                                                          5
+milk boy                                                               2
+milk seller                                                            4
+miller                                                                 13
+miner                                                                  267
+miner employed at the grosmont mine                                    1
+moulder                                                                9
+music seller                                                           1
+musician                                                               3
+navvy                                                                  5
+nut hawker                                                             1
+officer of inland revenue                                              1
+omnibus driver                                                         1
+optician                                                               1
+ostler                                                                 6
+overseer of the poor of the township of hinderwell                     1
+painter                                                                21
+painter's apprentice                                                   1
+paper maker                                                            1
+pauper                                                                 1
+pawnbroker                                                             3
+pedlar                                                                 27
+pensioner                                                              1
+petty chapman and pedlar                                               1
+photographer                                                           7
+pig jobber                                                             3
+pilot                                                                  5
+plasterer                                                              8
+platelayer                                                             3
+plater                                                                 9
+plumber                                                                6
+plumber and glazier                                                    1
+police constable                                                       809
+police constable for the north riding                                  1
+police officer                                                         3
+police superintendent                                                  1
+policeman                                                              1
+pork butcher                                                           6
+post master                                                            1
+postboy                                                                1
+postman                                                                2
+pot hawker                                                             4
+potato dealer                                                          1
+poultry dealer                                                         1
+printer                                                                7
+printer's apprentice                                                   1
+prostitute                                                             3
+provision dealer                                                       1
+puddler                                                                1
+punchinello                                                            1
+pupil teacher                                                          1
+quarryman                                                              20
+rabbit catcher                                                         3
+rag gatherer                                                           15
+railway clerk                                                          2
+railway guard                                                          1
+railway labourer                                                       2
+railway porter                                                         3
+rector of whitby                                                       2
+retailer of beer                                                       1
+retired ironmonger                                                     1
+retired mariner                                                        1
+retired miller                                                         3
+retired tinner                                                         1
+reverend                                                               1
+riveter                                                                26
+saddler                                                                1
+sailmaker                                                              2
+sailor                                                                 77
+sand hawker                                                            1
+sawyer                                                                 8
+schoolboy                                                              12
+schoolmaster                                                           2
+scissor grinder                                                        2
+sculptor                                                               1
+seaman                                                                 8
+sergeant in the east and north york artillery militia                  1
+sergeant of police                                                     70
+servant in husbandry                                                   18
+servant of elizabeth thompson                                          1
+servant of william piercy                                              1
+ship carpenter                                                         4
+ship owner                                                             9
+shipbuilder                                                            1
+shipbuilder's apprentice                                               1
+shipowner                                                              7
+shipwright                                                             6
+shoemaker                                                              52
+shop porter                                                            3
+shopkeeper                                                             1
+signalman                                                              1
+singlewoman                                                            27
+slater                                                                 3
+smith                                                                  2
+soap manufacturer                                                      1
+soldier                                                                3
+solicitor                                                              1
+special constable                                                      2
+spirit merchant                                                        1
+station master                                                         5
+stoker                                                                 3
+stone mason                                                            2
+stonemason                                                             49
+striker                                                                2
+sub-distributor of stamps                                              20
+superintendent of police                                               116
+superintendent of police and constable  => superintendent of police    + constable                               1
+superintendent of police and constable for the north riding  =>  superintendent of police    + constable         1
+superintendent of police and inspector of weights and measures    =>     superintendent of police    +inspector of weights and measures 
+superintendent of police and inspector of weights and measures for the north riding  superintendent of police    +inspector of weights and measures=> superintendent of police    +inspector of weights and measures 
+surgeon                                                                3
+surveyor                                                               1
+sweep                                                                  1
+tailor                                                                 44
+tanner                                                                 2
+telegraph boy                                                          2
+telegraph clerk                                                        1
+timber merchant                                                        1
+time keeper                                                            2
+tinner                                                                 6
+tinner and brazier     => tinner                                                1
+tobacco dealer                                                         1
+tobacconist                                                            1
+town crier                                                             1
+town surveyor                                                          1
+toy boat manufacturer                                                  2
+trading person going from house to house      => hawker                         1
+tramp                                                                  4
+unitarian minister                                                     1
+veterinary surgeon                                                     1
+violinist                                                              1
+waggoner                                                               5
+waiter                                                                 1
+watch maker      => watchmaker                                                             1
+watchmaker                                                             4
+watchman on the scarborough and whitby railway  => railway watchman                       1
+water bailiff                                                          2
+weighman                                                               2
+whitesmith                                                             1
+widow                                                                  9
+wife of david peart                                                    1
+wife of george peart                                                   1
+wife of john fordan, fisherman                                         1
+wife of john harrison                                                  1
+wife of john harrison, acting as his agent                             1
+wife of joseph hellowell, fisherman                                    1
+wife of matthew wilton, labourer                                       1
+wife of michael mirfield                                               1
+wife of robert hansill, labourer                                       1
+wife of william baxter harrison, pilot                                 1
+wife of william corps, jet worker                                      1
+wife of william knaggs, innkeeper                                      1
+wife of william milnas, fisherman                                      1
+wife of william shaw, innkeeper                                        2
+wire worker                                                            1
+wood leader                                                            2
+woodman                                                                4
+wool merchant                                                          2
+workhouse master                                                       3
+workhouse nurse                                                        1
+worsted seller                                                         1

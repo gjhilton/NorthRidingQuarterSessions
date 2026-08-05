@@ -1,0 +1,1 @@
+This site does not use cookies or any other browser storage to track you or remember anything between visits, and runs no analytics or tracking script of any kind. The interactive search on the Convictions and People pages downloads a small database into your browser fresh on each visit — nothing about your searches is sent anywhere or stored anywhere.

@@ -1,0 +1,1 @@
+Every field discussed above is in the download, in case you want to analyse it yourself rather than through this site’s views: reference number, dates, offence type, charge description, sentencing, location, offender names, extraction confidence, and the archive URL, one row per conviction.
