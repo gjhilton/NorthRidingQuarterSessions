@@ -6907,7 +6907,11 @@ innkeeper). Locations and crime type (licensing offence) match.
 Already correctly linked via related_conviction to 368 (same
 defendant/offence date pattern).
 
-**OK — no changes.**
+**OK — no changes.** [Corrected 2026-08-04: record 517 (John Harrison,
+found drunk on Atkinson's premises, refusing to leave when asked by
+Superintendent Clarkson, same date) surfaced the same enforcement-
+visit connection; related_conviction 332-517 added when 517 was
+reached.]
 
 ---
 
@@ -7712,7 +7716,10 @@ name captured, occupation constable for the North Riding). Locations
 and crime type (assaulting a police officer) match. Already correctly
 linked via related_conviction to 332 (same defendant/offence date).
 
-**OK — no changes.**
+**OK — no changes.** [Corrected 2026-08-04: record 517 (John Harrison,
+refusing to leave when asked by Clarkson) surfaced the same
+enforcement-visit connection; related_conviction 368-517 added when
+517 was reached.]
 
 ---
 
@@ -8634,6 +8641,11 @@ crime type (theft) match. No related_conviction.
 
 **OK — no changes.**
 
+**[Retroactive note, added at record 661]:** records 658, 661, and
+667 turned out to share this exact same offence/victim/date (William
+Gibbons' peas, 11 July 1889, Ruswarp) with different defendants.
+related_conviction links to all three have now been added retroactively.
+
 ---
 
 **Progress: records 1-406 done (restart #2, plus confirmed blacklist gap
@@ -9287,6 +9299,12 @@ crime type (assaulting a police officer) match. No related_conviction.
 
 **OK — no changes.**
 
+**[Retroactive note, added at record 664]:** part of a 5-record riot
+cluster (436, 646, 652, 664, 670) -- same date/township/offence type,
+multiple defendants assaulting multiple named constables during what
+was likely one incident. Full pairwise related_conviction links added
+retroactively; see [[project_related_conviction_riot_incident_pattern]].
+
 ---
 
 **Progress: records 1-436 done (restart #2, plus confirmed blacklist gap
@@ -9360,3 +9378,11876 @@ at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
 corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
 miscategorization fix, 1 new crime_type leaf created (3 records
 retagged so far).**
+
+## Record 440
+
+"Summary conviction of John Dixon of the township of Whitby labourer
+for being drunk. Offence committed at the township of Whitby on 9
+October 1869. Whitby Strand - case heard at Whitby" -- defendant John
+Dixon (Whitby, labourer). Locations and crime type (drunkenness)
+match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-440 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 441
+
+"Summary conviction of Jacob Pearson of Loftus miner for being
+disorderly on the licensed premises of John Sellar and refusing to
+leave when asked by the said John Sellar; on the oath of the said
+John Sellar of the township of Hinderwell licensed victualler. Offence
+committed at the township of Hinderwell on 4 November 1876. Whitby
+Strand - case heard at Whitby" -- defendant Jacob Pearson (Loftus,
+miner). Licensee John Sellar has both "licensed victualler" (matches
+stated text) and "licensee" (role-derived) occupation tags -- checked
+precedent, matches a small established pattern (3 other people: 7829,
+7850, 10219, all "licensed victualler" + "licensee" pairs), not an
+inconsistency. Locations and crime types (breach of the peace, refusal
+to quit licensed premises) match. Already correctly linked via
+related_conviction to 363 (same defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-441 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 442
+
+"Summary conviction of Henry Golden of the township of Whitby jet
+worker for playing booking (a game of chance) in the New Quay. Offence
+committed at the township of Whitby on 27 July 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Henry
+Golden (Whitby, jet worker). Location and crime type (gaming/gambling
+offence) match. Closes the 5-member gambling cluster (370, 400, 412,
+430, 442), fully all-pairs linked.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-442 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 443
+
+"Summary conviction of Sampson Storm of Whitby innkeeper for opening
+his premises between 10.30 and 12 o'clock on a Sunday morning during
+the time of divine service in church. Offence committed at the parish
+of Whitby on 19 October 1834. Endorsed "8 October 1834"" -- defendant
+Sampson Storm (Whitby, innkeeper). Same batch as 413/419/425/431/437,
+no named informant, correctly left unlinked. Location and crime type
+(licensing offence) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-443 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 444
+
+"Summary conviction of Jonathan Waddington, Edward Hines, James
+Neville and Henry Herbert for refusing to work while being relieved in
+the Whitby Union workhouse. Offence committed at the township of
+Hawsker cum Stainsacre on 14 March 1848. Case heard at Whitby" -- four
+co-defendants, no home/occupation stated, correctly blank. Same dual-
+location pattern as record 324 (Union Workhouse + Hawsker-cum-
+Stainsacre). Crime type=refusing workhouse labour, correct. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-444 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 445
+
+"Summary conviction of George Russell of the township of Fylingdales
+mariner for assaulting Thomas Brewster of the township of Fylingdales
+mariner; on the oath of the said Thomas Brewster. Offence committed at
+the township of Fylingdales on 3 November 1855. Case heard at Whitby"
+-- defendant George Russell (Fylingdales, mariner), victim Thomas
+Brewster (Fylingdales, mariner). Locations and crime type (assault)
+match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-445 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 446
+
+"Summary conviction of Patrick Seward for assaulting David Bell.
+Offence committed at the township of Glaisdale on 30 October 1869.
+Whitby Strand - case heard at Whitby" -- defendant Patrick Seward, no
+home stated, correctly blank. Victim David Bell. Locations and crime
+type (assault) match. Already correctly linked via related_conviction
+to 489 (same defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-446 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 447
+
+"Summary conviction of William Barrett of the township of Whitby
+labourer for assaulting Edward Watson; on the oath of Sarah A.
+Thompson, Ralph Speedy, William Nawton, Thomas Watson, Joseph Philpot
+and Francis Harrison. Offence committed at the township of Whitby on
+11 November 1876. Whitby Strand - case heard at Whitby" -- defendant
+William Barrett (Whitby, labourer), victim Edward Watson (distinct
+from record 333's victim Thomas Watson -- their own texts state
+different first names). All 6 witnesses captured, incl. "Sarah A.
+Thompson" (middle initial parsed into middle_name). Thomas Watson
+appears here as a witness -- coherent with two separate same-day
+assaults by Barrett against different Watson family members, matching
+the already-correct related_conviction links (333, 1974: same
+defendant/date; 1983: same date/victim/witness list, different
+defendants). Locations and crime type (assault) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-447 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 448
+
+"Summary conviction of Andrew Hill of the township of Whitby jet
+worker for being drunk and disorderly at the Pier. Offence committed
+at the township of Whitby on 10 August 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Andrew Hill,
+different conviction/date from record 423's Andrew Hill, correctly
+separate person row (no cross-conviction merge). Location of offence =
+Piers (105, generic node since text doesn't specify East/West),
+existing precedent. Crime type=drunk and disorderly matches. Already
+correctly linked via related_conviction to 499 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-448 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 449
+
+"Summary conviction of Henry Hammond of Whitby innkeeper for opening
+his premises between 10.30 and 12 o'clock on a Sunday morning during
+the time of divine service in church. Offence committed at the parish
+of Whitby on 19 October 1834. Endorsed "8 October 1834"" -- defendant
+Henry Hammond (Whitby, innkeeper). Same batch as prior "opening
+premises" records, no named informant, correctly left unlinked.
+Location and crime type (licensing offence) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-449 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 450
+
+"Summary conviction of Henry Webster apprentice to James Arthur of the
+township of Ruswarp ship owner, for absenting himself from the service
+of his master for seven days; on the information of the said James
+Arthur. Offence committed on 18 March 1848. Case heard at Whitby" --
+defendant Henry Webster (apprentice), James Arthur (Ruswarp, ship
+owner), role=informant matches the established precedent already
+checked (records 396/402). Apprentice relationship link present. Crime
+type=master and servant offence, correct. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-450 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 451
+
+"Summary conviction of John Webster of the township of Whitby
+carpenter for assaulting Mary Webster his wife. Offence committed at
+the township of Whitby on 1 December 1855. Case heard at Whitby" --
+defendant John Webster (Whitby, carpenter), victim Mary Webster, wife
+relationship correctly captured (Mary → John). Locations and crime
+type (assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-451 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 452
+
+"Summary conviction of John Thompson of the township of Whitby jet
+worker for assaulting Mary wife of John Abdallah; on the oath of the
+said John Abdallah of the township of Whitby labourer. Offence
+committed at the township of Whitby on 2 October 1869. Whitby Strand -
+case heard at Whitby" -- defendant John Thompson (Whitby, jet worker),
+victim Mary (no last name stated in text -- only identified via "wife
+of John Abdallah", correctly not inferred/fabricated as "Abdallah").
+John Abdallah has both informant and spouse-of-victim roles, wife
+relationship link present. Locations and crime type (assault) match.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-452 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 453
+
+"Summary conviction of John Harland of the township of Whitby miner
+for being drunk and disorderly on the Pier. Offence committed at the
+township of Whitby on 2 December 1876. Whitby Strand - case heard at
+Whitby" -- defendant John Harland (Whitby, miner). Location of offence
+= Piers (105), existing precedent. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-453 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 454
+
+"Summary conviction of Hugh Stewart of the township of Eskdaleside cum
+Ugglebarnby labourer for begging in Sleights town street. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 4 August
+1889. Whitby Strand Petty Sessional division - case heard at Whitby"
+-- defendant Hugh Stewart (Eskdaleside-cum-Ugglebarnby, labourer).
+"Sleights town street" boilerplate correctly resolves to Sleights (11,
+under Eskdaleside-cum-Ugglebarnby 8), matching the "X town street"
+convention. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-454 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 455
+
+"Summary conviction of William Wilson of the township of Whitby
+innkeeper for opening his premises between 10.30 and 12 o'clock on a
+Sunday morning during the time of divine service in church. Offence
+committed at the parish of Whitby on 19 October 1834. Endorsed "8
+October 1834"" -- defendant William Wilson (Whitby, innkeeper). Same
+batch as prior "opening premises" records, no named informant,
+correctly left unlinked. Location and crime type (licensing offence)
+match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-455 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 456
+
+"Summary conviction of John Bamfield of the township of Whitby
+labourer for assaulting Elizabeth Kelly wife of John Kelly of the
+township of Whitby labourer by striking her on the face with his
+fists several times. Offence committed at the township of Whitby on
+28 March 1848. Case heard at Whitby" -- defendant John Bamfield
+(Whitby, labourer), victim Elizabeth Kelly, spouse John Kelly (Whitby,
+labourer), wife relationship present. Locations and crime type
+(assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-456 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 457
+
+"Summary conviction of Hugh Robertson and William McLean, both late of
+Whitby labourers, for begging. Offence committed at the township of
+Whitby on 10 December 1855. Case heard at Whitby" -- two co-defendants
+(Whitby, labourers). Locations and crime type (begging) match. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-457 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 458
+
+"Summary conviction of Mary Clark for begging in Esk Terrace. Offence
+committed at the township of Ruswarp on 25 October 1869. Whitby
+Strand - case heard at Whitby" -- defendant Mary Clark, no home
+stated, correctly blank. Both stated locations captured: Ruswarp
+(township) and Esk Terrace (253, specific site under West Cliff),
+matching the dual-location convention. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-458 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 459
+
+"Summary conviction of John Walker of Whitby innkeeper for opening his
+premises between 10.30 and 12 o'clock on a Sunday morning during the
+time of divine service in church. Offence committed at the parish of
+Whitby on 12 October 1834. Endorsed "8 October 1834"" -- defendant
+John Walker (innkeeper, person 504), correctly a separate row from
+record 354's John Walker (beggar, different conviction). Same "opening
+premises" batch, no named informant, correctly left unlinked. Location
+and crime type (licensing offence) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-459 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 460
+
+"Summary conviction of James Loftus of the township of Whitby labourer
+for obstructing Philip Hoggart of the township of Ruswarp constable in
+the execution of his duty; on the oath of the said Philip Hoggart.
+Offence committed in Baxtergate at the township of Whitby on 26
+December 1855. Case heard at Whitby" -- defendant James Loftus
+(Whitby, labourer), victim Philip Hoggart (Ruswarp, constable).
+Location of offence = Baxtergate (West Cliff → Whitby), existing
+precedent. Crime type=obstructing/resisting a constable matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-460 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 461
+
+"Summary conviction of Anderson McGregor for begging at Goldsbrough.
+Offence committed at the township of Lythe on 13 December 1869. Whitby
+Strand - case heard at Whitby" -- defendant Anderson McGregor, no home
+stated, correctly blank. Location of offence = "Goldsbrough" normalized
+to Goldsborough (263, under Lythe), existing precedent. Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-461 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 462
+
+"Summary conviction of Thomas Martin of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 14 November 1876. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Martin (Whitby,
+jet worker). Location of offence = Church Street (East Cliff →
+Whitby), existing precedent. Crime type=drunk and disorderly matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-462 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 463
+
+"Summary conviction of James Campbell of the township of Ruswarp
+tailor for being drunk and disorderly in North Terrace. Offence
+committed at the township of Ruswarp on 25 August 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant James
+Campbell (Ruswarp, tailor). Two ambiguous "North Terrace" location
+rows exist in the DB (174, under Loftus; 218, under West Cliff) --
+this record correctly uses 218, matching the same convention already
+seen at record 458 (Esk Terrace, also under West Cliff despite the
+offence township being stated as Ruswarp). Crime type=drunk and
+disorderly matches. Already correctly linked via related_conviction to
+507 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-463 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 464
+
+"Summary conviction of Richard Sweeting of Whitby innkeeper for
+opening his premises between 10.30 and 12 o'clock on a Sunday morning
+during the time of divine service in church. Offence committed at the
+parish of Whitby on 12 October 1834. Endorsed "8 October 1834"" --
+defendant Richard Sweeting (Whitby, innkeeper). Closes the "opening
+premises" batch (407/413/419/425/431/437/443/449/455/459/464), no
+named informant, correctly left unlinked. Location and crime type
+(licensing offence) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-464 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 465
+
+"Summary conviction of Mary Wray wife of Cuthbert Wray of the township
+of Whitby fruit hawker for obstructing a street; on the oath of Robert
+Ridley of the township of Whitby police constable. Offence committed
+at the township of Whitby on 7 October 1869. Whitby Strand - case
+heard at Whitby" -- pre-existing anomaly note (conviction_date two
+days before offence_date, a source-data quirk) verified accurate.
+Defendant Mary Wray, spouse Cuthbert Wray (fruit hawker), wife
+relationship present. Informant Robert Ridley (police constable).
+Locations and crime type (obstructing the highway) match. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-465 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 466
+
+"Summary conviction of Robert Wilson of the township of Whitby
+labourer for being disorderly on the licensed premises of Thomas
+Watson and refusing to leave when asked by the said Thomas Watson; on
+the oath of S.A. Thompson, R. Speedy, William Nawton, T. Watson, E.
+Watson, J. Philpot and F. Harrison, all of the township of Whitby.
+Offence committed at the township of Whitby on 11 November 1876.
+Whitby Strand - case heard at Whitby" -- defendant Robert Wilson,
+licensee Thomas Watson (matches the earlier-noted "licensed premises
+of Thomas Watson" cluster). Witnesses captured verbatim with this
+record's own abbreviated initials (S.A., R., T., E., J., F.) --
+correctly separate person rows from record 447's fuller-named
+witnesses (Sarah A. Thompson, Ralph Speedy, etc.), each record must
+match its own text, not another record's. Locations and crime types
+(breach of the peace, refusal to quit licensed premises) match.
+Already fully linked via related_conviction to 1983 (same defendant/
+date) and 482, 1971, 1974, 1977, 1980 (same licensed premises/date,
+six patrons prosecuted separately).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-466 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 467
+
+"Summary conviction of Charles Sanderson of the township of Glaisdale
+labourer for begging in Glaisdale town street. Offence committed at
+the township of Glaisdale on 28 August 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Charles
+Sanderson (Glaisdale, labourer). "Glaisdale town street" correctly
+resolves to Glaisdale itself, matching the "X town street" convention.
+Crime type=begging matches. Already correctly linked via
+related_conviction to 479 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-467 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 468
+
+"Summary conviction of James Scott of Whitby for assaulting Jane
+Thompson of the township of Whitby spinster. Offence committed at the
+township of Whitby on 2 November 1834. Case heard at Whitby" --
+defendant James Scott, no home stated, correctly blank. Victim Jane
+Thompson, "spinster" occupation already correctly linked (fixed in an
+earlier pass, per reextraction-audit-notes.md). Locations and crime
+type (assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-468 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 469
+
+"Summary conviction of John Norton of the township of Whitby labourer
+for trespassing in the daytime in search of conies on land in the
+possession and occupation of [blank] Wilson. Offence committed at the
+township of Ingleby Greenhow on 15 November 1869. Case heard at
+Stokesley" -- defendant John Norton (Whitby, labourer). Landowner's
+first name correctly left blank (text literally states "[blank]
+Wilson", not fabricated). Court location=Stokesley (304), offence
+location=Ingleby Greenhow (291), both existing precedent -- unusual
+but valid (this record was heard outside Whitby). Crime type=poaching
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-469 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 470
+
+"Summary conviction of Thomas Sugden of the township of Whitby
+bricklayer for being drunk and disorderly on the Whitby and Stainsacre
+highway; on the oath of William Nicholson police constable and
+[blank] Wilson gatekeeper, both of Whitby. Offence committed at the
+township of Hawsker cum Stainsacre on 11 December 1876. Whitby Strand
+- case heard at Whitby" -- defendant Thomas Sugden (Whitby,
+bricklayer). Two informants: William Nicholson (police constable),
+"[blank] Wilson" (gatekeeper, first name correctly left blank).
+Cross-parish highway (Whitby & Stainsacre Highway, id 151, under
+Cross-Parish Highways 106) added alongside the stated township
+(Hawsker-cum-Stainsacre), matching the established convention. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-470 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 471
+
+"Summary conviction of James Richardson of the township of Hawsker cum
+Stainsacre farmer for assaulting Thomas Jones. Offence committed at
+the township of Hawsker cum Stainsacre on 22 August 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+James Richardson (Hawsker-cum-Stainsacre, farmer), victim Thomas
+Jones. Locations and crime type (assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-471 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 472
+
+"Summary conviction of Matthew Ryley for hawking cotton handkerchiefs
+and braces without a licence; on the information of Robert Kirby of
+Whitby sub-distributor of stamps. Offence committed at Egton on 5
+November 1834" -- defendant Matthew Ryley, no home stated, correctly
+blank. Informant Robert Kirby matches precedent. No court location
+stated in text, correctly absent. Location of offence=Egton, crime
+type=licensing offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-472 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 473
+
+"Summary conviction of James Robinson for begging in Windsor Terrace.
+Offence committed at the township of Ruswarp on 20 November 1869.
+Whitby Strand - case heard at Whitby" -- defendant James Robinson, no
+home stated, correctly blank. Both stated locations captured: Ruswarp
+(township) and Windsor Terrace (244, under West Cliff), matching the
+dual-location convention. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-473 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 474
+
+"Summary conviction of George Morley and John Morley, both of the
+township of Egton farmers, for attempting to kill salmon in a
+tributary of the river Esk during the close season; on the oath of
+James Wright police constable and William Pearson gamekeeper, both of
+the township of Egton. Offence committed at the township of Egton on
+19 November 1876. Whitby Strand - case heard at Whitby" -- two co-
+defendants (Egton, farmers), two informants (James Wright, William
+Pearson -- correctly a separate person row from the earlier William
+Pearsons seen in records 417/418). Locations: Egton + River Esk (under
+the Rivers node), crime type=poaching, correct. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-474 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 475
+
+"Summary conviction of Catherine Lee wife of Adam Lee of the township
+of Whitby hawker for being drunk and disorderly in Church Street.
+Offence committed at the township of Whitby on 21 August 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Catherine Lee, spouse Adam Lee (Whitby, hawker), wife relationship
+present. Location of offence = Church Street (East Cliff → Whitby),
+existing precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-475 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 476
+
+"Summary conviction of Patrick Machannow late of the township of
+Whitby for hawking braces without a licence; on the information of
+Robert Kirby of the township of Whitby sub-distributor of stamps.
+Offence committed at the township of Egton on 5 October 1834" --
+defendant Patrick Machannow (Whitby), informant Robert Kirby matches
+precedent. No court location stated, correctly absent. Location of
+offence=Egton, crime type=licensing offence matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-476 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 477
+
+"Summary conviction of John Wilson of the township of Whitby tailor
+for being drunk; on the oath of [blank] Harnby of the township of
+Whitby police constable. Offence committed at the township of Whitby
+on 8 October 1869. Whitby Strand - case heard at Whitby" -- defendant
+John Wilson, correctly a separate person row from record 326's John
+Wilson (different offence date, different conviction, no cross-merge).
+Informant "[blank] Harnby" -- first name correctly left blank per
+text, correctly not merged with record 362's "Simpson Harnby" despite
+likely being the same real officer (no fabrication). Locations and
+crime type (drunkenness) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-477 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 478
+
+"Summary conviction of William Harrison of the township of Whitby coal
+porter for being drunk and disorderly on the Whitby and Guisborough
+highway; on the oath of George Holmes police constable, Miles Moody
+inspector of police and John Ryder superintendent of police, all of
+the township of Whitby. Offence committed at the township of Aislaby
+on 18 November 1876. Whitby Strand - case heard at Whitby" -- defendant
+William Harrison (Whitby, coal porter). Three informants, occupations
+matching each stated rank exactly (John Ryder here is superintendent,
+correctly a separate person row from record 416's John Ryder,
+inspector -- different conviction, no cross-merge). Cross-parish
+highway (Whitby & Guisborough Highway) added alongside stated township
+(Aislaby). Crime type=drunk and disorderly matches. Already correctly
+linked to an existing same-beat cluster (128, 130, 510).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-478 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 479
+
+"Summary conviction of Mary Smith of the township of Glaisdale
+singlewoman for begging in Glaisdale town street. Offence committed at
+the township of Glaisdale on 28 August 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Mary Smith,
+"singlewoman" occupation already correctly linked (not a gap here).
+"Glaisdale town street" resolves correctly. Crime type=begging
+matches. Already correctly linked via related_conviction to 467
+(same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-479 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 480
+
+"Summary conviction of Elizabeth Thompson wife of [blank] Thompson and
+Esther Thompson spinster, both of Hawsker cum Stainsacre, for
+assaulting Thomas Lincoln of the township of Hawsker cum Stainsacre
+labourer. Offence committed at the township of Hawsker cum Stainsacre
+on 7 November 1834. Case heard at Whitby" -- two co-defendants:
+Elizabeth Thompson (spouse "[blank] Thompson", first name correctly
+left blank, wife relationship present) and Esther Thompson ("spinster"
+occupation already correctly linked, not a fresh gap). Victim Thomas
+Lincoln (Hawsker-cum-Stainsacre, labourer). Locations and crime type
+(assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-480 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 481
+
+"Summary conviction of John Smith for begging in St Hilda's Terrace.
+Offence committed at the township of Ruswarp on 6 December 1869.
+Whitby Strand - case heard at Whitby" -- defendant John Smith, no home
+stated, correctly blank. Both stated locations captured: Ruswarp
+(township) and St Hilda's Terrace (232, under West Cliff), matching
+the dual-location convention. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-481 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 482
+
+"Summary conviction of John Arnold of the township of Whitby jet
+worker for being disorderly on the licensed premises of Thomas Watson
+and refusing to leave when asked by the said Thomas Watson; on the
+oath of S.A. Thompson, R. Speedy, W. Nawton, Thomas Watson, Ed.
+Watson, J. Philpot and F. Harrison, all of the township of Whitby.
+Offence committed at the township of Whitby on 11 November 1876.
+Whitby Strand - case heard at Whitby" -- defendant John Arnold,
+licensee Thomas Watson. Witness names captured verbatim per this
+record's own text ("W. Nawton", "Ed. Watson") -- correctly separate
+person rows from record 466's differently-abbreviated witnesses (no
+cross-record merge). Locations and crime types (breach of the peace,
+refusal to quit licensed premises) match. Already fully linked within
+the Thomas Watson cluster (466, 1971, 1974, 1977, 1980).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-482 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 483
+
+"Summary conviction of Henry Day of the township of Whitby fisherman
+for being drunk and disorderly in the New Quay. Offence committed at
+the township of Whitby on 30 August 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Henry Day
+(Whitby, fisherman). Location of offence = New Quay, existing
+precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-483 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 484
+
+"Summary conviction of Thomas Carter for begging. Offence committed at
+the parish of Whitby on 8 December 1834" -- defendant Thomas Carter,
+no home stated, correctly blank. No court location stated, correctly
+absent. Location of offence=Whitby, crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-484 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 485
+
+"Summary conviction of David Adamson of the township of Whitby sailor
+for being drunk and riotous in Church Street. Offence committed at the
+township of Whitby on 28 November 1869. Whitby Strand - case heard at
+Whitby" -- defendant David Adamson (Whitby, sailor). Location of
+offence = Church Street (East Cliff → Whitby), existing precedent.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-485 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 486
+
+"Summary conviction of Rees Jones of the township of Whitby licensed
+victualler for allowing gaming with dice for a goose on his licensed
+premises; on the oath of John Ryder superintendent and Thomas Dennis
+sergeant of police, both of the township of Whitby. Offence committed
+at the township of Whitby on 18 November 1876. Whitby Strand - case
+heard at Whitby" -- defendant Rees Jones (Whitby, licensed victualler).
+Informant John Ryder (superintendent) shares the same date as record
+478, but different offence type (gaming vs. drunk-and-disorderly-on-
+highway) -- correctly not linked, since the same-beat pattern requires
+matching offence type too, not just officer+date. Locations and crime
+type (gaming/gambling offence) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-486 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 487
+
+"Summary conviction of Thomas Dixon of the township of Whitby labourer
+for being drunk and disorderly in Church Street. Offence committed at
+the township of Whitby on 1 September 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Thomas Dixon
+(correctly a separate person row from record 405's Thomas Dixon,
+different conviction). Location of offence = Church Street, existing
+precedent. Crime type=drunk and disorderly matches. Already correctly
+linked via related_conviction to 673 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-487 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 488
+
+"Summary conviction of George Williams for being a vagrant, he having
+been previously convicted of being an idle and disorderly person.
+Offence committed at the parish of Whitby on 8 December 1834" --
+defendant George Williams, no home stated, correctly blank. "Having
+been previously convicted..." preserved verbatim in charge_description/
+raw_record; no dedicated schema field exists for this kind of prior-
+conviction note (same convention as record 349's "reputed thief" --
+character/history descriptors stay in text only). No court location
+stated, correctly absent. Crime type=vagrancy matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-488 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 489
+
+"Summary conviction of Patrick Seward for assaulting Thomas Bowron.
+Offence committed at the township of Glaisdale on 30 October 1869.
+Whitby Strand - case heard at Whitby" -- defendant Patrick Seward, no
+home stated, correctly blank. Victim Thomas Bowron, no occupation
+stated here (correctly a separate person row from record 380's Thomas
+Bowron, police constable -- different conviction, no fabricated
+merge). Locations and crime type (assault) match. Already correctly
+linked via related_conviction to 446 (same defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-489 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 490
+
+"Summary conviction of John Holmes of the township of Whitby jet
+worker for being drunk on the licensed premises of Joseph Garside
+Rhodes. Offence committed at the township of Whitby on 14 November
+1876. Whitby Strand - case heard at Whitby" -- defendant John Holmes
+(Whitby, jet worker), licensee Joseph Garside Rhodes -- same licensee
+as record 423, but different offence date (14 Nov vs. 30 Oct 1876),
+correctly not linked (a different, unrelated occasion at the same
+premises). Locations and crime type (drunkenness) match.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-490 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 491
+
+"Summary conviction of William Martin of the township of Whitby jet
+worker for being drunk on the licensed premises of Edward Cleeton.
+Offence committed at the township of Whitby on 31 August 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+William Martin (Whitby, jet worker), licensee Edward Cleeton.
+Locations and crime type (drunkenness) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-491 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 492
+
+"Summary conviction of Thomas Robison for attempting to get charitable
+contributions by falsely pretending to be a shipwrecked sailor; on the
+oath of Mary Pawley wife of Richard Pawley of Whitby officer in the
+Preventive Service. Offence committed at Whitby on 27 October 1835.
+Case heard at Whitby" -- defendant Thomas Robison, no home stated,
+correctly blank. Informant Mary Pawley, spouse Richard Pawley
+("officer in the Preventive Service" -- historic coastguard role,
+correctly captured as occupation), wife relationship present. Crime
+type=fraud/false pretences, correct for the false-shipwreck begging
+scheme. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-492 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 493
+
+"Summary conviction of Henry Smith of the township of Whitby fruit
+hawker for obstructing Church Street; on the oath of Francis Selby of
+the township of Whitby police constable. Offence committed at the
+township of Whitby on 2 October 1869. Whitby Strand - case heard at
+Whitby" -- defendant Henry Smith (Whitby, fruit hawker), informant
+Francis Selby (police constable). Location of offence = Church Street,
+existing precedent. Crime type=obstructing the highway matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-493 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 494
+
+"Summary conviction of John Thompson of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 13 November 1876. Whitby
+Strand - case heard at Whitby" -- defendant John Thompson, correctly a
+separate person row from record 452's John Thompson (different
+conviction/date). Location of offence = Church Street, existing
+precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-494 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 495
+
+"Summary conviction of John Moon of the township of Whitby labourer
+for stealing apples value 1s, the property of James Whittle and
+growing in his garden. Offence committed at the township of Hawsker
+cum Stainsacre on 28 August 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant John Moon (Whitby,
+labourer), property owner James Whittle. Locations and crime type
+(theft) match. [Corrected 2026-08-04: record 622 (John Marshall, same
+property owner/offence/date) surfaced a same-incident link;
+related_conviction 495-622 added when 622 was reached. Also record 625
+(Thomas Drummond Moon, same owner/offence/date) added
+related_conviction 495-625 when 625 was reached.]
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-495 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 496
+
+"Summary conviction of Samuel Clark and Charles Clark for begging.
+Offence committed at Whitby on 27 October 1835" -- two co-defendants,
+no home/occupation stated, correctly blank. No court location stated,
+correctly absent. Location of offence=Whitby, crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.** [Corrected 2026-08-04: record 500 (Charlotte
+Clark, convicted the same day for encouraging these same two children
+to beg) surfaced a same-incident link; related_conviction 496-500
+added when 500 was reached.]
+
+---
+
+**Progress: records 1-496 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 497
+
+"Summary conviction of James Pearson of the township of Whitby
+blacksmith for trespassing in the daytime in pursuit of game on a
+close of land in the possession and occupation of Thomas Beeforth.
+Offence committed at the township of Sneaton on 3 October 1869. Whitby
+Strand - case heard at Whitby" -- defendant James Pearson (Whitby,
+blacksmith). Landowner Thomas Beeforth, no name_postfix here since
+this record's own text doesn't state "the younger" (unlike person
+152) -- correctly not fabricated. Locations and crime type (poaching)
+match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-497 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 498
+
+"Summary conviction of John Dryden of the township of Whitby fisherman
+for being drunk and disorderly in Church Street. Offence committed at
+the township of Whitby on 25 November 1876. Whitby Strand - case heard
+at Whitby" -- defendant John Dryden (Whitby, fisherman), correctly a
+separate person from record 340's Dryden family (unrelated conviction/
+context). Location of offence = Church Street, existing precedent.
+Crime type=drunk and disorderly matches. Already correctly linked via
+related_conviction to 502 and 506 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-498 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 499
+
+"Summary conviction of John Hodgson of the township of Whitby
+fisherman for being drunk and disorderly at the Pier. Offence
+committed at the township of Whitby on 10 August 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant John
+Hodgson, correctly a separate person row from record 344's John
+Hodgson (different conviction/date). Location of offence = Piers,
+existing precedent. Crime type=drunk and disorderly matches. Already
+correctly linked via related_conviction to 448 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-499 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+46 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 500
+
+"Summary conviction of Charlotte Clark for encouraging two children,
+Samuel Clark and Charles Clarke, to beg. Offence committed at Whitby
+on 27 October 1837" -- pre-existing anomaly note (wrong year "1837" in
+raw_record, correctly 1835 per offence_date and companion record 496)
+verified accurate. Defendant Charlotte Clark, children Samuel Clark
+and Charles Clarke (correctly captured as "child" role, not
+fabricated as defendants). Crime type=causing children to beg,
+correct. Same date and same two children as record 496 (their own
+begging conviction) -- clearly the same incident.
+
+**FIXED — added related_conviction link 496-500 (same incident: mother
+convicted for encouraging the children's begging, on the day of the
+children's own conviction). Record 496's log entry retroactively
+annotated.**
+
+---
+
+**Progress: records 1-500 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 501
+
+"Summary conviction of Robert Marley of the township of Glaisdale
+shoemaker for being drunk and riotous in Glaisdale Street; on the oath
+of Thomas Bowron of the township of Glaisdale police constable.
+Offence committed at the township of Glaisdale on 28 September 1869.
+Whitby Strand - case heard at Whitby" -- defendant Robert Marley
+(Glaisdale, shoemaker), informant Thomas Bowron (police constable,
+correctly a separate person row from records 380/489's Thomas
+Bowrons). Location of offence = Glaisdale Street (354, under
+Glaisdale), existing precedent. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-501 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 502
+
+"Summary conviction of Eli Parkin of the township of Whitby iron
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 25 November 1876. Whitby
+Strand - case heard at Whitby" -- defendant Eli Parkin (Whitby, iron
+worker). Location of offence = Church Street, existing precedent.
+Crime type=drunk and disorderly matches. Already fully linked within
+the same-beat cluster (498, 506).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-502 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 503
+
+"Summary conviction of James Coleman of the township of Whitby
+labourer for being drunk and disorderly in Baxtergate. Offence
+committed at the township of Whitby on 15 August 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant James
+Coleman (Whitby, labourer). Location of offence = Baxtergate, existing
+precedent. Crime type=drunk and disorderly matches. Already correctly
+linked via related_conviction to 688 (same defendant/date) and 515
+(same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-503 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 504
+
+"Summary conviction of Arthur Donnely late of Ireland hawker and
+pedlar for selling stockings and gloves without a licence; on the
+information of Robert Kirby of Whitby sub-distributor of stamps.
+Offence committed at the township of Egton on 5 November 1835" --
+defendant Arthur Donnely, home=Ireland (320), existing precedent.
+Informant Robert Kirby matches precedent. Compound occupation "hawker
+and pedlar" matches convention. No court location stated, correctly
+absent. Location of offence=Egton, crime type=licensing offence
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-504 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 505
+
+"Summary conviction of William Pattison of the township of Whitby jet
+worker for being drunk and riotous in Marine Parade; on the oath of
+Charles Tempest Clarkson of the township of Whitby superintendent of
+police. Offence committed at the township of Whitby on 10 October
+1869. Whitby Strand - case heard at Whitby" -- defendant William
+Pattison (Whitby, jet worker), informant Charles Tempest Clarkson
+(full name incl. middle name, same recurring officer as records 356/
+368/410). Location of offence = Marine Parade (84, under West Cliff),
+existing precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-505 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 506
+
+"Summary conviction of James Pearson of the township of Whitby
+blacksmith for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 25 November 1876. Whitby
+Strand - case heard at Whitby" -- defendant James Pearson, correctly a
+separate person row from record 497's James Pearson (different
+conviction/offence type/date). Location of offence = Church Street,
+existing precedent. Crime type=drunk and disorderly matches. Already
+fully linked within the same-beat cluster (498, 502).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-506 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 507
+
+"Summary conviction of Matthew Carroll of the township of Ruswarp
+tailor for being drunk and disorderly in North Terrace. Offence
+committed at the township of Ruswarp on 25 August 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Matthew
+Carroll (Ruswarp, tailor). Both stated locations captured (Ruswarp +
+North Terrace under West Cliff), matching the same convention as
+record 463. Crime type=drunk and disorderly matches. Already correctly
+linked via related_conviction to 463 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-507 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 508
+
+"Summary conviction of John Hayes for attempting to gather alms by
+exposing wounds or deformities; on the oath of Robert Hunt of the
+township of Whitby special constable. Offence committed at the
+township of Egton on 5 November 1835. Case heard at Whitby" --
+defendant John Hayes, no home stated, correctly blank. Informant
+Robert Hunt, "special constable" matches established occupation
+category (id 343, distinct from ordinary "police constable"). Crime
+type=vagrancy, correct for the alms-exposing-wounds offence. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-508 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 509
+
+"Summary conviction of Edward Wapp of the township of Glaisdale
+furnaceman for being drunk and riotous in Glaisdale Street; on the
+oath of Thomas Bowron of the township of Glaisdale police constable.
+Offence committed at the township of Glaisdale on 27 September 1869.
+Whitby Strand - case heard at Whitby" -- defendant Edward Wapp
+(Glaisdale, furnaceman), informant Thomas Bowron -- same officer/
+street as record 501, but different offence date (27 vs 28 September
+1869), correctly not linked (same-beat pattern requires matching
+date). Location of offence = Glaisdale Street, existing precedent.
+Crime type=drunk and disorderly matches.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-509 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 510
+
+"Summary conviction of John Jones of the township of Whitby coal
+porter for being drunk and disorderly on the Whitby and Guisborough
+highway; on the oath of John Ryder superintendent, Miles Moody
+inspector and George Holmes police constable, all of the township of
+Whitby. Offence committed at the township of Aislaby on 18 November
+1876. Whitby Strand - case heard at Whitby" -- defendant John Jones
+(Whitby, coal porter). Three informants match exactly (same trio as
+record 478). Cross-parish highway added alongside stated township.
+Crime type=drunk and disorderly matches. Already fully linked:
+related_conviction to 514 (same defendant/date), and to 478, 128, 130
+(same-beat cluster).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-510 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 511
+
+"Summary conviction of William Johnson of the township of Hinderwell
+labourer for lodging under a hay stack, without any visible means of
+subsistence and not giving a good account of himself. Offence
+committed at the township of Hinderwell on 5 September 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+William Johnson (Hinderwell, labourer). Locations and crime type
+(vagrancy) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-511 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 512
+
+"Summary conviction of Henry Charles Johnston late of Scarborough
+hawker for selling silver and spectacles without a licence; on the
+information of Robert Kirby of Whitby sub-distributor of stamps.
+Offence committed at the township of Whitby on 9 November 1835. Case
+heard at Whitby" -- defendant Henry Charles Johnston (full name incl.
+middle name, home=Scarborough), informant Robert Kirby matches
+precedent. Locations and crime type (licensing offence) match. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-512 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 513
+
+"Summary conviction of Thomas Hewson of the township of Fylingdales
+mariner for assaulting Andrew Thompson one of the constables for the
+North Riding in the execution of his duty; on the oath of the said
+Andrew Thompson of the township of Fylingdales police constable.
+Offence committed at the township of Fylingdales on 9 December 1869.
+Whitby Strand - case heard at Whitby" -- defendant Thomas Hewson
+(Fylingdales, mariner), victim Andrew Thompson -- text describes him
+two ways ("constable for the North Riding" in the charge clause,
+"police constable" in the oath clause); occupation captured as "police
+constable" from the second phrasing, a legitimate synthesis, not a
+fabrication (both describe the same role). Locations and crime type
+(assaulting a police officer) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-513 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 514
+
+"Summary conviction of John Jones of the township of Whitby coal
+porter for assaulting George Holmes one of the constables for the
+North Riding in the execution of his duty; on the oath of Thomas
+Holmes of the township of Whitby police constable. Offence committed
+at the township of Aislaby on 18 November 1876. Whitby Strand - case
+heard at Whitby" -- defendant John Jones (same as record 510, same
+offence date). Victim George Holmes ("constable for the North Riding",
+matches this record's only phrasing for him). Informant Thomas Holmes
+-- correctly a separate person from George Holmes despite the shared
+surname. Locations and crime type (assaulting a police officer) match.
+Already correctly linked via related_conviction to 510 (same
+defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-514 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 515
+
+"Summary conviction of James Cockrin of the township of Whitby
+labourer for being drunk and disorderly in Baxtergate Offence
+committed at the township of Whitby on 15 August 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant James
+Cockrin (Whitby, labourer). Location of offence = Baxtergate, existing
+precedent. Crime type=drunk and disorderly matches. Already correctly
+linked via related_conviction to 607 (same defendant/date) and 503
+(same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-515 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 516
+
+"Summary conviction of John Havelock of the township of Ruswarp
+esquire for trespassing in the daytime in search or pursuit of game on
+lands belonging to Edmund Turton esquire. Offence committed at Rigg
+Hill in the township of Hawsker cum Stainsacre on Wednesday 13 January
+1836. Case heard at Whitby" -- defendant John Havelock (Ruswarp),
+landowner Edmund Turton -- "esquire" correctly ignored for both per
+the settled rule. Location of offence = Rigg Hill (359, correctly
+under Hawsker-cum-Stainsacre 87). Crime type=poaching matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-516 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+47 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 517
+
+"Summary conviction of John Harrison of the township of Whitby moulder
+for being drunk on the licensed premises of Thomas Atkinson and
+refusing to leave when asked by Charles Tempest Clarkson; on the oath
+of Charles Tempest Clarkson of the township of Whitby superintendent
+of police. Offence committed at the township of Whitby on 16 October
+1869. Whitby Strand - case heard at Whitby" -- defendant John Harrison
+(Whitby, moulder), licensee Thomas Atkinson, informant Charles Tempest
+Clarkson (superintendent of police). Same date/premises/officer as
+records 332 (Atkinson's own licensing conviction) and 368 (Atkinson's
+assault on Clarkson) -- clearly the same enforcement visit. Locations
+and crime types (drunkenness, refusal to quit licensed premises)
+match.
+
+**FIXED — added related_conviction links 332-517 and 368-517 (same
+premises/officer/date, single enforcement visit). Records 332 and 368's
+log entries retroactively annotated.**
+
+---
+
+**Progress: records 1-517 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+49 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 518
+
+"Summary conviction of Thomas Martin of the township of Whitby jet
+worker for being drunk and disorderly in Church Street; on the oath of
+John Alderson Wallace and John Smedley, both of the township of Whitby
+police constables. Offence committed at the township of Whitby on 9
+December 1876. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Martin, correctly a separate person row from record 462's
+Thomas Martin (different conviction/date). Two informants (John
+Alderson Wallace, full name incl. middle name; John Smedley). Location
+of offence = Church Street, existing precedent. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-518 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+49 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 519
+
+"Summary conviction of John Nash of the township of Eskdaleside cum
+Ugglebarnby labourer for begging in Sleights town street. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 2
+September 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant John Nash (Eskdaleside-cum-Ugglebarnby, labourer).
+"Sleights town street" resolves correctly. Crime type=begging matches.
+Already correctly linked via related_conviction to 637 (same-beat
+pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-519 done (restart #2, plus confirmed blacklist gap
+at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes (resolved),
+49 related_conviction links, 3 sex fixes, 1 spelling fix, 1 title fix,
+3 anomalies notes, 4 redundant relationship rows removed, 2 role
+corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 1 new crime_type leaf created (3 records
+retagged so far).**
+
+## Record 520
+
+"Summary conviction of John Handysides of the township of Egton farmer
+for using a cart on the public highway without having his name and
+place of abode painted on it; on the information of William Wilkinson.
+Offence committed at the township of Whitby on 16 January 1836. Case
+heard at Whitby" -- defendant John Handysides (Egton, farmer),
+informant William Wilkinson. Crime type was "unclassified" (15) --
+flagged to user per the new hard rule (never leave a record
+unclassified). Locations otherwise correct.
+
+**FIXED — created crime_type leaf 74 "cart/vehicle not marked with
+owner's name and address" under transport (3); retagged 520.**
+
+This surfaced a corpus-wide sweep (user: "lets fix them now"): found
+10 more records still tagged "unclassified" (708, 761, 1025, 1068,
+1084, 1100, 1107, 1133, 1519, 2403). Reviewed each and created 6 more
+new leaves, fully resolving all of them:
+- 75 "not having proper control of horse drawing a cart" (transport,
+  3): 708, 1025, 1084
+- 74 (reused): 761, 1519 (same name/address-painting requirement)
+- 76 "failure to keep to the left on the highway" (transport, 3): 1068
+- 77 "hackney carriage driver refusing service" (transport, 3): 1100
+- 78 "failure to hand in property found in a hackney carriage"
+  (transport, 3): 1133
+- 79 "surveyor neglecting to keep the highway in repair"
+  (administrative & public duty, 14): 2403
+- 80 "offence not stated in source" (new top-level category, sibling
+  to "unclassified" itself): 1107, whose raw_record literally has
+  "[blank]" where the charge should be -- a source-side gap, not an
+  extraction failure. Confirmed no other records share this exact
+  "[blank]" pattern.
+
+Full detail saved to memory (project_unclassified_crime_type_watch.md)
+since these ids span both sides of the current sequential position
+(520) -- 708 onward will be reached later in the linear audit and are
+now pre-resolved, no need to re-flag.
+
+**Progress: records 1-520 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes
+(resolved), 49 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 3 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 15 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified (1 in-sequence + 10 out-of-sequence
+sweep).**
+
+## Records 521-546
+
+All checked individually (defendant/victim/informant names incl.
+middle names, occupations, home/offence locations, crime types,
+existing related_conviction links) -- all correct, no changes needed.
+Notable checks: 521 Mary Ann Parker (singlewoman occupation already
+correct, linked to 533); 528 "City of London" correctly resolved to
+London id 309, not the unrelated "New London"; 535 "old market place"
+correctly resolved to the distinct "Old Market Place" (31), not
+"Market Place" (30); 541 John Mead -- raw_record has "[blank]" for the
+animal species, title/charge_description correctly say generic
+"animals" rather than fabricating a specific species; 544 William Bell
+& Joseph Newton -- landowner "Earl of Mulgrave" matches the existing
+Marquess of Normanby/Earl of Mulgrave office precedent exactly.
+
+**OK — no changes (521, 522, 523, 524, 525, 526, 527, 528, 529, 530,
+531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543, 544,
+545, 546).** [Corrected 2026-08-04: record 549 (Edward Doughty, same
+licensee Thomas Duck/informant Simpson Harnby/date as 545) surfaced a
+same-incident link; related_conviction 545-549 added when 549 was
+reached. Also, record 616 (Joseph Bottoms, same barn-lodging offence/
+township/date as 543, no named party) surfaced a related_conviction
+link 543-616, added when 616 was reached.]
+
+## Record 547
+
+"Summary conviction of Isabel Barker of the township of Whitby
+singlewoman for assaulting Ann Oliver Offence committed at the
+township of Whitby on 9 September 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Isabel Barker, victim
+Ann Oliver. Last id on the tracked marital-status-occupation-gap list:
+her text states "singlewoman" but `person_occupation` had no link.
+
+**FIXED — added missing occupation link: person 596 (Isabel Barker) →
+occupation 337 (singlewoman). This resolves the last known id on the
+tracked marital-status gap list (started at record 275) -- all
+originally-tracked ids now fixed. Watch remains open for further
+instances not on the original list, since it was noted as
+non-exhaustive.**
+
+## Record 548
+
+"Summary conviction of Hannah Cail wife of Richard Cail of Whitby
+currier, and Hannah Cail and Helina Cail, for assaulting Jeffrey
+Holmes of the township of Ruswarp gentleman. Offence committed at the
+township of Ruswarp on Saturday 1 November 1833. Case heard at Whitby
+in the division of Whitby Strand" -- DB correctly collapsed the raw
+text's redundant double-mention of "Hannah Cail" into a single person
+row (597); two defendants (Hannah Cail, Helina Cail), spouse Richard
+Cail (currier), wife relationship present. Victim Jeffrey Holmes
+(Ruswarp, gentleman). Locations and crime type (assault) match.
+
+**OK — no changes.**
+
+## Record 549
+
+"Summary conviction of Edward Doughty of the township of Whitby jet
+worker for being drunk on the licensed premises of Thomas Duck and
+refusing to leave when asked by Simpson Harnby; on the oath of the
+said Simpson Harnby of the township of Whitby police constable.
+Offence committed at the township of Whitby on 14 December 1869.
+Whitby Strand - case heard at Whitby" -- defendant Edward Doughty
+(Whitby, jet worker). Same licensee/informant/date as record 545
+(Daniel Stuart) -- Pattern 2, same enforcement visit.
+
+**FIXED — added related_conviction link 545-549 (same premises/
+officer/date).**
+
+---
+
+**Progress: records 1-549 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 3 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 16 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Record 550
+
+"Summary conviction of John Cummings for begging in Church Street.
+Offence committed at the township of Whitby on 21 October 1875. Whitby
+Strand - case heard at Whitby[Dated 21 October, but endorsed 23
+October 1875]" -- defendant John Cummings, no home stated, correctly
+blank. Locations and crime type (begging) match. raw_record has a
+missing space before a bracketed endorsement note, glued onto the end
+without one -- had no anomalies field entry despite this.
+
+**FIXED — added anomaly note flagging the missing-space source
+formatting artifact (offence_date itself already correctly 1875-10-21,
+not a data error).**
+
+---
+
+**Progress: records 1-550 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 6 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 16 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Record 551
+
+"Summary conviction of Richard Shippey of Staithes in the township of
+Hinderwell fisherman for using obscene and abusive language in
+Staithes station. Offence committed at the township of Hinderwell on
+13 September 1889. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant Richard Shippey (home=Staithes, fisherman).
+"Staithes station" had no dedicated location node (offence location
+was falling back to generic Staithes 163), unlike other townships'
+named stations (Glaisdale Station, Ruswarp Railway Station, etc.).
+Crime type=using obscene language matches.
+
+**FIXED — created location node 416 "Staithes Station" under Staithes
+(163); reparented this record's location of offence from 163 to 416.
+Two more records (2793, 3419) share the same "Staithes station" phrase
+and will reuse this node when the linear audit reaches them.**
+
+---
+
+**Progress: records 1-551 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 16 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Record 552
+
+"Summary conviction of Sarah Anderson wife of Enock Anderson of Whitby
+tailor for assaulting Isabella Jolly of the township of Whitby
+spinster. Offence committed at the township of Whitby on the night of
+1 November 1833. Case heard at Whitby in the division of Whitby
+Strand" -- defendant Sarah Anderson, spouse Enock Anderson (tailor),
+wife relationship present. Victim Isabella Jolly's text states
+"spinster" but `person_occupation` had no link -- a fresh instance of
+the marital-status gap (not on the original tracked list). Locations
+and crime type (assault) match.
+
+**FIXED — added missing occupation link: person 6776 (Isabella Jolly)
+→ occupation 406 (spinster).**
+
+---
+
+**Progress: records 1-552 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 17 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Record 553
+
+"Summary conviction of Henry Freeman of the township of Whitby mariner
+and master of a vessel called the William Ash which contained goods to
+be unshipped at Whitby Harbour, for not delivering to Peter George
+Coble collector of rates, within 12 hours of his arrival, the name of
+the consignee or other person to whom the goods were to be delivered;
+on the oath of the said Peter George Coble of the parish of Whitby
+collector of rates and dues of the harbour of Whitby, and another.
+Offence committed at the township of Whitby on 23 October 1869. Whitby
+Strand - case heard at Whitby" -- defendant Henry Freeman (occupation
+captures the vessel name detail: "mariner and master of the vessel
+William Ash"). Informant Peter George Coble (full name incl. middle
+name). Crime type=maritime offence, correct category. "And another" is
+an unnamed second informant, correctly not fabricated.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-553 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 17 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Records 554-558
+
+All checked individually -- all correct, no changes. Notable: 556
+Robert Stephenson, correctly a separate person from record 366's
+Robert Stephenson (different conviction); 558 Thomas Brown's "being in
+the Market Place with intent to steal from the person of Robert
+Baines" correctly categorized as "loitering/suspected person" (the
+historical Vagrancy Act "suspected person" offence).
+
+**OK — no changes (554, 555, 556, 557, 558).**
+
+---
+
+**Progress: records 1-558 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 17 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Records 559-563
+
+All checked individually -- all correct, no changes.
+
+**OK — no changes (559, 560, 561, 562, 563).**
+
+---
+
+**Progress: records 1-563 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 17 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Records 564-566
+
+All checked individually -- all correct, no changes. Notable: 565
+"drunk in charge of two horses and a carriage" checked against
+precedent -- consistently tagged "drunkenness" across 61 records
+corpus-wide, not a separate driving-specific category.
+
+**OK — no changes (564, 565, 566).**
+
+---
+
+**Progress: records 1-566 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 17 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Records 567-569
+
+All checked individually -- all correct, no changes.
+
+**OK — no changes (567, 568, 569).**
+
+---
+
+**Progress: records 1-569 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 1 spelling fix,
+1 title fix, 4 anomalies notes, 4 redundant relationship rows removed,
+2 role corrections, 17 occupation fixes, 2 office fixes, 1 crime_type
+miscategorization fix, 8 new crime_type leaves created, 11 records
+retagged out of unclassified.**
+
+## Record 570
+
+Checked -- correct, no changes.
+
+## Record 571
+
+"Summary conviction of Reuben Raybold of Whitby for hawking a number
+of almanacs that were unstamped; on the information of Robert Hunt of
+the township of Whitby special constable. Offence committed at Whitby
+on 26 December 1833. Case heard at Whitby" -- defendant's person row
+correctly has last_name "Raybold" (matching raw_record), but the
+summary_conviction.title field said "Raybald" -- a title/raw_record
+spelling mismatch, same class of bug as record 347.
+
+**FIXED — corrected title from "Summary conviction: Reuben Raybald" to
+"Summary conviction: Reuben Raybold". Informant Robert Hunt (special
+constable, matches precedent), locations, and crime type (licensing
+offence) all otherwise correct.**
+
+---
+
+**Progress: records 1-571 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 2 spelling
+fixes, 2 title fixes, 4 anomalies notes, 4 redundant relationship rows
+removed, 2 role corrections, 17 occupation fixes, 2 office fixes, 1
+crime_type miscategorization fix, 8 new crime_type leaves created, 11
+records retagged out of unclassified.**
+
+## Records 572-574
+
+All checked individually -- all correct, no changes.
+
+**OK — no changes (572, 573, 574).**
+
+---
+
+**Progress: records 1-574 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 2 spelling
+fixes, 2 title fixes, 4 anomalies notes, 4 redundant relationship rows
+removed, 2 role corrections, 17 occupation fixes, 2 office fixes, 1
+crime_type miscategorization fix, 8 new crime_type leaves created, 11
+records retagged out of unclassified.**
+
+## Records 575-576
+
+Checked -- correct, no changes. 575: "public office offence" (14)
+correctly distinct from the surveyor-neglect leaf (79) since this is
+refusing to *accept* the office, not neglecting duty while holding it.
+
+**OK — no changes (575, 576).**
+
+## Record 577
+
+"Summary conviction of Emma Robinson of the township of Whitby
+singlewoman for resisting Mark Boggett one of the constables for the
+North Riding in the execution of his duty; on the oath of Mark Boggett
+of the township of Whitby police constable, William Willison of
+Whitby innkeeper and Francis Calvert of the township of Goathland
+farmer. Offence committed at the township of Whitby on 2 October
+1875. Whitby Strand - case heard at Whitby" -- defendant Emma
+Robinson's text states "singlewoman" but `person_occupation` had no
+link -- another instance of the marital-status gap.
+
+**FIXED — added missing occupation link: person 630 (Emma Robinson) →
+occupation 337 (singlewoman). Victim Mark Boggett and witnesses William
+Willison, Francis Calvert otherwise correct.**
+
+---
+
+**Progress: records 1-577 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 2 spelling
+fixes, 2 title fixes, 4 anomalies notes, 4 redundant relationship rows
+removed, 2 role corrections, 18 occupation fixes, 2 office fixes, 1
+crime_type miscategorization fix, 8 new crime_type leaves created, 11
+records retagged out of unclassified.**
+
+## Records 578-580
+
+All checked individually -- all correct, no changes.
+
+**OK — no changes (578, 579, 580).**
+
+---
+
+**Progress: records 1-580 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 2 spelling
+fixes, 2 title fixes, 4 anomalies notes, 4 redundant relationship rows
+removed, 2 role corrections, 18 occupation fixes, 2 office fixes, 1
+crime_type miscategorization fix, 8 new crime_type leaves created, 11
+records retagged out of unclassified.**
+
+## Record 581
+
+"Summary conviction of Robert Parkin of the township of Whitby cab
+driver for being too far from his carriage to have proper control of
+the horse drawing it; on the oath of Thomas Hall of the township of
+Whitby police constable. Offence committed at the township of Whitby
+on 20 October 1875. Whitby Strand - case heard at Whitby" -- defendant
+Robert Parkin (Whitby, cab driver -- correctly a separate person from
+the Robert Parkin, waggoner, of Newholm cum Dunsley in records 1084/
+735), informant Thomas Hall. Crime type was "furious/reckless driving"
+(59) -- but this is the exact same offence pattern as leaf 75 ("not
+having proper control of horse drawing a cart", created earlier this
+session for records 708/1025/1084). Checked corpus-wide: found the
+same fragmentation as the earlier unclassified sweep -- 6 records
+tagged "furious/reckless driving", 1 tagged "obstructing the highway",
+for this identical offence text.
+
+**FIXED — retagged all affected records (581, 735, 2305, 2308, 2344,
+4027, 4145) to crime_type 75, consistent with 708/1025/1084. Locations
+otherwise correct.**
+
+Also checked the other 6 crime_type leaves created earlier this
+session (74, 76-79) for the same kind of fragmentation. Found one more
+for leaf 74: record 5139 (John Burnside, waggon without name painted
+on it) was tagged "licensing offence" (23) instead. Retagged to 74.
+Leaves 76-79 had no other fragmented instances.
+
+---
+
+**Progress: records 1-581 done (restart #2, plus confirmed blacklist
+gap at 87-88, 139, 144, 151, 311, 359, 433). 7 location fixes
+(resolved), 50 related_conviction links, 3 sex fixes, 2 spelling
+fixes, 2 title fixes, 4 anomalies notes, 4 redundant relationship rows
+removed, 2 role corrections, 18 occupation fixes, 2 office fixes, 9
+crime_type miscategorization fixes, 8 new crime_type leaves created,
+11 records retagged out of unclassified.**
+
+## Records 582-584
+
+All checked individually -- all correct, no changes. 584's Thomas
+Atkinson correctly a separate conviction from the 332/368/517 cluster
+(different offence date, no fabricated link).
+
+**OK — no changes (582, 583, 584).**
+
+## Records 585-587
+
+All checked individually -- all correct, no changes.
+
+**OK — no changes (585, 586, 587).**
+
+## Records 588-590
+
+All checked individually -- all correct, no changes. 589's "de Wart"
+compound surname correctly preserved.
+
+**OK — no changes (588, 589, 590).**
+
+---
+
+**Progress: records 1-590 done.**
+
+## Record 591
+
+"Summary conviction of William Wormald of Whitby innkeeper for opening
+his house during the usual hours of divine service between 10.30 a.m.
+and 12.30 p.m.; on the information of William Wilkinson. Offence
+committed at the parish of Whitby on Sunday 1 May 1836" -- defendant
+William Wormald (Whitby, innkeeper), informant William Wilkinson
+(matches the same informant seen at records 520/583/587). Locations
+and crime type (licensing offence) match. No related_conviction.
+
+**OK — no changes.**
+
+## Record 592
+
+"Summary conviction of Isaac Blackburn of the township of Whitby
+sailor for being drunk and riotous in Sandgate. Offence committed at
+the township of Whitby on 29 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant Isaac Blackburn (Whitby, sailor). Location of
+offence = Sandgate (34, East Cliff → Whitby), existing precedent.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+## Record 593
+
+"Summary conviction of Robert Barrick of the township of Whitby jet
+worker for being drunk and disorderly in Baxtergate. Offence committed
+at the township of Whitby on 9 October 1875. Whitby Strand - case
+heard at Whitby" -- defendant Robert Barrick (Whitby, jet worker) --
+correctly a separate person row from the "Robert Barrick, jet ornament
+manufacturer" seen as a victim in a different, later record (unrelated
+conviction, no cross-merge). Location of offence = Baxtergate,
+existing precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-593 done.**
+
+## Record 594
+
+"Summary conviction of Charles Tomlinson of the township of Ruswarp
+labourer for being drunk and disorderly in Bagdale Offence committed
+at the township of Ruswarp on 30 September 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Charles
+Tomlinson (Ruswarp, labourer). Both stated locations captured: Ruswarp
+(township) and Bagdale (192, under West Cliff), matching the dual-
+location convention. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-594 done.**
+
+## Record 595
+
+"Summary conviction of Thomas Breckon of Whitby butcher for beating a
+dog belonging to William Cavallier of the township of Whitby cabinet
+maker. Offence committed at the township of Whitby on 4 June 1836.
+Case heard at Whitby" -- defendant Thomas Breckon (Whitby, butcher),
+property owner William Cavallier -- correctly a separate person row
+from record 579's William Cavallier (different role/conviction: there
+he's the defendant leaving logs outside his shop, here he's a dog
+owner). Locations and crime type (cruelty to animals) match. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-595 done.**
+
+## Record 596
+
+"Summary conviction of John Fletcher of the township of Whitby sailor
+for being drunk and riotous in Sandgate. Offence committed at the
+township of Whitby on 29 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant John Fletcher (Whitby, sailor). Location of
+offence = Sandgate, existing precedent. Crime type=drunk and
+disorderly matches. Already correctly linked via related_conviction to
+592 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-596 done.**
+
+## Record 597
+
+"Summary conviction of Katherine McLaughlan of the township of Whitby
+widow for assaulting Mary Feeley; on the oath of the said Mary Feeley
+wife of John Feeley of the township of Whitby. Offence committed at
+the township of Whitby on 13 October 1875. Whitby Strand - case heard
+at Whitby" -- defendant Katherine McLaughlan's text states "widow" but
+`person_occupation` had no link -- another instance of the marital-
+status gap. Victim Mary Feeley, spouse John Feeley, wife relationship
+present. Locations and crime type (assault) match. No
+related_conviction.
+
+**FIXED — added missing occupation link: person 650 (Katherine
+McLaughlan) → occupation 384 (widow).**
+
+---
+
+**Progress: records 1-597 done.**
+
+## Record 598
+
+"Summary conviction of John Morgan of the township of Whitby labourer
+for begging at the Pier. Offence committed in the township of Whitby
+on 17 July 1889. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant John Morgan (Whitby, labourer). Location of
+offence = Piers, existing precedent. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-598 done.**
+
+## Record 599
+
+"Summary conviction of Joseph Feeny for begging in Church Street.
+Offence committed at the township of Whitby on 7 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant Joseph Feeny, no home
+stated, correctly blank. Location of offence = Church Street, existing
+precedent. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-599 done.**
+
+## Record 600
+
+"Summary conviction of Samuel Baker for lodging in a cowhouse with no
+visible means of subsistence and not giving a good account of himself.
+Offence committed at the township of Ruswarp on 14 October 1875.
+Whitby Strand - case heard at Whitby" -- defendant Samuel Baker, no
+home stated, correctly blank. Location=Ruswarp, crime type=vagrancy
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-600 done.**
+
+## Record 601
+
+"Summary conviction of Walter Adam of the township of Whitby iron
+worker for assaulting Alfred Lait Offence committed at the township of
+Whitby on 22 June 1889. Whitby Strand Petty Sessional division - case
+heard at Whitby" -- defendant Walter Adam (Whitby, iron worker),
+victim Alfred Lait. Locations and crime type (assault) match. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-601 done.**
+
+## Record 602
+
+"Summary conviction of Charles Wood for lodging in a barn with no
+visible means of subsistence and not giving a good account of himself.
+Offence committed at the township of Hawsker cum Stainsacre on 8 July
+1869. Whitby Strand - case heard at Whitby" -- defendant Charles Wood,
+no home stated, correctly blank. Location=Hawsker-cum-Stainsacre,
+crime type=vagrancy matches.
+
+**OK — no changes.** [Corrected 2026-08-04: record 608 (William
+Crowther, identical offence/township/date, no named party in either
+record) surfaced a new no-named-party linking pattern, confirmed with
+the user; related_conviction 602-608 added when 608 was reached.]
+
+---
+
+**Progress: records 1-602 done.**
+
+## Record 603
+
+"Summary conviction of Michael Dunleavy of the township of Glaisdale
+labourer for using a gaff to catch salmon in the river Esk. Offence
+committed at the township of Glaisdale on 16 October 1875. Whitby
+Strand - case heard at Whitby" -- defendant Michael Dunleavy
+(Glaisdale, labourer). Both locations captured (Glaisdale + River Esk
+under the Rivers node). Crime type=fishing offence, correctly distinct
+from the land-poaching category. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-603 done.**
+
+## Record 604
+
+"Summary conviction of William Dixon of the township of Whitby jet
+worker for assaulting Mary Dixon Offence committed at the township of
+Whitby on 21 September 1889. Whitby Strand Petty Sessional division -
+case heard at Whitby" -- defendant William Dixon (Whitby, jet worker),
+victim Mary Dixon -- sex correctly left blank, matching the consistent
+corpus-wide convention (sex only filled when explicitly stated via
+pronoun/descriptor, never inferred from an unambiguously gendered
+first name alone; verified against several other similar victim-only-
+name records). Shared surname with defendant but no relationship
+stated in text, correctly not fabricated. Locations and crime type
+(assault) match. Already correctly linked via related_conviction to
+574 (same defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-604 done.**
+
+## Record 605
+
+"Summary conviction of Catherine Brannan for collecting alms under
+false pretences from Elizabeth Ann Green, by claiming that a young
+woman had recently been confined in the Old Post Office Yard and was
+now destitute. Offence committed at the township of Whitby on 5 July
+1869. Whitby Strand - case heard at Whitby" -- defendant Catherine
+Brannan, no home stated, correctly blank. Victim Elizabeth Ann Green
+(full name incl. middle name). "Old Post Office Yard" is part of the
+fabricated claim within the offence itself (the false story Brannan
+told), not a real location of the offence -- correctly not captured as
+a separate location entity. Locations and crime type (fraud/false
+pretences) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-605 done.**
+
+## Record 606
+
+"Summary conviction of George Patton of the township of Whitby
+fisherman for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 6 November 1875. Whitby Strand
+- case heard at Whitby" -- defendant George Patton (Whitby,
+fisherman). Location of offence = Piers, existing precedent. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-606 done.**
+
+## Record 607
+
+"Summary conviction of James Cockrin of the township of Whitby
+labourer for assaulting Charles Finks. Offence committed at the
+township of Whitby on 15 August 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant James Cockrin (Whitby,
+labourer), victim Charles Finks. Locations and crime type (assault)
+match. Already correctly linked via related_conviction to 515 (same
+defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-607 done.**
+
+## Record 608
+
+"Summary conviction of William Crowther for lodging in a barn with no
+visible means of subsistence and not giving a good account of himself.
+Offence committed at the township of Hawsker cum Stainsacre on 8 July
+1869. Whitby Strand - case heard at Whitby" -- defendant William
+Crowther, no home stated, correctly blank. Same offence, township, and
+date as record 602 (Charles Wood) -- flagged to user as a new no-
+named-party linking pattern (neither record names an informant); user
+confirmed this counts as related_conviction. New precedent established
+and saved. Location=Hawsker-cum-Stainsacre, crime type=vagrancy
+matches.
+
+**FIXED — added related_conviction link 602-608 (same offence/township/
+date, no named party). Record 602's log entry retroactively
+annotated.**
+
+---
+
+**Progress: records 1-608 done.**
+
+## Record 609
+
+"Summary conviction of William Herbert of the township of Ruswarp
+butcher for being drunk and disorderly in the Market Place. Offence
+committed at the township of Whitby on 30 October 1875. Whitby Strand
+- case heard at Whitby" -- defendant William Herbert (home=Ruswarp,
+correctly distinct from offence location Whitby). Location of offence
+= Market Place, existing precedent. Crime type=drunk and disorderly
+matches. Already correctly linked via related_conviction to 538 (same-
+beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-609 done.**
+
+## Record 610
+
+"Summary conviction of William Thomas of the township of Whitby
+fisherman for being drunk and disorderly in Baxtergate Offence
+committed at the township of Whitby on 29 September 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+William Thomas (Whitby, fisherman). Location of offence = Baxtergate,
+existing precedent. Crime type=drunk and disorderly matches. Already
+correctly linked via related_conviction to 570 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-610 done.**
+
+## Record 611
+
+"Summary conviction of John Sallenger for begging in Hinderwell Street
+Offence committed at the township of Hinderwell on 8 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant John Sallenger, no home
+stated, correctly blank. Location of offence = Hinderwell Street (88
+parent, i.e. Hinderwell itself), crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-611 done.**
+
+## Record 612
+
+"Summary conviction of William Herbert of the township of Whitby
+butcher for being drunk and disorderly in York Terrace. Offence
+committed at the township of Ruswarp on 1 November 1875. Whitby
+Strand - case heard at Whitby" -- defendant William Herbert, home=
+Whitby here (correctly a separate person from record 609's William
+Herbert, home=Ruswarp -- same name/occupation but a different real
+person, no fabricated merge). Both stated locations captured (Ruswarp
++ York Terrace under West Cliff). Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-612 done.**
+
+## Record 613
+
+"Summary conviction of Thomas Loftus of the township of Whitby
+bricklayer for being drunk and disorderly in Church Street Offence
+committed at the township of Whitby on 9 September 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Thomas Loftus (Whitby, bricklayer). Location of offence = Church
+Street, existing precedent. Crime type=drunk and disorderly matches.
+Already correctly linked via related_conviction to 586 (same
+defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-613 done.**
+
+## Record 614
+
+"Summary conviction of John Shepherd of the township of Glaisdale
+miner for interfering with the comfort of other passengers on the
+Cleveland and North Yorkshire line of the North Eastern Railway; on
+the oath of Michael Underwood and others. Offence committed at the
+township of Eskdaleside on 3 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant John Shepherd (Glaisdale, miner), informant
+Michael Underwood, "and others" correctly not fabricated. Cross-parish
+railway (Cleveland & North Yorkshire Railway, under Cross-Parish
+Railways 388) added alongside stated township (Eskdaleside-cum-
+Ugglebarnby), matching the established convention. Crime type=railway
+offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-614 done.**
+
+## Record 615
+
+"Summary conviction of Peter Gorley of the township of Whitby jet
+worker for assaulting Mary Ann Stonehouse. Offence committed at the
+township of Whitby on 16 November 1875. Whitby Strand - case heard at
+Whitby" -- defendant Peter Gorley (Whitby, jet worker), victim Mary
+Ann Stonehouse -- correctly a separate person from record 526's Mary
+Ann Stonehouse (different conviction/date/role). Locations and crime
+type (assault) match. Already correctly linked via related_conviction
+to 2885 (same defendant/offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-615 done.**
+
+## Record 616
+
+"Summary conviction of Joseph Bottoms of the township of Fylingdales
+labourer for lodging in a barn, without any visible means of
+subsistence and not giving a good account of himself. Offence
+committed at the township of Fylingdales on 7 September 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Joseph Bottoms (Fylingdales, labourer). Same offence, township, and
+date as record 543 (James Sutton) -- no-named-party pattern
+(confirmed at 602/608), same barn implied. Location and crime type
+(vagrancy) match.
+
+**FIXED — added related_conviction link 543-616 (same offence/township/
+date, no named party). Record 543's earlier batch entry annotated with
+a bracketed correction note.**
+
+---
+
+**Progress: records 1-616 done.**
+
+## Record 617
+
+"Summary conviction of Matilda Cooper of the township of Whitby tramp
+for being drunk. Offence committed at the township of Whitby on 13
+July 1869. Whitby Strand - case heard at Whitby" -- defendant Matilda
+Cooper, occupation "tramp" matches established category. Locations and
+crime type (drunkenness) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-617 done.**
+
+## Record 618
+
+"Summary conviction of Thomas Green of the township of Eskdaleside
+miner for being drunk and riotous in Grosmont town street. Offence
+committed at the township of Eskdaleside on 6 November 1875. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Green (Eskdaleside,
+miner). "Grosmont town street" correctly resolves to Grosmont (under
+Eskdaleside-cum-Ugglebarnby), matching the "X town street" convention.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-618 done.**
+
+## Record 619
+
+"Summary conviction of Margaret Ann Hansell wife of William George
+Hansell of the township of Whitby jet worker for being drunk and
+disorderly in St Ann's Staith. Offence committed at the township of
+Whitby on 19 August 1889. Whitby Strand Petty Sessional division -
+case heard at Whitby" -- defendant Margaret Ann Hansell, spouse
+William George Hansell (both full names incl. middle names captured),
+wife relationship present. Location of offence = St Ann's Staith,
+existing precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-619 done.**
+
+## Record 620
+
+"Summary conviction of Henry Johnson for begging in Belle Vue Terrace.
+Offence committed at the township of Ruswarp on 16 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant Henry Johnson, no home
+stated, correctly blank. Both stated locations captured (Ruswarp +
+Belle Vue Terrace under West Cliff), matching the dual-location
+convention. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-620 done.**
+
+## Record 621
+
+"Summary conviction of John Hodgson of the township of Whitby
+fisherman for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 29 November 1875. Whitby
+Strand - case heard at Whitby" -- defendant John Hodgson, correctly a
+separate person row from records 344/499's John Hodgsons (different
+convictions/dates). Location of offence = Church Street, existing
+precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-621 done.**
+
+## Record 622
+
+"Summary conviction of John Marshall of the township of Whitby
+labourer for stealing apples value 1s, the property of James Whittle
+and growing in his garden. Offence committed at the township of
+Hawsker cum Stainsacre on 28 August 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant John Marshall
+(Whitby, labourer). Same property owner, offence, and date as record
+495 (John Moon) -- same theft incident, two men prosecuted separately.
+Locations and crime type (theft) match.
+
+**FIXED — added related_conviction link 495-622 (same owner/offence/
+date). Record 495's log entry retroactively annotated.** [Corrected
+2026-08-04: record 625 (Thomas Drummond Moon, same owner/offence/date)
+added related_conviction 622-625 when 625 was reached.]
+
+---
+
+**Progress: records 1-622 done.**
+
+## Record 623
+
+"Summary conviction of John Coyle and George Smith for frequenting the
+West Cliff with intent to commit felony. Offence committed at the
+township of Ruswarp on 17 July 1869. Whitby Strand - case heard at
+Whitby" -- two co-defendants, no home/occupation stated, correctly
+blank. Both locations captured (West Cliff + Ruswarp). Crime
+type=loitering/suspected person, correct for the "frequenting with
+intent to commit felony" statutory offence. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-623 done.**
+
+## Record 624
+
+"Summary conviction of Thomas Gaines of the township of Whitby
+fisherman for being drunk and disorderly in Church Street; on the oath
+of Thomas Hall of the township of Whitby police constable. Offence
+committed at the township of Whitby on 13 November 1875. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Gaines, correctly a
+separate person row from records 339/534/542's Thomas Gaines
+(different convictions/dates). Informant Thomas Hall. Location of
+offence = Church Street, existing precedent. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-624 done.**
+
+## Record 625
+
+"Summary conviction of Thomas Drummond Moon of the township of Whitby
+labourer for stealing apples value 1s, the property of James Whittle
+and growing in his garden. Offence committed at the township of
+Hawsker cum Stainsacre on 28 August 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Thomas
+Drummond Moon (full name incl. middle name -- likely a relative of
+record 495's John Moon, but correctly a separate person row, no
+fabricated merge). Third member of the James Whittle apple-theft
+incident cluster (495, 622). Locations and crime type (theft) match.
+
+**FIXED — added related_conviction links 495-625 and 622-625 (full
+all-pairs linking for the three-record cluster). Records 495 and 622's
+log entries retroactively annotated.**
+
+---
+
+**Progress: records 1-625 done.**
+
+## Record 626
+
+"Summary conviction of Ann Appleton widow, Mary Austin wife of Robert
+Austin fisherman, and Annie Austin singlewoman, all of the township of
+Whitby, for obstructing Church Street. Offence committed at the
+township of Whitby on 12 July 1869. Whitby Strand - case heard at
+Whitby" -- three defendants: Ann Appleton (widow, occupation already
+correctly linked from an earlier pass), Mary Austin (spouse Robert
+Austin, fisherman, wife relationship present), Annie Austin
+(singlewoman, occupation already correctly linked). Locations and
+crime type (obstructing the highway) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-626 done.**
+
+## Record 627
+
+"Summary conviction of William Martin of the township of Whitby for
+wilfully damaging a lamp belonging to the Whitby Gas Company. Offence
+committed at the township of Ruswarp on 1 December 1875. Whitby
+Strand - case heard at Whitby" -- defendant William Martin (Whitby),
+no occupation stated, correctly blank. Property owner "Whitby Gas
+Company" had no person/company row at all -- checked precedent, this
+DB does capture company names as person rows (e.g. "Holt and
+Company", "Thomas Turnbull and Company" already exist), so this was a
+genuine gap. Locations and crime type (malicious/property damage)
+match.
+
+**FIXED — created person row 10373 ("Whitby Gas Company", no first
+name) and linked it to this record with role="property owner".**
+
+---
+
+**Progress: records 1-627 done.**
+
+## Record 628
+
+"Summary conviction of Alfred Harrison of the township of Mickleby
+labourer for begging in Mickleby town street. Offence committed at the
+township of Mickleby on 2 September 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Alfred
+Harrison (Mickleby, labourer). "Mickleby town street" correctly
+resolves to Mickleby itself. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-628 done.**
+
+## Record 629
+
+"Summary conviction of George Wedgewood of the township of Newholm cum
+Dunsley for trespassing in the daytime in search of conies on a piece
+of land in the possession and occupation of Elizabeth Harris. Offence
+committed at the township of Newholm cum Dunsley on 13 July 1869.
+Whitby Strand - case heard at Whitby" -- defendant George Wedgewood,
+no occupation stated, correctly blank. Landowner Elizabeth Harris.
+Locations and crime type (poaching) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-629 done.**
+
+## Record 630
+
+"Summary conviction of Frederick Blackstone of the township of Whitby
+jeweller for being drunk and disorderly on the Pier. Offence committed
+at the township of Whitby on 7 December 1875. Whitby Strand - case
+heard at Whitby" -- defendant Frederick Blackstone (Whitby, jeweller).
+Location of offence = Piers, existing precedent. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-630 done.**
+
+## Record 631
+
+"Summary conviction of Charles Sams of the township of Whitby labourer
+for being drunk and disorderly at the bridge end Offence committed at
+the township of Whitby on 15 September 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Charles Sams,
+correctly a separate person row from record 566's spouse Charles Sams
+(different role/conviction). Location of offence = Bridge End,
+existing precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-631 done.**
+
+## Record 632
+
+"Summary conviction of Henry Poleson for begging in Fishburn Road.
+Offence committed at the township of Ruswarp on 16 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant Henry Poleson, no home
+stated, correctly blank. Both stated locations captured (Ruswarp +
+Fishburn Road under West Cliff). Crime type=begging matches. Already
+correctly linked via related_conviction to 641 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-632 done.**
+
+## Record 633
+
+"Summary conviction of Thomas Turner for begging in Baxtergate.
+Offence committed at the township of Whitby on 9 July 1875. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Turner, no home
+stated, correctly blank. Location of offence = Baxtergate, existing
+precedent. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-633 done.**
+
+## Record 634
+
+"Summary conviction of William Parker of the township of Eskdaleside
+cum Ugglebarnby labourer for begging in Grosmont town street. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 21
+September 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant William Parker (Eskdaleside, labourer). "Grosmont
+town street" correctly resolves to Grosmont. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-634 done.**
+
+## Record 635
+
+"Summary conviction of Joseph Peacock for begging in John Street.
+Offence committed at the township of Ruswarp on 16 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant Joseph Peacock, no home
+stated, correctly blank. Both stated locations captured (Ruswarp +
+John Street under West Cliff). Same date/township as record 632
+(Henry Poleson) but a different specific street (John Street vs.
+Fishburn Road) -- correctly not linked, a separate incident. Crime
+type=begging matches.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-635 done.**
+
+## Record 636
+
+"Summary conviction of Adam Wilson for begging in a public place.
+Offence committed at the township of Roxby on 8 September 1875. Whitby
+Strand - case heard at Whitby" -- defendant Adam Wilson, no home
+stated, correctly blank. Location=Roxby, crime type=begging matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-636 done.**
+
+## Record 637
+
+"Summary conviction of Joseph Brown of the township of Eskdaleside cum
+Ugglebarnby labourer for begging in Sleights town street. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 2
+September 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Joseph Brown (Eskdaleside, labourer). "Sleights
+town street" resolves correctly. Crime type=begging matches. Already
+correctly linked via related_conviction to 519 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-637 done.**
+
+## Record 638
+
+"Summary conviction of William Cook of the township of Whitby labourer
+for assaulting Joseph Gatenby one of the constables for the North
+Riding in the execution of his duty. Offence committed at the
+township of Whitby on 16 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant William Cook (Whitby, labourer), victim Joseph
+Gatenby -- correctly a separate person from record 564's informant
+Joseph Gatenby (different conviction). Locations and crime type
+(assaulting a police officer) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-638 done.**
+
+## Record 639
+
+"Summary conviction of William Gaskin for assaulting Jane Gaskin.
+Offence committed at the township of Whitby on 17 June 1875. Whitby
+Strand - case heard at Whitby" -- defendant William Gaskin, no home
+stated, correctly blank. Victim Jane Gaskin -- shared surname but no
+relationship stated in text, correctly not fabricated (unlike other
+records where "his wife"/"wife of" is explicit). Locations and crime
+type (assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-639 done.**
+
+## Record 640
+
+"Summary conviction of William Cowley of the township of Hawsker cum
+Stainsacre labourer for lodging in a field without any visible means
+of subsistence and not giving a good account of himself Offence
+committed at the township of Hawsker cum Stainsacre on 29 June 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant William Cowley (Hawsker-cum-Stainsacre, labourer). Location
+and crime type (vagrancy) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-640 done.**
+
+## Record 641
+
+"Summary conviction of George Bonson for begging in Fishburn Road.
+Offence committed at the township of Ruswarp on 16 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant George Bonson, no home
+stated, correctly blank. Both stated locations captured (Ruswarp +
+Fishburn Road). Crime type=begging matches. Already correctly linked
+via related_conviction to 632 (same-beat pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-641 done.**
+
+## Record 642
+
+"Summary conviction of Richard Steel for assaulting Alice Steel.
+Offence committed at the township of Whitby on 29 June 1875. Whitby
+Strand - case heard at Whitby" -- defendant Richard Steel, no home
+stated, correctly blank. Victim Alice Steel -- shared surname, no
+relationship stated, correctly not fabricated. Locations and crime
+type (assault) match. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-642 done.**
+
+## Record 643
+
+"Summary conviction of Robert Hill of the township of Fylingdales
+gardener for being drunk on the licensed premises of John Steel and
+refusing to leave when asked to do so by Joseph Scaife a police
+constable. Offence committed at the township of Fylingdales on 15
+July 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Robert Hill (Fylingdales, gardener), licensee
+John Steel, informant Joseph Scaife (police constable). Locations and
+crime types (drunkenness, refusal to quit licensed premises) match. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-643 done.**
+
+## Record 644
+
+"Summary conviction of Frederick James for begging on the Pier.
+Offence committed at the township of Whitby on 17 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant Frederick James, no home
+stated, correctly blank. Location of offence = Piers, existing
+precedent. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-644 done.**
+
+## Record 645
+
+"Summary conviction of Robert Watson for assaulting Thomas Watson.
+Offence committed at the township of Whitby on 9 July 1875. Whitby
+Strand - case heard at Whitby" -- defendant Robert Watson, no home
+stated, correctly blank. Victim Thomas Watson -- unrelated to the
+earlier licensed-premises "Thomas Watson" cluster (different date/
+context), correctly not conflated; shared surname with defendant, no
+relationship stated. Locations and crime type (assault) match. Already
+correctly linked via related_conviction to 750 and 756 (same defendant/
+offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-645 done.**
+
+## Record 646
+
+"Summary conviction of James Loftus of the township of Whitby labourer
+for assaulting William Dobson one of the constables of the North
+Riding in the execution of his duty. Offence committed at the
+township of Whitby on 27 July 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant James Loftus, correctly
+a separate person row from record 460's James Loftus (different
+conviction/date). Victim William Dobson (constable of the North
+Riding). Locations and crime type (assaulting a police officer) match.
+Already correctly linked via related_conviction to 664 (same
+defendant/offence date).
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 664]:** part of a 5-record riot
+cluster (436, 646, 652, 664, 670) -- same date/township/offence type,
+multiple defendants assaulting multiple named constables during what
+was likely one incident. Full pairwise related_conviction links added
+retroactively; see [[project_related_conviction_riot_incident_pattern]].
+
+---
+
+**Progress: records 1-646 done.**
+
+## Record 647
+
+"Summary conviction of Francis Fewster of the township of Whitby jet
+worker for being drunk and riotous in Baxtergate. Offence committed at
+the township of Whitby on 17 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant Francis Fewster, correctly a separate person row
+from record 369's Francis Fewster (different conviction/date, despite
+matching occupation). Location of offence = Baxtergate, existing
+precedent. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-647 done.**
+
+## Record 648
+
+"Summary conviction of Edward Fitzsimons for begging in Glaisdale town
+street. Offence committed at the township of Glaisdale on 26 July
+1875. Whitby Strand - case heard at Whitby" -- defendant Edward
+Fitzsimons, no home stated, correctly blank. "Glaisdale town street"
+resolves correctly. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-648 done.**
+
+## Record 649
+
+"Summary conviction of James Westhead of the township of Newholm cum
+Dunsley labourer for being drunk and disorderly in East Row town
+street. Offence committed at the township of Newholm cum Dunsley on
+17 June 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant James Westhead (Newholm-cum-Dunsley, labourer).
+"East Row town street" resolves to Newholm-cum-Dunsley itself,
+matching the stated township. Crime type=drunk and disorderly matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-649 done.**
+
+## Record 650
+
+"Summary conviction of William Balmforth of the township of Whitby
+licensed beer house keeper for opening his premises before 12.30
+p.m. Offence committed at the township of Whitby at 8.30 a.m. on
+Sunday 18 July 1869. Whitby Strand - case heard at Whitby" --
+defendant William Balmforth (Whitby, licensed beer house keeper).
+Sunday-trading licensing offence, opening before permitted hour.
+Location Whitby matches on both offence and court. Crime
+type=licensing offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-650 done.**
+
+## Record 651
+
+"Summary conviction of Thomas Weatherill for assaulting Alice
+Weatherill. Offence committed at the township of Whitby on 28 July
+1875. Whitby Strand - case heard at Whitby" -- defendant Thomas
+Weatherill, victim Alice Weatherill, shared surname but no
+relationship stated in raw_record, so none captured (no
+fabrication). Location Whitby matches. Crime type=assault matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-651 done.**
+
+## Record 652
+
+"Summary conviction of Thomas Loftus of the township of Whitby
+bricklayer for assaulting William Lee one of the constables of the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 27 July 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Thomas Loftus (Whitby,
+bricklayer), victim William Lee (constable of the North Riding).
+Location Whitby matches. Crime type=assaulting a police officer
+matches. Already correctly linked to related_conviction 670 (same
+defendant + same offence date pattern) -- will verify reciprocally
+when reaching 670.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-652 done.**
+
+## Record 653
+
+"Summary conviction of Ellen Hick wife of Isaac Hick for assaulting
+Joseph Gatenby. Offence committed at the township of Whitby on 20
+July 1869. Whitby Strand - case heard at Whitby" -- defendant Ellen
+Hick, spouse Isaac Hick (relationship correctly captured), victim
+Joseph Gatenby (police constable). Location Whitby matches. Crime
+type=assault matches -- note victim is a police constable but the
+charge as stated is plain "assaulting Joseph Gatenby" with no
+"in the execution of his duty" language, so ordinary assault (not
+"assaulting a police officer") is correct here, unlike record 652.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-653 done.**
+
+## Record 654
+
+"Summary conviction of James Brown for begging in Dean Hall.
+Offence committed at the township of Ugglebarnby on 10 July 1875.
+Whitby Strand - case heard at Whitby" -- defendant James Brown.
+Location of offence "Dean Hall" (id 8) correctly nested under
+Eskdaleside-cum-Ugglebarnby, matching the stated township. Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-654 done.**
+
+## Record 655
+
+"Summary conviction of Annie Craven wife of Amos Craven of Kingston
+upon Hull labourer for begging on the Whitby and Hawsker highway.
+Offence committed at the township of Hawsker cum Stainsacre on 6
+August 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Annie Craven, spouse Amos Craven (labourer,
+relationship correctly captured). "Whitby and Hawsker highway"
+correctly captured as Cross-Parish Highways (id 106), added
+alongside the stated township Hawsker-cum-Stainsacre, per the
+two-endpoint highway convention. Crime type=begging matches.
+Already correctly linked to related_conviction 682 (same offence
+date/street/charge, different defendants) -- will verify
+reciprocally when reaching 682.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-655 done.**
+
+## Record 656
+
+"Summary conviction of John Mead of the township of Egton farmer
+for being the owner of a horse found straying on the Pickering and
+Stape highway; on the oath of William Pickering of the township of
+Egton police constable. Offence committed at the township of Egton
+on 22 July 1869. Whitby Strand - case heard at Whitby" -- defendant
+John Mead (Egton, farmer), informant William Pickering (Egton,
+police constable). "Pickering and Stape highway" correctly captured
+as Cross-Parish Highways (id 106), added alongside the stated
+township Egton. Crime type=straying animals matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-656 done.**
+
+## Record 657
+
+"Summary conviction of William Brown for begging in the Old Market
+Place. Offence committed at the township of Whitby on 1 July 1875.
+Whitby Strand - case heard at Whitby" -- defendant William Brown.
+Location of offence "Old Market Place" (id 31) nests under Whitby's
+"West Cliff" node (id 5) which, on inspection of its full sibling
+list (Baxtergate, Flowergate, Haggersgate, St Ann's Staith etc.),
+covers the whole west-bank old-town area rather than only the
+Victorian resort cliff-top -- so this correctly resolves to the
+stated township of Whitby, not a mis-parenting. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-657 done.**
+
+## Record 658
+
+"Summary conviction of John George Pearson of the township of
+Ruswarp for stealing a quantity of peas value 2s 6d, the property
+of William Gibbons and growing in his garden Offence committed at
+the township of Ruswarp on 11 July 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant John George
+Pearson (Ruswarp), property owner William Gibbons. Location Ruswarp
+matches. Crime type=theft matches. No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 661]:** records 406, 661, and
+667 turned out to share this exact same offence/victim/date (William
+Gibbons' peas, 11 July 1889, Ruswarp) with different defendants.
+related_conviction links to all three have now been added retroactively.
+
+---
+
+**Progress: records 1-658 done.**
+
+## Record 659
+
+"Summary conviction of Mary Jane Wallace common prostitute for
+behaving indecently in Church Street. Offence committed at the
+township of Whitby on 21 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant Mary Jane Wallace, occupation "common
+prostitute" captured. Church Street (id 6) nests under East Cliff/
+Whitby, matching stated township. Crime types = indecent behaviour +
+prostitution, both fit the charge. Already correctly linked to
+related_conviction 662 and 665 (same offence date/street/charge
+wording, different defendants -- one incident, several prosecuted)
+-- will verify reciprocally when reaching those records.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-659 done.**
+
+## Record 660
+
+"Summary conviction of William Williamson for begging in Hunter
+Street. Offence committed at the township of Ruswarp on 26 July
+1875. Whitby Strand - case heard at Whitby" -- defendant William
+Williamson. Hunter Street (id ..., parent 5/West Cliff/Whitby)
+nests under Whitby in the modern tree even though the record states
+township Ruswarp -- correctly captured alongside the stated Ruswarp
+location rather than replacing it, per the confirmed historical
+Whitby/Ruswarp cliff-boundary pattern (the two townships were one
+joint parish through much of the 19th century). Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-660 done.**
+
+## Record 661
+
+"Summary conviction of William Smallwood of the township of Ruswarp
+for stealing a quantity of peas value 2s 6d, the property of
+William Gibbons and growing in his garden Offence committed at the
+township of Ruswarp on 11 July 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant William Smallwood
+(Ruswarp), property owner William Gibbons. Location Ruswarp
+matches. Crime type=theft matches. No related_conviction was
+present, but a search for the same charge wording ("peas value 2s
+6d" + "Gibbons") turned up **four** matching records: 406 (John
+Dean), 658 (John George Pearson, already audited this session —
+also missing its link), 661 (this record), and 667 (George Cook,
+not yet reached) -- all same township, same offence date (11 July
+1889), same victim, identical charge wording, different defendants.
+One incident, four people prosecuted separately. Added all 6 pairwise
+related_conviction rows (406-658, 406-661, 406-667, 658-661,
+658-667, 661-667) with a note identifying the full 4-record cluster.
+Record 406 was already audited earlier in the corpus pass (long
+before this discovery) and record 667 has not yet been reached --
+its own entry will note this link already exists when reached.
+
+**FIXED — added missing related_conviction links for a 4-record cluster (406, 658, 661, 667).**
+
+---
+
+**Progress: records 1-661 done.**
+
+## Record 662
+
+"Summary conviction of Margaret Jane Walker common prostitute for
+behaving indecently in Church Street. Offence committed at the
+township of Whitby on 21 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant Margaret Jane Walker, occupation "common
+prostitute". Church Street matches. Crime types = indecent behaviour
++ prostitution match. Already correctly linked to related_conviction
+659 and 665 (same incident cluster).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-662 done.**
+
+## Record 663
+
+"Summary conviction of Francis Dalkin for assaulting Jane Ann Storm.
+Offence committed at the township of Whitby on 24 July 1875. Whitby
+Strand - case heard at Whitby" -- defendant Francis Dalkin, victim
+Jane Ann Storm. Location Whitby matches. Crime type=assault matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-663 done.**
+
+## Record 664
+
+"Summary conviction of James Loftus of the township of Whitby
+labourer for assaulting William Lee one of the constables of the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 27 July 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant James Loftus,
+occupation labourer. Victim William Lee (constable of the North
+Riding). Locations and crime type (assaulting a police officer)
+match. Already correctly linked to 646 (same defendant, same offence
+date). Discovered this is part of a larger 5-record riot cluster:
+436 (Edward Ruehorn/William Lee), 646 (James Loftus/William Dobson),
+652 (Thomas Loftus/William Lee), 664 (this record), 670 (Thomas
+Loftus/John Cook) -- all same date (27 July 1889), same township
+(Whitby), same offence type, 3 defendants and 3 named constables.
+Asked the user whether to link all 5 pairwise given the departure
+from prior patterns (crossing both defendant AND named-victim
+boundaries); user confirmed yes. Added the 8 missing pairwise
+related_conviction rows (2 same-defendant pairs already existed).
+Saved as a new confirmed sub-pattern
+([[project_related_conviction_riot_incident_pattern]]) and
+retroactively annotated the already-logged entries for 436 and 646.
+
+**FIXED — added 8 missing related_conviction links completing a 5-record riot cluster (436, 646, 652, 664, 670).**
+
+---
+
+**Progress: records 1-664 done.**
+
+## Record 665
+
+"Summary conviction of Margaret Corner common prostitute for
+behaving indecently in Church Street. Offence committed at the
+township of Whitby on 21 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant Margaret Corner, occupation "common prostitute".
+Church Street matches. Crime types = indecent behaviour +
+prostitution match. Already correctly linked to related_conviction
+659 and 662 (same incident cluster).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-665 done.**
+
+## Record 666
+
+"Summary conviction of James Pounder for assaulting William Burdon.
+Offence committed at the township of Whitby on 12 August 1875.
+Whitby Strand - case heard at Whitby" -- defendant James Pounder,
+victim William Burdon. Location Whitby matches. Crime type=assault
+matches. Already correctly linked to related_conviction 723 (same
+defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-666 done.**
+
+## Record 667
+
+"Summary conviction of George Cook of the township of Ruswarp for
+stealing a quantity of peas value 2s 6d, the property of William
+Gibbons and growing in his garden Offence committed at the township
+of Ruswarp on 11 July 1889. Whitby Strand Petty Sessional division -
+case heard at Whitby" -- defendant George Cook (Ruswarp), property
+owner William Gibbons. Location Ruswarp matches. Crime type=theft
+matches. Already correctly linked to related_conviction 406, 658,
+and 661 (the full 4-record cluster fixed at record 661).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-667 done.**
+
+## Record 668
+
+"Summary conviction of John Cook for begging in Flowergate. Offence
+committed at the township of Whitby on 25 July 1869. Whitby Strand -
+case heard at Whitby" -- defendant John Cook. Flowergate matches
+(West Cliff/Whitby). Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-668 done.**
+
+## Record 669
+
+"Summary conviction of John Fox for begging in East Terrace.
+Offence committed at the township of Ruswarp on 15 September 1875.
+Whitby Strand - case heard at Whitby" -- defendant John Fox. East
+Terrace nests under Whitby's West Cliff in the modern tree but the
+record states township Ruswarp -- correctly captured alongside the
+stated Ruswarp location, per the Whitby/Ruswarp cliff-boundary
+pattern. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-669 done.**
+
+## Record 670
+
+"Summary conviction of Thomas Loftus of the township of Whitby
+bricklayer for assaulting John Cook one of the constables of the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 27 July 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Thomas Loftus,
+occupation bricklayer. Victim John Cook, occupation "constable of
+the North Riding". Sex was blank for John Cook despite the raw_record
+saying "...in the execution of **his** duty" -- the pronoun
+explicitly states male, and the sibling records in this same cluster
+(436/646/664, victims William Lee/William Dobson) correctly have
+sex=male from the identical construction. Fixed to male for
+consistency. Locations and crime type (assaulting a police officer)
+match. Already correctly linked to related_conviction 652 (same
+defendant) and 436/646/664 (the 5-record riot cluster fixed at
+record 664).
+
+**FIXED — set victim John Cook's sex to male (pronoun "his duty" was present but not captured, inconsistent with sibling records in the same cluster).**
+
+---
+
+**Progress: records 1-670 done.**
+
+## Record 671
+
+"Summary conviction of Absolom Breckon of the township of Whitby jet
+worker for being drunk. Offence committed at the township of Whitby
+on 25 July 1869. Whitby Strand - case heard at Whitby" -- defendant
+Absolom Breckon (Whitby, jet worker). Location Whitby matches. Crime
+type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-671 done.**
+
+## Record 672
+
+"Summary conviction of Charles Smith for begging in Staithes town
+street. Offence committed at the township of Hinderwell on 18 July
+1875. Whitby Strand - case heard at Whitby" -- defendant Charles
+Smith. "Staithes town street" resolves to Staithes itself, nested
+under Hinderwell, matching the stated township. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-672 done.**
+
+## Record 673
+
+"Summary conviction of William Broderick of the township of Whitby
+fisherman for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 1 September 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+William Broderick (Whitby, fisherman). Church Street matches. Crime
+type=drunk and disorderly matches. Already correctly linked to
+related_conviction 487 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-673 done.**
+
+## Record 674
+
+"Summary conviction of James Stewart of the township of Whitby
+carpenter for being drunk; on the oath of [blank] Selby of the
+township of Whitby police constable. Offence committed at the
+township of Whitby on 24 July 1869. Whitby Strand - case heard at
+Whitby" -- defendant James Stewart (Whitby, carpenter), informant
+"[blank] Selby" (Whitby, police constable) correctly captured with
+no first_name per the established blank-informant convention.
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive correction, added at record 734]:** Selby (person
+6835) had `sex='male'` set despite no first_name and no pronoun
+anywhere in this record's text. Checked against ~19 other
+blank-first-name police-constable informants corpus-wide -- this was
+the sole outlier, all others correctly have sex=NULL. Cleared it back
+to NULL for consistency with the established rule (sex only from
+explicit pronoun or an unambiguous first name, never from occupation
+alone).
+
+---
+
+**Progress: records 1-674 done.**
+
+## Record 675
+
+"Summary conviction of Arthur James King for being on land occupied
+by Thomas Vaughan with nets to take game by night. Offence committed
+at the township of Newton Mulgrave at 12.15 a.m. on 13 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant Arthur James King,
+landowner/occupier Thomas Vaughan. Location Newton Mulgrave matches.
+Crime type=poaching matches. No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 705]:** records 705, 717, and
+878 turned out to share this exact same offence/landowner/date-and-
+time (12.15 a.m., 13 June 1875, Thomas Vaughan's land) with different
+defendants -- a poaching gang caught together. related_conviction
+links to all three added retroactively.
+
+---
+
+**Progress: records 1-675 done.**
+
+## Record 676
+
+"Summary conviction of Ralph Jordison of the township of Whitby
+painter for being drunk and disorderly on the licensed premises
+Ralph Brown Longhorn. Offence committed at the township of Whitby
+on 20 September 1889. Whitby Strand Petty Sessional division - case
+heard at Whitby" -- defendant Ralph Jordison (Whitby, painter),
+licensee Ralph Brown Longhorn, occupation "licensee" correctly
+captured per the established "licensed premises of X" convention.
+Location Whitby matches. Crime type=drunk and disorderly matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-676 done.**
+
+## Record 677
+
+"Summary conviction of Thomas Hodgson of the township of Whitby
+sailor for being drunk. Offence committed on 25 July 1869. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Hodgson (Whitby,
+sailor). No offence-location clause stated at all in the text, but
+location of offence is correctly recorded as Whitby, per the
+established "silence as evidence of local" inference already applied
+to this exact record in an earlier pass (see
+reextraction-audit-notes.md). Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-677 done.**
+
+## Record 678
+
+"Summary conviction of Ann Wilson of the township of Whitby widow
+for being drunk and disorderly in Henrietta Street. Offence
+committed at the township of Whitby on 12 June 1875. Whitby Strand
+- case heard at Whitby" -- defendant Ann Wilson (Whitby), stated
+"widow" but occupation was not linked -- this id was already on the
+tracked marital-status occupation gap list (reextraction-audit-notes.md).
+Added occupation "widow" (id 384). Henrietta Street matches. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**FIXED — added missing "widow" occupation (tracked gap, id 678 removed from the list).**
+
+---
+
+**Progress: records 1-678 done.**
+
+## Record 679
+
+"Summary conviction of Robinson Groves of Baxtergate in the township
+of Whitby carter for ill-treating a horse by working it when it was
+unfit Offence committed at the township of Ruswarp on 24 September
+1889. Whitby Strand Petty Sessional division - case heard at Whitby"
+-- defendant Robinson Groves, home correctly set to Baxtergate (id
+22, under West Cliff/Whitby), occupation carter. Offence location
+Ruswarp matches stated township. Crime type=cruelty to animals
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-679 done.**
+
+## Record 680
+
+"Summary conviction of Edward Coates of the township of Scarborough
+fish hawker for ill-treating a mare by working it when it was
+unfit; on the oath of Charles Tempest Clarkson of the township of
+Whitby superintendent of police. Offence committed at the township
+of Hawsker cum Stainsacre on 7 July 1869. Whitby Strand - case heard
+at Whitby" -- defendant Edward Coates, home Scarborough, occupation
+fish hawker; informant Charles Tempest Clarkson, home Whitby,
+occupation superintendent of police. Offence location Hawsker-cum-
+Stainsacre matches. Crime type=cruelty to animals matches. No
+related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 683]:** record 683 (George
+Bennett) turned out to share this exact same offence/township/date
+(7 July 1869, ill-treating a mare, Hawsker cum Stainsacre, both
+Scarborough fish hawkers). related_conviction link added
+retroactively.
+
+---
+
+**Progress: records 1-680 done.**
+
+## Record 681
+
+"Summary conviction of George Wilson of the township of Whitby
+carpenter for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 24 July 1875. Whitby Strand
+- case heard at Whitby" -- defendant George Wilson, home Whitby,
+occupation carpenter. "The Pier" resolves to Piers (under Seafront/
+Whitby), matching stated township. Crime type=drunk and disorderly
+matches. Already correctly linked to related_conviction 777 (same
+offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-681 done.**
+
+## Record 682
+
+"Summary conviction of Francis Johnson of the township of Hawsker
+cum Stainsacre sailor for begging on the Whitby and Hawsker
+highway. Offence committed at the township of Hawsker cum
+Stainsacre on 6 August 1889. Whitby Strand Petty Sessional division
+- case heard at Whitby" -- defendant Francis Johnson, home and
+offence location Hawsker-cum-Stainsacre match; cross-parish "Whitby
+& Hawsker Highway" correctly added alongside. Crime type=begging
+matches. Already correctly linked to related_conviction 655 (same
+offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-682 done.**
+
+## Record 683
+
+"Summary conviction of George Bennett of the township of Scarborough
+fish hawker for ill-treating a mare by working it when it was unfit.
+Offence committed at the township of Hawsker cum Stainsacre on 7
+July 1869. Whitby Strand - case heard at Whitby" -- defendant George
+Bennett, home Scarborough, occupation fish hawker. Offence location
+Hawsker-cum-Stainsacre matches. Crime type=cruelty to animals
+matches. No related_conviction was present, but this is the same
+offence/township/date as record 680 (Edward Coates, also a
+Scarborough fish hawker, same "ill-treating a mare" charge, 7 July
+1869) -- matches the confirmed no-named-party related_conviction
+pattern. Added the link, retroactively annotated 680's entry.
+
+**FIXED — added missing related_conviction link to 680 (same offence/township/date, no shared named party).**
+
+---
+
+**Progress: records 1-683 done.**
+
+## Record 684
+
+"Summary conviction of John Shaw of the township of Whitby jet
+worker for being drunk and disorderly in Bridge Street. Offence
+committed at the township of Whitby on 26 June 1875. Whitby Strand
+- case heard at Whitby" -- defendant John Shaw, home Whitby,
+occupation jet worker. Bridge Street (under Seafront/Whitby) matches
+stated township. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-684 done.**
+
+## Record 685
+
+"Summary conviction of Alexander Sutherland of the township of
+Whitby tailor for being drunk and disorderly in Church Street.
+Offence committed at the township of Whitby on 2 September 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Alexander Sutherland, home Whitby, occupation tailor.
+Church Street matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-685 done.**
+
+## Record 686
+
+"Summary conviction of William Arnold of the township of Whitby jet
+worker for being drunk and riotous in Church Street. Offence
+committed at the township of Whitby on 26 July 1869. Whitby Strand
+- case heard at Whitby" -- defendant William Arnold, home Whitby,
+occupation jet worker. Church Street matches. Charge says "drunk and
+riotous" but is tagged crime type "drunk and disorderly" -- checked
+precedent (no separate "riotous" leaf exists; every other "drunk and
+riotous" record in the corpus, e.g. 235, 244, 296, 344, 485, is
+consistently tagged the same way), so this is the established
+convention, not a mistagging. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-686 done.**
+
+## Record 687
+
+"Summary conviction of Isaac Hick of the township of Whitby jet
+worker for assaulting John Arnold. Offence committed at the
+township of Whitby on 22 September 1875. Whitby Strand - case heard
+at Whitby" -- defendant Isaac Hick, home Whitby, occupation jet
+worker; victim John Arnold. Same-named Isaac Hick as records 653/759
+but correctly a separate person row (different conviction). Location
+Whitby matches. Crime type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-687 done.**
+
+## Record 688
+
+"Summary conviction of James Coleman of the township of Whitby
+labourer for assaulting Joseph Scaife one of the constables of the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 15 August 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant James Coleman, home
+Whitby, occupation labourer; victim Joseph Scaife, occupation
+"constable of the North Riding", sex correctly already male (unlike
+the gap found at record 670, this instance was captured correctly).
+Location Whitby matches. Crime type=assaulting a police officer
+matches. Already correctly linked to related_conviction 503 (same
+defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-688 done.**
+
+## Record 689
+
+"Summary conviction of James Raw of the township of Hinderwell
+labourer for being drunk and riotous in Staithes Street; on the
+oath of John Atkinson of the township of Hinderwell police
+constable. Offence committed at the township of Hinderwell on 26
+July 1869. Whitby Strand - case heard at Whitby" -- defendant James
+Raw, home Hinderwell, occupation labourer; informant John Atkinson,
+home Hinderwell, occupation police constable. "Staithes Street"
+resolves to Staithes under Hinderwell, matching stated township.
+Crime type=drunk and disorderly matches (per the confirmed "drunk
+and riotous" precedent). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-689 done.**
+
+## Record 690
+
+"Summary conviction of Edward Jackson of the township of Hinderwell
+for keeping a dog without a licence. Offence committed at the
+parish of Hinderwell on 14 May 1875. Whitby Strand - case heard at
+Whitby" -- defendant Edward Jackson, home Hinderwell. Location
+Hinderwell matches ("parish of Hinderwell" resolves the same as
+"township of Hinderwell"). Crime type=dog licence offence matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-690 done.**
+
+## Record 691
+
+"Summary conviction of John Agar of the township of Eskdaleside cum
+Ugglebarnby labourer for being drunk and disorderly in Grosmont
+town street. Offence committed at the township of Eskdaleside cum
+Ugglebarnby on 29 August 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant John Agar, home
+Eskdaleside-cum-Ugglebarnby, occupation labourer. "Grosmont town
+street" resolves to Grosmont under Eskdaleside-cum-Ugglebarnby,
+matching stated township. Crime type=drunk and disorderly matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-691 done.**
+
+## Record 692
+
+"Summary conviction of Robert Smith for begging in Bagdale. Offence
+committed at the township of Ruswarp on 31 July 1869. Whitby Strand
+- case heard at Whitby" -- defendant Robert Smith. Bagdale nests
+under Whitby's West Cliff in the modern tree but the record states
+township Ruswarp -- correctly captured alongside the stated Ruswarp
+location, per the Whitby/Ruswarp cliff-boundary pattern. Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-692 done.**
+
+## Record 693
+
+"Summary conviction of John Conwell of the township of Whitby jet
+worker for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 12 June 1875. Whitby Strand
+- case heard at Whitby" -- defendant John Conwell, home Whitby,
+occupation jet worker. "The Pier" resolves to Piers (Seafront/
+Whitby), matching stated township. Crime type=drunk and disorderly
+matches. Different date from record 681's Pier incident (24 July
+1875), so no related_conviction link applies here.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-693 done.**
+
+## Record 694
+
+"Summary conviction of John Pearson of the township of Whitby
+labourer for being drunk on the licensed premises of Ralph Brown
+Longhorn and refusing to leave when asked to do so by Kate
+McLaughlan. Offence committed at the township of Whitby on 30
+August 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant John Pearson, home Whitby, occupation
+labourer; licensee Ralph Brown Longhorn (occupation "licensee"
+correctly captured); informant Kate McLaughlan, sex correctly
+female. Location Whitby matches. Crime types = drunkenness +
+refusal to quit licensed premises both fit. Already correctly
+linked to related_conviction 229 (same defendant, same offence
+date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-694 done.**
+
+## Record 695
+
+"Summary conviction of John Scott for being drunk and riotous in
+Church Street. Offence committed at the township of Whitby on 1
+August 1869. Whitby Strand - case heard at Whitby" -- defendant
+John Scott. Church Street matches. Crime type=drunk and disorderly
+matches (per the confirmed "drunk and riotous" precedent). No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-695 done.**
+
+## Record 696
+
+"Summary conviction of Robinson Groves of the township of Whitby
+cartman for taking down a bar and chain fixed across Church Street
+whilst works were being carried on there. Offence committed at the
+township of Whitby on 11 June 1875. Whitby Strand - case heard at
+Whitby" -- defendant Robinson Groves, home Whitby, occupation
+cartman. Same-named Robinson Groves as record 679 but correctly a
+separate person row (different conviction, different occupation
+wording "cartman" vs "carter", 1875 vs 1889). Church Street matches.
+Crime type=malicious/property damage checked against precedent --
+no closer-fitting leaf exists (no "interfering with public
+works"/"obstruction of works" leaf), and this is the only record in
+the corpus with this exact "bar and chain" phrasing, so no
+fragmentation to fix. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-696 done.**
+
+## Record 697
+
+"Summary conviction of John Corner, John Henry Corner and William
+Readman of the township of Whitby licensed victuallers for premises
+in the township of Whitby for selling intoxicating liquors at a
+house at Robin Hood's Bay in the township of Fylingdales. Offence
+committed at the township of Fylingdales on 30 August 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- three
+defendants, all home Whitby, all occupation "licensed victualler".
+Offence location Robin Hood's Bay correctly nests under Fylingdales,
+matching the stated township (distinct from their own home
+township, Whitby, which is separately and correctly captured too).
+Crime type=licensing offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-697 done.**
+
+## Record 698
+
+"Summary conviction of William Robinson for begging in Gray Street.
+Offence committed at the township of Ruswarp on 2 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant William Robinson.
+Gray Street nests under Whitby's West Cliff in the modern tree but
+the record states township Ruswarp -- correctly captured alongside
+the stated Ruswarp location, per the Whitby/Ruswarp cliff-boundary
+pattern. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-698 done.**
+
+## Record 699
+
+"Summary conviction of Benjamin Wilson of the township of Whitby
+hawker for being drunk and disorderly on Tate Hill; on the oath of
+George Richard Lazenby of the township of Whitby police constable.
+Offence committed at the township of Whitby on 19 June 1875. Whitby
+Strand - case heard at Whitby" -- defendant Benjamin Wilson, home
+Whitby, occupation hawker; informant George Richard Lazenby, home
+Whitby, occupation police constable. Tate Hill (East Cliff/Whitby)
+matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-699 done.**
+
+## Record 700
+
+"Summary conviction of William Moody of the township of Whitby
+labourer for being disorderly on the licensed premises of Richard
+Thompson and refusing to leave when asked to do so by the said
+Richard Thompson Offence committed at the township of Whitby on 10
+September 1889. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant William Moody, home Whitby, occupation
+labourer; licensee Richard Thompson, occupation "licensee" correctly
+captured. Location Whitby matches. Crime types = refusal to quit
+licensed premises + disorderly behaviour both fit. Already correctly
+linked to related_conviction 582 (same defendant, same offence
+date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-700 done.**
+
+## Record 701
+
+"Summary conviction of Thomas Jameson for begging in Baxtergate.
+Offence committed at the township of Whitby on 7 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant Thomas Jameson.
+Baxtergate matches (West Cliff/Whitby). Crime type=begging matches.
+Already correctly linked to related_conviction 704 (same offence
+date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-701 done.**
+
+## Record 702
+
+"Summary conviction of John Denham of the township of Whitby jet
+worker for obstructing Church Street by wilfully preventing persons
+from passing him; on the oath of Thomas Hall of the township of
+Whitby police constable. Offence committed at the township of
+Whitby on 13 June 1875. Whitby Strand - case heard at Whitby" --
+defendant John Denham, home Whitby, occupation jet worker; informant
+Thomas Hall, home Whitby, occupation police constable. Church Street
+matches. Crime type=obstructing the highway matches. Already
+correctly linked to related_conviction 887 and 896 (same offence
+date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-702 done.**
+
+## Record 703
+
+"Summary conviction of John Smith the elder of the township of
+Hawsker cum Stainsacre groom for applying for relief from the
+Guardians of the Poor of Whitby Union on behalf of his children
+John, Annie and Charles all aged under 16 years, and then running
+away leaving his children chargeable. Offence committed at the
+township of Whitby on 15 September 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant John Smith,
+name_postfix "the elder" correctly captured, home Hawsker-cum-
+Stainsacre, occupation groom. Three children (John, Annie, Charles)
+each correctly have a "child" relationship to him -- this is the
+exact record referenced in reextraction-audit-notes.md as the seed
+case for that fix, confirmed still correct. Offence location Whitby
+matches. Crime type=failure to maintain family matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-703 done.**
+
+## Record 704
+
+"Summary conviction of John Jameson for begging in Baxtergate.
+Offence committed at the township of Whitby on 7 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant John Jameson
+(shares a surname with Thomas Jameson, record 701, but no
+relationship is stated in the text, so none captured -- no
+fabrication). Baxtergate matches. Crime type=begging matches.
+Already correctly linked to related_conviction 701 (same offence
+date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-704 done.**
+
+## Record 705
+
+"Summary conviction of John Thomas Stonehouse for being on land
+occupied by Thomas Vaughan with nets to take game by night. Offence
+committed at the township of Newton Mulgrave at 12.15 a.m. on 13
+June 1875. Whitby Strand - case heard at Whitby" -- defendant John
+Thomas Stonehouse, landowner/occupier Thomas Vaughan. Location
+Newton Mulgrave matches. Crime type=poaching matches. No
+related_conviction was present, but this is identical
+offence/landowner/date-and-time to record 675 (Arthur James King).
+Searched for the full pattern and found two more matches: 717
+(William Jones) and 878 (George Hill, not yet reached) -- all four
+records share the exact same offence, landowner, township, date, and
+time (12.15 a.m.), clearly a poaching gang caught together. Added
+all 6 pairwise related_conviction rows (675-705, 675-717, 675-878,
+705-717, 705-878, 717-878), retroactively annotated 675's entry.
+
+**FIXED — added missing related_conviction links for a 4-record poaching cluster (675, 705, 717, 878).**
+
+---
+
+**Progress: records 1-705 done.**
+
+## Record 706
+
+"Summary conviction of William Dixon of the township of Whitby jet
+worker for being drunk and disorderly in Sandgate. Offence
+committed at the township of Whitby on 6 April 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+William Dixon, home Whitby, occupation jet worker. Sandgate (East
+Cliff/Whitby) matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-706 done.**
+
+## Record 707
+
+"Summary conviction of Thomas Jefferson of the township of
+Hinderwell fisherman for being drunk. Offence committed at the
+township of Hinderwell on 9 August 1869. Whitby Strand - case heard
+at Whitby" -- defendant Thomas Jefferson, home Hinderwell,
+occupation fisherman. Location Hinderwell matches. Crime
+type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-707 done.**
+
+## Record 708
+
+"Summary conviction of Thomas Harland of the township of Whitby
+cartman for being too far from his cart to have control over the
+horse drawing it. Offence committed at the township of Whitby on 6
+September 1875. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Harland, home Whitby, occupation cartman. Location Whitby
+matches. Crime type=not having proper control of horse drawing a
+cart (leaf 75) matches -- this is the exact record referenced
+earlier this session as one of the leaf-75 fragmentation fixes,
+confirmed still correctly tagged. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-708 done.**
+
+## Record 709
+
+"Summary conviction of James Ward of the township of Ruswarp
+labourer for begging in The Carrs. Offence committed at the
+township of Ruswarp on 27 April 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant James Ward, home
+Ruswarp, occupation labourer. "The Carrs" correctly nests under
+Ruswarp, matching stated township. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-709 done.**
+
+## Record 710
+
+"Summary conviction of Elizabeth Brough wife of John Brough of the
+township of Pickering stonemason for being drunk. Offence committed
+at the township of Whitby on 7 August 1869. Whitby Strand - case
+heard at Whitby" -- defendant Elizabeth Brough, spouse John Brough
+(home Pickering, occupation stonemason) -- this is the exact record
+referenced in reextraction-audit-notes.md as an earlier fix (John
+Brough's home/occupation), confirmed still correct. Offence location
+Whitby matches. Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-710 done.**
+
+## Record 711
+
+"Summary conviction of William Barrett of the township of Whitby
+fisherman for being drunk and riotous in Church Street. Offence
+committed at the township of Whitby on 19 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant William Barrett, home
+Whitby, occupation fisherman. Church Street matches. Crime
+type=drunk and disorderly matches (per the confirmed "drunk and
+riotous" precedent). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-711 done.**
+
+## Record 712
+
+"Summary conviction of Arthur Brooks of the township of Whitby
+labourer for begging in Haggersgate. Offence committed at the
+township of Whitby on 28 March 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Arthur Brooks, home
+Whitby, occupation labourer. Haggersgate matches (West Cliff/
+Whitby). Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-712 done.**
+
+## Record 713
+
+"Summary conviction of Michael Mallon for assaulting Mary Jane
+Harvey. Offence committed at the township of Glaisdale on 7 August
+1869. Whitby Strand - case heard at Whitby" -- defendant Michael
+Mallon, victim Mary Jane Harvey. Location Glaisdale matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-713 done.**
+
+## Record 714
+
+"Summary conviction of Margaret Harland of the township of Whitby
+domestic servant for assaulting Mary Ellen Colley. Offence
+committed at the township of Whitby on 8 July 1875. Whitby Strand -
+case heard at Whitby" -- defendant Margaret Harland, home Whitby,
+occupation domestic servant; victim Mary Ellen Colley. Location
+Whitby matches. Crime type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-714 done.**
+
+## Record 715
+
+"Summary conviction of Thomas Loftus of the township of Whitby
+bricklayer for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 30 March 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Thomas Loftus, home Whitby, occupation bricklayer. Same name and
+occupation as the Thomas Loftus in the 652/670 riot cluster (27
+July 1889), but this is a separate, earlier conviction (30 March
+1889) -- correctly a distinct person row per no-cross-conviction-
+merge. Church Street matches. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-715 done.**
+
+## Record 716
+
+"Summary conviction of George Watson of the township of Glaisdale
+miner for assaulting Mary Hannah Storr. Offence committed at the
+township of Glaisdale on 6 August 1869. Whitby Strand - case heard
+at Whitby" -- defendant George Watson, home Glaisdale, occupation
+miner; victim Mary Hannah Storr. Location Glaisdale matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-716 done.**
+
+## Record 717
+
+"Summary conviction of William Jones for being on land occupied by
+Thomas Vaughan with nets to take game by night. Offence committed
+at the township of Newton Mulgrave at 12.15 a.m. on 13 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant William Jones,
+landowner/occupier Thomas Vaughan. Location Newton Mulgrave
+matches. Crime type=poaching matches. Already correctly linked to
+related_conviction 675, 705, and 878 (the poaching-gang cluster
+fixed at record 705).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-717 done.**
+
+## Record 718
+
+"Summary conviction of William Christmas Bean of the township of
+Whitby for throwing a stone in North Road. Offence committed at the
+township of Ruswarp on 7 May 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant William Christmas
+Bean, home Whitby. North Road nests under Whitby's West Cliff in
+the modern tree but the record states offence township Ruswarp --
+correctly captured alongside the stated Ruswarp location, per the
+Whitby/Ruswarp cliff-boundary pattern. Crime type=breach of the
+peace matches. Already correctly linked to related_conviction 724
+and 844 (same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-718 done.**
+
+## Record 719
+
+"Summary conviction of John Vidous for begging in Royal Crescent.
+Offence committed at the township of Ruswarp on 12 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant John Vidous.
+Royal Crescent nests under Whitby's West Cliff in the modern tree
+but the record states township Ruswarp -- correctly captured
+alongside the stated Ruswarp location, per the Whitby/Ruswarp
+cliff-boundary pattern. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-719 done.**
+
+## Record 720
+
+"Summary conviction of George Ogden Stephenson of the township of
+Whitby labourer for driving the Crown Hotel omnibus furiously.
+Offence committed at the township of Ruswarp on 18 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant George Ogden
+Stephenson, home Whitby, occupation labourer. "Crown Hotel" names
+the omnibus (the hotel's vehicle), not the offence site -- checked,
+no other corpus mention and no existing location node, correctly
+not captured as a place. Offence location Ruswarp matches. Crime
+type=furious/reckless driving matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-720 done.**
+
+## Record 721
+
+"Summary conviction of William Puckrin of the township of Whitby
+baker for being drunk and disorderly on the Pier Offence committed
+at the township of Whitby on 8 May 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant William
+Puckrin, home Whitby, occupation baker. "The Pier" resolves to
+Piers (Seafront/Whitby), matching stated township. Crime type=drunk
+and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-721 done.**
+
+## Record 722
+
+"Summary conviction of Joseph McCabe of the township of Whitby
+licensed hawker for being drunk; on the oath of Charles Albert
+Martindale of the township of Whitby police constable Offence
+committed at the township of Ruswarp on 18 August 1869. Whitby
+Strand - case heard at Whitby" -- defendant Joseph McCabe, home
+Whitby, occupation licensed hawker; informant Charles Albert
+Martindale, home Whitby, occupation police constable. Offence
+location Ruswarp matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-722 done.**
+
+## Record 723
+
+"Summary conviction of James Pounder of Hartlepool pilot for being
+drunk and disorderly on the Bridge. Offence committed at the
+township of Whitby on 12 August 1875. Whitby Strand - case heard at
+Whitby" -- defendant James Pounder, home Hartlepool (correctly
+outside the North Riding parent), occupation pilot. "The Bridge"
+resolves to Whitby. Crime type=drunk and disorderly matches. Already
+correctly linked to related_conviction 666 (same defendant, same
+offence date -- see 666's entry for the victim William Burdon
+assault charge).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-723 done.**
+
+## Record 724
+
+"Summary conviction of William John Iredale of the township of
+Whitby for throwing a stone in North Road. Offence committed at the
+township of Ruswarp on 7 May 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant William John Iredale,
+home Whitby. North Road nests under Whitby's West Cliff but the
+record states offence township Ruswarp -- correctly added alongside
+per the cliff-boundary pattern. Crime type=breach of the peace
+matches. Already correctly linked to related_conviction 718 and 844
+(same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-724 done.**
+
+## Record 725
+
+"Summary conviction of James Watson for begging in Baxtergate.
+Offence committed at the township of Whitby on 18 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant James Watson.
+Baxtergate matches (West Cliff/Whitby). Crime type=begging matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-725 done.**
+
+## Record 726
+
+"Summary conviction of William Child of the township of Egton
+shoemaker for being drunk and disorderly in Egton town street.
+Offence committed at the township of Egton on 9 June 1875. Whitby
+Strand - case heard at Whitby" -- defendant William Child, home
+Egton, occupation shoemaker. "Egton town street" resolves to Egton
+itself, matching stated township. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-726 done.**
+
+## Record 727
+
+"Summary conviction of Charles Good of the township of Roxby
+labourer for begging on the Whitby and Guisborough highway. Offence
+committed at the township of Roxby on 29 May 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Charles Good, home Roxby, occupation labourer. Cross-parish "Whitby
+& Guisborough Highway" correctly added alongside the stated
+township Roxby. Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-727 done.**
+
+## Record 728
+
+"Summary conviction of James Thompson for begging in Royal Crescent.
+Offence committed at the township of Ruswarp on 18 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant James Thompson.
+Royal Crescent nests under Whitby's West Cliff but the record states
+township Ruswarp -- correctly captured alongside, same pattern as
+record 719 (same street, different date: 719 is 12 August 1869, this
+is 18 August 1869, so no related_conviction link applies -- checked
+carefully since the shared street could suggest a link, but the dates
+don't match). Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-728 done.**
+
+## Record 729
+
+"Summary conviction of James Marshall of the township of Hinderwell
+miner for being drunk and disorderly in Staithes town street; on
+the oath of William Hammond of the township of Hinderwell police
+constable. Offence committed at the township of Hinderwell on 12
+June 1875. Whitby Strand - case heard at Whitby" -- defendant James
+Marshall, home Hinderwell, occupation miner; informant William
+Hammond, home Hinderwell, occupation police constable, sex correctly
+male. "Staithes town street" resolves to Staithes under Hinderwell,
+matching stated township. Crime type=drunk and disorderly matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-729 done.**
+
+## Record 730
+
+"Summary conviction of Thomas Fisher of the township of Whitby
+riveter for being drunk and disorderly in Henrietta Street. Offence
+committed at the township of Whitby on 11 May 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Thomas Fisher, home Whitby, occupation riveter. Henrietta Street
+matches. Crime type=drunk and disorderly matches. Already correctly
+linked to related_conviction 754 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-730 done.**
+
+## Record 731
+
+"Summary conviction of John Bowmaker of the township of North
+Shields in Northumberland stoker for being drunk and riotous on the
+Pier. Offence committed at the township of Whitby on 20 August
+1869. Whitby Strand - case heard at Whitby" -- defendant John
+Bowmaker, home North Shields (correctly a separate parent, id 347,
+not nested under the North Riding), occupation stoker. "The Pier"
+resolves to Piers (Seafront/Whitby). Crime type=drunk and disorderly
+matches (per the confirmed "drunk and riotous" precedent). No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-731 done.**
+
+## Record 732
+
+"Summary conviction of William Corpse of the township of Whitby jet
+worker for being drunk and disorderly in Bridge Street; on the oath
+of Edward Weeks of the township of Whitby police constable. Offence
+committed at the township of Whitby on 6 July 1875. Whitby Strand -
+case heard at Whitby" -- defendant William Corpse, home Whitby,
+occupation jet worker; informant Edward Weeks, home Whitby,
+occupation police constable. Bridge Street (Seafront/Whitby)
+matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-732 done.**
+
+## Record 733
+
+"Summary conviction of Patrick Joyce of the township of Whitby
+bricklayer for being drunk and disorderly in the Market Place.
+Offence committed at the township of Whitby on 20 April 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Patrick Joyce, home Whitby, occupation bricklayer.
+Market Place (East Cliff/Whitby) matches. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-733 done.**
+
+## Record 734
+
+"Summary conviction of George Duck of the township of Whitby cart
+driver for driving a carriage furiously in the street; on the oath
+of [blank] Tomlinson of the township of Whitby police constable.
+Offence committed at the township of Whitby on 18 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant George Duck,
+home Whitby, occupation cart driver; informant "[blank] Tomlinson",
+home Whitby, occupation police constable, sex correctly NULL
+(no first_name, no pronoun in text). While checking this against
+sibling blank-first-name police-constable informants for
+consistency, found and corrected an outlier at record 674 (Selby,
+person 6835, had sex='male' with no textual basis) -- see that
+record's retroactive note. Location Whitby matches. Crime
+type=furious/reckless driving matches. No related_conviction.
+
+**FIXED (retroactively, on record 674) — cleared an incorrectly-set sex value found via this record's precedent check.**
+
+---
+
+**Progress: records 1-734 done.**
+
+## Record 735
+
+"Summary conviction of Robert Parkin of the township of Newholm cum
+Dunsley waggoner for being too far from his waggon to have proper
+control of the two horses drawing it. Offence committed at the
+township of Whitby on 10 June 1875. Whitby Strand - case heard at
+Whitby" -- defendant Robert Parkin, home Newholm-cum-Dunsley,
+occupation waggoner. Offence location Whitby matches. Crime
+type=not having proper control of horse drawing a cart (leaf 75)
+matches -- this is the exact record referenced earlier this session
+as one of the leaf-75 fragmentation fixes, confirmed still correctly
+tagged. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-735 done.**
+
+## Record 736
+
+"Summary conviction of John Kilpatrick of the township of Whitby
+iron worker for being drunk and disorderly in Church Street.
+Offence committed at the township of Whitby on 8 April 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+John Kilpatrick, home Whitby, occupation iron worker. Church Street
+matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-736 done.**
+
+## Record 737
+
+"Summary conviction of Henry Sherwood and Robert Campion for
+stealing a bushel of apples value 2s, the property of Joseph
+Dotchen and growing in his garden. Offence committed at the
+township of Ruswarp on 15 August 1869. Whitby Strand - case heard
+at Whitby" -- two defendants (Henry Sherwood, Robert Campion),
+property owner Joseph Dotchen. Location Ruswarp matches. Crime
+type=theft matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-737 done.**
+
+## Record 738
+
+"Summary conviction of Henry Ludlow of Kirby Moorside pedlar for
+acting as a pedlar in grinding razors without a certificate.
+Offence committed at the township of Glaisdale on 25 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant Henry Ludlow,
+home "Kirby Moorside" resolves to the existing Kirkbymoorside node,
+occupation pedlar. Offence location Glaisdale matches. Crime
+type=licensing offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-738 done.**
+
+## Record 739
+
+"Summary conviction of Joseph Storr of the township of Whitby jet
+worker for being drunk and disorderly on the New Quay Offence
+committed at the township of Whitby on 18 May 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Joseph Storr, home Whitby, occupation jet worker. New Quay matches
+(West Cliff/Whitby). Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-739 done.**
+
+## Record 740
+
+"Summary conviction of William Arnold for assaulting Mary Harland.
+Offence committed at the township of Hawsker cum Stainsacre on 18
+August 1869. Whitby Strand - case heard at Whitby" -- defendant
+William Arnold (same name as record 686's jet worker, but no home/
+occupation stated here and a different township, correctly a
+distinct person row), victim Mary Harland. Location Hawsker-cum-
+Stainsacre matches. Crime type=assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-740 done.**
+
+## Record 741
+
+"Summary conviction of Daniel Robinson of the township of Whitby
+fisherman for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 7 July 1875. Whitby Strand -
+case heard at Whitby" -- defendant Daniel Robinson, home Whitby,
+occupation fisherman. Church Street matches. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-741 done.**
+
+## Record 742
+
+"Summary conviction of John Child of the township of Whitby jet
+worker for being drunk and disorderly in Ruswarp town street.
+Offence committed at the township of Ruswarp on 11 June 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant John Child, home Whitby, occupation jet worker. "Ruswarp
+town street" resolves to Ruswarp itself, matching stated township.
+Crime type=drunk and disorderly matches. Already correctly linked
+to related_conviction 826 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-742 done.**
+
+## Record 743
+
+"Summary conviction of Hannah Shielding of the township of Whitby
+singlewoman for being drunk. Offence committed at the township of
+Whitby on 27 August 1869. Whitby Strand - case heard at Whitby" --
+defendant Hannah Shielding, home Whitby, stated "singlewoman" but
+occupation was not linked -- this id was already on the tracked
+marital-status occupation gap list (reextraction-audit-notes.md).
+Added occupation "singlewoman" (id 337). Location Whitby matches.
+Crime type=drunkenness matches. No related_conviction.
+
+**FIXED — added missing "singlewoman" occupation (tracked gap, id 743 removed from the list).**
+
+---
+
+**Progress: records 1-743 done.**
+
+## Record 744
+
+"Summary conviction of Thomas Boddy of the township of Eskdaleside
+farm servant for being drunk and riotous in Grosmont town street.
+Offence committed at the township of Eskdaleside on 26 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant Thomas Boddy,
+home Eskdaleside-cum-Ugglebarnby, occupation farm servant. "Grosmont
+town street" resolves to Grosmont under Eskdaleside-cum-Ugglebarnby,
+matching stated township. Crime type=drunk and disorderly matches
+(per the confirmed "drunk and riotous" precedent). No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-744 done.**
+
+## Record 745
+
+"Summary conviction of Robert Harrowing of the township of Aislaby
+ship owner for being drunk on the licensed premises of Thomas
+Coulson. Offence committed at the township of Aislaby on 31 May
+1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Robert Harrowing, home Aislaby, occupation
+ship owner; licensee Thomas Coulson, occupation "licensee" correctly
+captured. Location Aislaby matches. Crime type=drunkenness matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-745 done.**
+
+## Record 746
+
+"Summary conviction of Edward Shepherd of the township of Whitby
+fisherman for being drunk. Offence committed at the township of
+Whitby on 21 August 1869. Whitby Strand - case heard at Whitby" --
+defendant Edward Shepherd, home Whitby, occupation fisherman.
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-746 done.**
+
+## Record 747
+
+"Summary conviction of Francis Fewster of the township of Whitby
+jet worker for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 27 June 1875. Whitby Strand
+- case heard at Whitby" -- defendant Francis Fewster, home Whitby,
+occupation jet worker. "The Pier" resolves to Piers (Seafront/
+Whitby). Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-747 done.**
+
+## Record 748
+
+"Summary conviction of Hannah Smith wife of John Henry Smith of the
+township of Whitby fish hawker for being drunk and disorderly in
+Henrietta Street. Offence committed at the township of Whitby on 13
+April 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Hannah Smith, spouse John Henry Smith (home
+Whitby, occupation fish hawker, relationship correctly captured) --
+this is the exact record referenced in reextraction-audit-notes.md
+as an earlier fix, confirmed still correct. Henrietta Street matches.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-748 done.**
+
+## Record 749
+
+"Summary conviction of John Thompson of the township of Whitby jet
+worker for being drunk. Offence committed at the township of Whitby
+on 27 August 1869. Whitby Strand - case heard at Whitby" --
+defendant John Thompson, home Whitby, occupation jet worker.
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-749 done.**
+
+## Record 750
+
+"Summary conviction of Robert Watson of the township of Whitby
+labourer for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 9 July 1875. Whitby Strand -
+case heard at Whitby" -- defendant Robert Watson, home Whitby,
+occupation labourer. Church Street matches. Crime type=drunk and
+disorderly matches. Already correctly linked to related_conviction
+645 and 756 (same defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-750 done.**
+
+## Record 751
+
+"Summary conviction of James Foster of Elbow Yard in the township
+of Whitby for not sending his son John Foster to school. Offence
+committed in the Whitby Strand School Board district on 23 May
+1889. Case heard at Whitby" -- defendant James Foster, home Elbow
+Yard (East Cliff/Whitby); son John Foster, "son" relationship
+correctly captured (explicit "his son" in text) -- this is the exact
+record referenced in reextraction-audit-notes.md, confirmed still
+correct. Truancy rule correctly applied: offence location = his own
+home (Elbow Yard), not the "Whitby Strand School Board district"
+wording. Crime type=school non-attendance matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-751 done.**
+
+## Record 752
+
+"Summary conviction of Richard Craven of the township of Ruswarp
+wood leader for not having control of the horses drawing his
+waggon. Offence committed at the township of Ruswarp on 26 August
+1869. Whitby Strand - case heard at Whitby" -- defendant Richard
+Craven, home Ruswarp, occupation wood leader. Location Ruswarp
+matches. Crime type was "furious/reckless driving" but the charge
+text says "not having control", not "furiously" -- checked all
+other furious/reckless driving records (720, 734, 865, 965), every
+one explicitly uses "furiously"; this record doesn't, and matches
+leaf 75 "not having proper control of horse drawing a cart"
+semantically instead. Retagged. No related_conviction.
+
+**FIXED — retagged crime type from "furious/reckless driving" to "not having proper control of horse drawing a cart" (leaf 75).**
+
+---
+
+**Progress: records 1-752 done.**
+
+## Record 753
+
+"Summary conviction of William Arnold of the township of Whitby jet
+worker for assaulting John Brown. Offence committed at the township
+of Whitby on 2 September 1875. Whitby Strand - case heard at
+Whitby" -- defendant William Arnold (same name/occupation as record
+686, but a different offence date, correctly a distinct person
+row), victim John Brown. Location Whitby matches. Crime type=assault
+matches. Already correctly linked to related_conviction 926 (same
+defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-753 done.**
+
+## Record 754
+
+"Summary conviction of Sarah Ann Fisher wife of Thomas Fisher of
+the township of Whitby riveter for being drunk and disorderly in
+Henrietta Street. Offence committed at the township of Whitby on
+11 May 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Sarah Ann Fisher, spouse Thomas Fisher (home
+Whitby, occupation riveter, relationship correctly captured) -- this
+is the exact record referenced in reextraction-audit-notes.md as an
+earlier fix, confirmed still correct. Henrietta Street matches.
+Crime type=drunk and disorderly matches. Already correctly linked
+to related_conviction 730 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-754 done.**
+
+## Record 755
+
+"Summary conviction of Isaac Wilson of the township of Whitby
+labourer for being drunk. Offence committed at the township of
+Whitby on 23 August 1869. Whitby Strand - case heard at Whitby" --
+defendant Isaac Wilson, home Whitby, occupation labourer. Location
+Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-755 done.**
+
+## Record 756
+
+"Summary conviction of Robert Watson for assaulting Edward Weeks
+one of the constables for the North Riding in the execution of his
+duty. Offence committed at the township of Whitby on 9 July 1875.
+Whitby Strand - case heard at Whitby" -- defendant Robert Watson,
+victim Edward Weeks, occupation "constable for the North Riding",
+sex correctly male (matches the "his duty" antecedent). Location
+Whitby matches. Crime type=assaulting a police officer matches.
+Already correctly linked to related_conviction 645 and 750 (same
+defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-756 done.**
+
+## Record 757
+
+"Summary conviction of Thomas Wake of the township of Hinderwell
+carrier for ill-treating a horse by working it when it was unfit.
+Offence committed at the township of Hinderwell on 18 April 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Thomas Wake, home Hinderwell, occupation carrier.
+Location Hinderwell matches. Crime type=cruelty to animals matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-757 done.**
+
+## Record 758
+
+"Summary conviction of William Lawson of the township of Newholm
+cum Dunsley labourer for being drunk on the licensed premises of
+John Appleby and refusing to leave when asked by the said John
+Appleby ; on the oath of William Dickinson of the township of Lythe
+police constable. Offence committed at the township of Whitby on 23
+August 1869. Whitby Strand - case heard at Whitby" -- defendant
+William Lawson, home Newholm-cum-Dunsley, occupation labourer;
+licensee John Appleby, occupation "licensee"; informant William
+Dickinson, home Lythe, occupation police constable. Offence location
+Whitby matches. Crime types = drunkenness + refusal to quit licensed
+premises both fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-758 done.**
+
+## Record 759
+
+"Summary conviction of Ellen Hick wife of Isaac Hick of the
+township of Whitby jet worker for being drunk in the Market Place.
+Offence committed at the township of Whitby on 9 July 1875. Whitby
+Strand - case heard at Whitby" -- defendant Ellen Hick, spouse
+Isaac Hick (home Whitby, occupation jet worker, relationship
+correctly captured) -- this is the exact record referenced in
+reextraction-audit-notes.md as an earlier fix, confirmed still
+correct. Same names (Ellen Hick/Isaac Hick) as record 653's earlier
+1869 conviction, correctly separate person rows. Market Place
+matches. Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-759 done.**
+
+## Record 760
+
+"Summary conviction of John Thomas Harland of the township of
+Hinderwell mariner for discharging fireworks in Hinderwell town
+street. Offence committed at the township of Hinderwell on 23 March
+1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant John Thomas Harland, home Hinderwell,
+occupation mariner. "Hinderwell town street" resolves to Hinderwell
+itself, matching stated township. Crime type=breach of the peace --
+checked, no dedicated fireworks/explosives leaf exists, this is a
+reasonable existing fit. Already correctly linked to
+related_conviction 763 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-760 done.**
+
+## Record 761
+
+"Summary conviction of William Turnbull of the township of
+Hinderwell fish hawker for using his cart on the Staithes and
+Hinderwell highway without having his name painted on it; on the
+oath of Charles Tempest Clarkson of the township of Whitby
+superintendent of police. Offence committed at the township of
+Hinderwell on 31 August 1869. Whitby Strand - case heard at Whitby"
+-- defendant William Turnbull, home Hinderwell, occupation fish
+hawker; informant Charles Tempest Clarkson, home Whitby, occupation
+superintendent of police. Cross-parish "Staithes & Hinderwell
+Highway" correctly added alongside the stated township Hinderwell.
+Crime type=cart/vehicle not marked with owner's name and address
+(leaf 74) matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-761 done.**
+
+## Record 762
+
+"Summary conviction of Ann Gatenby wife of Richard Gatenby of the
+township of Whitby fisherman for using obscene language. Offence
+committed at the township of Whitby on 11 July 1875. Whitby Strand
+- case heard at Whitby" -- defendant Ann Gatenby, spouse Richard
+Gatenby (home Whitby, occupation fisherman, relationship correctly
+captured) -- this is the exact record referenced in
+reextraction-audit-notes.md as an earlier fix, confirmed still
+correct. Location Whitby matches. Crime type=using obscene language
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-762 done.**
+
+## Record 763
+
+"Summary conviction of Watson Hodgson of the township of Hinderwell
+mariner for discharging fireworks in Hinderwell town street Offence
+committed at the township of Hinderwell on 23 March 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Watson Hodgson, home Hinderwell, occupation mariner. "Hinderwell
+town street" resolves to Hinderwell itself. Crime type=breach of the
+peace matches. Already correctly linked to related_conviction 760
+(same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-763 done.**
+
+## Record 764
+
+"Summary conviction of Simeon Robinson of the township of
+Hinderwell fisherman for being drunk and riotous in Staithes
+Street; on the oath of John Atkinson of the township of Hinderwell
+police constable. Offence committed at the township of Hinderwell
+on 28 August 1869. Whitby Strand - case heard at Whitby" -- defendant
+Simeon Robinson, home Hinderwell, occupation fisherman; informant
+John Atkinson, home Hinderwell, occupation police constable.
+"Staithes Street" resolves to Staithes under Hinderwell. Crime
+type=drunk and disorderly matches (per "drunk and riotous"
+precedent). Part of an 8-record cluster (764, 773, 782, 785, 791,
+806, 809, 812) -- verified all 28 pairwise related_conviction links
+are present and complete, no gaps.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-764 done.**
+
+## Record 765
+
+"Summary conviction of William Henry Turnbull for being absent
+without leave from the British ship "Rose" on which he was
+apprenticed to the sea service. Offence committed on 14 July 1875
+and Turnbull was found at the township of Fylingdales. Whitby
+Strand - case heard at Whitby" -- defendant William Henry Turnbull.
+Location = Fylingdales (where he was found), matches. Ship "Rose"
+correctly not captured as a location (a vessel, not a place). Crime
+type=master and servant offence checked against precedent -- sole
+instance in the corpus, no closer-fitting apprenticeship-desertion
+leaf exists, reasonable fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-765 done.**
+
+## Record 766
+
+"Summary conviction of Jane Ann Pennock wife of Thomas Pennock of
+the township of Whitby iron worker for assaulting Dorothy Pennock.
+Offence committed at the township of Whitby on 23 March 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Jane Ann Pennock, spouse Thomas Pennock (home Whitby,
+occupation iron worker, relationship correctly captured) -- this is
+the exact record referenced in reextraction-audit-notes.md as an
+earlier fix, confirmed still correct. Victim Dorothy Pennock (shared
+surname, no relationship stated, none captured -- no fabrication).
+Location Whitby matches. Crime type=assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-766 done.**
+
+## Record 767
+
+"Summary conviction of Jane Skinner of the township of Whitby for
+obstructing a street. Offence committed at the township of Whitby
+on 27 August 1869. Whitby Strand - case heard at Whitby" -- defendant
+Jane Skinner, home Whitby. Location Whitby matches. Crime
+type=obstructing the highway matches. No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 779]:** records 779, 788, and
+800 turned out to share this exact same offence/township/date (27
+August 1869, "obstructing a street") with different defendants.
+related_conviction links to all three have now been added
+retroactively.
+
+---
+
+**Progress: records 1-767 done.**
+
+## Record 768
+
+"Summary conviction of Henry Collins of the township of Hinderwell
+hawker for acting as a pedlar selling artificial flowers without a
+certificate. Offence committed at the township of Hinderwell on 28
+July 1875. Whitby Strand - case heard at Whitby" -- defendant Henry
+Collins, home Hinderwell, occupation hawker. Location Hinderwell
+matches. Crime type=licensing offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-768 done.**
+
+## Record 769
+
+"Summary conviction of William Bradley of The Fox and Hounds Inn at
+Ainthorpe in Danby in the township of Danby for assaulting Warner
+Coleman. Offence committed at the township of Eskdaleside cum
+Ugglebarnby on 13 April 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant William Bradley, home
+"Fox and Hounds Inn" (id 828→home_location, nested under Ainthorpe
+under Danby) -- this is the exact record referenced in
+reextraction-audit-notes.md as an earlier fix, confirmed still
+correct. Victim Warner Coleman. Offence location Eskdaleside-cum-
+Ugglebarnby matches (distinct from his home township Danby, both
+correctly captured). Crime type=assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-769 done.**
+
+## Record 770
+
+"Summary conviction of Joseph Richardson of the township of
+Glaisdale miner for being drunk and riotous in Glaisdale Street; on
+the oath of Thomas Bowron of the township of Egton police
+constable. Offence committed at the township of Glaisdale on 27
+August 1869. Whitby Strand - case heard at Whitby" -- defendant
+Joseph Richardson, home Glaisdale, occupation miner; informant
+Thomas Bowron, home Egton, occupation police constable. Glaisdale
+Street correctly nests under Glaisdale, matching stated township.
+Crime type=drunk and disorderly matches (per "drunk and riotous"
+precedent). Already correctly linked to related_conviction 854
+(same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-770 done.**
+
+## Record 771
+
+"Summary conviction of George Jackson of the township of Hinderwell
+joiner for being drunk and disorderly in Rosedale Lane. Offence
+committed at the township of Hinderwell on 16 July 1875. Whitby
+Strand - case heard at Whitby" -- defendant George Jackson, home
+Hinderwell, occupation joiner. Same name as the George Jackson
+tracked in same-person-candidates.md (Barnby truancy cases), but
+this is clearly a different individual (Hinderwell joiner vs.
+Barnby labourer), correctly a distinct person row. Rosedale Lane
+correctly nests under Hinderwell. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-771 done.**
+
+## Record 772
+
+"Summary conviction of Robert Turner of the township of Whitby
+baker's apprentice for maliciously breaking part of a dead fence
+value 3d, the property of Thomas Beeforth. Offence committed at the
+township of Sneaton on 21 April 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Robert Turner, home
+Whitby, occupation baker's apprentice; property owner Thomas
+Beeforth (same name as record 146's postfix-fix Thomas Beeforth but
+a different context/conviction, correctly a separate person row).
+Offence location Sneaton matches. Crime type=malicious/property
+damage matches. No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 784]:** records 784, 867, and
+876 turned out to share this exact same offence/victim/date (Thomas
+Beeforth's dead fence, 21 April 1889, Sneaton) with different
+defendants. related_conviction links to all three have now been
+added retroactively.
+
+---
+
+**Progress: records 1-772 done.**
+
+## Record 773
+
+"Summary conviction of William Verrill of the township of
+Hinderwell fisherman for being drunk and riotous in Staithes
+Street; on the oath of John Atkinson of the township of Hinderwell
+police constable Offence committed at the township of Hinderwell on
+28 August 1869. Whitby Strand - case heard at Whitby" -- defendant
+William Verrill, home Hinderwell, occupation fisherman; informant
+John Atkinson (same name/occupation as record 764's informant --
+same real constable, correctly appearing across multiple convictions
+in the same incident, per no-cross-conviction-merge each gets its
+own person row). Staithes Street matches. Crime type=drunk and
+disorderly matches. Part of the 8-record Staithes Street cluster,
+already fully verified pairwise at record 764.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-773 done.**
+
+## Record 774
+
+"Summary conviction of Richard Shippey of the township of
+Hinderwell fisherman for being drunk on the licensed premises of
+William Henry Heath and refusing to leave when asked by William
+Hammond a police constable. Offence committed at the township of
+Hinderwell on 17 July 1875. Whitby Strand - case heard at Whitby"
+-- defendant Richard Shippey, home Hinderwell, occupation
+fisherman; licensee William Henry Heath, occupation "licensee";
+informant William Hammond, occupation police constable. Location
+Hinderwell matches. Crime types = drunkenness + refusal to quit
+licensed premises both fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-774 done.**
+
+## Record 775
+
+"Summary conviction of Richard Thompson of the township of Lythe
+bricklayer for being drunk and disorderly in Lythe town street.
+Offence committed at the township of Lythe on 18 May 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Richard Thompson, home Lythe, occupation bricklayer -- same name as
+record 700's licensee Richard Thompson (Whitby), but clearly a
+distinct person, correctly separate. "Lythe town street" resolves
+to Lythe itself. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-775 done.**
+
+## Record 776
+
+"Summary conviction of Thomas Hedley Robinson of the township of
+Hinderwell fisherman for assaulting John Atkinson one of the
+constables of the North Riding in the execution of his duty.
+Offence committed at the township of Hinderwell on 28 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant Thomas Hedley
+Robinson, home Hinderwell, occupation fisherman; victim John
+Atkinson, occupation "constable of the North Riding", sex correctly
+male. Location Hinderwell matches. Crime type=assaulting a police
+officer matches. Already correctly linked to related_conviction 806
+(same defendant, same date -- 806 is Robinson's companion "drunk and
+riotous in Staithes Street" charge, itself part of the 8-record
+Staithes cluster). Not linked directly to the other 6 Staithes
+cluster members since this is a different offence type (assault, not
+drunk/disorderly) -- the existing same-defendant link to 806 already
+ties this record into the incident.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-776 done.**
+
+## Record 777
+
+"Summary conviction of Henry Douglas of the township of Whitby
+carpenter for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 24 July 1875. Whitby Strand
+- case heard at Whitby" -- defendant Henry Douglas, home Whitby,
+occupation carpenter. "The Pier" resolves to Piers (Seafront/
+Whitby). Crime type=drunk and disorderly matches. Already correctly
+linked to related_conviction 681 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-777 done.**
+
+## Record 778
+
+"Summary conviction of James Dixon of Kiln Yard in the township of
+Whitby for not sending his daughter Jane Elizabeth Dixon to school.
+Offence committed in the Whitby Strand School Board district on 27
+May 1889. Case heard at Whitby" -- defendant James Dixon, home Kiln
+Yard (East Cliff/Whitby); daughter Jane Elizabeth Dixon, "daughter"
+relationship correctly captured -- this is the exact record
+referenced in reextraction-audit-notes.md, confirmed still correct.
+Truancy rule correctly applied: offence location = his own home
+(Kiln Yard), not the School Board district wording. Crime
+type=school non-attendance matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-778 done.**
+
+## Record 779
+
+"Summary conviction of Isabella Robinson of the township of Whitby
+for obstructing a street. Offence committed at the township of
+Whitby on 27 August 1869. Whitby Strand - case heard at Whitby" --
+defendant Isabella Robinson, home Whitby. Location Whitby matches.
+Crime type=obstructing the highway matches. No related_conviction
+was present, but this is identical offence/township/date to record
+767 (Jane Skinner). Searched and found two more matches: 788 (Mary
+Young) and 800 (Elizabeth Sneaton, not yet reached) -- all four
+records share the exact same offence, township, and date. Added all
+6 pairwise related_conviction rows, retroactively annotated 767's
+entry.
+
+**FIXED — added missing related_conviction links for a 4-record cluster (767, 779, 788, 800).**
+
+---
+
+**Progress: records 1-779 done.**
+
+## Record 780
+
+"Summary conviction of Mark Swales of the township of Whitby hawker
+for being the owner of two horses found straying on the Whitby and
+Hawsker highway. Offence committed at the township of Hawsker cum
+Stainsacre on 6 September 1875. Whitby Strand - case heard at
+Whitby" -- defendant Mark Swales, home Whitby, occupation hawker.
+Cross-parish "Whitby & Hawsker Highway" correctly added alongside
+stated township Hawsker-cum-Stainsacre. Crime type=straying animals
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-780 done.**
+
+## Record 781
+
+"Summary conviction of John Parkin of Old Post Office Yard in the
+township of Whitby for not sending his daughter Sarah Parkin to
+school. Offence committed in the Whitby Strand School Board
+district on 24 May 1889. Case heard at Whitby" -- defendant John
+Parkin, home Old Post Office Yard (West Cliff/Whitby); daughter
+Sarah Parkin, "daughter" relationship correctly captured -- this is
+the exact record referenced in reextraction-audit-notes.md,
+confirmed still correct. Truancy rule correctly applied: offence
+location = his own home, not the School Board district wording.
+Crime type=school non-attendance matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-781 done.**
+
+## Record 782
+
+"Summary conviction of Robert Ward of the township of Hinderwell
+fisherman for being drunk and riotous in Staithes Street; on the
+oath of John Atkinson of the township of Hinderwell police
+constable. Offence committed at the township of Hinderwell on 28
+August 1869. Whitby Strand - case heard at Whitby" -- defendant
+Robert Ward, home Hinderwell, occupation fisherman; informant John
+Atkinson. Staithes Street matches. Crime type=drunk and disorderly
+matches. Part of the 8-record Staithes Street cluster, all pairwise
+links already correctly present (verified at record 764).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-782 done.**
+
+## Record 783
+
+"Summary conviction of Ann Jackson wife of Charles Jackson for
+lodging in a shed with no visible means of subsistence and not
+giving a good account of herself. Offence committed at the parish
+of Whitby on 25 July 1875. Whitby Strand - case heard at Whitby" --
+defendant Ann Jackson, spouse Charles Jackson (relationship
+correctly captured, no home/occupation stated for him in the text,
+correctly left blank) -- this is the exact record referenced in
+reextraction-audit-notes.md, confirmed still correct. Location
+Whitby matches ("parish of Whitby" resolves the same as "township
+of Whitby"). Crime type=vagrancy matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-783 done.**
+
+## Record 784
+
+"Summary conviction of Arthur Duck of the township of Whitby
+baker's apprentice for maliciously breaking part of a dead fence
+value 3d, the property of Thomas Beeforth. Offence committed at the
+township of Sneaton on 21 April 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Arthur Duck, home
+Whitby, occupation baker's apprentice; property owner Thomas
+Beeforth. Offence location Sneaton matches. Crime type=malicious/
+property damage matches. No related_conviction was present, but
+this is identical offence/victim/date to record 772 (Robert Turner).
+Searched and found two more matches: 867 (Isaac Wilson) and 876
+(James Horner, not yet reached) -- all four records share the exact
+same offence, victim, township, and date. Added all 6 pairwise
+related_conviction rows, retroactively annotated 772's entry.
+
+**FIXED — added missing related_conviction links for a 4-record cluster (772, 784, 867, 876).**
+
+---
+
+**Progress: records 1-784 done.**
+
+## Record 785
+
+"Summary conviction of Richard Ward of the township of Hinderwell
+fisherman for being drunk and riotous in Staithes Street. Offence
+committed at the township of Hinderwell on 28 August 1869. Whitby
+Strand - case heard at Whitby" -- defendant Richard Ward, home
+Hinderwell, occupation fisherman -- shares a surname with record
+782's Robert Ward but no relationship stated in the text, correctly
+none captured. Staithes Street matches. Crime type=drunk and
+disorderly matches. Part of the 8-record Staithes Street cluster,
+all pairwise links already correctly present.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-785 done.**
+
+## Record 786
+
+"Summary conviction of Matthew Harland of the township of Whitby
+fisherman for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 28 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant Matthew Harland, home
+Whitby, occupation fisherman. Church Street matches. Crime
+type=drunk and disorderly matches. Already correctly linked to
+related_conviction 834 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-786 done.**
+
+## Record 787
+
+"Summary conviction of Alexander McCloud of the township of Whitby
+carpenter for begging in Church Street Offence committed at the
+township of Whitby on 12 June 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Alexander McCloud,
+home Whitby, occupation carpenter. Church Street matches. Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-787 done.**
+
+## Record 788
+
+"Summary conviction of Mary Young of the township of Whitby for
+obstructing a street. Offence committed at the township of Whitby
+on 27 August 1869. Whitby Strand - case heard at Whitby" -- defendant
+Mary Young, home Whitby. Location Whitby matches. Crime
+type=obstructing the highway matches. Part of the 4-record
+"obstructing a street" cluster (767, 779, 788, 800), all pairwise
+links already correctly present.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-788 done.**
+
+## Record 789
+
+"Summary conviction of George Duck of the township of Whitby
+labourer for being drunk in charge of a horse and dray in the
+Khyber Pass. Offence committed at the township of Ruswarp on 6
+August 1875. Whitby Strand - case heard at Whitby" -- defendant
+George Duck (same name as record 734's cart driver, different
+occupation and date, correctly a distinct person row), home Whitby,
+occupation labourer. Khyber Pass nests under Whitby's West Cliff but
+the record states offence township Ruswarp -- correctly added
+alongside per the cliff-boundary pattern. Crime type=drunkenness
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-789 done.**
+
+## Record 790
+
+"Summary conviction of Agnes Baker wife of William George Baker of
+the township of Whitby jet worker for being drunk and disorderly at
+the Bridge End. Offence committed at the township of Whitby on 21
+April 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Agnes Baker, spouse William George Baker (home
+Whitby, occupation jet worker, relationship correctly captured) --
+this is the exact record referenced in reextraction-audit-notes.md
+as an earlier fix, confirmed still correct (one of two separate
+William George Baker person rows across two convictions, correctly
+unmerged). Bridge End matches. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-790 done.**
+
+## Record 791
+
+"Summary conviction of David Theaker of the township of Hinderwell
+fisherman for being drunk and riotous in Staithes Street. Offence
+committed at the township of Hinderwell on 28 August 1869. Whitby
+Strand - case heard at Whitby" -- defendant David Theaker, home
+Hinderwell, occupation fisherman. Staithes Street matches. Crime
+type=drunk and disorderly matches. Part of the 8-record Staithes
+Street cluster, all pairwise links already correctly present, plus
+correctly linked to 797 (same defendant, same date -- a companion
+charge).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-791 done.**
+
+## Record 792
+
+"Summary conviction of Ann Miller wife of James Miller of the
+township of Whitby stonemason for assaulting Henry Douglas. Offence
+committed at the township of Whitby on 2 August 1875. Whitby Strand
+- case heard at Whitby" -- defendant Ann Miller, spouse James
+Miller (home Whitby, occupation stonemason, relationship correctly
+captured) -- this is the exact record referenced in
+reextraction-audit-notes.md as an earlier fix, confirmed still
+correct. Victim Henry Douglas (same name as record 777's defendant,
+correctly a distinct person). Location Whitby matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-792 done.**
+
+## Record 793
+
+"Summary conviction of John Walker of the township of Newholm cum
+Dunsley sailor for begging in East Row town street. Offence
+committed at the township of Newholm cum Dunsley on 1 June 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant John Walker, home Newholm-cum-Dunsley, occupation sailor.
+"East Row town street" resolves to Newholm-cum-Dunsley itself,
+matching stated township (same pattern as record 649). Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-793 done.**
+
+## Record 794
+
+"Summary conviction of George Porritt of the township of Hinderwell
+fisherman for assaulting John Atkinson one of the constables for
+the North Riding in the execution of his duty. Offence committed at
+the township of Hinderwell on 28 August 1869. Whitby Strand - case
+heard at Whitby" -- defendant George Porritt, home Hinderwell,
+occupation fisherman; victim John Atkinson, occupation "constable
+for the North Riding", sex correctly male. Location Hinderwell
+matches. Crime type=assaulting a police officer matches. Already
+correctly linked to related_conviction 812 (same defendant, same
+date -- 812 is Porritt's companion charge, part of the Staithes
+Street cluster). Same pattern as record 776 (Robinson/806) --
+same-defendant link suffices, not extended to the whole Staithes
+cluster since offence type differs.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-794 done.**
+
+## Record 795
+
+"Summary conviction of George Green for lodging in a barn with no
+visible means of subsistence and not giving a good account of
+himself. Offence committed at the township of Hawsker cum
+Stainsacre on 10 August 1875. Whitby Strand - case heard at Whitby"
+-- defendant George Green. Offence location Hawsker-cum-Stainsacre
+matches. Crime type=vagrancy matches. No related_conviction was
+present, but found an identical match: record 881 (John Brown),
+same offence/township/date, no named party in either -- matches the
+confirmed no-named-party pattern. Added the link.
+
+**FIXED — added missing related_conviction link to 881 (same barn/date/offence, no named party).**
+
+---
+
+**Progress: records 1-795 done.**
+
+## Record 796
+
+"Summary conviction of Thomas Howard of Arguments Yard in the
+township of Whitby for not sending his daughter Caroline Howard to
+school. Offence committed in the Whitby Strand School Board
+district on 23 May 1889. Case heard at Whitby" -- defendant Thomas
+Howard, home Arguments Yard (East Cliff/Whitby); daughter Caroline
+Howard, "daughter" relationship correctly captured. Truancy rule
+correctly applied: offence location = his own home, not the School
+Board district wording. Crime type=school non-attendance matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-796 done.**
+
+## Record 797
+
+"Summary conviction of David Theaker of the township of Hinderwell
+fisherman for assaulting John Atkinson one of the constables for
+the North Riding in the execution of his duty. Offence committed at
+the township of Hinderwell on 28 August 1869. Whitby Strand - case
+heard at Whitby" -- defendant David Theaker, home Hinderwell,
+occupation fisherman; victim John Atkinson, sex correctly male.
+Location Hinderwell matches. Crime type=assaulting a police officer
+matches. Already correctly linked to related_conviction 791 (same
+defendant, same date -- Theaker's companion Staithes Street drunk
+charge).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-797 done.**
+
+## Record 798
+
+"Summary conviction of William Lund of the township of Whitby jet
+worker for being drunk and disorderly in Sandgate. Offence
+committed at the township of Whitby on 10 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant William Lund, home
+Whitby, occupation jet worker. Sandgate matches. Crime type=drunk
+and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-798 done.**
+
+## Record 799
+
+"Summary conviction of Agnes Baker wife of William George Baker of
+the township of Whitby jet worker for being drunk and disorderly in
+Church Street. Offence committed at the township of Whitby on 18
+May 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Agnes Baker, spouse William George Baker (home
+Whitby, occupation jet worker, relationship correctly captured) --
+this is the second Agnes/William George Baker conviction referenced
+in reextraction-audit-notes.md, correctly a separate person pair
+from record 790's earlier conviction, confirmed still correct.
+Church Street matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-799 done.**
+
+## Record 800
+
+"Summary conviction of Elizabeth Sneaton [Elizabeth Skinner] of the
+township of Whitby for obstructing a street; on the oath of Charles
+Albert Martindale of the township of Whitby police constable.
+Offence committed at the township of Whitby on 27 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant Elizabeth
+Sneaton, bracketed alt-name "Elizabeth Skinner" correctly captured
+in `person.alias` -- this is the exact record referenced in
+reextraction-audit-notes.md, confirmed still correct (not a gap).
+Informant Charles Albert Martindale, home Whitby, occupation police
+constable. Location Whitby matches. Crime type=obstructing the
+highway matches. Part of the 4-record "obstructing a street" cluster
+(767, 779, 788, 800), all pairwise links already correctly present.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-800 done.**
+
+## Record 801
+
+"Summary conviction of Robert Dixon of the township of Whitby jet
+worker for being drunk and disorderly in Henrietta Street. Offence
+committed at the township of Whitby on 11 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant Robert Dixon, home
+Whitby, occupation jet worker. Henrietta Street matches. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-801 done.**
+
+## Record 802
+
+"Summary conviction of Jane Storm wife of Sampson Storm of the
+township of Whitby iron worker for being drunk and disorderly in
+Henrietta Street. Offence committed at the township of Whitby on
+23 April 1889. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant Jane Storm, spouse Sampson Storm (home
+Whitby, occupation iron worker, relationship correctly captured) --
+this is the exact record referenced in reextraction-audit-notes.md
+as an earlier fix, confirmed still correct. Henrietta Street
+matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-802 done.**
+
+## Record 803
+
+"Summary conviction of George Henderson of the township of Egton
+for assaulting Joseph Wedgewood. Offence committed at the township
+of Egton on 28 August 1869. Whitby Strand - case heard at Whitby"
+-- defendant George Henderson, home Egton; victim Joseph Wedgewood.
+Location Egton matches. Crime type=assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-803 done.**
+
+## Record 804
+
+"Summary conviction of David Peart of the township of Whitby
+fisherman for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 7 August 1875. Whitby Strand
+- case heard at Whitby" -- defendant David Peart, home Whitby,
+occupation fisherman. Church Street matches. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-804 done.**
+
+## Record 805
+
+"Summary conviction of Thomas James Tweedy of the township of
+Whitby schoolboy for throwing a stone in the Khyber Pass. Offence
+committed at the township of Ruswarp on 26 May 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Thomas James Tweedy, home Whitby, occupation "schoolboy". Khyber
+Pass nests under Whitby's West Cliff but the record states offence
+township Ruswarp -- correctly added alongside per the cliff-boundary
+pattern. Crime type=breach of the peace matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-805 done.**
+
+## Record 806
+
+"Summary conviction of Thomas Hedley Robinson of the township of
+Hinderwell fisherman for being drunk and riotous in Staithes
+Street. Offence committed at the township of Hinderwell on 28
+August 1869. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Hedley Robinson, home Hinderwell, occupation fisherman.
+Staithes Street matches. Crime type=drunk and disorderly matches.
+Part of the 8-record Staithes Street cluster, all pairwise links
+already correctly present, plus correctly linked to 776 (same
+defendant, same date -- Robinson's companion assault charge).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-806 done.**
+
+## Record 807
+
+"Summary conviction of John Thompson of the township of Whitby jet
+worker for being drunk and disorderly in Church Street; on the oath
+of Mark Boggett of the township of Whitby police constable. Offence
+committed at the township of Whitby on 12 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant John Thompson (same
+name/occupation as record 749, different date, correctly a distinct
+person row), home Whitby; informant Mark Boggett, home Whitby,
+occupation police constable. Church Street matches. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-807 done.**
+
+## Record 808
+
+"Summary conviction of Andrew McNally of the township of Hinderwell
+coal leader for being the owner of a horse and an ass found
+straying on the Runswick and Ellerby highway. Offence committed at
+the township of Hinderwell on 27 May 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Andrew
+McNally, home Hinderwell, occupation coal leader. Cross-parish
+"Runswick & Ellerby Highway" correctly added alongside stated
+township Hinderwell. Crime type=straying animals matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-808 done.**
+
+## Record 809
+
+"Summary conviction of Thomas Verrill of the township of Hinderwell
+fisherman for being drunk and riotous in Staithes Street. Offence
+committed at the township of Hinderwell on 28 August 1869. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Verrill, home
+Hinderwell, occupation fisherman -- shares a surname with record
+773's William Verrill (likely family, but no relationship stated in
+the text, correctly none captured). Staithes Street matches. Crime
+type=drunk and disorderly matches. Part of the 8-record Staithes
+Street cluster, all pairwise links already correctly present.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-809 done.**
+
+## Record 810
+
+"Summary conviction of John Dixon of the township of Whitby jet
+worker for resisting Edward Weeks one of the constables for the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 11 August 1875. Whitby Strand - case heard at
+Whitby" -- defendant John Dixon, home Whitby, occupation jet worker;
+victim Edward Weeks, sex correctly male. Location Whitby matches.
+Crime type=obstructing/resisting a constable matches -- correctly
+distinguished from "assaulting a police officer" since the charge is
+"resisting", not "assaulting". No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 920]:** record 920 (Thomas
+Dixon, also surnamed Dixon though no relationship stated) turned out
+to share this exact same victim/offence/township/date. A
+related_conviction link has now been added retroactively.
+
+---
+
+**Progress: records 1-810 done.**
+
+## Record 811
+
+"Summary conviction of Robert Steel of Whitby jet worker for being
+drunk and disorderly in Baxtergate. Offence committed at the
+township of Whitby on 19 March 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Robert Steel, home
+Whitby, occupation jet worker. Baxtergate matches. Crime type=drunk
+and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-811 done.**
+
+## Record 812
+
+"Summary conviction of George Porritt of the township of Hinderwell
+fisherman for being drunk and riotous in Staithes Street Offence
+committed at the township of Hinderwell on 28 August 1869. Whitby
+Strand - case heard at Whitby" -- defendant George Porritt, home
+Hinderwell, occupation fisherman. Staithes Street matches. Crime
+type=drunk and disorderly matches. Final (8th) member of the
+Staithes Street cluster, plus correctly linked to 794 (same
+defendant, same date -- Porritt's companion assault charge). All
+pairwise links in the 8-record cluster now fully verified complete
+across records 764-812.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-812 done.**
+
+## Record 813
+
+"Summary conviction of Robert Dixon of the township of Whitby jet
+worker for being drunk in charge of a horse and cart on the New
+Quay. Offence committed at the township of Whitby on 12 August
+1875. Whitby Strand - case heard at Whitby" -- defendant Robert
+Dixon (same name/occupation as record 801, different date,
+correctly a distinct person row), home Whitby. New Quay matches.
+Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-813 done.**
+
+## Record 814
+
+"Summary conviction of William Fisher of the township of Whitby
+tinner for being drunk and disorderly in Sandgate. Offence
+committed at the township of Whitby on 8 June 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+William Fisher, home Whitby, occupation tinner. Sandgate matches.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-814 done.**
+
+## Record 815
+
+"Summary conviction of Joseph Lemarte for assaulting Michael
+Maloney. Offence committed at the township of Whitby on 9 September
+1869. Whitby Strand - case heard at Whitby" -- defendant Joseph
+Lemarte, victim Michael Maloney. Location Whitby matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-815 done.**
+
+## Record 816
+
+"Summary conviction of Peter Elder Leck of the Longsteps in the
+township of Whitby for assaulting Sarah Mary Leck; on the oath of
+the said Sarah Mary Leck wife of Simon Robert Leck of the township
+of Whitby jet worker. Offence committed at the township of Whitby
+on 13 August 1875. Whitby Strand - case heard at Whitby" -- defendant
+Peter Elder Leck, home Long Steps (East Cliff/Whitby); victim Sarah
+Mary Leck, spouse Simon Robert Leck (home Whitby, occupation jet
+worker, relationship correctly captured) -- this is the exact record
+referenced in reextraction-audit-notes.md as an earlier fix,
+confirmed still correct. Location Whitby matches. Crime type=assault
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-816 done.**
+
+## Record 817
+
+"Summary conviction of John Telford of the township of Hinderwell
+fish hawker for ill-treating a horse by beating it about the head
+with a steel hame and a stick Offence committed at the township of
+Glaisdale on 23 May 1889. Whitby Strand Petty Sessional division -
+case heard at Whitby" -- defendant John Telford, home Hinderwell,
+occupation fish hawker. Offence location Glaisdale matches. Crime
+type=cruelty to animals matches. Already correctly linked to
+related_conviction 823 (same defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-817 done.**
+
+## Record 818
+
+"Summary conviction of Robert Dixon of the township of Whitby
+sailor for assaulting John Ryder one of the constables for the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 9 September 1869. Whitby Strand - case heard
+at Whitby" -- defendant Robert Dixon (same name as records 801/813,
+different occupation and date, correctly a distinct person row),
+home Whitby, occupation sailor; victim John Ryder, sex correctly
+male. Location Whitby matches. Crime type=assaulting a police
+officer matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-818 done.**
+
+## Record 819
+
+"Summary conviction of John Hodgson of the township of Whitby
+fisherman for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 21 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant John Hodgson, home
+Whitby, occupation fisherman. "The Pier" resolves to Piers
+(Seafront/Whitby). Crime type=drunk and disorderly matches. Already
+correctly linked to related_conviction 825 (same offence date/
+street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-819 done.**
+
+## Record 820
+
+"Summary conviction of John Day of Eskdaleside cum Ugglebarnby
+labourer for begging in Grosmont town street. Offence committed at
+the township of Eskdaleside cum Ugglebarnby on 3 June 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+John Day, home Eskdaleside-cum-Ugglebarnby, occupation labourer.
+"Grosmont town street" resolves to Grosmont under Eskdaleside-cum-
+Ugglebarnby, matching stated township. Crime type=begging matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-820 done.**
+
+## Record 821
+
+"Summary conviction of William Smith labourer for being drunk.
+Offence committed at the township of Whitby on 9 September 1869.
+Whitby Strand - case heard at Whitby" -- defendant William Smith,
+occupation labourer, no home town stated in the text (no "of the
+township of..." clause), correctly left blank. Location Whitby
+matches. Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-821 done.**
+
+## Record 822
+
+"Summary conviction of Jane Thompson of the township of Whitby
+widow for being drunk and disorderly in Church Street; on the oath
+of George Hewison of the township of Whitby police constable.
+Offence committed at the township of Whitby on 16 August 1875.
+Whitby Strand - case heard at Whitby" -- defendant Jane Thompson
+(same name as record 468's spinster, correctly a distinct person),
+home Whitby, stated "widow" but occupation was not linked -- this
+id was already on the tracked marital-status occupation gap list.
+Added occupation "widow" (id 384). Informant George Hewison, home
+Whitby, occupation police constable. Church Street matches. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**FIXED — added missing "widow" occupation (tracked gap, id 822 removed from the list).**
+
+---
+
+**Progress: records 1-822 done.**
+
+## Record 823
+
+"Summary conviction of John Telford of the township of Hinderwell
+fish hawker for being drunk in charge of a horse and cart on the
+Glaisdale and Rosedale highway. Offence committed at the township
+of Glaisdale on 23 May 1889. Whitby Strand Petty Sessional division
+- case heard at Whitby" -- defendant John Telford, home Hinderwell,
+occupation fish hawker. Cross-parish "Glaisdale & Rosedale Highway"
+correctly added alongside stated offence township Glaisdale. Crime
+type=drunkenness matches. Already correctly linked to
+related_conviction 817 (same defendant, same offence date --
+Telford's companion cruelty-to-animals charge).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-823 done.**
+
+## Record 824
+
+"Summary conviction of Jane Thompson of the township of Whitby
+widow for being drunk. Offence committed at the township of Whitby
+on 9 September 1869. Whitby Strand - case heard at Whitby" --
+defendant Jane Thompson (third distinct Jane Thompson person row
+this session, correctly separate from records 468/822), home
+Whitby, stated "widow" but occupation was not linked -- this id was
+already on the tracked marital-status occupation gap list. Added
+occupation "widow" (id 384). Location Whitby matches. Crime
+type=drunkenness matches. No related_conviction.
+
+**FIXED — added missing "widow" occupation (tracked gap, id 824 removed from the list).**
+
+---
+
+**Progress: records 1-824 done.**
+
+## Record 825
+
+"Summary conviction of Francis Fewster of the township of Whitby
+jet worker for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 21 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant Francis Fewster (same
+name/occupation as record 747, different date, correctly a distinct
+person row), home Whitby. "The Pier" resolves to Piers (Seafront/
+Whitby). Crime type=drunk and disorderly matches. Already correctly
+linked to related_conviction 819 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-825 done.**
+
+## Record 826
+
+"Summary conviction of Alfred George Walker of the township of
+Whitby bricklayer for being drunk and disorderly in Ruswarp town
+street. Offence committed at the township of Ruswarp on 11 June
+1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Alfred George Walker, home Whitby, occupation
+bricklayer. "Ruswarp town street" resolves to Ruswarp itself,
+matching stated township. Crime type=drunk and disorderly matches.
+Already correctly linked to related_conviction 742 (same offence
+date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-826 done.**
+
+## Record 827
+
+"Summary conviction of James Robinson for begging in the Khyber
+Pass. Offence committed at the township of Ruswarp on 10 September
+1869. Whitby Strand - case heard at Whitby" -- defendant James
+Robinson. Khyber Pass nests under Whitby's West Cliff but the
+record states township Ruswarp -- correctly captured alongside per
+the cliff-boundary pattern. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-827 done.**
+
+## Record 828
+
+"Summary conviction of John Nellist of the township of Fylingdales
+licensed victualler for opening his licensed premises outside
+licensing hours; on the oath of George Eli North of the township of
+Fylingdales police constable. Offence committed at the township of
+Fylingdales at 12.05 p.m. on 22 August 1875. Whitby Strand - case
+heard at Whitby" -- defendant John Nellist, home Fylingdales,
+occupation licensed victualler; informant George Eli North, home
+Fylingdales, occupation police constable. Location Fylingdales
+matches. Crime type=licensing offence matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-828 done.**
+
+## Record 829
+
+"Summary conviction of William Carter of the township of Whitby
+labourer for begging in Church Street. Offence committed at the
+township of Whitby on 27 May 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant William Carter, home
+Whitby, occupation labourer. Church Street matches. Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-829 done.**
+
+## Record 830
+
+"Summary conviction of William Harland for assaulting Alice
+Weatherill. Offence committed at the township of Whitby on 9
+September 1869. Whitby Strand - case heard at Whitby" -- defendant
+William Harland, victim Alice Weatherill (same name as record 651's
+victim, but 6 years apart -- 1869 vs 1875 -- correctly a distinct,
+unrelated conviction). Location Whitby matches. Crime type=assault
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-830 done.**
+
+## Record 831
+
+"Summary conviction of Francis Fewster of the township of Whitby
+jet worker for being drunk in Victoria Square. Offence committed at
+the township of Ruswarp on 24 August 1875. Whitby Strand - case
+heard at Whitby" -- defendant Francis Fewster (same name/occupation
+as records 747/825, a third distinct conviction on yet another
+date, correctly a separate person row), home Whitby. Victoria
+Square nests under Whitby's West Cliff but the record states
+township Ruswarp -- correctly added alongside per the cliff-boundary
+pattern. Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-831 done.**
+
+## Record 832
+
+"Summary conviction of James Conner of the township of Ellerby
+labourer for begging in Ellerby town street. Offence committed at
+the township of Ellerby on 26 May 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant James
+Conner, home Ellerby, occupation labourer. "Ellerby town street"
+resolves to Ellerby itself, matching stated township. Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-832 done.**
+
+## Record 833
+
+"Summary conviction of Robert Foster of the township of Whitby
+sailor for being drunk. Offence committed at the township of Whitby
+on 12 September 1869. Whitby Strand - case heard at Whitby" --
+defendant Robert Foster, home Whitby, occupation sailor. Location
+Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-833 done.**
+
+## Record 834
+
+"Summary conviction of Richard Purvis of the township of Whitby
+shoemaker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 28 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant Richard Purvis, home
+Whitby, occupation shoemaker. Church Street matches. Crime
+type=drunk and disorderly matches. Already correctly linked to
+related_conviction 786 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-834 done.**
+
+## Record 835
+
+"Summary conviction of George Bielby of Pickering labourer for
+being drunk and disorderly in Church Street. Offence committed at
+the township of Whitby on 4 May 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant George Bielby, home
+Pickering, occupation labourer. Offence location Church Street
+(Whitby) matches. Crime type=drunk and disorderly matches. Already
+correctly linked to related_conviction 861 (same offence date/
+street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-835 done.**
+
+## Record 836
+
+"Summary conviction of David Adamson of the township of Whitby
+fisherman for assaulting Samuel Hutchings. Offence committed at the
+township of Whitby on 13 September 1869. Whitby Strand - case heard
+at Whitby" -- defendant David Adamson, home Whitby, occupation
+fisherman; victim Samuel Hutchings. Location Whitby matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-836 done.**
+
+## Record 837
+
+"Summary conviction of Stephen Kelly of the township of Whitby
+pedlar for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 30 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant Stephen Kelly, home
+Whitby, occupation pedlar. Church Street matches. Crime type=drunk
+and disorderly matches. Already correctly linked to
+related_conviction 893 and 902 (same defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-837 done.**
+
+## Record 838
+
+"Summary conviction of Charles Wareing of the township of Ruswarp
+labourer for begging at High Stakesby. Offence committed at the
+township of Ruswarp on 28 May 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Charles Wareing, home
+Ruswarp, occupation labourer. "High Stakesby" correctly nests under
+Ruswarp, matching stated township. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-838 done.**
+
+## Record 839
+
+"Summary conviction of Solomon Marshall of the township of Whitby
+jet worker for being drunk and riotous in Baxtergate. Offence
+committed at the township of Whitby on 16 September 1869. Whitby
+Strand - case heard at Whitby" -- defendant Solomon Marshall, home
+Whitby, occupation jet worker. Baxtergate matches (West Cliff/
+Whitby). Crime type=drunk and disorderly matches (per "drunk and
+riotous" precedent). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-839 done.**
+
+## Record 840
+
+"Summary conviction of John Jones of the township of Whitby coal
+porter for being drunk on the licensed premises of Joseph Fletcher
+and refusing to leave when asked by John Nicholson a police
+constable. Offence committed at the township of Whitby on 30 August
+1875. Whitby Strand - case heard at Whitby" -- defendant John Jones
+(same name/occupation as record 235, different date, correctly a
+distinct person row), home Whitby; licensee Joseph Fletcher,
+occupation "licensee"; informant John Nicholson, occupation police
+constable. Location Whitby matches. Crime types = drunkenness +
+refusal to quit licensed premises both fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-840 done.**
+
+## Record 841
+
+"Summary conviction of William Hewling of the township of Whitby
+rag gatherer for being drunk and disorderly in Baxtergate. Offence
+committed at the township of Whitby on 8 May 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+William Hewling, home Whitby, occupation rag gatherer. Baxtergate
+matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-841 done.**
+
+## Record 842
+
+"Summary conviction of William Andrew of the township of Whitby jet
+worker for being drunk. Offence committed at the township of
+Whitby on 16 September 1869. Whitby Strand - case heard at Whitby"
+-- defendant William Andrew, home Whitby, occupation jet worker.
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-842 done.**
+
+## Record 843
+
+"Summary conviction of John Denham of the township of Whitby jet
+worker for being drunk on the licensed premises of Frederick
+William Judge. Offence committed at the township of Whitby on 1
+September 1875. Whitby Strand - case heard at Whitby" -- defendant
+John Denham (same name/occupation as record 702's obstructing-the-
+highway defendant, but a different date, correctly a distinct
+person row), home Whitby; licensee Frederick William Judge,
+occupation "licensee". Location Whitby matches. Crime
+type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-843 done.**
+
+## Record 844
+
+"Summary conviction of John Harrison Trousdale of the township of
+Whitby for throwing a stone in North Road. Offence committed at the
+township of Ruswarp on 7 May 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant John Harrison
+Trousdale, home Whitby. North Road nests under Whitby's West Cliff
+but the record states offence township Ruswarp -- correctly added
+alongside per the cliff-boundary pattern. Crime type=breach of the
+peace matches. Third of the North Road stone-throwing cluster (718,
+724, 844), all pairwise links already correctly present.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-844 done.**
+
+## Record 845
+
+"Summary conviction of Christiana Dixon for lodging in the open air
+in Church Street with no visible means of subsistence and not
+giving a good account of herself. Offence committed at the township
+of Whitby on 15 September 1869. Whitby Strand - case heard at
+Whitby" -- defendant Christiana Dixon. Church Street matches. Crime
+type=vagrancy matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-845 done.**
+
+## Record 846
+
+"Summary conviction of Elizabeth Walker of the township of Whitby
+pedlar for acting as a pedlar selling books without a certificate.
+Offence committed at the township of Whitby on 3 September 1875.
+Whitby Strand - case heard at Whitby" -- defendant Elizabeth
+Walker, home Whitby, occupation pedlar. Location Whitby matches.
+Crime type=licensing offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-846 done.**
+
+## Record 847
+
+"Summary conviction of William Hodgson of the township of Whitby
+joiner for being drunk and disorderly in St Ann's Staith Offence
+committed at the township of Whitby on 30 March 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+William Hodgson, home Whitby, occupation joiner. St Ann's Staith
+matches (West Cliff/Whitby). Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-847 done.**
+
+## Record 848
+
+"Summary conviction of Sarah Smith of the township of Whitby
+singlewoman for being drunk. Offence committed at the township of
+Whitby on 17 September 1869. Whitby Strand - case heard at Whitby"
+-- defendant Sarah Smith, home Whitby, stated "singlewoman" but
+occupation was not linked -- this id was already on the tracked
+marital-status occupation gap list. Added occupation "singlewoman"
+(id 337). Location Whitby matches. Crime type=drunkenness matches.
+No related_conviction.
+
+**FIXED — added missing "singlewoman" occupation (tracked gap, id 848 removed from the list).**
+
+---
+
+**Progress: records 1-848 done.**
+
+## Record 849
+
+"Summary conviction of Robert Parkin of the township of Whitby cab
+driver for being drunk in charge of a horse and cart. Offence
+committed at the township of Ruswarp on 30 September 1875. Whitby
+Strand - case heard at Whitby" -- defendant Robert Parkin (same
+name as record 735's Newholm-cum-Dunsley waggoner, different
+occupation/home/date, correctly a distinct person row), home
+Whitby, occupation cab driver. Offence location Ruswarp matches.
+Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-849 done.**
+
+## Record 850
+
+"Summary conviction of William Hodgson of the township of Whitby
+sailor for being drunk and disorderly in the Market Place. Offence
+committed at the township of Whitby on 13 April 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+William Hodgson (person data correctly says "Hodgson"), home
+Whitby, occupation sailor. The `title` field said "William Hobson"
+-- a mismatch against both raw_record and the person row, matching
+the tracked title/raw_record mismatch pattern (2 prior instances:
+347, 571). Corrected to "William Hodgson". Market Place matches.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**FIXED — corrected title field "Hobson" to "Hodgson" (3rd instance of tracked title/raw_record mismatch).**
+
+**[Corpus-wide sweep triggered by this record]:** a third instance
+was one too many to keep treating as isolated, so ran a SQL flagging
+query (`title NOT LIKE '%' || person.last_name || '%'` for the
+defendant role) across the whole corpus. Found 4 more genuine
+instances beyond this record: 184 (Gardener→Gardner), 3298
+(Tose→Toes), 4073 (Tose→Toes), 4277 (Fagan→Fagin) -- each verified
+against its own raw_record before fixing. Re-ran the sweep after all
+7 fixes (347, 571, 850, 184, 3298, 4073, 4277) -- zero remain
+corpus-wide. This gap is now fully resolved, not an ongoing watch
+item.
+
+---
+
+**Progress: records 1-850 done.**
+
+## Record 851
+
+"Summary conviction of John Midwood of the township of Whitby jet
+worker for being drunk and riotous in Church Street. Offence
+committed at the township of Whitby on 13 September 1869. Whitby
+Strand - case heard at Whitby" -- defendant John Midwood, home
+Whitby, occupation jet worker. Church Street matches. Crime
+type=drunk and disorderly matches (per "drunk and riotous"
+precedent). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-851 done.**
+
+## Record 852
+
+"Summary conviction of Daniel George Robinson of the township of
+Whitby labourer for being drunk and disorderly in Church Street.
+Offence committed at the township of Whitby on 11 September 1875.
+Whitby Strand - case heard at Whitby" -- defendant Daniel George
+Robinson, home Whitby, occupation labourer. Church Street matches.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-852 done.**
+
+## Record 853
+
+"Summary conviction of Elizabeth Hobson wife of William Hobson of
+the township of Whitby sailor for assaulting Alice Joyce. Offence
+committed at the township of Whitby on 20 April 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Elizabeth Hobson, spouse William Hobson (home Whitby, occupation
+sailor, relationship correctly captured), victim Alice Joyce -- this
+is the exact record referenced in reextraction-audit-notes.md as
+part of a mutual-assault companion pair (Elizabeth Hobson vs Alice
+Joyce and vice versa, two separate convictions), confirmed still
+correct. Location Whitby matches. Crime type=assault matches. No
+related_conviction (the companion record isn't linked via
+related_conviction since they're reciprocal separate charges, not
+one incident with multiple defendants -- consistent with existing
+treatment).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-853 done.**
+
+## Record 854
+
+"Summary conviction of Joseph Fell of the township of Glaisdale
+miner for being drunk and riotous in Glaisdale Street; on the oath
+of Thomas Bowron of the township of Glaisdale police constable.
+Offence committed at the township of Glaisdale on 27 August 1869.
+Whitby Strand - case heard at Whitby" -- defendant Joseph Fell, home
+Glaisdale, occupation miner; informant Thomas Bowron, home
+Glaisdale, occupation police constable -- sex was blank, but
+"Thomas" is an unambiguously male name (per the corpus's established
+name-inference rule) and the same-named informant on record 770
+already correctly has sex=male, so this was an inconsistency. Fixed.
+Glaisdale Street matches. Crime type=drunk and disorderly matches
+(per "drunk and riotous" precedent). Already correctly linked to
+related_conviction 770 (same offence date/street/charge, different
+defendants).
+
+**FIXED — set informant Thomas Bowron's sex to male (name-inference consistency with record 770).**
+
+---
+
+**Progress: records 1-854 done.**
+
+## Record 855
+
+"Summary conviction of William Atkinson of the township of Whitby
+jet worker for being drunk and disorderly in Skinner Street.
+Offence committed at the township of Ruswarp on 15 September 1875.
+Whitby Strand - case heard at Whitby" -- defendant William Atkinson,
+home Whitby, occupation jet worker. Skinner Street nests under
+Whitby's West Cliff but the record states offence township Ruswarp
+-- correctly added alongside per the cliff-boundary pattern (this
+is the exact record referenced in reextraction-audit-notes.md,
+confirmed still correct). Crime type=drunk and disorderly matches.
+Already correctly linked to related_conviction 858 (same offence
+date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-855 done.**
+
+## Record 856
+
+"Summary conviction of Alice Joyce wife of Patrick Joyce of the
+township of Whitby bricklayer for assaulting Elizabeth Hobson.
+Offence committed at the township of Whitby on 20 April 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Alice Joyce, spouse Patrick Joyce (home Whitby, occupation
+bricklayer, relationship correctly captured), victim Elizabeth
+Hobson -- this is the exact record referenced in
+reextraction-audit-notes.md, the reciprocal half of the mutual-
+assault companion pair with record 853, confirmed still correct.
+Location Whitby matches. Crime type=assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-856 done.**
+
+## Record 857
+
+"Summary conviction of Maria Dixon common prostitute for behaving
+indecently in Church Street. Offence committed at the township of
+Whitby on 15 September 1869. Whitby Strand - case heard at Whitby"
+-- defendant Maria Dixon, occupation "common prostitute" correctly
+captured. Church Street matches. Crime types = indecent behaviour +
+prostitution both fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-857 done.**
+
+## Record 858
+
+"Summary conviction of Stephen Kingston of the township of Whitby
+jet worker for being drunk and disorderly in Skinner Street.
+Offence committed at the township of Ruswarp on 15 September 1875.
+Whitby Strand - case heard at Whitby" -- defendant Stephen
+Kingston, home Whitby, occupation jet worker. Skinner Street nests
+under Whitby's West Cliff but the record states offence township
+Ruswarp -- correctly added alongside per the cliff-boundary pattern.
+Crime type=drunk and disorderly matches. Already correctly linked
+to related_conviction 855 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-858 done.**
+
+## Record 859
+
+"Summary conviction of John Graham of the township of Whitby sailor
+for being drunk and riotous in Seven Stars Ghaut. Offence committed
+at the township of Whitby on 18 September 1869. Whitby Strand -
+case heard at Whitby" -- defendant John Graham, home Whitby,
+occupation sailor. "Seven Stars Ghaut" correctly nests under East
+Cliff/Whitby. Crime type=drunk and disorderly matches (per "drunk
+and riotous" precedent). Already correctly linked to
+related_conviction 862 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-859 done.**
+
+## Record 860
+
+"Summary conviction of Dorothy Gaines wife of Thomas Gaines of the
+township of Whitby fisherman for using obscene language; on the
+oath of Hannah Cooper and Harriet Hicks, both of the township of
+Whitby singlewomen. Offence committed at the township of Whitby on
+16 September 1875. Whitby Strand - case heard at Whitby" -- defendant
+Dorothy Gaines, spouse Thomas Gaines (home Whitby, occupation
+fisherman, relationship correctly captured); witnesses Hannah Cooper
+and Harriet Hicks, both occupation "singlewoman" correctly captured
+-- this is the exact record referenced in reextraction-audit-notes.md
+as an earlier fix, confirmed still correct. Location Whitby matches.
+Crime type=using obscene language matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-860 done.**
+
+## Record 861
+
+"Summary conviction of Edward Jameson Ayre of the township of
+Whitby jet worker for being drunk and disorderly in Church Street.
+Offence committed at the township of Whitby on 4 May 1889. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Edward Jameson Ayre, home Whitby, occupation jet worker. Church
+Street matches. Crime type=drunk and disorderly matches. Already
+correctly linked to related_conviction 835 (same offence date/
+street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-861 done.**
+
+## Record 862
+
+"Summary conviction of William Graham of the township of Whitby
+coal porter for being drunk and riotous in Seven Stars Ghaut.
+Offence committed at the township of Whitby on 18 September 1869.
+Whitby Strand - case heard at Whitby" -- defendant William Graham,
+home Whitby, occupation coal porter -- shares a surname with record
+859's John Graham but no relationship stated in the text, correctly
+none captured. Seven Stars Ghaut matches. Crime type=drunk and
+disorderly matches (per "drunk and riotous" precedent). Already
+correctly linked to related_conviction 859 (same offence date/
+street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-862 done.**
+
+## Record 863
+
+"Summary conviction of James Williams and George Williams for
+deceiving Emma Walden and another by falsely representing a certain
+article to be soap. Offence committed at the township of Whitby on
+17 September 1875. Whitby Strand - case heard at Whitby" -- two
+defendants (James Williams, George Williams, no relationship stated
+in text, correctly none captured), victim Emma Walden; "and
+another" (a second, unnamed victim) correctly not fabricated as a
+person row. Location Whitby matches. Crime type=fraud/false
+pretences matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-863 done.**
+
+## Record 864
+
+"Summary conviction of Warner Coleman of Darlington in county
+Durham cattle dealer for assaulting William Bradley. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 13
+April 1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Warner Coleman, home Darlington (correctly
+outside the North Riding parent), occupation cattle dealer; victim
+William Bradley. This is the reciprocal companion case to record
+769 (there, Bradley assaulted Coleman; here, Coleman assaults
+Bradley back) -- same date and township, but correctly not linked
+via related_conviction, consistent with the established treatment
+for mutual-assault pairs (Hobson/Joyce, 853/856). Offence location
+Eskdaleside-cum-Ugglebarnby matches. Crime type=assault matches.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-864 done.**
+
+## Record 865
+
+"Summary conviction of John Thomas Bedlington of the township of
+Whitby cab driver for driving a cab furiously in Station Square.
+Offence committed at the township of Ruswarp on 18 September 1869.
+Whitby Strand - case heard at Whitby" -- defendant John Thomas
+Bedlington, home Whitby, occupation cab driver. Station Square
+nests under Whitby's West Cliff but the record states offence
+township Ruswarp -- correctly added alongside per the cliff-
+boundary pattern. Crime type=furious/reckless driving matches --
+charge explicitly says "furiously" (contrast with record 752's
+mistagged "not having control" fix). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-865 done.**
+
+## Record 866
+
+"Summary conviction of John Thomas Harrison of the township of
+Hawsker cum Stainsacre labourer for using a gun without a licence.
+Offence committed at the township of Hawsker cum Stainsacre on 12
+July 1875. Whitby Strand - case heard at Whitby" -- defendant John
+Thomas Harrison, home Hawsker-cum-Stainsacre, occupation labourer.
+Location matches. Crime type=licensing offence matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-866 done.**
+
+## Record 867
+
+"Summary conviction of Isaac Wilson of the township of Whitby
+printer's apprentice for maliciously breaking part of a dead fence
+value 3d, the property of Thomas Beeforth. Offence committed at the
+township of Sneaton on 21 April 1889. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Isaac Wilson, home
+Whitby, occupation printer's apprentice; property owner Thomas
+Beeforth. Offence location Sneaton matches. Crime type=malicious/
+property damage matches. Third of the dead-fence cluster (772, 784,
+867, 876), all pairwise links already correctly present.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-867 done.**
+
+## Record 868
+
+"Summary conviction of Frances Hezlewood wife of William Henry
+Hezlewood of the township of Whitby sailor for obstructing
+Sandgate; on the oath of Charles Albert Martindale of the township
+of Whitby police constable. Offence committed at the township of
+Whitby on 18 September 1869. Whitby Strand - case heard at Whitby"
+-- defendant Frances Hezlewood, spouse William Henry Hezlewood (home
+Whitby, occupation sailor, relationship correctly captured) -- this
+is the exact record referenced in reextraction-audit-notes.md as an
+earlier fix, confirmed still correct. Informant Charles Albert
+Martindale, occupation police constable. Sandgate matches. Crime
+type=obstructing the highway matches. Already correctly linked to
+related_conviction 871 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-868 done.**
+
+## Record 869
+
+"Summary conviction of Rosannah Turner for lodging in St Mary's
+churchyard with no visible means of subsistence and not giving a
+good account of herself. Offence committed at the township of
+Hawsker cum Stainsacre on 24 September 1875. Whitby Strand - case
+heard at Whitby" -- defendant Rosannah Turner. "St Mary's
+Churchyard" (the East Cliff church overlooking Whitby harbour)
+nests directly under Hawsker-cum-Stainsacre in the tree, matching
+the stated township -- consistent with the historical East Cliff/
+Hawsker parish boundary. Crime type=vagrancy matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-869 done.**
+
+## Record 870
+
+"Summary conviction of John Thomas Saunderson of Staithes in the
+township of Hinderwell labourer for ill-treating a horse by working
+it when it was unfit Offence committed at the township of
+Hinderwell on 18 April 1889. Whitby Strand Petty Sessional division
+- case heard at Whitby" -- defendant John Thomas Saunderson, home
+Staithes (nested under Hinderwell), occupation labourer. Offence
+location Hinderwell matches. Crime type=cruelty to animals matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-870 done.**
+
+## Record 871
+
+"Summary conviction of Mary Elizabeth Grant of the township of
+Whitby singlewoman for obstructing Sandgate. Offence committed at
+the township of Whitby on 18 September 1869. Whitby Strand - case
+heard at Whitby" -- defendant Mary Elizabeth Grant, home Whitby,
+occupation "singlewoman" correctly captured -- this is the exact
+record referenced in reextraction-audit-notes.md, confirmed still
+correct. Sandgate matches. Crime type=obstructing the highway
+matches. Already correctly linked to related_conviction 868 (same
+offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-871 done.**
+
+## Record 872
+
+"Summary conviction of James Johnson McGuire for assaulting Mary
+Ann Reeves. Offence committed at the township of Whitby on 4
+September 1875. Whitby Strand - case heard at Whitby" -- defendant
+James Johnson McGuire, victim Mary Ann Reeves. Location Whitby
+matches. Crime type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-872 done.**
+
+## Record 873
+
+"Summary conviction of Moorsom Mennell of the township of Whitby
+master and owner of the steam tug "Rambler" for not obeying the
+orders of Robert Gibson as to the mooring of the "Rambler" in
+Whitby harbour. Offence committed at the parish of Whitby on 6 May
+1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Moorsom Mennell, home Whitby, occupation
+"master and owner of the steam tug Rambler"; informant Robert
+Gibson. Location Whitby matches -- checked "Whitby harbour"
+against precedent: no existing location node despite 24 corpus
+mentions, treated corpus-wide as synonymous with the Whitby offence
+location itself rather than a distinct sub-site, so no new node
+needed here. Crime type=maritime offence matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-873 done.**
+
+## Record 874
+
+"Summary conviction of Mary Ann Stonehouse common prostitute for
+behaving indecently in St Ann's Staith. Offence committed at the
+township of Whitby on 24 September 1869. Whitby Strand - case heard
+at Whitby" -- defendant Mary Ann Stonehouse, occupation "common
+prostitute" correctly captured (same name as record 526's
+"singlewoman" fix, but a different, earlier conviction, correctly a
+distinct person row). St Ann's Staith matches (West Cliff/Whitby).
+Crime types = indecent behaviour + prostitution both fit. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-874 done.**
+
+## Record 875
+
+"Summary conviction of John Burnside of the township of Whitby
+hawker for being drunk in charge of a horse and cart in Church
+Street. Offence committed at the township of Whitby on 28 August
+1875. Whitby Strand - case heard at Whitby" -- defendant John
+Burnside, home Whitby, occupation hawker. Church Street matches.
+Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-875 done.**
+
+## Record 876
+
+"Summary conviction of James Horner of the township of Whitby
+gardener for maliciously breaking part of a dead fence value 3d,
+the property of Thomas Beeforth. Offence committed at the township
+of Sneaton on 21 April 1889. Whitby Strand Petty Sessional division
+- case heard at Whitby" -- defendant James Horner, home Whitby,
+occupation gardener; property owner Thomas Beeforth. Offence
+location Sneaton matches. Crime type=malicious/property damage
+matches. Final (4th) member of the dead-fence cluster (772, 784,
+867, 876), all pairwise links now fully verified complete.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-876 done.**
+
+## Record 877
+
+"Summary conviction of George Calvert junior of the township of
+Hinderwell fisherman for assaulting Sarah Gash; on the oath of the
+said Sarah Gash wife of William Gash of the township of Hinderwell
+miner. Offence committed at the township of Hinderwell on 18
+September 1869. Whitby Strand - case heard at Whitby" -- defendant
+George Calvert, name_postfix "junior" correctly captured, home
+Hinderwell, occupation fisherman; victim Sarah Gash, spouse William
+Gash (home Hinderwell, occupation miner, relationship correctly
+captured) -- this is the exact record referenced in
+reextraction-audit-notes.md as an earlier fix, confirmed still
+correct. Location Hinderwell matches. Crime type=assault matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-877 done.**
+
+## Record 878
+
+"Summary conviction of George Hill for being on land occupied by
+Thomas Vaughan with nets to take game by night. Offence committed
+at the township of Newton Mulgrave at 12.15 a.m. on 13 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant George Hill,
+landowner/occupier Thomas Vaughan. Location Newton Mulgrave
+matches. Crime type=poaching matches. Final (4th) member of the
+poaching-gang cluster (675, 705, 717, 878), all pairwise links now
+fully verified complete.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-878 done.**
+
+## Record 879
+
+"Summary conviction of Thomas Gleeson of the township of Newholm
+cum Dunsley labourer for begging on the Whitby and Guisborough
+highway. Offence committed at the township of Newholm cum Dunsley
+on 21 May 1889. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant Thomas Gleeson, home Newholm-cum-Dunsley,
+occupation labourer. Cross-parish "Whitby & Guisborough Highway"
+correctly added alongside stated township -- this is the exact
+record referenced in reextraction-audit-notes.md's tracked highway-
+sweep progress note, confirmed still correct. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-879 done.**
+
+## Record 880
+
+"Summary conviction of George Webster of the township of Glaisdale
+mariner for maliciously damaging an apple tree growing on land
+occupied by Joseph Underwood Marshal, and causing one-shillingsworth
+of damage. Offence committed at the township of Egton on 27
+September 1869. Whitby Strand - case heard at Whitby" -- defendant
+George Webster, home Glaisdale, occupation mariner; property owner
+Joseph Underwood Marshal. Offence location Egton matches. Crime
+type=malicious/property damage matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-880 done.**
+
+## Record 881
+
+"Summary conviction of John Brown for lodging in a barn with no
+visible means of subsistence and not giving a good account of
+himself. Offence committed at the township of Hawsker cum
+Stainsacre on 10 August 1875. Whitby Strand - case heard at Whitby"
+-- defendant John Brown. Location Hawsker-cum-Stainsacre matches.
+Crime type=vagrancy matches. Already correctly linked to
+related_conviction 795 (same offence/township/date, no-named-party
+pattern).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-881 done.**
+
+## Record 882
+
+"Summary conviction of George Reed of the township of Ellerby
+farmer for being the owner of a horse, two cows and a heifer found
+straying on the Runswick and Ellerby highway. Offence committed at
+the township of Ellerby on 30 May 1889. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant George
+Reed, home Ellerby, occupation farmer. Cross-parish "Runswick &
+Ellerby Highway" correctly added alongside stated township Ellerby.
+Crime type=straying animals matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-882 done.**
+
+## Record 883
+
+"Summary conviction of William Pattison of the township of Whitby
+jet worker for being drunk and riotous on the Pier. Offence
+committed at the township of Whitby on 28 September 1869. Whitby
+Strand - case heard at Whitby" -- defendant William Pattison, home
+Whitby, occupation jet worker. "The Pier" resolves to Piers
+(Seafront/Whitby). Crime type=drunk and disorderly matches (per
+"drunk and riotous" precedent). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-883 done.**
+
+## Record 884
+
+"Summary conviction of John Smith for lodging in the open air in
+Union Road with no visible means of subsistence and not giving a
+good account of himself. Offence committed at the township of
+Ruswarp on 3 August 1875. Whitby Strand - case heard at Whitby" --
+defendant John Smith. Union Road nests under Whitby's West Cliff
+but the record states township Ruswarp -- correctly captured
+alongside per the cliff-boundary pattern. Crime type=vagrancy
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-884 done.**
+
+## Record 885
+
+"Summary conviction of Joseph Bellman of the township of Ruswarp
+pedlar for lodging in a cart shed without any visible means of
+subsistence and not giving a good account of himself. Offence
+committed at the township of Ruswarp on 2 June 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Joseph Bellman, home Ruswarp, occupation pedlar. Location Ruswarp
+matches. Crime type=vagrancy matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-885 done.**
+
+## Record 886
+
+"Summary conviction of Alfred Frank of the township of Whitby jet
+worker for resisting James Wilkinson one of the constables for the
+North Riding in the execution of his duty. Offence committed at the
+township of Whitby on 28 September 1869. Whitby Strand - case heard
+at Whitby" -- defendant Alfred Frank, home Whitby, occupation jet
+worker; victim James Wilkinson, sex correctly male. Location Whitby
+matches. Crime type=obstructing/resisting a constable matches
+(charge is "resisting", not "assaulting"). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-886 done.**
+
+## Record 887
+
+"Summary conviction of Thomas Weatherill of the township of Whitby
+jet worker for obstructing Church Street by wilfully preventing
+persons from passing him. Offence committed at the township of
+Whitby on 13 June 1875. Whitby Strand - case heard at Whitby" --
+defendant Thomas Weatherill (same name as record 651's assault
+defendant, but a different conviction, correctly a distinct person
+row), home Whitby, occupation jet worker. Church Street matches.
+Crime type=obstructing the highway matches. Already correctly linked
+to related_conviction 702 and 896 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-887 done.**
+
+## Record 888
+
+"Summary conviction of Thomas Wood of Mohlan in the township of
+Eskdaleside cum Ugglebarnby a miner employed at the Grosmont Mine
+for fighting with Frank Lyth the younger at the mine. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 6 April
+1889. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Thomas Wood, home "Mohlan" resolves to the
+existing "Mallyan (Spout)" location (a real place near Goathland
+within Eskdaleside-cum-Ugglebarnby, likely a scribal spelling
+variant of "Mallyan"), matching the stated township. Occupation
+"miner employed at the Grosmont Mine" correctly captured. Victim
+Frank Lyth, name_postfix "the younger" correctly captured. Offence
+location Eskdaleside-cum-Ugglebarnby matches. Crime type=breach of
+the peace matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-888 done.**
+
+## Record 889
+
+"Summary conviction of Robert Foster of the township of Whitby
+sailor for being drunk. Offence committed at the township of
+Whitby on 24 September 1869. Whitby Strand - case heard at Whitby"
+-- defendant Robert Foster (same name/occupation as record 833,
+different date, correctly a distinct person row), home Whitby.
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-889 done.**
+
+## Record 890
+
+"Summary conviction of Ann Miller wife of Henry Miller of the
+township of Whitby labourer for being drunk and disorderly in
+Church Street; on the oath of Robert Needham of the township of
+Whitby police constable. Offence committed at the township of
+Whitby on 11 June 1875. Whitby Strand - case heard at Whitby" --
+defendant Ann Miller, spouse Henry Miller (home Whitby, occupation
+labourer, relationship correctly captured) -- this is the exact
+record referenced in reextraction-audit-notes.md as an earlier fix,
+confirmed still correct (same name as record 792's Ann Miller/James
+Miller pair, but a different husband and conviction, correctly
+distinct). Informant Robert Needham, occupation police constable.
+Church Street matches. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-890 done.**
+
+## Record 891
+
+"Summary conviction of Hannah Smith wife of John Henry Smith of the
+township of Whitby fish hawker for being drunk on the licensed
+premises of Robert Ward and refusing to leave when asked by George
+Swales Offence committed at the township of Whitby on 22 May 1889.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Hannah Smith, spouse John Henry Smith (home Whitby,
+occupation fish hawker, relationship correctly captured) -- same
+names as record 748, but a different date, correctly a distinct
+conviction/person pair. Licensee Robert Ward, occupation "licensee";
+informant George Swales. Location Whitby matches. Crime types =
+drunkenness + refusal to quit licensed premises both fit. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-891 done.**
+
+## Record 892
+
+"Summary conviction of Martin Finnegan late of the township of
+Glaisdale furnaceman for assaulting Thomas Bowron one of the
+constables for the North Riding in the execution of his duty.
+Offence committed at the township of Glaisdale on 28 September
+1869. Whitby Strand - case heard at Whitby" -- defendant Martin
+Finnegan, "late of" Glaisdale correctly captured as home, occupation
+furnaceman; victim Thomas Bowron (same real constable as records
+770/854, correctly a separate person row per no-cross-conviction-
+merge), sex correctly male. Location Glaisdale matches. Crime
+type=assaulting a police officer matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-892 done.**
+
+## Record 893
+
+"Summary conviction of Stephen Kelly of the township of Whitby
+pedlar for wilfully damaging a policeman's lamp, the property of
+the North Riding Constabulary; on the oath of Thomas Hall of
+Whitby police constable. Offence committed at the township of
+Whitby on 30 August 1875. Whitby Strand - case heard at Whitby" --
+defendant Stephen Kelly, home Whitby, occupation pedlar; informant
+Thomas Hall, occupation police constable. "North Riding
+Constabulary" correctly not captured as a person row (an
+institution, not an individual). Location Whitby matches. Crime
+type=malicious/property damage matches. Already correctly linked to
+related_conviction 837 and 902 (same defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-893 done.**
+
+## Record 894
+
+"Summary conviction of William Hampson of the township of Whitby
+iron worker for lodging in the open air without any visible means
+of subsistence and not giving a good account of himself. Offence
+committed at the township of Whitby on 4 June 1889. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+William Hampson, home Whitby, occupation iron worker. Location
+Whitby matches. Crime type=vagrancy matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-894 done.**
+
+## Record 895
+
+"Summary conviction of James Dinsdale of Whitby sailor for taking
+trout from a stream of water where Charles Wynn Finch esquire has
+private right of fishery. Offence committed at the township of
+Great Ayton at 5.30 a.m. on 25 June 1869. Case heard at Stokesley"
+-- defendant James Dinsdale, home Whitby, occupation sailor;
+landowner Charles Wynn Finch, "esquire" correctly ignored (no
+title/occupation captured) per the established corpus-wide rule.
+Offence location Great Ayton, court location Stokesley (a rare
+non-Whitby court, correctly captured as stated). Crime type=poaching
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-895 done.**
+
+## Record 896
+
+"Summary conviction of Patrick Joyce of the township of Whitby
+bricklayer for obstructing Church Street by wilfully preventing
+persons from passing him; on the oath of Thomas Hall of the
+township of Whitby police constable. Offence committed at the
+township of Whitby on 13 June 1875. Whitby Strand - case heard at
+Whitby" -- defendant Patrick Joyce (same name/occupation as records
+733/856, different date, correctly a distinct person row), home
+Whitby; informant Thomas Hall, occupation police constable. Church
+Street matches. Crime type=obstructing the highway matches. Final
+member of the Church Street obstruction cluster (702, 887, 896), all
+pairwise links now fully verified complete.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-896 done.**
+
+## Record 897
+
+"Summary conviction of Thomas Johnson of the township of Glaisdale
+labourer for assaulting William Cruddas one of the constables for
+the North Riding in the execution of his duty. Offence committed at
+the township of Glaisdale on 16 June 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Thomas
+Johnson, home Glaisdale, occupation labourer; victim William
+Cruddas, sex correctly male. Location Glaisdale matches. Crime
+type=assaulting a police officer matches. No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 900]:** records 900 and 903
+turned out to share this exact same victim/offence/township/date
+(William Cruddas, 16 June 1888, Glaisdale) with different
+defendants. related_conviction links to both have now been added
+retroactively.
+
+---
+
+**Progress: records 1-897 done.**
+
+## Record 898
+
+"Summary conviction of Henry Lightwing of Guisborough miner for
+wilfully tearing a black cloth coat, the property of Robert Pearson
+of Whitby blacksmith. Offence committed at Guisborough on 28 August
+1869. Case heard at Guisborough" -- defendant Henry Lightwing, home
+Guisborough, occupation miner; property owner Robert Pearson, home
+Whitby, occupation blacksmith. Court and offence location both
+correctly Guisborough (a rare non-Whitby case). Crime type=malicious/
+property damage matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-898 done.**
+
+## Record 899
+
+"Summary conviction of Daniel George Robinson of the township of
+Whitby labourer for being drunk and disorderly in Bridge Street; on
+the oath of George Hewison of the township of Whitby police
+constable. Offence committed at the township of Whitby on 19 July
+1875. Whitby Strand - case heard at Whitby" -- defendant Daniel
+George Robinson (same name as record 852, different date, correctly
+a distinct person row), home Whitby, occupation labourer; informant
+George Hewison, occupation police constable. Bridge Street matches.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-899 done.**
+
+## Record 900
+
+"Summary conviction of Thomas Kendal of the township of Glaisdale
+labourer for assaulting William Cruddas one of the constables for
+the North Riding in the execution of his duty. Offence committed at
+the township of Glaisdale on 16 June 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Thomas
+Kendal, home Glaisdale, occupation labourer; victim William Cruddas,
+sex correctly male. Location Glaisdale matches. Crime
+type=assaulting a police officer matches. No related_conviction was
+present, but this is identical victim/offence/township/date to
+record 897 (Thomas Johnson). Searched and found a third match: 903
+(John Shaw, not yet reached) -- all three records share the exact
+same victim, offence, township, and date. Added all 3 pairwise
+related_conviction rows, retroactively annotated 897's entry.
+
+**FIXED — added missing related_conviction links for a 3-record cluster (897, 900, 903).**
+
+---
+
+**Progress: records 1-900 done.**
+
+## Record 901
+
+"Summary conviction of John Denham, William Wright, Richard Dillon,
+James Griffiths and John Griffiths for playing a game of chance
+called pitch and toss with pence and half-pence on the Fish Pier
+Sands. Offence committed at the township of Whitby on 21 March
+1869. Whitby Strand - case heard at Whitby" -- five defendants
+correctly captured; James Griffiths and John Griffiths share a
+surname but no relationship stated in text, correctly none captured.
+"Fish Pier Sands" resolves through Fish Pier -> Piers -> Seafront ->
+Whitby, matching stated township. Crime type=gaming/gambling offence
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-901 done.**
+
+## Record 902
+
+"Summary conviction of Stephen Kelly of the township of Whitby
+pedlar for assaulting Thomas Hall one of the constables for the
+North Riding in the execution of his duty; on the oath of Thomas
+Hall of Whitby police constable. Offence committed at the township
+of Whitby on 30 August 1875. Whitby Strand - case heard at Whitby"
+-- defendant Stephen Kelly, home Whitby, occupation pedlar; victim
+Thomas Hall, sex correctly male (same real constable who appeared
+as informant on record 893, correctly a separate person row).
+Location Whitby matches. Crime type=assaulting a police officer
+matches. Already correctly linked to related_conviction 837 and 893
+(same defendant, same offence date).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-902 done.**
+
+## Record 903
+
+"Summary conviction of John Shaw of the township of Glaisdale
+labourer for assaulting William Cruddas one of the constables for
+the North Riding in the execution of his duty. Offence committed at
+the township of Glaisdale on 16 June 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant John Shaw
+(same name as record 888's fight defendant Thomas Wood's opponent
+Frank Lyth's context, but this is a wholly separate conviction,
+correctly a distinct person row), home Glaisdale, occupation
+labourer; victim William Cruddas, sex correctly male. Location
+Glaisdale matches. Crime type=assaulting a police officer matches.
+Final member of the Cruddas-assault cluster (897, 900, 903), all
+pairwise links now fully verified complete.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-903 done.**
+
+## Record 904
+
+"Summary conviction of William Duesbery of the township of
+Glaisdale farmer for being drunk. Offence committed at the township
+of Whitby on 22 March 1869. Whitby Strand - case heard at Whitby"
+-- defendant William Duesbery, home Glaisdale, occupation farmer.
+Offence location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-904 done.**
+
+## Record 905
+
+"Summary conviction of Robert Watson of the township of Whitby
+labourer for wilfully damaging the glass of a window, the property
+of James McCue; on the oath of Cuthbert Wray fruiterer and the said
+James McCue licensed victualler, both of the township of Whitby.
+Offence committed at the township of Whitby on 19 June 1875. Whitby
+Strand - case heard at Whitby" -- defendant Robert Watson (same
+name/occupation as records 750/756, different date/offence,
+correctly a distinct person row), home Whitby; witness Cuthbert
+Wray (same name as record 465's home fix, but a different
+conviction, correctly separate), occupation fruiterer; property
+owner James McCue, occupation licensed victualler. Location Whitby
+matches. Crime type=malicious/property damage matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-905 done.**
+
+## Record 906
+
+"Summary conviction of William George Walker of the Cragg in the
+township of Whitby for not sending his daughter Minnie Walker to
+school. Offence committed in Whitby School Board district on 15
+June 1888. Case heard at Whitby" -- defendant William George
+Walker, home The Cragg (West Cliff/Whitby); daughter Minnie Walker,
+"daughter" relationship correctly captured pointing at the real
+William George Walker (person 970), not a duplicate stub -- this is
+the exact record referenced in reextraction-audit-notes.md as the
+seed case for that duplicate-stub bug fix, confirmed still correct.
+Truancy rule correctly applied: offence location = his own home
+(The Cragg), not the School Board district wording. Crime
+type=school non-attendance matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-906 done.**
+
+## Record 907
+
+"Summary conviction of William Crosley for begging in Esk Terrace.
+Offence committed at the township of Ruswarp on 1 April 1869.
+Whitby Strand - case heard at Whitby" -- defendant William Crosley.
+Esk Terrace nests under Whitby's West Cliff but the record states
+township Ruswarp -- correctly captured alongside per the
+cliff-boundary pattern. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-907 done.**
+
+## Record 908
+
+"Summary conviction of John Harrison of the township of Hawsker cum
+Stainsacre farm labourer for trespassing in the daytime in search
+of conies in a close of land in the possession and occupation of
+Richard Thompson. Offence committed at the township of Hawsker cum
+Stainsacre on 12 July 1875. Whitby Strand - case heard at Whitby"
+-- defendant John Harrison, home Hawsker-cum-Stainsacre, occupation
+farm labourer; landowner Richard Thompson (same name as records
+700/775, but a different conviction, correctly a distinct person
+row). Location matches. Crime type=poaching matches ("conies" =
+rabbits, trespass in search of game). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-908 done.**
+
+## Record 909
+
+"Summary conviction of John Atkinson of Blackburn's Yard in the
+township of Whitby for not sending his daughter Mary Ellen Atkinson
+to school. Offence committed in Whitby School Board district on 15
+June 1888. Case heard at Whitby" -- defendant John Atkinson (same
+name as the Hinderwell police constable appearing repeatedly
+elsewhere in the corpus, but this is a Whitby-based defendant,
+correctly a distinct person row), home Blackburn's Yard (East
+Cliff/Whitby); daughter Mary Ellen Atkinson, "daughter" relationship
+correctly captured. Truancy rule correctly applied: offence location
+= his own home, not the School Board district wording. Crime
+type=school non-attendance matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-909 done.**
+
+## Record 910
+
+"Summary conviction of Stephen Locker of the township of Whitby jet
+worker for assaulting John Boulton. Offence committed at the
+township of Whitby on 3 April 1869. Whitby Strand - case heard at
+Whitby" -- defendant Stephen Locker, home Whitby, occupation jet
+worker; victim John Boulton. Location Whitby matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-910 done.**
+
+## Record 911
+
+"Summary conviction of Thomas Hustler of the township of Whitby
+coal porter for obstructing Church Street by wilfully preventing
+persons passing him. Offence committed at the township of Whitby
+on 27 August 1875. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Hustler, home Whitby, occupation coal porter. Church Street
+matches. Crime type=obstructing the highway matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-911 done.**
+
+## Record 912
+
+"Summary conviction of Alfred Johnson of Sleights in the township
+of Eskdaleside cum Ugglebarnby fish hawker for allowing his horse
+to stray on the Sleights and Grosmont highway. Offence committed at
+the township of Eskdaleside cum Ugglebarnby on 18 June 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Alfred Johnson, home Sleights (nested under Eskdaleside-cum-
+Ugglebarnby), occupation fish hawker. Cross-parish "Sleights &
+Grosmont Highway" correctly added alongside stated township. Crime
+type=straying animals matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-912 done.**
+
+## Record 913
+
+"Summary conviction of William Fortune of the township of Whitby
+coal merchant for being the owner of three asses found straying on
+Hawsker Lane. Offence committed at the township of Hawsker cum
+Stainsacre on 4 April 1869. Whitby Strand - case heard at Whitby"
+-- defendant William Fortune, home Whitby, occupation coal merchant.
+"Hawsker Lane" (a specific street under East Cliff/Whitby) correctly
+added alongside the stated offence township Hawsker-cum-Stainsacre,
+since the street's own ancestry (Whitby) doesn't reach that parent
+-- matches the specific-site "add alongside" rule. Crime
+type=straying animals matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-913 done.**
+
+## Record 914
+
+"Summary conviction of Richard Collier of the township of Whitby
+jet worker for being drunk and disorderly in Church Street; on the
+oath of Mary Ann Garbutt wife of Henry Garbutt tailor and Jane
+Cornforth, both of the township of Whitby. Offence committed at the
+township of Whitby on 6 August 1875. Whitby Strand - case heard at
+Whitby" -- defendant Richard Collier, home Whitby, occupation jet
+worker; witnesses Mary Ann Garbutt and Jane Cornforth; Mary Ann's
+spouse Henry Garbutt (home Whitby, occupation tailor) correctly
+captured with role "spouse of involved person" (appropriate since
+Mary Ann is a witness, not defendant/victim). Church Street matches.
+Crime type=drunk and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-914 done.**
+
+## Record 915
+
+"Summary conviction of John Bruce of the township of Fylingdales
+labourer for wandering begging in Robin Hood's Bay town street.
+Offence committed at the township of Fylingdales on 22 June 1888.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant John Bruce, home Fylingdales, occupation labourer. "Robin
+Hood's Bay town street" resolves to Robin Hood's Bay itself, nested
+under Fylingdales, matching stated township. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-915 done.**
+
+## Record 916
+
+"Summary conviction of Elizabeth Hodgson wife of Joseph Hodgson of
+the township of Whitby joiner for being drunk. Offence committed at
+the township of Whitby on 13 April 1869. Whitby Strand - case heard
+at Whitby" -- defendant Elizabeth Hodgson, spouse Joseph Hodgson
+(home Whitby, occupation joiner, relationship correctly captured).
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-916 done.**
+
+## Record 917
+
+"Summary conviction of William Willison of the township of Whitby
+licensed victualler for allowing drunkenness on his licensed
+premises; on the oath of Francis Moon labourer and John Ryder
+superintendent of police, both of the township of Whitby. Offence
+committed at the township of Whitby on 16 July 1875. Whitby Strand
+- case heard at Whitby" -- defendant William Willison, home Whitby,
+occupation licensed victualler; witness Francis Moon, occupation
+labourer; informant John Ryder, occupation superintendent of police.
+Location Whitby matches. Crime type=licensing offence matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-917 done.**
+
+## Record 918
+
+"Summary conviction of Michael Tooney of the township of
+Fylingdales hawker for acting as a pedlar without a certificate.
+Offence committed at the township of Fylingdales on 23 June 1888.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Michael Tooney, home Fylingdales, occupation hawker.
+Location Fylingdales matches. Crime type=licensing offence matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-918 done.**
+
+## Record 919
+
+"Summary conviction of John Codling of the township of Whitby jet
+worker for being drunk. Offence committed at the township of Whitby
+on 11 April 1869. Whitby Strand - case heard at Whitby" -- defendant
+John Codling, home Whitby, occupation jet worker. Location Whitby
+matches. Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-919 done.**
+
+## Record 920
+
+"Summary conviction of Thomas Dixon of the township of Whitby
+labourer for resisting Edward Weeks one of the constables for the
+North Riding in the execution of his duty; on the oath of Edward
+Weeks of the township of Whitby police constable Offence committed
+at the township of Whitby on 11 August 1875. Whitby Strand - case
+heard at Whitby" -- defendant Thomas Dixon, home Whitby, occupation
+labourer; victim Edward Weeks, sex correctly male. Location Whitby
+matches. Crime type=obstructing/resisting a constable matches. No
+related_conviction was present, but this is identical victim/
+offence/township/date to record 810 (John Dixon) -- both defendants
+share the surname Dixon though no relationship is stated, matches
+the confirmed same-victim related_conviction pattern. Added the
+link, retroactively annotated 810's entry.
+
+**FIXED — added missing related_conviction link to 810 (same victim/offence/township/date).**
+
+---
+
+**Progress: records 1-920 done.**
+
+## Record 921
+
+"Summary conviction of George Martin of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 23 June 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+George Martin, home Whitby, occupation jet worker. Church Street
+matches. Crime type=drunk and disorderly matches. Already correctly
+linked to related_conviction 924 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-921 done.**
+
+## Record 922
+
+"Summary conviction of George Lennard of the township of Lythe
+labourer for being drunk. Offence committed at the township of
+Lythe on 10 April 1869. Whitby Strand - case heard at Whitby" --
+defendant George Lennard, home Lythe, occupation labourer. Location
+Lythe matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-922 done.**
+
+## Record 923
+
+"Summary conviction of Hugh Lawrence of the township of Whitby fish
+merchant for placing herring casks on Pier Road; on the oath of
+John Ryder superintendent of police and Edward Weeks police
+constable, both of the township of Whitby. Offence committed at the
+township of Whitby on 15 September 1875. Whitby Strand - case heard
+at Whitby" -- defendant Hugh Lawrence, home Whitby, occupation fish
+merchant; informants John Ryder (superintendent of police) and
+Edward Weeks (police constable). Pier Road matches (West Cliff/
+Whitby). Crime type=obstructing the highway matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-923 done.**
+
+## Record 924
+
+"Summary conviction of Thomas Dixon of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 23 June 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Thomas Dixon (same name as record 920's labourer, different
+occupation/date, correctly a distinct person row), home Whitby,
+occupation jet worker. Church Street matches. Crime type=drunk and
+disorderly matches. Already correctly linked to related_conviction
+921 (same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-924 done.**
+
+## Record 925
+
+"Summary conviction of Mary Wedgewood of the township of Middleton
+servant in husbandry of Robert Frank for breach of her contract of
+employment; on the complaint of the said Robert Frank of the
+township of Glaisdale farmer. Offence committed at the township of
+Glaisdale on 16 April 1869. Whitby Strand - case heard at Whitby"
+-- defendant Mary Wedgewood, home Middleton, occupation "servant in
+husbandry"; informant/master Robert Frank, home Glaisdale,
+occupation farmer, "servant" relationship correctly captured
+pointing from Mary to Robert. Offence location Glaisdale matches.
+Crime type=master and servant offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-925 done.**
+
+## Record 926
+
+"Summary conviction of William Arnold for assaulting John Nicholson
+one of the constables for the North Riding in the execution of his
+duty. Offence committed at the township of Whitby on 2 September
+1875. Whitby Strand - case heard at Whitby" -- defendant William
+Arnold, victim John Nicholson, sex correctly male. Location Whitby
+matches. Crime type=assaulting a police officer matches. Already
+correctly linked to related_conviction 753 (same defendant, same
+offence date -- Arnold's companion assault charge against John
+Brown).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-926 done.**
+
+## Record 927
+
+"Summary conviction of William Newton of the township of
+Fylingdales beerhouse keeper for being drunk and disorderly on the
+Robin Hood's Bay and Whitby highway. Offence committed at the
+township of Fylingdales on 24 June 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant William
+Newton, home Fylingdales, occupation beerhouse keeper. Cross-parish
+"Whitby & Robin Hood's Bay Highway" correctly added alongside
+stated township Fylingdales. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-927 done.**
+
+## Record 928
+
+"Summary conviction of Thomas Atkinson of the township of Whitby
+innkeeper for attempting to board a train on the Cleveland and
+North Yorkshire line of the North Eastern Railway whilst it was in
+motion. Offence committed at the township of Eskdaleside on 13
+April 1869. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Atkinson, home Whitby, occupation innkeeper. The record names
+the "Cleveland and North Yorkshire line" -- the exact railway
+already created as a location node (id 391) at record 614's fix --
+but no location link had been added here. Added it alongside the
+existing Eskdaleside-cum-Ugglebarnby township link. Crime
+type=railway offence matches. No related_conviction.
+
+**FIXED — added missing "Cleveland & North Yorkshire Railway" location link.**
+
+---
+
+**Progress: records 1-928 done.**
+
+## Record 929
+
+"Summary conviction of Peter Kilpatrick of the township of Whitby
+iron worker for being drunk and disorderly in Church Street; on the
+oath of Robert Needham and George Hewison, both of the township of
+Whitby police constables. Offence committed at the township of
+Whitby on 2 September 1875. Whitby Strand - case heard at Whitby"
+-- defendant Peter Kilpatrick, home Whitby, occupation iron worker;
+informants Robert Needham and George Hewison, both occupation police
+constable. Church Street matches. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-929 done.**
+
+## Record 930
+
+"Summary conviction of William Dixon of the township of Whitby jet
+worker for being drunk and disorderly in Hawsker town street.
+Offence committed at the township of Whitby on 24 June 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+William Dixon, home stated as Whitby. The charge names "Hawsker town
+street" but the trailing "offence committed at" clause says
+"township of Whitby" -- a genuine source-side contradiction. Checked
+all 15 corpus instances of "Hawsker town street": every other one
+consistently states township of Hawsker cum Stainsacre for both home
+and offence location, confirming this record is a one-off scribal
+inconsistency, not a real Whitby/Hawsker ambiguity. Location of
+offence was already correctly captured as Hawsker-cum-Stainsacre
+(trusting the specific site name, consistent with the other 15).
+Added an `anomalies` note documenting the discrepancy. Crime
+type=drunk and disorderly matches. No related_conviction.
+
+**FIXED — added anomalies note for the "township of Whitby" vs "Hawsker town street" scribal contradiction.**
+
+---
+
+**Progress: records 1-930 done.**
+
+## Record 931
+
+"Summary conviction of Walter Bateman for begging in the Market
+Place. Offence committed at the township of Whitby on 24 April
+1869. Whitby Strand - case heard at Whitby" -- defendant Walter
+Bateman. Market Place matches (East Cliff/Whitby). Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-931 done.**
+
+## Record 932
+
+"Summary conviction of Hannah Jane Shevill wife of George Shevill
+of the township of Whitby jet merchant for using obscene language
+in Church Street; on the oath of Louisa Miles singlewoman and Sarah
+Raw, both of the township of Whitby. Offence committed at the
+township of Whitby on 15 September 1875. Whitby Strand - case heard
+at Whitby" -- defendant Hannah Jane Shevill, spouse George Shevill
+(home Whitby, occupation jet merchant, relationship correctly
+captured); witnesses Louisa Miles and Sarah Raw. Louisa Miles is
+stated "singlewoman" but occupation was not linked -- this id was
+already on the tracked marital-status occupation gap list. Added
+occupation "singlewoman" (id 337) to Louisa Miles. Church Street
+matches. Crime type=using obscene language matches. No
+related_conviction.
+
+**FIXED — added missing "singlewoman" occupation for witness Louisa Miles (tracked gap, id 932 removed from the list).**
+
+---
+
+**Progress: records 1-932 done.**
+
+## Record 933
+
+"Summary conviction of John Whittaker of the township of
+Fylingdales labourer for begging in Thorpe town street. Offence
+committed at the township of Fylingdales on 27 June 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+John Whittaker, home Fylingdales, occupation labourer. "Thorpe town
+street" resolves to Fylingthorpe (a real hamlet within Fylingdales),
+matching stated township. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-933 done.**
+
+## Record 934
+
+"Summary conviction of Thomas Atkinson of the township of Whitby
+innkeeper for allowing persons of notoriously bad character to meet
+on his licensed premises. Offence committed at the township of
+Whitby on 25 April 1869. Whitby Strand - case heard at Whitby" --
+defendant Thomas Atkinson (same name/occupation as record 928,
+different date, correctly a distinct person row), home Whitby.
+Location Whitby matches. Crime type=licensing offence matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-934 done.**
+
+## Record 935
+
+"Summary conviction of John Shaw of the township of Whitby jet
+worker for being drunk and riotous on the New Quay. Offence
+committed at the township of Whitby on 10 September 1875. Whitby
+Strand - case heard at Whitby" -- defendant John Shaw (same name as
+records 888/903, different conviction, correctly a distinct person
+row), home Whitby, occupation jet worker. New Quay matches (West
+Cliff/Whitby). Crime type=drunk and disorderly matches (per "drunk
+and riotous" precedent). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-935 done.**
+
+## Record 936
+
+"Summary conviction of John Jackson of the township of Ellerby
+labourer for lodging in the open air in Ellerby town street having
+no visible means of subsistence and not giving a good account of
+himself. Offence committed at the township of Ellerby on 29 June
+1888. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant John Jackson, home Ellerby, occupation
+labourer. "Ellerby town street" resolves to Ellerby itself, matching
+stated township. Crime type=vagrancy matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-936 done.**
+
+## Record 937
+
+"Summary conviction of John Corner of the township of Whitby jet
+worker for being drunk. Offence committed at the township of
+Ruswarp on 25 April 1869. Whitby Strand - case heard at Whitby" --
+defendant John Corner (same name as record 697's licensed
+victualler, different conviction, correctly a distinct person row),
+home Whitby, occupation jet worker. Offence location Ruswarp
+matches. Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-937 done.**
+
+## Record 938
+
+"Summary conviction of Thomas Atkinson of the township of Whitby
+labourer for being drunk and disorderly in Sandgate. Offence
+committed at the township of Whitby on 29 September 1875. Whitby
+Strand - case heard at Whitby" -- defendant Thomas Atkinson (same
+name as records 928/934's innkeeper, different occupation and
+conviction, correctly a distinct person row), home Whitby,
+occupation labourer. Sandgate matches. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-938 done.**
+
+## Record 939
+
+"Summary conviction of Christopher Peacock of the township of
+Whitby jet worker for being drunk and disorderly on the Robin
+Hood's Bay and Whitby highway. Offence committed at the township of
+Fylingdales on 1 July 1888. Whitby Strand Petty Sessional division -
+case heard at Whitby" -- defendant Christopher Peacock, home
+Whitby, occupation jet worker. Cross-parish "Whitby & Robin Hood's
+Bay Highway" correctly added alongside stated offence township
+Fylingdales. Crime type=drunk and disorderly matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-939 done.**
+
+## Record 940
+
+"Summary conviction of Ann Palmer wife of George Palmer of the
+township of Whitby fisherman for wilfully obstructing a street.
+Offence committed at the township of Whitby on 24 April 1869.
+Whitby Strand - case heard at Whitby" -- defendant Ann Palmer,
+spouse George Palmer (home Whitby, occupation fisherman,
+relationship correctly captured). Location Whitby matches. Crime
+type=obstructing the highway matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-940 done.**
+
+## Record 941
+
+"Summary conviction of John Shaw of the township of Whitby jet
+worker for being drunk and disorderly in Wades Yard; on the oath of
+Robert Needham and John Nicholson, both of the township of Whitby
+police constables. Offence committed at the township of Whitby on 4
+September 1875. Whitby Strand - case heard at Whitby" -- defendant
+John Shaw (same name as records 888/903/935, yet another distinct
+conviction, correctly a distinct person row), home Whitby,
+occupation jet worker; informants Robert Needham and John Nicholson,
+both police constables. "Wades Yard" nests under Baxtergate/West
+Cliff/Whitby, matching stated township. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-941 done.**
+
+## Record 942
+
+"Summary conviction of Mary Howard wife of Thomas Howard of the
+township of Whitby labourer for being drunk and disorderly on the
+Sandsend and Lythe highway. Offence committed at the township of
+Lythe on 2 July 1888. Whitby Strand Petty Sessional division - case
+heard at Whitby" -- defendant Mary Howard, spouse Thomas Howard
+(home Whitby, occupation labourer, relationship correctly captured;
+same name as record 796's Thomas Howard but correctly a distinct
+person row). Cross-parish "Sandsend & Lythe Highway" correctly
+added alongside stated offence township Lythe. Crime type=drunk
+and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-942 done.**
+
+## Record 943
+
+"Summary conviction of William Hewison of the township of Whitby
+jet worker for being drunk and riotous in Henrietta Street. Offence
+committed at the township of Whitby on 24 April 1869. Whitby
+Strand - case heard at Whitby" -- defendant William Hewison, home
+Whitby, occupation jet worker. Henrietta Street matches. Crime
+type=drunk and disorderly matches (per "drunk and riotous"
+precedent). Already correctly linked to related_conviction 949
+(same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-943 done.**
+
+## Record 944
+
+"Summary conviction of Isaac Wilson of the township of Whitby
+labourer for being drunk and disorderly in Victoria Square. Offence
+committed at the township of Whitby on 10 September 1875. Whitby
+Strand - case heard at Whitby" -- defendant Isaac Wilson (same name
+as record 867's printer's apprentice, different occupation and
+conviction, correctly a distinct person row), home Whitby.
+Victoria Square matches (West Cliff/Whitby). Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-944 done.**
+
+## Record 945
+
+"Summary conviction of Rowbottom Emmett of the township of Ruswarp
+pedlar for begging in Prospect Hill. Offence committed at the
+township of Ruswarp on 4 July 1888. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Rowbottom Emmett,
+home Ruswarp, occupation pedlar. Prospect Hill nests under Whitby's
+West Cliff but the record states township Ruswarp -- correctly
+added alongside per the cliff-boundary pattern. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-945 done.**
+
+## Record 946
+
+"Summary conviction of William Pattison for being drunk and riotous
+in Church Street. Offence committed at the township of Whitby on
+25 April 1869. Whitby Strand - case heard at Whitby" -- defendant
+William Pattison (same name as record 883, different conviction,
+correctly a distinct person row). Church Street matches. Crime
+type=drunk and disorderly matches (per "drunk and riotous"
+precedent). Already correctly linked to related_conviction 952
+(same offence date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-946 done.**
+
+## Record 947
+
+"Summary conviction of Frederick William Judge of the township of
+Whitby innkeeper for allowing drunkenness on his licensed premises;
+on the oath of George Richard Lazenby of Whitby police constable.
+Offence committed at the township of Whitby on 1 September 1875.
+Whitby Strand - case heard at Whitby" -- defendant Frederick
+William Judge (same name as record 843's licensee, a different role
+and conviction, correctly a distinct person row), home Whitby,
+occupation innkeeper; informant George Richard Lazenby, occupation
+police constable. Location Whitby matches. Crime type=licensing
+offence matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-947 done.**
+
+## Record 948
+
+"Summary conviction of Pearson Campion of the township of Ruswarp
+jet worker for being drunk and disorderly on the Whitby and
+Guisborough highway. Offence committed at the township of Ruswarp
+on 8 July 1888. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant Pearson Campion, home Ruswarp, occupation
+jet worker. Cross-parish "Whitby & Guisborough Highway" correctly
+added alongside stated township Ruswarp. Crime type=drunk and
+disorderly matches. Already correctly linked to related_conviction
+951 (same defendant, same offence date) and 954 (same offence date/
+street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-948 done.**
+
+## Record 949
+
+"Summary conviction of Ralph Swales for being drunk and riotous in
+Henrietta Street. Offence committed at the township of Whitby on
+24 April 1869. Whitby Strand - case heard at Whitby" -- defendant
+Ralph Swales. Henrietta Street matches. Crime type=drunk and
+disorderly matches (per "drunk and riotous" precedent). Already
+correctly linked to related_conviction 943 (same offence date/
+street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-949 done.**
+
+## Record 950
+
+"Summary conviction of Thomas Crawford for stealing a peck of
+apples value 2s, the property of Joseph Watson and growing in his
+garden. Offence committed at the township of Hinderwell on 12
+September 1875. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Crawford, property owner Joseph Watson. Checked for a
+matching cluster (per the earlier apple-theft precedent at 495/622/
+625) -- this is a sole instance in the corpus, no cluster to link.
+Location Hinderwell matches. Crime type=theft matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-950 done.**
+
+## Record 951
+
+"Summary conviction of Pearson Campion of the township of Ruswarp
+jet worker for assaulting Mary Jane Harris. Offence committed at
+the township of Ruswarp on 8 July 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Pearson
+Campion, home Ruswarp, occupation jet worker; victim Mary Jane
+Harris. Location Ruswarp matches. Crime type=assault matches.
+Already correctly linked to related_conviction 948 (same defendant,
+same offence date -- Campion's companion drunk-and-disorderly
+charge).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-951 done.**
+
+## Record 952
+
+"Summary conviction of Francis Fewster of the township of Whitby
+jet worker for being drunk and riotous in Church Street. Offence
+committed at the township of Whitby on 25 April 1869. Whitby
+Strand - case heard at Whitby" -- defendant Francis Fewster (same
+name/occupation as records 747/825/831, a fourth distinct
+conviction, correctly a distinct person row), home Whitby. Church
+Street matches. Crime type=drunk and disorderly matches (per "drunk
+and riotous" precedent). Already correctly linked to
+related_conviction 946 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-952 done.**
+
+## Record 953
+
+"Summary conviction of Hannah Cooper of the township of Whitby
+singlewoman for using obscene language in Blackburn's Yard; on the
+oath of Harriet Hicks and Dorothy Gaines, both of the township of
+Whitby singlewomen. Offence committed at the township of Whitby on
+16 September 1875. Whitby Strand - case heard at Whitby" -- defendant
+Hannah Cooper, witnesses Harriet Hicks and Dorothy Gaines (a
+different, unmarried Dorothy Gaines from record 860's married
+namesake, correctly a distinct person row) -- all three explicitly
+stated "singlewoman"/"singlewomen" but none had the occupation
+linked. This id (953) was already on the tracked marital-status
+occupation gap list; the two witnesses were an additional instance
+of the same gap found while fixing this record. Added occupation
+"singlewoman" to all three. Blackburn's Yard matches. Crime
+type=using obscene language matches. No related_conviction.
+
+**FIXED — added missing "singlewoman" occupation to defendant + both witnesses (tracked gap, id 953 removed from the list).**
+
+---
+
+**Progress: records 1-953 done.**
+
+## Record 954
+
+"Summary conviction of John William Chapman of the township of
+Ruswarp jet worker for being drunk and disorderly on the Whitby and
+Guisborough highway. Offence committed at the township of Ruswarp
+on 8 July 1888. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant John William Chapman, home Ruswarp,
+occupation jet worker. Cross-parish "Whitby & Guisborough Highway"
+correctly added alongside stated township Ruswarp. Crime type=drunk
+and disorderly matches. Already correctly linked to
+related_conviction 948 (same offence date/street/charge, different
+defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-954 done.**
+
+## Record 955
+
+"Summary conviction of Robert Pearson of the township of Hawsker
+cum Stainsacre blacksmith for wilfully damaging part of a plane
+tree, the property of David Barclay Chapman esquire, growing on
+land occupied by James Cliff, and causing two-shillingsworth of
+damage. Offence committed at the township of Hawsker cum Stainsacre
+on 26 April 1869. Whitby Strand - case heard at Whitby" -- defendant
+Robert Pearson (same name as record 898's property owner, but a
+different conviction and role, correctly a distinct person row),
+home Hawsker-cum-Stainsacre, occupation blacksmith; property owner
+David Barclay Chapman, "esquire" correctly ignored (no title/
+occupation captured); landowner/occupier James Cliff, correctly a
+separate person from the property owner. Location matches. Crime
+type=malicious/property damage matches. No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 958]:** record 958 (Thomas
+Fletcher, breaking James Cliff's fence) turned out to share the same
+named party (James Cliff), township, and offence date -- a
+related_conviction link has now been added retroactively.
+
+---
+
+**Progress: records 1-955 done.**
+
+## Record 956
+
+"Summary conviction of Henry Plaxton of the township of Whitby
+fruiterer for being drunk and disorderly in Church Street; on the
+oath of Thomas Hall police constable and Miles Moody inspector of
+police, both of the township of Whitby. Offence committed at the
+township of Whitby on 14 June 1875. Whitby Strand - case heard at
+Whitby" -- defendant Henry Plaxton, home Whitby, occupation
+fruiterer; informants Thomas Hall (police constable) and Miles Moody
+(occupation "inspector of police", correctly distinguished from
+plain "police constable"). Church Street matches. Crime type=drunk
+and disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-956 done.**
+
+## Record 957
+
+"Summary conviction of Robinson Smithies of Sleights in the
+township of Eskdaleside cum Ugglebarnby for not sending his
+daughter Amelia Smithies to school. Offence committed in Sleights
+School Attendance Committee district on 1 June 1888. Case heard at
+Whitby" -- defendant Robinson Smithies, home Sleights (nested under
+Eskdaleside-cum-Ugglebarnby); daughter Amelia Smithies, "daughter"
+relationship correctly captured. Truancy rule correctly applied:
+offence location = his own home (Sleights), not the "School
+Attendance Committee district" wording. Crime type=school
+non-attendance matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-957 done.**
+
+## Record 958
+
+"Summary conviction of Thomas Fletcher of the township of Whitby
+jet worker for wilfully breaking a dead fence, the property of
+James Cliff, and causing two-shillingsworth of damage. Offence
+committed at the township of Hawsker cum Stainsacre on 26 April
+1869. Whitby Strand - case heard at Whitby" -- defendant Thomas
+Fletcher, home Whitby, occupation jet worker; property owner James
+Cliff. Offence location Hawsker-cum-Stainsacre matches. Crime
+type=malicious/property damage matches. No related_conviction was
+present, but this shares the same named party (James Cliff), same
+township, and same offence date as record 955 (Robert Pearson,
+damaging a tree on James Cliff's occupied land) -- likely one
+incident. Added the link, retroactively annotated 955's entry.
+
+**FIXED — added related_conviction link to 955 (same named party/township/date).**
+
+---
+
+**Progress: records 1-958 done.**
+
+## Record 959
+
+"Summary conviction of James Hindson of the township of Ugthorpe
+farmer for being the owner of three heifers and an ox found
+straying on the highway called Broom House Lane; on the oath of
+Henry Dowsland of the township of Hinderwell sergeant of police and
+Robert White of Whitby highway surveyor. Offence committed at the
+township of Ugthorpe on 7 June 1875. Whitby Strand - case heard at
+Whitby" -- defendant James Hindson, home Ugthorpe, occupation
+farmer; informants Henry Dowsland (sergeant of police) and Robert
+White (highway surveyor). "Broom House Lane" correctly nests under
+Ugthorpe, matching stated township. Crime type=straying animals
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-959 done.**
+
+## Record 960
+
+"Summary conviction of Robert Harrison of the township of Egton
+quarryman for being drunk on the licensed premises of Charles
+Smith. Offence committed at the township of Glaisdale on 6 July
+1888. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Robert Harrison, home Egton, occupation
+quarryman; licensee Charles Smith (same name as record 672's
+defendant, correctly a distinct person row), occupation "licensee".
+Offence location Glaisdale matches. Crime type=drunkenness matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-960 done.**
+
+## Record 961
+
+"Summary conviction of Thomas Rothwell for refusing to work, having
+been required to do so by Thomas Hughes. Offence committed at the
+township of Whitby on 8 May 1869. Whitby Strand - case heard at
+Whitby" -- defendant Thomas Rothwell, informant Thomas Hughes.
+Location Whitby matches. Crime type=vagrancy -- checked precedent:
+the more specific "refusing workhouse labour" leaf (31) is only used
+when the text explicitly says "while being relieved in the Whitby
+Union workhouse" (records 324, 444); this record has no such
+mention, so the more general "vagrancy" tag is correct, not a
+mistagging. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-961 done.**
+
+## Record 962
+
+"Summary conviction of Joseph Burnett of the township of
+Fylingdales tailor for being the owner of a horse found straying on
+the Thorpe and Robin Hood's Bay highway; on the oath of George Eli
+North of the township of Fylingdales police constable. Offence
+committed at the township of Fylingdales on 9 July 1875. Whitby
+Strand - case heard at Whitby" -- defendant Joseph Burnett, home
+Fylingdales, occupation tailor; informant George Eli North (same
+name as record 828's informant, different conviction, correctly a
+distinct person row). Cross-parish "Thorpe & Robin Hood's Bay
+Highway" correctly added alongside stated township. Crime
+type=straying animals matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-962 done.**
+
+## Record 963
+
+"Summary conviction of William George Harland of the township of
+Whitby jet worker for being drunk on the licensed premises of
+Francis Jefferson. Offence committed at the township of Whitby on
+12 July 1888. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant William George Harland, home Whitby,
+occupation jet worker; licensee Francis Jefferson, occupation
+"licensee". Location Whitby matches. Crime type=drunkenness matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-963 done.**
+
+## Record 964
+
+"Summary conviction of John Prior of the township of Whitby drainer
+for being drunk. Offence committed at the township of Whitby on 3
+May 1869. Whitby Strand - case heard at Whitby" -- defendant John
+Prior, home Whitby, occupation drainer. Location Whitby matches.
+Crime type=drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-964 done.**
+
+## Record 965
+
+"Summary conviction of James Parkin of the township of Whitby cab
+driver for driving a horse and carriage furiously in Bridge Street;
+on the oath of Thomas Hall police constable and John Ryder
+superintendent of police, both of the township of Whitby. Offence
+committed at the township of Whitby on 2 August 1875. Whitby
+Strand - case heard at Whitby" -- defendant James Parkin, home
+Whitby, occupation cab driver; informants Thomas Hall (police
+constable) and John Ryder (superintendent of police). Bridge Street
+matches. Crime type=furious/reckless driving matches -- "furiously"
+explicitly stated (this is the exact record referenced earlier this
+session at record 865's precedent check). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-965 done.**
+
+## Record 966
+
+"Summary conviction of James Horton of the township of Whitby
+punchinello for being drunk on the licensed premises of Richard
+Thompson and refusing to leave when asked by William Dobson acting
+sergeant of police. Offence committed at the township of Whitby on
+13 July 1888. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant James Horton, home Whitby, unusual occupation
+"punchinello" (a Punch-and-Judy-type entertainer) correctly captured
+verbatim; licensee Richard Thompson (same name as records 700/775/
+908/942, a fifth distinct conviction, correctly a distinct person
+row); informant William Dobson, occupation "acting sergeant of
+police" correctly preserved as its own distinct phrasing. Location
+Whitby matches. Crime types = drunkenness + refusal to quit licensed
+premises both fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-966 done.**
+
+## Record 967
+
+"Summary conviction of Joseph McKenzie of the township of Whitby
+jet worker for being drunk. Offence committed at the township of
+Whitby on 4 May 1869. Whitby Strand - case heard at Whitby" --
+defendant Joseph McKenzie, home Whitby, occupation jet worker.
+Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-967 done.**
+
+## Record 968
+
+"Summary conviction of Johanna Swinscoe for assaulting Kate
+Stonehouse. Offence committed at the township of Whitby on 4
+October 1875. Whitby Strand - case heard at Whitby" -- defendant
+Johanna Swinscoe, victim Kate Stonehouse. Location Whitby matches.
+Crime type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-968 done.**
+
+## Record 969
+
+"Summary conviction of George Flood of the township of Whitby clown
+for being drunk and disorderly in Church Street. Offence committed
+at the township of Whitby on 13 July 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant George
+Flood, home Whitby, unusual occupation "clown" correctly captured
+verbatim (likely part of the same travelling entertainment troupe
+as record 966's "punchinello", same week). Church Street matches.
+Crime type=drunk and disorderly matches. Already correctly linked
+to related_conviction 972 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-969 done.**
+
+## Record 970
+
+"Summary conviction of Ellen Hick wife of Isaac Hick of the
+township of Whitby for being drunk. Offence committed at the
+township of Whitby on 5 May 1869. Whitby Strand - case heard at
+Whitby" -- defendant Ellen Hick, spouse Isaac Hick (relationship
+correctly captured, no occupation stated for him here, correctly
+left blank -- unlike records 653/759's "jet worker" mentions, a
+third distinct Ellen/Isaac Hick pair, correctly separate person
+rows). Location Whitby matches. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-970 done.**
+
+## Record 971
+
+"Summary conviction of Robert Kirk for begging in St Ann's Staith.
+Offence committed at the township of Whitby on 30 April 1875.
+Whitby Strand - case heard at Whitby" -- defendant Robert Kirk. St
+Ann's Staith matches (West Cliff/Whitby). Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-971 done.**
+
+## Record 972
+
+"Summary conviction of Miles Hammond of the township of Whitby
+labourer for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 13 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Miles
+Hammond, home Whitby, occupation labourer. Church Street matches.
+Crime type=drunk and disorderly matches. Already correctly linked
+to related_conviction 969 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-972 done.**
+
+## Record 973
+
+"Summary conviction of William Brown for assaulting Honor
+Cunningham. Offence committed at the township of Ruswarp on 10 May
+1869. Whitby Strand - case heard at Whitby" -- defendant William
+Brown, victim Honor Cunningham. Location Ruswarp matches. Crime
+type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-973 done.**
+
+## Record 974
+
+"Summary conviction of Alfred Hone for begging on Blue Bank.
+Offence committed at the township of Ugglebarnby on 5 June 1875.
+Whitby Strand - case heard at Whitby" -- defendant Alfred Hone.
+Blue Bank nests under Sleights, which nests under Eskdaleside-cum-
+Ugglebarnby, matching stated township "Ugglebarnby". Crime
+type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-974 done.**
+
+## Record 975
+
+"Summary conviction of George Watson of Baxtergate in the township
+of Whitby for not sending his son William Vasey Watson to school.
+Offence committed in Whitby School Board district on 6 July 1888.
+Case heard at Whitby" -- defendant George Watson (same name as
+record 716's Glaisdale miner, different context, correctly a
+distinct person row), home Baxtergate (West Cliff/Whitby); son
+William Vasey Watson, "son" relationship correctly captured.
+Truancy rule correctly applied: offence location = his own home
+(Baxtergate), not the School Board district wording. Crime
+type=school non-attendance matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-975 done.**
+
+## Record 976
+
+"Summary conviction of Stephen Cuthbert of the township of
+Hinderwell miner for being drunk and riotous on the licensed
+premises of Joseph Welford and refusing to leave when asked by the
+said Joseph Welford. Offence committed at the township of
+Hinderwell on 17 May 1869. Whitby Strand - case heard at Whitby" --
+defendant Stephen Cuthbert, home Hinderwell, occupation miner;
+licensee Joseph Welford, occupation "licensee". Location Hinderwell
+matches. Crime types = drunk and disorderly (per "drunk and
+riotous" precedent) + refusal to quit licensed premises both fit.
+No related_conviction.
+
+**OK — no changes.**
+
+**[Retroactive note, added at record 979]:** record 979 (Aaron
+Walker) turned out to share this exact same licensee/offence/
+township/date. A related_conviction link has now been added
+retroactively.
+
+---
+
+**Progress: records 1-976 done.**
+
+## Record 977
+
+"Summary conviction of Michael McCarthy for begging in the Royal
+Crescent. Offence committed at the township of Ruswarp on 11
+October 1875. Whitby Strand - case heard at Whitby" -- defendant
+Michael McCarthy. Royal Crescent nests under Whitby's West Cliff
+but the record states township Ruswarp -- correctly captured
+alongside per the cliff-boundary pattern. Crime type=begging
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-977 done.**
+
+## Record 978
+
+"Summary conviction of John Shaw of the township of Whitby jet
+worker for being drunk and disorderly in Victoria Square. Offence
+committed at the parish of Whitby on 14 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant John
+Shaw (same name as records 888/903/935/941, a fifth distinct
+conviction, correctly a distinct person row), home Whitby.
+Victoria Square matches. Crime type=drunk and disorderly matches.
+Already correctly linked to related_conviction 981 (same offence
+date/street/charge, different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-978 done.**
+
+## Record 979
+
+"Summary conviction of Aaron Walker of the township of Hinderwell
+miner for being drunk and riotous on the licensed premises of
+Joseph Welford and refusing to leave when asked by the said Joseph
+Welford. Offence committed at the township of Hinderwell on 17 May
+1869. Whitby Strand - case heard at Whitby" -- defendant Aaron
+Walker, home Hinderwell, occupation miner; licensee Joseph Welford,
+occupation "licensee". Location Hinderwell matches. Crime types =
+drunk and disorderly + refusal to quit licensed premises both fit.
+No related_conviction was present, but this shares the same
+licensee, offence, township, and date as record 976 (Stephen
+Cuthbert) -- likely one incident. Added the link, retroactively
+annotated 976's entry.
+
+**FIXED — added related_conviction link to 976 (same licensee/offence/township/date).**
+
+---
+
+**Progress: records 1-979 done.**
+
+## Record 980
+
+"Summary conviction of John Bell of the township of Whitby engineer
+for being drunk and disorderly in Church Street. Offence committed
+at the township of Whitby on 29 March 1875 Whitby Strand - case
+heard at Whitby" -- defendant John Bell, home Whitby, occupation
+engineer. Church Street matches. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-980 done.**
+
+## Record 981
+
+"Summary conviction of Francis Clark of the township of Whitby
+painter for being drunk and disorderly in Victoria Square. Offence
+committed at the parish of Whitby on 14 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Francis Clark, home Whitby, occupation painter. Victoria Square
+matches. Crime type=drunk and disorderly matches. Already correctly
+linked to related_conviction 978 (same offence date/street/charge,
+different defendants).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-981 done.**
+
+## Record 982
+
+"Summary conviction of Christopher Scales of the township of
+Whitby fish dealer for assaulting Joseph Thompson. Offence
+committed at the township of Whitby on 15 May 1869. Whitby Strand -
+case heard at Whitby" -- defendant Christopher Scales, home Whitby,
+occupation fish dealer; victim Joseph Thompson. Location Whitby
+matches. Crime type=assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-982 done.**
+
+## Record 983
+
+"Summary conviction of Thomas Gray of the township of Hinderwell
+miner for assaulting John Stonehouse. Offence committed at the
+township of Hinderwell on 29 March 1875. Whitby Strand - case heard
+at Whitby" -- defendant Thomas Gray, home Hinderwell, occupation
+miner; victim John Stonehouse. Location Hinderwell matches. Crime
+type=assault matches. Already correctly linked to related_conviction
+1069 (same defendant, same offence date -- companion charge, not
+yet reached).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-983 done.**
+
+## Record 984
+
+"Summary conviction of Matthew Langdale of the township of Whitby
+brick manufacturer for employing Esther Mary Pottas, being a child
+under the age of 16 years, at his brickyard Offence committed at
+Upgang in the township of Ruswarp on 21 June 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant
+Matthew Langdale, home Whitby, occupation brick manufacturer;
+victim Esther Mary Pottas, "employee" relationship correctly
+captured. Upgang Lane nests under Whitby's West Cliff but the
+record states offence township Ruswarp -- correctly added alongside
+per the cliff-boundary pattern. Crime type=illegal child employment
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-984 done.**
+
+## Record 985
+
+"Summary conviction of Joseph Short for begging in Esk Terrace.
+Offence committed at the township of Ruswarp on 25 May 1869. Whitby
+Strand - case heard at Whitby" -- defendant Joseph Short. Esk
+Terrace nests under Whitby's West Cliff but the record states
+township Ruswarp -- correctly captured alongside per the
+cliff-boundary pattern (same street as record 907's identical
+resolution). Crime type=begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-985 done.**
+
+## Record 986
+
+"Summary conviction of Francis Fewster of the township of Whitby
+jet worker for using obscene language. Offence committed at the
+township of Whitby on 11 May 1875. Whitby Strand - case heard at
+Whitby" -- defendant Francis Fewster (same name/occupation as
+records 747/825/831/952, a fifth distinct conviction, correctly a
+distinct person row), home Whitby. Location Whitby matches. Crime
+type=using obscene language matches. Already correctly linked to
+related_conviction 1016 (same defendant, same offence date --
+companion charge, not yet reached).
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-986 done.**
+
+## Record 987
+
+"Summary conviction of Thomas de Costello of the township of
+Whitby labourer for destroying his own clothes while being relieved
+in the workhouse of the Whitby Union. Offence committed at the
+township of Whitby on 14 July 1888. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Thomas de Costello,
+home Whitby, occupation labourer. Location Union Workhouse (Green
+Lane) matches. Crime type was "malicious/property damage" -- this
+id was already on the tracked "destroying own clothes" gap list.
+Retagged to leaf 73 "destroying own clothes". No related_conviction.
+
+**FIXED — retagged crime type to "destroying own clothes" (leaf 73, tracked gap, id 987 removed from the list).**
+
+**[Retroactive note, added at record 990]:** record 990 (Thomas
+Jones) turned out to share this exact same offence/township/date --
+a related_conviction link has now been added retroactively.
+
+---
+
+**Progress: records 1-987 done.**
+
+## Record 988
+
+"Summary conviction of James Robertson for being found in the
+dwelling house of John Garbutt with intent to assault Mary Jane
+Garbutt aged nine years. Offence committed at the township of
+Whitby on 22 May 1869. Whitby Strand - case heard at Whitby" --
+defendant James Robertson, victim Mary Jane Garbutt (age 9 stated
+in charge_description), property owner John Garbutt -- no
+relationship stated between John and Mary Jane in the text (likely
+father/daughter but not explicit), correctly none captured. Location
+Whitby matches. Crime type=assault checked against precedent -- no
+"intent to assault"/child-victim-specific leaf exists, and this is
+the only "with intent to assault" instance in the whole corpus, so
+the general "assault" tag is a reasonable fit, not a mistagging. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-988 done.**
+
+## Record 989
+
+"Summary conviction of John Jones of the township of Whitby coal
+porter for being drunk and disorderly in the New Quay. Offence
+committed at the township of Whitby on 4 May 1875. Whitby Strand -
+case heard at Whitby" -- defendant John Jones (same name/occupation
+as records 235/840, a different date, correctly a distinct person
+row), home Whitby. New Quay matches. Crime type=drunk and disorderly
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-989 done.**
+
+## Record 990
+
+"Summary conviction of Thomas Jones of the township of Whitby
+labourer for destroying his own clothes while being relieved in
+the workhouse of the Whitby Union. Offence committed at the
+township of Whitby on 14 July 1888. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Thomas Jones, home
+Whitby, occupation labourer. Location Union Workhouse matches.
+Crime type was "malicious/property damage" -- this id was already
+on the tracked "destroying own clothes" gap list. Retagged to leaf
+73. No related_conviction was present, but this shares the exact
+same offence/township/date as record 987 (Thomas de Costello, fixed
+just above) -- added the link, retroactively annotated 987's entry.
+
+**FIXED — retagged crime type to "destroying own clothes" (leaf 73, tracked gap, id 990 removed) and added related_conviction link to 987.**
+
+---
+
+**Progress: records 1-990 done.**
+
+## Record 991
+
+"Summary conviction of Joseph Dean for assaulting Robert Grimmer.
+Offence committed at the township of Whitby on 24 May 1869. Whitby
+Strand - case heard at Whitby" -- defendant Joseph Dean, victim
+Robert Grimmer. Location Whitby matches. Crime type=assault
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-991 done.**
+
+## Record 992
+
+"Summary conviction of William Ratcliffe for begging in Robin
+Hood's Bay town street. Offence committed at the township of
+Fylingdales on 12 April 1875. Whitby Strand - case heard at Whitby"
+-- defendant William Ratcliffe. "Robin Hood's Bay town street"
+resolves to Robin Hood's Bay itself, nested under Fylingdales,
+matching stated township. Crime type=begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-992 done.**
+
+## Record 993
+
+"Summary conviction of William Mills of the township of Hawsker cum
+Stainsacre farmer for being drunk on the licensed premises of Tom
+Allison and refusing to leave when asked to do so by Allison.
+Offence committed at the township of Hawsker cum Stainsacre on 14
+July 188. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant William Mills, home Hawsker-cum-Stainsacre,
+occupation farmer; licensee Tom Allison, occupation "licensee".
+Source has a dropped digit ("14 July 188" missing the final "8"),
+already correctly documented in the `anomalies` field; structured
+offence_date is correctly parsed as 1888-07-14. Location matches.
+Crime types = drunkenness + refusal to quit licensed premises both
+fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-993 done.**
+
+## Record 994
+
+"Summary conviction of Eliza Jane Thompson for begging at Abbey
+Farm. Offence committed at the township of Hawsker cum Stainsacre
+on 23 May 1869. Whitby Strand - case heard at Whitby" -- defendant
+Eliza Jane Thompson. Abbey Farm correctly nests under Hawsker-cum-
+Stainsacre, matching stated township. Crime type=begging matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-994 done.**
+
+## Record 995
+
+"Summary conviction of William Wear of the township of Whitby
+painter for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 30 March 1875 Whitby Strand
+- case heard at Whitby" -- defendant William Wear, home Whitby,
+occupation painter. Church Street matches. Crime type=drunk and
+disorderly matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-995 done.**
+
+## Record 996
+
+"Summary conviction of William Henry Heath of the township of
+Whitby farmer for being drunk in charge of a horse and cart in St
+Hilda's Terrace. Offence committed at the township of Ruswarp on
+18 July 1888. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant William Henry Heath (same name as record
+774's Hinderwell licensee, different context, correctly a distinct
+person row), home Whitby, occupation farmer. St Hilda's Terrace
+nests under Whitby's West Cliff but the record states offence
+township Ruswarp -- correctly added alongside per the cliff-
+boundary pattern. Crime type=drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+## Record 997
+
+"Summary conviction of Mary Jane Wallace of the township of Whitby
+singlewoman for being drunk. Offence committed at the township of
+Whitby on 2 June 1869. Whitby Strand - case heard at Whitby" --
+defendant Mary Jane Wallace (person 1061), home Whitby, sex female.
+Raw_record states "singlewoman" but `person_occupation` had no row
+for this person -- confirmed instance of the tracked marital-status
+occupation gap (tracked since record 275). Location/crime type
+(drunkenness) both correct. No related_conviction.
+
+**FIXED — added missing "singlewoman" occupation (occupation_id 337)
+for person 1061.** Removed 997 from the tracked-gap id list in
+reextraction-audit-notes.md.
+
+---
+
+**Progress: records 1-997 done.**
+
+---
+
+## Record 998
+
+"Summary conviction of Thomas Kay for begging. Offence committed at
+the township of Ellerby on 8 May 1875. Whitby Strand - case heard at
+Whitby" -- defendant Thomas Kay (person 1062), sex male (from
+unambiguous first name, no home stated in source). Location of
+offence Ellerby, court location Whitby, both correct. Crime type
+begging matches. No named party to link on; no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-998 done.**
+
+---
+
+## Record 999
+
+"Summary conviction of William Flounders of the township of Whitby
+pedlar for acting as a pedlar without a certificate. Offence
+committed at the township of Whitby on 20 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant William
+Flounders (person 1063), home Whitby, occupation pedlar (captured),
+sex male (unambiguous first name). Location Whitby correct on both
+roles. Crime type "licensing offence" (id 23) checked -- this is
+itself a leaf (no children under it, no pedlar/hawker-specific leaf
+exists in the taxonomy), so it's correctly applied, not a generic
+placeholder. No named party to link on; no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-999 done.**
+
+---
+
+## Record 1000
+
+"Summary conviction of Thomas Peat of the township of Whitby
+fisherman for being drunk. Offence committed at the township of
+Whitby on 2 June 1869. Whitby Strand - case heard at Whitby" --
+defendant Thomas Peat (person 1064), home Whitby, occupation
+fisherman, sex male (unambiguous first name). Location Whitby correct
+on both roles. Crime type drunkenness matches. Same offence date (2
+June 1869), same township (Whitby), and same offence type
+(drunkenness) as record 997 (Mary Jane Wallace) -- considered for
+related_conviction under the no-named-party pattern, but declined:
+that pattern (rulebook section E, confirmed at 355/361 and 602/608)
+covers cases with a shared informant/constable or a genuinely
+incident-like offence (poaching gang, riot, obstruction); drunkenness
+is a routine individual offence where two unrelated people being
+convicted of it on the same day in the same town is not evidence of
+one shared incident, unlike a group offence. No named party links
+them either. No related_conviction added.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1000 done.**
+
+---
+
+## Record 1001
+
+"Summary conviction of Caroline Long wife of [blank] Long for
+lodging on the New Quay with no visible means of subsistence and not
+giving a good account of herself. Offence committed at the township
+of Whitby on 5 May 1875. Whitby Strand - case heard at Whitby" --
+defendant Caroline Long (person 1065), sex female; husband stub
+[blank] Long (person 9939), sex male, correctly created with "wife"
+relationship pointing from Caroline to him, per the established
+"wife of [blank] SURNAME" convention. Location New Quay (under
+Whitby, id 5) correct. Crime type "vagrancy" (id 20, leaf under
+category 7) checked against taxonomy -- no more specific "no visible
+means of subsistence"/"lodging" leaf exists, so this is the correct
+fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1001 done.**
+
+---
+
+## Record 1002
+
+"Summary conviction of Andrew Harland of the township of Whitby
+licensed victualler for selling beer to a person who was drunk.
+Offence committed at the township of Whitby on 21 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Andrew Harland (person 1066), home Whitby, occupation licensed
+victualler, sex male (unambiguous first name). Location Whitby
+correct. Crime type "licensing offence" fits (no more specific
+"selling to a drunk person" leaf exists). No named party (the drunk
+customer isn't named); no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1002 done.**
+
+---
+
+## Record 1003
+
+"Summary conviction of Mary Jane Grandy wife of [blank] Grandy of the
+township of Whitby cab driver for being drunk. Offence committed at
+the township of Whitby on 7 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant Mary Jane Grandy (person 1067), sex female;
+husband stub [blank] Grandy (person 9940) correctly holds the home
+(Whitby) and occupation (cab driver), since the "of Whitby cab
+driver" phrase describes the husband, not the wife -- matches the
+established husband-occupation-attachment convention. "wife"
+relationship correctly recorded. Location Whitby correct. Crime type
+drunkenness matches. Same offence type as records 997/1000 but
+different date (7 June vs 2 June) -- no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1003 done.**
+
+---
+
+## Record 1004
+
+"Summary conviction of Robert Foster of the township of Whitby
+sailor for being drunk and disorderly in Haggersgate. Offence
+committed at the township of Whitby on 2 April 1875. Whitby Strand -
+case heard at Whitby" -- defendant Robert Foster (person 1068), home
+Whitby, occupation sailor, sex male (unambiguous first name).
+Location Haggersgate (under Whitby, id 5) correct. Crime type "drunk
+and disorderly" correctly distinct from plain "drunkenness". No named
+party; no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1004 done.**
+
+---
+
+## Record 1005
+
+"Summary conviction of Catherine Bridges wife of Joseph Bridges of
+the township of Whitby fisherman for being drunk and disorderly on
+the Pier. Offence committed at the township of Whitby on 21 July
+1888. Whitby Strand Petty Sessional division - case heard at Whitby"
+-- defendant Catherine Bridges (person 1069), sex female; husband
+Joseph Bridges named in full (person 9941), home Whitby, occupation
+fisherman, "wife" relationship correctly recorded. Location "Piers"
+(id 104, under Whitby) fits "the Pier". Crime type "drunk and
+disorderly" matches. No named party beyond the husband; no
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1005 done.**
+
+---
+
+## Record 1006
+
+"Summary conviction of Martin Pindergrass of the township of Whitby
+seaman for being drunk. Offence committed at the township of Whitby
+on 8 June 1869. Whitby Strand - case heard at Whitby" -- defendant
+Martin Pindergrass (person 1070), home Whitby, occupation seaman, sex
+male (unambiguous first name). Location Whitby correct. Crime type
+drunkenness matches. Different date from 997/1000/1003; no
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1006 done.**
+
+---
+
+## Record 1007
+
+"Summary conviction of Thomas Joyce of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 10 May 1875. Whitby Strand -
+case heard at Whitby" -- defendant Thomas Joyce (person 1071), home
+Whitby, occupation jet worker, sex male (unambiguous first name).
+Location Church Street correct. Crime type "drunk and disorderly"
+matches. Pre-existing related_conviction links to 1013 (John
+Backhouse) and 1147 (James Marshall) verified against both records'
+raw_record -- all three are jet workers convicted of the identical
+charge, same street, same date (10 May 1875), consistent with one
+group incident. Links correct, no changes needed.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1007 done.**
+
+---
+
+## Record 1008
+
+"Summary conviction of Esther Hill wife of Andrew Hill of the
+township of Whitby jet worker for being drunk and disorderly on
+Boulby Bank. Offence committed at the township of Whitby on 21 July
+1888. Whitby Strand Petty Sessional division - case heard at Whitby"
+-- defendant Esther Hill (person 1072), sex female; husband Andrew
+Hill named in full (person 9942), home Whitby, occupation jet worker,
+"wife" relationship correctly recorded. Location Boulby Bank (under
+Church Street, id 6) -- plausible Whitby geography (Boulby Bank
+descends toward Church Street/the harbourside). Crime type "drunk and
+disorderly" matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1008 done.**
+
+---
+
+## Record 1009
+
+"Summary conviction of William Waller of the township of Whitby jet
+worker for being drunk and riotous on the Pier. Offence committed at
+the township of Whitby on 5 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant William Waller (person 1073), home Whitby,
+occupation jet worker, sex male (unambiguous first name). Location
+Piers correct. Crime type checked against taxonomy -- only
+"drunkenness" (18) and "drunk and disorderly" (43) exist, no separate
+"drunk and riotous" leaf, so "drunk and disorderly" is the correct
+existing fit for "riotous" phrasing. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1009 done.**
+
+---
+
+## Record 1010
+
+"Summary conviction of William George Walker of the township of
+Whitby jet worker for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 11 May 1875. Whitby Strand -
+case heard at Whitby" -- defendant William George Walker (person
+1074), home Whitby, occupation jet worker, sex male. Location Piers
+correct. Crime type "drunk and disorderly" matches. Pre-existing
+related_conviction link to 1016 (Francis Fewster, a different Francis
+Fewster person row per the no-cross-conviction-merge principle)
+verified -- same date, street, and charge wording. Correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1010 done.**
+
+---
+
+## Record 1011
+
+"Summary conviction of Thomas Long of the township of Fylingdales
+labourer for begging in Robin Hood's Bay town street. Offence
+committed at the township of Fylingdales on 22 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Thomas Long (person 1075), home Fylingdales, occupation labourer, sex
+male. "Robin Hood's Bay town street" boilerplate correctly resolves
+to Robin Hood's Bay itself (id 126) per the established convention.
+Crime type begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1011 done.**
+
+---
+
+## Record 1012
+
+"Summary conviction of Ellen Hick wife of Isaac Hick of the township
+of Whitby jet worker for being drunk; on the oath of Charles Tempest
+Clarkson of the township of Whitby superintendent of police. Offence
+committed at the township of Whitby on 8 June 1869. Whitby Strand -
+case heard at Whitby" -- defendant Ellen Hick (person 1076), sex
+female; husband Isaac Hick named in full (person 9943), home Whitby,
+occupation jet worker, "wife" relationship recorded; informant
+Charles Tempest Clarkson (person 6972), superintendent of police, sex
+male, home Whitby. This is a distinct Ellen Hick/Isaac Hick pair from
+the other instances already verified elsewhere in the corpus (no
+cross-conviction merge). Location Whitby correct. Crime type
+drunkenness matches. No street named, so the same-beat sub-pattern
+doesn't apply; no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1012 done.**
+
+---
+
+## Record 1013
+
+"Summary conviction of John Backhouse of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 10 May 1875. Whitby Strand -
+case heard at Whitby" -- defendant John Backhouse (person 1077), home
+Whitby, occupation jet worker, sex male. Location Church Street
+correct. Crime type matches. Pre-existing related_conviction links to
+1007 (Thomas Joyce) and 1147 (James Marshall), already verified at
+record 1007 -- same group-incident cluster.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1013 done.**
+
+---
+
+## Record 1014
+
+"Summary conviction of Thomas Hardy of the township of Egton labourer
+for begging in Esk Valley. Offence committed at the township of Egton
+on 23 July 1888. Whitby Strand Petty Sessional division - case heard
+at Whitby" -- defendant Thomas Hardy (person 1078), home Egton,
+occupation labourer, sex male. Location "Esk Valley" (id 401) nests
+correctly under Egton (id 112), matching the record's stated offence
+township. Crime type begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1014 done.**
+
+---
+
+## Record 1015
+
+"Summary conviction of Mary McDonald of the township of Whitby
+singlewoman for being drunk; on the oath of Francis Selby of the
+township of Whitby police constable. Offence committed at the
+township of Whitby on 13 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant Mary McDonald (person 1079), sex female; raw
+text states "singlewoman" but `person_occupation` had no row --
+confirmed instance of the tracked marital-status occupation gap.
+Informant Francis Selby (person 6973), police constable, sex already
+correctly male (full first name given, distinct from the earlier
+"[blank] Selby" stray-sex case at person 6835). Location Whitby
+correct. Crime type drunkenness matches. No related_conviction.
+
+**FIXED — added missing "singlewoman" occupation (occupation_id 337)
+for person 1079.** Removed 1015 from the tracked-gap id list in
+reextraction-audit-notes.md.
+
+---
+
+**Progress: records 1-1015 done.**
+
+---
+
+## Record 1016
+
+"Summary conviction of Francis Fewster of the township of Whitby jet
+worker for being drunk and disorderly on the Pier. Offence committed
+at the township of Whitby on 11 May 1875. Whitby Strand - case heard
+at Whitby" -- defendant Francis Fewster (person 1080), home Whitby,
+occupation jet worker, sex male. Location Piers correct. Crime type
+matches. Two pre-existing related_conviction links verified: 986
+(same Francis Fewster, same date, different charge "using obscene
+language" -- person 1050, a separate person row per the
+no-cross-conviction-merge convention, correctly linked as "same
+defendant and same offence date"), and 1010 (William George Walker,
+already verified at record 1010, group-incident cluster). Both
+correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1016 done.**
+
+---
+
+## Record 1017
+
+"Summary conviction of John Brand of the township of Whitby labourer
+for being drunk on the licensed premises of Andrew Harland. Offence
+committed at the township of Whitby on 21 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant John
+Brand (person 1081), home Whitby, occupation labourer, sex male;
+licensee Andrew Harland (person 6974), sex male, home Whitby,
+occupation "licensee". Location Whitby correct. Crime type
+drunkenness matches. Cross-checked against record 1002 (Andrew
+Harland, licensed victualler, convicted of "selling beer to a person
+who was drunk," same date 21 July 1888, same township) -- Andrew
+Harland is the shared named party (defendant there, licensee here),
+same date, and the two offences are complementary halves of one event
+(he sold beer to a drunk customer; the customer was drunk on his
+premises). No related_conviction link existed. Added one.
+
+**FIXED — added related_conviction link (1002, 1017): "Same licensee
+(Andrew Harland), same date, complementary offences (selling beer to
+a drunk person / being drunk on his licensed premises) -- same
+incident."**
+
+[Retroactive note, added at record 1017: record 1002's log entry did
+not anticipate this link since 1017 hadn't been reached yet.]
+
+---
+
+**Progress: records 1-1017 done.**
+
+---
+
+## Record 1018
+
+"Summary conviction of William Henderson of the township of Whitby
+labourer for being drunk; on the oath of John Atkinson of the
+township of Whitby police constable. Offence committed at the
+township of Whitby on 13 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant William Henderson (person 1082), home Whitby,
+occupation labourer, sex male; informant John Atkinson (person 6975),
+police constable, sex male, home Whitby. Location Whitby correct.
+Crime type drunkenness matches. Same date as record 1015 (13 June
+1869, Whitby, drunkenness) but different informant, no shared named
+party, and per the reasoning at record 1000, drunkenness alone isn't
+sufficient for a same-date/same-township link -- no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1018 done.**
+
+---
+
+## Record 1019
+
+"Summary conviction of Matthew Tose of the township of Whitby jet
+worker for being drunk and disorderly in the Old Market Place.
+Offence committed at the township of Whitby on 17 May 1875. Whitby
+Strand - case heard at Whitby" -- defendant Matthew Tose (person
+1083), home Whitby, occupation jet worker, sex male. Title/raw_record
+spelling checked ("Tose" in both, consistent -- not an instance of
+the resolved Tose/Toes mismatch gap). Location Old Market Place
+correct. Crime type matches. Pre-existing related_conviction link to
+1156 (Ralph Jordison) verified -- same date, street, charge wording.
+Correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1019 done.**
+
+---
+
+## Record 1020
+
+"Summary conviction of Robert Martin of the township of Whitby shop
+porter for assaulting Jane Cooper. Offence committed at the township
+of Fylingdales on 22 July 1888. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Robert Martin (person
+1084), home Whitby, occupation shop porter, sex male; victim Jane
+Cooper (person 6976), sex female. Location Fylingdales correct
+(offence township, distinct from defendant's home Whitby). Crime type
+assault matches. Pre-existing related_conviction links to 1023 (same
+Robert Martin, same date, assaulting Eliza Jane Hutton) and 1026
+(same Robert Martin, same date, assaulting Mary Ann Hutton) verified
+-- three separate assault charges from one arrest/incident, three
+different victims. Correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1020 done.**
+
+---
+
+## Record 1021
+
+"Summary conviction of John Bradshaw of the township of Whitby
+labourer for being drunk; on the oath of Francis Selby of the
+township of Whitby police constable. Offence committed at the
+township of Whitby on 13 June 1869. Whitby Strand - case heard at
+Whitby" -- defendant John Bradshaw (person 1085), home Whitby,
+occupation labourer, sex male; informant Francis Selby (person 6977),
+police constable, sex male, home Whitby. Location Whitby correct.
+Crime type drunkenness matches. Same date and same informant as
+record 1015 (Mary McDonald), but no street named -- the same-beat
+sub-pattern requires street+date+offence+informant together, so this
+alone doesn't meet the bar. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1021 done.**
+
+---
+
+## Record 1022
+
+"Summary conviction of John Peckett of the township of Lythe farm
+servant for killing a hare; on the oath of George Calvert of the
+township of Whitby gamewatcher. Offence committed at the township of
+Lythe on 27 December 1874. Whitby Strand - case heard at Whitby" --
+defendant John Peckett (person 1086), home Lythe, occupation farm
+servant, sex male; informant George Calvert (person 6978),
+gamewatcher, sex male, home Whitby. Location Lythe correct. Crime
+type "poaching" (leaf, id 22) fits -- no more specific leaf exists;
+the species ("hare") is preserved in charge_description free text, no
+information lost (game_species watch item not triggered here). No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1022 done.**
+
+---
+
+## Record 1023
+
+"Summary conviction of Robert Martin of the township of Whitby shop
+porter for assaulting Eliza Jane Hutton. Offence committed at the
+township of Fylingdales on 22 July 1888 Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Robert Martin
+(person 1087), home Whitby, occupation shop porter, sex male; victim
+Eliza Jane Hutton (person 6979), sex female. Location Fylingdales
+correct. Crime type assault matches. Pre-existing related_conviction
+links to 1020 and 1026 (same Robert Martin, same date, three
+different assault victims), already verified at record 1020. Correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1023 done.**
+
+---
+
+## Record 1024
+
+"Summary conviction of Elizabeth Pinder of the township of Whitby for
+being drunk. Offence committed at the township of Whitby on 13 June
+1869. Whitby Strand - case heard at Whitby" -- defendant Elizabeth
+Pinder (person 1088), home Whitby, sex female. No occupation or
+marital status stated in source, none fabricated. Location Whitby
+correct. Crime type drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1024 done.**
+
+---
+
+## Record 1025
+
+"Summary conviction of Thomas Walker of the township of Whitby milk
+boy for being at such a distance from his cart as not to have control
+of the horse drawing it. Offence committed at the township of Whitby
+on 8 May 1875. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Walker (person 1089), home Whitby, occupation milk boy, sex
+male. Location Whitby correct. Crime type "not having proper control
+of horse drawing a cart" (leaf 75) matches the established precedent
+for this exact phrasing (distinct from "furious/reckless driving",
+which requires the word "furiously"). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1025 done.**
+
+---
+
+## Record 1026
+
+"Summary conviction of Robert Martin of the township of Whitby shop
+porter for assaulting Mary Ann Hutton. Offence committed at the
+township of Fylingdales on 22 July 1888 Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Robert
+Martin (person 1090), home Whitby, occupation shop porter, sex male;
+victim Mary Ann Hutton (person 6980), sex female (note: likely
+related to victim Eliza Jane Hutton in record 1023, possibly
+mother/daughter or sisters, but no relationship stated in source --
+not fabricated). Location Fylingdales correct. Crime type assault
+matches. Pre-existing related_conviction links to 1020 and 1023,
+already verified at record 1020. Correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1026 done.**
+
+---
+
+## Record 1027
+
+"Summary conviction of Thomas Linton of Whitby pot hawker for
+assaulting George Wedgewood. Offence committed at the parish of
+Ampleforth on 29 August 1868. Case heard at Kirby Moorside" --
+defendant Thomas Linton (person 1091), home Whitby, occupation pot
+hawker, sex male; victim George Wedgewood (person 6981), sex male.
+Notably an out-of-area record: offence at Ampleforth, case heard at
+Kirkbymoorside, no Whitby Strand petty sessional division stated
+(correctly omitted, not fabricated) -- an occasional genuine outlier
+in the corpus, not an error. Location/court both correctly captured.
+Crime type assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1027 done.**
+
+---
+
+## Record 1028
+
+"Summary conviction of Isabella Riley for being a common prostitute
+and behaving in an indecent manner in a public street. Offence
+committed at the township of Whitby on 19 April 1875. Whitby Strand -
+case heard at Whitby" -- defendant Isabella Riley (person 1092), sex
+female, occupation "common prostitute" (per the source's own wording,
+existing convention). Location Whitby correct. Two crime types
+applied -- "indecent behaviour" (46) and "prostitution" (71), both
+valid leaves under the same category (16), both aspects of the charge
+correctly captured. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1028 done.**
+
+---
+
+## Record 1029
+
+"Summary conviction of Archibald Brown of the township of Whitby
+labourer for begging on the Pier. Offence committed at the township
+of Whitby on 25 July 1888. Whitby Strand Petty Sessional division -
+case heard at Whitby" -- defendant Archibald Brown (person 1093),
+home Whitby, occupation labourer, sex male. Location Piers correct.
+Crime type begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1029 done.**
+
+---
+
+## Record 1030
+
+"Summary conviction of William Lawson of the township of Newholm cum
+Dunsley labourer for trespassing in the daytime in pursuit of game on
+a piece of unenclosed ground in the possession and occupation of
+Richard Brown. Offence committed at the township of Ugthorpe on 23
+November 1868. Whitby Strand - case heard at Whitby" -- defendant
+William Lawson (person 1094), home Newholm-cum-Dunsley (existing
+node, punctuation variant of "Newholm cum Dunsley" matches), 
+occupation labourer, sex male; landowner Richard Brown (person 6982),
+sex male (unambiguous first name). Location Ugthorpe correct. Crime
+type poaching matches. Checked for other convictions naming the same
+landowner Richard Brown -- none found, no related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1030 done.**
+
+---
+
+## Record 1031
+
+"Summary conviction of Thomas Calvert of the township of Roxby
+labourer for being the owner of two cows found straying on the Roxby
+and Guisborough highway. Offence committed at the township of Roxby
+on 15 April 1875. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Calvert (person 1095), home Roxby, occupation labourer, sex
+male. Location: Roxby (offence township) plus the Roxby & Guisborough
+cross-parish highway node (id 106) added alongside, per the
+established cross-parish highway convention. Crime type "straying
+animals" matches. Pre-existing related_conviction link to 1081
+(Thomas Hugill, same date/street/charge) verified -- same incident,
+two cattle owners.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1031 done.**
+
+---
+
+## Record 1032
+
+"Summary conviction of Joseph Parker of the township of Ruswarp
+labourer for begging in Skinner Street. Offence committed at the
+township of Ruswarp on 26 July 1888. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Joseph Parker (person
+1096), home Ruswarp, occupation labourer, sex male. Skinner Street
+nests under Whitby (id 5) but the record states offence township
+Ruswarp -- correctly added alongside per the established
+Whitby/Ruswarp cliff-boundary pattern. Crime type begging matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1032 done.**
+
+---
+
+## Record 1033
+
+"Summary conviction of David Brough of the township of Whitby jet
+apprentice for throwing stones in Church Street; on the oath of
+Francis Selby of the township of Whitby police constable. Offence
+committed at the township of Whitby on 31 December 1868. Whitby
+Strand - case heard at Whitby" -- defendant David Brough (person
+1097), home Whitby, occupation jet apprentice, sex male; informant
+Francis Selby (person 6983), police constable, sex male, home Whitby.
+Location Church Street correct. Crime type "breach of the peace"
+checked against taxonomy -- no more specific "throwing stones" leaf
+exists, correct fit. Pre-existing related_conviction link to 1036
+(John Thomas Trueman, same date/street/charge/informant) verified --
+same incident, two jet apprentices.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1033 done.**
+
+---
+
+## Record 1034
+
+"Summary conviction of Charles Mason for assaulting Thomas Hall one
+of the constables for the North Riding in the execution of his duty
+Offence committed at the township of Whitby on 19 May 1875. Whitby
+Strand - case heard at Whitby" -- defendant Charles Mason (person
+1098), sex male, no home/occupation stated in this particular record
+(not fabricated); victim Thomas Hall (person 6984), constable for the
+North Riding, sex already correctly male (named directly before "one
+of the constables... in the execution of his duty" -- not an instance
+of the tracked constable-sex gap, already set). Location Whitby
+correct. Crime type "assaulting a police officer" matches.
+Pre-existing related_conviction link to 1105 (same Charles Mason,
+same date, wilfully damaging the constable's trousers/whistle --
+likely caused during this same assault) verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1034 done.**
+
+---
+
+## Record 1035
+
+"Summary conviction of James McCullum of the township of Eskdaleside
+cum Ugglebarnby labourer for begging in Sleights town street. Offence
+committed at the township of Eskdaleside cum Ugglebarnby on 27 July
+1888. Whitby Strand Petty Sessional division - case heard at Whitby"
+-- defendant James McCullum (person 1099), home
+Eskdaleside-cum-Ugglebarnby, occupation labourer, sex male. "Sleights
+town street" boilerplate resolves to Sleights, which correctly nests
+under Eskdaleside-cum-Ugglebarnby (id 8), matching the stated
+township. Crime type begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1035 done.**
+
+---
+
+## Record 1036
+
+"Summary conviction of John Thomas Trueman of the township of Whitby
+jet apprentice for throwing stones in Church Street; on the oath of
+Francis Selby of the township of Whitby police constable. Offence
+committed at the township of Whitby on 31 December 1868. Whitby
+Strand - case heard at Whitby" -- defendant John Thomas Trueman
+(person 1100), home Whitby, occupation jet apprentice, sex male;
+informant Francis Selby (person 6985), police constable, sex male,
+home Whitby. Location Church Street correct. Crime type "breach of
+the peace" matches (same reasoning as record 1033). Pre-existing
+related_conviction link to 1033 (David Brough), already verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1036 done.**
+
+---
+
+## Record 1037
+
+"Summary conviction of Thomas Robinson Cornforth of the township of
+Whitby jet worker for being drunk and disorderly on the Pier. Offence
+committed at the township of Whitby on 20 May 1875. Whitby Strand -
+case heard at Whitby" -- defendant Thomas Robinson Cornforth (person
+1101), home Whitby, occupation jet worker, sex male. Location Piers
+correct. Crime type matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1037 done.**
+
+---
+
+## Record 1038
+
+"Summary conviction of Peter Kilpatrick of the township of Whitby
+iron worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 30 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Peter
+Kilpatrick (person 1102), home Whitby, occupation iron worker, sex
+male. Location Church Street correct. Crime type matches.
+Pre-existing related_conviction link to 1041 (same Peter Kilpatrick,
+same date, assaulting a constable) verified -- consistent, likely the
+constable intervened in the drunk-and-disorderly incident and was
+assaulted.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1038 done.**
+
+---
+
+## Record 1039
+
+"Summary conviction of John Wilson of the township of Whitby tailor
+for being drunk; on the oath of James Wilkinson of the township of
+Whitby police constable. Offence committed at the township of Whitby
+on 1 January 1869. Whitby Strand - case heard at Whitby" -- defendant
+John Wilson (person 1103), home Whitby, occupation tailor, sex male;
+informant James Wilkinson (person 6986), police constable, sex male,
+home Whitby. Location Whitby correct. Crime type drunkenness matches.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1039 done.**
+
+---
+
+## Record 1040
+
+"Summary conviction of Peter Kilpatrick of the township of Whitby
+iron worker for being drunk and riotous in Grape Lane. Offence
+committed at the township of Whitby on 1 April 1875. Whitby Strand -
+case heard at Whitby" -- defendant Peter Kilpatrick (person 1104),
+home Whitby, occupation iron worker, sex male. Same name as the 1888
+Peter Kilpatrick (records 1038/1041) but a different date -- correctly
+a distinct person row, no cross-conviction merge. Location Grape Lane
+correct. Crime type "drunk and disorderly" fits (no "riotous" leaf,
+per the record 1009 precedent). Pre-existing related_conviction
+links to 1093 (assaulting a constable) and 3286 (wilfully damaging
+Maria Fawcett's window/bowl) verified -- same date, same defendant,
+three charges from one arrest/incident.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1040 done.**
+
+---
+
+## Record 1041
+
+"Summary conviction of Peter Kilpatrick of the township of Whitby
+iron worker for assaulting Thomas William Parker one of the
+constables of the North Riding in the execution of his duty. Offence
+committed at the township of Whitby on 30 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Peter
+Kilpatrick (person 1105), home Whitby, occupation iron worker, sex
+male; victim Thomas William Parker (person 6987), constable, sex
+already correctly male. Location Whitby correct. Crime type
+"assaulting a police officer" matches. Pre-existing related_conviction
+link to 1038, already verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1041 done.**
+
+---
+
+## Record 1042
+
+"Summary conviction of Joseph Tose of the township of Hinderwell
+labourer for being the owner of two asses found straying in Staithes
+Lane. Offence committed at the township of Hinderwell on 24 December
+1868. Whitby Strand - case heard at Whitby" -- defendant Joseph Tose
+(person 1106), home Hinderwell, occupation labourer, sex male.
+Title/raw_record spelling consistent ("Tose" in both). Location
+Staithes Lane nests under Staithes (163), which nests under
+Hinderwell (88), matching the stated township. Crime type "straying
+animals" matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1042 done.**
+
+---
+
+## Record 1043
+
+"Summary conviction of William Agar of the township of Whitby jet
+worker for wilfully damaging the frame of a window and an earthenware
+bowl, the property of Maria Fawcett. Offence committed at the
+township of Whitby on 1 April 1875. Whitby Strand - case heard at
+Whitby" -- defendant William Agar (person 1107), home Whitby,
+occupation jet worker, sex male; property owner Maria Fawcett (person
+6988), sex female. Location Whitby correct. Crime type
+"malicious/property damage" (60) is the only relevant leaf, correct
+fit. Cross-checked and found record 3286 (Peter Kilpatrick, already
+seen at record 1040) describes damaging the *identical* items --
+"the frame of a window and an earthenware bowl, the property of
+Maria Fawcett" -- on the same date. No related_conviction link
+existed between them. Added one.
+
+**FIXED — added related_conviction link (1043, 3286): "Same victim
+(Maria Fawcett), same date, identical property described (window
+frame and earthenware bowl), different defendants -- one incident,
+two men prosecuted separately."**
+
+[Retroactive note, added at record 1043: record 1040's log entry
+(covering 3286) did not anticipate this link since 1043 hadn't been
+reached yet.]
+
+---
+
+**Progress: records 1-1043 done.**
+
+---
+
+## Record 1044
+
+"Summary conviction of George Foxton of the township of Whitby
+labourer for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 28 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant George
+Foxton (person 1108), home Whitby, occupation labourer, sex male.
+Location Church Street correct. Crime type matches. Pre-existing
+related_conviction link to 1047 (Charles Harland, same date/street/
+charge) verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1044 done.**
+
+---
+
+## Record 1045
+
+"Summary conviction of John Simpson of the township of Whitby jet
+worker for discharging a pistol in Church Street. Offence committed
+at the township of Whitby on 31 December 1868. Whitby Strand - case
+heard at Whitby" -- defendant John Simpson (person 1109), home
+Whitby, occupation jet worker, sex male. Location Church Street
+correct. Crime type precedent check surfaced a genuine inconsistency:
+records 1045 (breach of the peace), 3322 ("discharging a small cannon
+in Clarence Passage", tagged public order), and 5052 ("discharging a
+pistol in Church Street other than in self defence", tagged firearms
+offence) are near-identical fact patterns with three different tags.
+Flagged to the user. Checked whether "firearms offence" (leaf 38,
+under category "public safety" 17, sole sibling "mining offence" 40)
+should be renamed to "weapons offence" to broaden it -- a full-text
+search of raw_record for pistol/cannon/sword/knife/dagger/revolver/
+firearm found no additional candidate records beyond the ones already
+in play, so renaming would change nothing. User decided: keep
+"firearms offence" as named, retag 1045 and 3322 onto it.
+
+**FIXED — retagged 1045 from "breach of the peace" to "firearms
+offence" (leaf 38); also retagged 3322 ("discharging a small cannon
+in Clarence Passage") from "public order" to "firearms offence" as
+part of the same sweep, since it's the identical fact pattern.**
+Saved as a general taxonomy-density principle in memory
+(`feedback_taxonomy_category_density_balance`): avoid leaves/
+categories with only one row, but don't broaden a leaf's name unless
+real evidence shows more records would actually land there.
+
+[Retroactive note, added at record 1045: this also affects the
+already-passed record 3322's log entry, which wasn't yet at this crime
+type when originally logged.]
+
+---
+
+**Progress: records 1-1045 done.**
+
+---
+
+## Record 1046
+
+"Summary conviction of Thomas Gay for lodging in a railway signal box
+with no visible means of subsistence and not giving a good account of
+himself. Offence committed at the township of Ruswarp on 21 May 1875.
+Whitby Strand - case heard at Whitby" -- defendant Thomas Gay (person
+1110), sex male, no home stated. Location Ruswarp correct. Crime type
+vagrancy matches (same reasoning as record 1001). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1046 done.**
+
+---
+
+## Record 1047
+
+"Summary conviction of Charles Harland of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 28 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Charles
+Harland (person 1111), home Whitby, occupation jet worker, sex male.
+Location Church Street correct. Crime type matches. Pre-existing
+related_conviction link to 1044, already verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1047 done.**
+
+---
+
+## Record 1048
+
+"Summary conviction of William Rook of the township of Goathland
+farmer for assaulting William Hopper; on the oath of the said
+William Hopper of the township of Goathland farmer and another.
+Offence committed at the township of Goathland on 31 December 1868.
+Whitby Strand - case heard at Whitby" -- defendant William Rook
+(person 1112), home Goathland, occupation farmer, sex male; victim
+William Hopper (person 6989), home Goathland, occupation farmer, sex
+male -- correctly captured once as "victim" even though he's also the
+informant ("the said William Hopper"), matching the established
+convention for when victim and informant are the same person.
+Location Goathland correct. Crime type assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1048 done.**
+
+---
+
+## Record 1049
+
+"Summary conviction of James Ball for lodging in a cow house with no
+visible means of subsistence and not giving a good account of
+himself. Offence committed at the township of Hawsker cum Stainsacre
+on 24 May 1875. Whitby Strand - case heard at Whitby" -- defendant
+James Ball (person 1113), sex male, no home stated. Location
+Hawsker-cum-Stainsacre correct. Crime type vagrancy matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1049 done.**
+
+---
+
+## Record 1050
+
+"Summary conviction of Robert Steel of the township of Whitby
+fisherman for wilfully damaging six glasses and a table, the
+property of William Massey. Offence committed at the township of
+Whitby on 28 July 1888. Whitby Strand Petty Sessional division - case
+heard at Whitby" -- defendant Robert Steel (person 1114), home
+Whitby, occupation fisherman, sex male; property owner William Massey
+(person 6990), sex male. Location Whitby correct. Crime type
+malicious/property damage matches. Pre-existing related_conviction
+link to 1053 (same Robert Steel, same date, "being drunk on the
+licensed premises of William Massey and refusing to leave when asked
+... by Sarah Massey") verified -- clearly one drunken incident on
+William Massey's licensed premises, two charges.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1050 done.**
+
+---
+
+## Record 1051
+
+"Summary conviction of Robert Melton of the township of Sneaton
+blacksmith for being drunk and riotous in the town street. Offence
+committed at the township of Ruswarp on 10 January 1869. Whitby
+Strand - case heard at Whitby" -- defendant Robert Melton (person
+1115), home Sneaton, occupation blacksmith, sex male. "the town
+street" (Ruswarp's own boilerplate phrase) correctly resolves to
+Ruswarp itself, matching the stated offence township. Crime type
+"drunk and disorderly" fits "riotous" per the record 1009 precedent.
+No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1051 done.**
+
+---
+
+## Record 1052
+
+"Summary conviction of George Mooney of the township of Whitby hawker
+for acting as a pedlar offering to mend old china without a
+certificate. Offence committed at the township of Whitby on 9 June
+1875. Whitby Strand - case heard at Whitby" -- defendant George
+Mooney (person 1116), home Whitby, occupation hawker, sex male.
+Location Whitby correct. Crime type "licensing offence" matches
+(same reasoning as record 999). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1052 done.**
+
+---
+
+## Record 1053
+
+"Summary conviction of Robert Steel of the township of Whitby
+fisherman for being drunk on the licensed premises of William Massey
+and refusing to leave when asked to do so by Sarah Massey. Offence
+committed at the township of Whitby on 28 July 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Robert
+Steel (person 1117), home Whitby, occupation fisherman, sex male;
+licensee William Massey (person 6991), sex male; informant Sarah
+Massey (person 6992), sex female (presumably William's wife, running
+the premises, but no relationship stated in source -- not
+fabricated). Location Whitby correct. Two crime types correctly
+applied: drunkenness and "refusal to quit licensed premises", both
+aspects of the charge. Pre-existing related_conviction link to 1050,
+already verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1053 done.**
+
+---
+
+## Record 1054
+
+"Summary conviction of Richard Duck of the township of Sneaton
+joiner for being drunk and riotous in the town street. Offence
+committed at the township of Ruswarp on 10 January 1869. Whitby
+Strand - case heard at Whitby" -- defendant Richard Duck (person
+1118), home Sneaton, occupation joiner, sex male. Location Ruswarp
+correct ("the town street" boilerplate). Crime type "drunk and
+disorderly" matches. Cross-checked against record 1051 (Robert
+Melton, also of Sneaton, identical charge "drunk and riotous in the
+town street", same date, same township) -- same home village, same
+date, same distinctive charge wording implying group disorder (unlike
+ordinary solitary drunkenness, which record 1000 established isn't
+sufficient alone). No related_conviction link existed. Added one
+under the no-named-party pattern.
+
+**FIXED — added related_conviction link (1051, 1054): "Same offence
+date, township, and charge wording (\"drunk and riotous in the town
+street\"), both defendants from Sneaton -- likely one incident, two
+men prosecuted separately."**
+
+[Retroactive note, added at record 1054: record 1051's log entry did
+not anticipate this link since 1054 hadn't been reached yet.]
+
+---
+
+**Progress: records 1-1054 done.**
+
+---
+
+## Record 1055
+
+"Summary conviction of Edward Jameson [James] Ayre of the township
+of Whitby jet worker for being drunk and disorderly on the Pier.
+Offence committed at the township of Whitby on 15 May 1875. Whitby
+Strand - case heard at Whitby" -- defendant Edward Jameson Ayre
+(person 1119), home Whitby, occupation jet worker, sex male. The
+source's own bracketed "[James]" variant reading is correctly
+captured in the person's `alias` field ("Edward James Ayre, James"),
+not lost. Location Piers correct. Crime type matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1055 done.**
+
+---
+
+## Record 1056
+
+"Summary conviction of John Hewison of the township of Whitby
+labourer for wilfully damaging hay, the property of William Robinson.
+Offence committed at the township of Ruswarp on 29 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+John Hewison (person 1120), home Whitby, occupation labourer, sex
+male; property owner William Robinson (person 6993), sex male.
+Location Ruswarp correct. Crime type malicious/property damage
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1056 done.**
+
+---
+
+## Record 1057
+
+"Summary conviction of Joseph Marsay of the township of Whitby
+mariner for being drunk and riotous in the town street. Offence
+committed at the township of Ruswarp on 10 January 1869. Whitby
+Strand - case heard at Whitby" -- defendant Joseph Marsay (person
+1121), home Whitby, occupation mariner, sex male. Location Ruswarp
+correct. Crime type matches. A third instance of the exact same date/
+township/charge wording as records 1051 (Robert Melton) and 1054
+(Richard Duck) -- clearly the same incident. No link existed. Added
+one.
+
+**FIXED — added related_conviction link (1051, 1057): "Same offence
+date, township, and charge wording (\"drunk and riotous in the town
+street\") as 1051/1054 -- third man from the same incident."**
+
+---
+
+**Progress: records 1-1057 done.**
+
+---
+
+## Record 1058
+
+"Summary conviction of Robert Arnold of the township of Whitby jet
+worker for being drunk and disorderly in Sandgate. Offence committed
+at the township of Whitby on 20 April 1875. Whitby Strand - case
+heard at Whitby" -- defendant Robert Arnold (person 1122), home
+Whitby, occupation jet worker, sex male. Location Sandgate correct.
+Crime type matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1058 done.**
+
+---
+
+## Record 1059
+
+"Summary conviction of William Smith of the township of Whitby
+mariner for being drunk and riotous in the town street. Offence
+committed at the township of Ruswarp on 10 January 1869. Whitby
+Strand - case heard at Whitby" -- defendant William Smith (person
+1123), home Whitby, occupation mariner, sex male. Location Ruswarp
+correct. Crime type matches. Fourth man in the same 10 January 1869
+"drunk and riotous" incident (1051/1054/1057). Added the link, then
+ran a corpus-wide sweep (`offence_date='1869-01-10' AND raw_record
+LIKE '%drunk and riotous in the town street%'`) to confirm no further
+participants exist -- exactly these 4 records, all now linked.
+
+**FIXED — added related_conviction link (1051, 1059): "Same offence
+date, township, and charge wording (\"drunk and riotous in the town
+street\") as 1051/1054/1057 -- fourth man from the same incident."**
+Swept the corpus for this exact date+phrase to confirm the cluster is
+complete (4 of 4).
+
+---
+
+**Progress: records 1-1059 done.**
+
+---
+
+## Record 1060
+
+"Summary conviction of William Smith of the township of Whitby
+labourer for being drunk and disorderly in Bridge Street. Offence
+committed at the township of Whitby on 27 March 1875 Whitby Strand -
+case heard at Whitby" -- defendant William Smith (person 1124), home
+Whitby, occupation labourer, sex male -- a different William Smith
+from record 1059's mariner (different date, occupation, and street),
+correctly a distinct person row. Location Bridge Street correct.
+Crime type matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1060 done.**
+
+---
+
+## Record 1061
+
+"Summary conviction of George Collis of the township of Whitby jet
+worker for wilfully damaging hay, the property of William Robinson.
+Offence committed at the township of Ruswarp on 29 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+George Collis (person 1125), home Whitby, occupation jet worker, sex
+male; property owner William Robinson (person 6994), sex male.
+Location Ruswarp correct. Crime type matches. Same victim William
+Robinson, same date, same charge as record 1056 (John Hewison) -- no
+link existed. Added one.
+
+**FIXED — added related_conviction link (1056, 1061).** Then swept
+the corpus for `offence_date='1888-07-29' AND raw_record LIKE
+'%William Robinson%'` and found 5 total participants: 1056, 1061,
+1064, 1067, 1070. Added links from 1056 (hub) to 1064, 1067, and 1070
+as well, and updated all notes to read "one incident, five men
+prosecuted separately."
+
+[Retroactive note, added at record 1061: record 1056's log entry did
+not anticipate this link since 1061 hadn't been reached yet. Records
+1064, 1067, and 1070 haven't been reached yet in the sequential audit
+either -- their own log entries will note these pre-existing links
+when reached.]
+
+---
+
+**Progress: records 1-1061 done.**
+
+---
+
+## Record 1062
+
+"Summary conviction of Francis Schofield of the township of
+Eskdaleside miner for assaulting William Hodkinson. Offence committed
+at the township of Eskdaleside on 8 January 1869. Whitby Strand -
+case heard at Whitby" -- defendant Francis Schofield (person 1126),
+home Eskdaleside-cum-Ugglebarnby (record's shortened "Eskdaleside"
+correctly normalized to the canonical township name), occupation
+miner, sex male; victim William Hodkinson (person 6995), sex male.
+Location correct. Crime type assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1062 done.**
+
+---
+
+## Record 1063
+
+"Summary conviction of John Noble of the township of Whitby jet
+worker for being drunk and disorderly in Church Street. Offence
+committed at the township of Whitby on 5 May 1875. Whitby Strand -
+case heard at Whitby" -- defendant John Noble (person 1127), home
+Whitby, occupation jet worker, sex male. Location Church Street
+correct. Crime type matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1063 done.**
+
+---
+
+## Record 1064
+
+"Summary conviction of Arthur Spark of the township of Whitby jet
+worker for wilfully damaging hay, the property of William Robinson.
+Offence committed at the township of Ruswarp on 29 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Arthur Spark (person 1128), home Whitby, occupation jet worker, sex
+male; property owner William Robinson (person 6996), sex male.
+Location Ruswarp correct. Crime type matches. related_conviction link
+to 1056 already added during the sweep at record 1061, confirmed
+correct here.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1064 done.**
+
+---
+
+## Record 1065
+
+"Summary conviction of [blank] Karraffa for begging in Church Street.
+Offence committed at the township of Whitby on 13 January 1869.
+Whitby Strand - case heard at Whitby" -- defendant [blank] Karraffa
+(person 1129), first_name and sex correctly left blank matching the
+source's own "[blank]" notation, not fabricated. Location Church
+Street correct. Crime type begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1065 done.**
+
+---
+
+## Record 1066
+
+"Summary conviction of James William Mason for assaulting Samuel
+Harrison one of the constables for the North Riding in the execution
+of his duty. Offence committed at the township of Whitby on 20 April
+1875. Whitby Strand - case heard at Whitby" -- defendant James
+William Mason (person 1130), sex male, no home stated; victim Samuel
+Harrison (person 6997), constable, sex already correctly male
+(directly named before "one of the constables"). Location Whitby
+correct. Crime type "assaulting a police officer" matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1066 done.**
+
+---
+
+## Record 1067
+
+"Summary conviction of Robert Wood of the township of Whitby jet
+worker for wilfully damaging hay, the property of William Robinson.
+Offence committed at the township of Ruswarp on 29 July 1888 Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Robert Wood (person 1131), home Whitby, occupation jet worker, sex
+male; property owner William Robinson (person 6998), sex male.
+Location Ruswarp correct. Crime type matches. related_conviction link
+to 1056 already added during the sweep at record 1061, confirmed
+correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1067 done.**
+
+---
+
+## Record 1068
+
+"Summary conviction of John Harker of the township of Hinderwell
+carrier for not keeping his cart to the left side of the Whitby and
+Guisborough highway to allow the cart of Charles Tempest Clarkson to
+pass; on the oath of Charles Tempest Clarkson of the township of
+Whitby superintendent of police. Offence committed at the township of
+Barnby on 14 January 1869. Whitby Strand - case heard at Whitby" --
+defendant John Harker (person 1132), home Hinderwell, occupation
+carrier, sex male; informant Charles Tempest Clarkson (person 6999),
+superintendent of police, sex male, home Whitby (a distinct person
+row from record 1012's Clarkson, per the no-cross-conviction-merge
+convention). Location: Barnby (offence township) plus the Whitby &
+Guisborough cross-parish highway node (106) added alongside, per the
+established convention. Crime type "failure to keep to the left on
+the highway" is a precise existing leaf, correct fit. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1068 done.**
+
+---
+
+## Record 1069
+
+"Summary conviction of Thomas Gray of the township of Hinderwell
+miner for being drunk and disorderly in Hinderwell town street.
+Offence committed at the township of Hinderwell on 29 March 1875.
+Whitby Strand - case heard at Whitby" -- defendant Thomas Gray
+(person 1133), home Hinderwell, occupation miner, sex male. "Hinderwell
+town street" boilerplate resolves to Hinderwell itself. Crime type
+matches. Pre-existing related_conviction link to 983 (same Thomas
+Gray, same date, assaulting John Stonehouse) verified -- likely
+assaulted someone while drunk and disorderly, one arrest.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1069 done.**
+
+---
+
+## Record 1070
+
+"Summary conviction of James Pearson of the township of Whitby jet
+worker for wilfully damaging hay, the property of William Robinson.
+Offence committed at the township of Ruswarp on 29 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+James Pearson (person 1134), home Whitby, occupation jet worker, sex
+male; property owner William Robinson (person 7000), sex male.
+Location Ruswarp correct. Crime type matches. related_conviction link
+to 1056 already added during the sweep at record 1061, confirmed
+correct -- last of the 5-man cluster.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1070 done.**
+
+---
+
+## Record 1071
+
+"Summary conviction of George Foster of the township of Whitby sailor
+for being drunk. Offence committed at the township of Whitby on 17
+January 1869. Whitby Strand - case heard at Whitby" -- defendant
+George Foster (person 1135), home Whitby, occupation sailor, sex
+male. Location Whitby correct. Crime type drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1071 done.**
+
+---
+
+## Record 1072
+
+"Summary conviction of Robert Cockerill of the township of
+Fylingdales carrier for being drunk in charge of a horse and cart in
+Church Street. Offence committed at the township of Whitby on 20
+March 1875. Whitby Strand - case heard at Whitby" -- defendant
+Robert Cockerill (person 1136), home Fylingdales, occupation carrier,
+sex male. Location Church Street correct. Crime type drunkenness
+matches (same pattern as record 996, "drunk in charge of a horse and
+cart"). No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1072 done.**
+
+---
+
+## Record 1073
+
+"Summary conviction of Thomas Kirk of the township of Whitby jet
+worker for maliciously breaking a fence, the property of Robert
+Burnett. Offence committed at the township of Ruswarp on 29 July
+1888 Whitby Strand Petty Sessional division - case heard at Whitby"
+-- defendant Thomas Kirk (person 1137), home Whitby, occupation jet
+worker, sex male; property owner Robert Burnett (person 7001), sex
+male. Location Ruswarp correct. Crime type malicious/property damage
+matches. Searched for other Robert Burnett convictions and found
+record 1076 (Joseph Wright), same date, same victim, same
+"maliciously breaking a fence" charge -- no link existed. Added one.
+
+**FIXED — added related_conviction link (1073, 1076): "Same victim
+(Robert Burnett), same date, same charge (maliciously breaking a
+fence), different defendants -- one incident, two men prosecuted
+separately."**
+
+[Retroactive note, added at record 1073: record 1076 hasn't been
+reached yet in the sequential audit; its own log entry will note
+this pre-existing link when reached.]
+
+---
+
+**Progress: records 1-1073 done.**
+
+---
+
+## Record 1074
+
+"Summary conviction of George Wood of the township of Whitby cab
+driver for being drunk. Offence committed at the township of Whitby
+on 16 January 1869. Whitby Strand - case heard at Whitby" --
+defendant George Wood (person 1138), home Whitby, occupation cab
+driver, sex male. Location Whitby correct. Crime type drunkenness
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1074 done.**
+
+---
+
+## Record 1075
+
+"Summary conviction of Anthony Marshall of the township of Whitby rag
+gatherer for being the owner of an ass found straying on the Whitby
+and Hawsker highway. Offence committed at the township of Hawsker cum
+Stainsacre on 3 June 1875. Whitby Strand - case heard at Whitby" --
+defendant Anthony Marshall (person 1139), home Whitby, occupation rag
+gatherer, sex male. Location: Hawsker-cum-Stainsacre (offence
+township) plus the Whitby & Hawsker cross-parish highway node (106)
+added alongside, per convention. Crime type "straying animals"
+matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1075 done.**
+
+---
+
+## Record 1076
+
+"Summary conviction of Joseph Wright of the township of Whitby jet
+worker for maliciously breaking a fence, the property of Robert
+Burnett. Offence committed at Ruswarp on 29 July 1888 Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Joseph
+Wright (person 1140), home Whitby, occupation jet worker, sex male;
+property owner Robert Burnett (person 7002), sex male. Location
+Ruswarp correct. Crime type matches. related_conviction link to 1073
+already added earlier, confirmed correct.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1076 done.**
+
+---
+
+## Record 1077
+
+"Summary conviction of Amos Craven of the township of Ugglebarnby
+wood leader for obstructing the Whitby and Guisborough highway by
+leaving a horse there for seven hours; on the oath of John Jackson on
+the township of Ruswarp labourer. Offence committed at the township
+of Aislaby on 14 January 1869. Whitby Strand - case heard at Whitby"
+-- defendant Amos Craven (person 1141), home Eskdaleside-cum-
+Ugglebarnby (record's shortened "Ugglebarnby" correctly normalized),
+occupation wood leader, sex male; informant John Jackson (person
+7003), home Ruswarp, occupation labourer, sex male. Location: Aislaby
+(offence township) plus the Whitby & Guisborough cross-parish highway
+node (106) added alongside, per convention. Crime type "obstructing
+the highway" is a precise existing leaf, correct fit. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1077 done.**
+
+---
+
+## Record 1078
+
+"Summary conviction of James Pearson of the township of Whitby
+blacksmith for being drunk and disorderly in the Royal Crescent
+Avenue. Offence committed at the township of Ruswarp on 17 May 1875.
+Whitby Strand - case heard at Whitby" -- defendant James Pearson
+(person 1142), home Whitby, occupation blacksmith, sex male -- a
+different James Pearson from record 1070's jet worker (different
+date/occupation/street), correctly a distinct person row. Royal
+Crescent Avenue nests under Whitby (5) but the record states offence
+township Ruswarp -- correctly added alongside per the cliff-boundary
+pattern (same street referenced earlier at records 719/728). Crime
+type matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1078 done.**
+
+---
+
+## Record 1079
+
+"Summary conviction of Thomas Bennett of the township of Lythe
+labourer for begging in Sandsend town street. Offence committed at
+the township of Lythe on 4 August 1888. Whitby Strand Petty
+Sessional division - case heard at Whitby" -- defendant Thomas
+Bennett (person 1143), home Lythe, occupation labourer, sex male.
+"Sandsend town street" boilerplate resolves to Sandsend, which
+correctly nests under Lythe (107), matching the stated township.
+Crime type begging matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1079 done.**
+
+---
+
+## Record 1080
+
+"Summary conviction of Thomas Welburry of the township of Whitby
+sailor for being drunk and riotous in Sandgate. Offence committed at
+the township of Whitby on 28 January 1869. Whitby Strand - case heard
+at Whitby" -- defendant Thomas Welburry (person 1144), home Whitby,
+occupation sailor, sex male. Location Sandgate correct. Crime type
+"drunk and disorderly" fits "riotous" per established precedent. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1080 done.**
+
+---
+
+## Record 1081
+
+"Summary conviction of Thomas Hugill of the township of Roxby woodman
+for being the owner of two cows found straying on the Roxby and
+Guisborough highway. Offence committed at the township of Roxby on
+15 April 1875. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Hugill (person 1145), home Roxby, occupation woodman, sex
+male. Location: Roxby plus the Roxby & Guisborough cross-parish
+highway node (106), per convention. Crime type "straying animals"
+matches. related_conviction link to 1031, already verified.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1081 done.**
+
+---
+
+## Record 1082
+
+"Summary conviction of Henry Douglas of the township of Whitby
+carpenter for being drunk and disorderly in Flowergate. Offence
+committed at the township of Whitby on 2 August 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Henry
+Douglas (person 1146), home Whitby, occupation carpenter, sex male.
+Location Flowergate correct. Crime type matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1082 done.**
+
+---
+
+## Record 1083
+
+"Summary conviction of Henry Bennison for assaulting Charles Albert
+Martindale. Offence committed at the township of Whitby on 28 January
+1869. Whitby Strand - case heard at Whitby" -- defendant Henry
+Bennison (person 1147), sex male, no home stated; victim Charles
+Albert Martindale (person 7004), sex male. Location Whitby correct.
+Crime type assault matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1083 done.**
+
+---
+
+## Record 1084
+
+"Summary conviction of Robert Parkin of the township of Newholm cum
+Dunsley waggoner for being too far from his waggon to have control of
+the two horses drawing it; on the oath of Thomas Hall and Samuel
+Harrison both of the township of Whitby police constables. Offence
+committed at the township of Whitby on 17 March 1875. Whitby Strand -
+case heard at Whitby" -- defendant Robert Parkin (person 1148), home
+Newholm-cum-Dunsley, occupation waggoner, sex male; two informants
+Thomas Hall (person 7005) and Samuel Harrison (person 7006), both
+police constables, sex male, home Whitby, both correctly captured.
+Location Whitby correct. Crime type "not having proper control of
+horse drawing a cart" (leaf 75) fits the waggon/horses phrasing per
+established precedent. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1084 done.**
+
+---
+
+## Record 1085
+
+"Summary conviction of Harrison Hodgson of the township of Whitby
+fisherman for being drunk on the licensed premises of Thomas Lane.
+Offence committed at the township of Whitby on 31 July 1888. Whitby
+Strand Petty Sessional division - case heard at Whitby" -- defendant
+Harrison Hodgson (person 1149), home Whitby, occupation fisherman,
+sex male; licensee Thomas Lane (person 7007), sex male. Location
+Whitby correct. Crime type drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1085 done.**
+
+---
+
+## Record 1086
+
+"Summary conviction of Thomas Pearson Hodgson for assaulting Charles
+Albert Martindale. Offence committed at the township of Whitby on 28
+January 1869. Whitby Strand - case heard at Whitby" -- defendant
+Thomas Pearson Hodgson (person 1150), sex male, no home stated;
+victim Charles Albert Martindale (person 7008), sex male. Location
+Whitby correct. Crime type assault matches. Same victim and same date
+as record 1083 (Henry Bennison) -- no link existed. Added one.
+
+**FIXED — added related_conviction link (1083, 1086): "Same victim
+(Charles Albert Martindale), same date, same offence (assault),
+different defendants -- one incident, two men prosecuted
+separately."**
+
+[Retroactive note, added at record 1086: record 1083's log entry did
+not anticipate this link since 1086 hadn't been reached yet.]
+
+---
+
+**Progress: records 1-1086 done.**
+
+---
+
+## Record 1087
+
+"Summary conviction of John Watson Liddle of the township of Whitby
+cartman for being drunk in charge of a horse and cart in Church
+Street. Offence committed at the township of Whitby on 23 March 1875.
+Whitby Strand - case heard at Whitby" -- defendant John Watson Liddle
+(person 1151), home Whitby, occupation cartman, sex male. Location
+Church Street correct. Crime type drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1087 done.**
+
+---
+
+## Record 1088
+
+"Summary conviction of Johnson Hutton of the township of Fylingdales
+farmer for being drunk on the licensed premises of Philip Newton.
+Offence committed at the township of Fylingdales on 2 August 1888.
+Whitby Strand Petty Sessional division - case heard at Whitby" --
+defendant Johnson Hutton (person 1152), home Fylingdales, occupation
+farmer, sex male; licensee Philip Newton (person 7009), sex male.
+Location Fylingdales correct. Crime type drunkenness matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1088 done.**
+
+---
+
+## Record 1089
+
+"Summary conviction of John Henry Smith for assaulting Charles Albert
+Martindale. Offence committed at the township of Whitby on 28 January
+1869. Whitby Strand - case heard at Whitby" -- defendant John Henry
+Smith (person 1153), sex male, no home stated; victim Charles Albert
+Martindale (person 7010), sex male. Location Whitby correct. Crime
+type assault matches. A third man in the same 28 January 1869
+Martindale-assault incident. Swept the corpus
+(`offence_date='1869-01-28' AND raw_record LIKE '%Charles Albert
+Martindale%'`) and confirmed exactly 3 records (1083, 1086, 1089), no
+more. Added the link, updated the existing 1083-1086 note to say
+"three men" for consistency.
+
+**FIXED — added related_conviction link (1083, 1089), updated cluster
+notes to "three men prosecuted separately." Cluster confirmed
+complete (3 of 3).**
+
+[Retroactive note, added at record 1089: records 1083 and 1086's log
+entries described the cluster as two men; now three.]
+
+---
+
+**Progress: records 1-1089 done.**
+
+---
+
+## Record 1090
+
+"Summary conviction of Margaret Elders wife of Matthew Elders of the
+township of Barnby stonemason for being drunk in Lythe town street;
+on the oath of Thomas Dennis of the township of Lythe police
+constable. Offence committed at the township of Lythe on 29 March
+1875. Whitby Strand - case heard at Whitby" -- defendant Margaret
+Elders (person 1154), home Barnby, sex female; husband Matthew Elders
+named in full (person 9944), home Barnby, occupation stonemason
+(correctly attached to the husband, since "of the township of Barnby
+stonemason" describes him grammatically), "wife" relationship
+recorded; informant Thomas Dennis (person 7011), police constable,
+sex male, home Lythe. "Lythe town street" boilerplate resolves to
+Lythe. Crime type drunkenness matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1090 done.**
+
+---
+
+## Record 1091
+
+"Summary conviction of Philip Newton of the township of Fylingdales
+licensed victualler for permitting drunkenness on his licensed
+premises. Offence committed at the township of Fylingdales on 2
+August 1888. Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Philip Newton (person 1155), home Fylingdales,
+occupation licensed victualler, sex male. Location Fylingdales
+correct. Crime type "licensing offence" matches. Same licensee, same
+date as record 1088 (Johnson Hutton, drunk on Philip Newton's
+premises) -- complementary halves of one incident, same pattern as
+1002/1017. No link existed. Added one.
+
+**FIXED — added related_conviction link (1088, 1091): "Same licensee
+(Philip Newton), same date, complementary offences (being drunk on
+his premises / permitting drunkenness on his premises) -- same
+incident."**
+
+[Retroactive note, added at record 1091: record 1088's log entry did
+not anticipate this link since 1091 hadn't been reached yet.]
+
+---
+
+**Progress: records 1-1091 done.**
+
+---
+
+## Record 1092
+
+"Summary conviction of Ellen Hick for being drunk and riotous in the
+Old Post Office Yard. Offence committed at the township of Whitby on
+28 January 1869. Whitby Strand - case heard at Whitby" -- defendant
+Ellen Hick (person 1156), sex female, no home/husband stated here --
+a different Ellen Hick from record 1012's (different date, no
+husband named), correctly a distinct person row per the no-cross-
+conviction-merge convention. Location Old Post Office Yard correct.
+Crime type "drunk and disorderly" fits "riotous". No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1092 done.**
+
+---
+
+## Record 1093
+
+"Summary conviction of Peter Kilpatrick for assaulting Robert Needham
+one of the constables for the North Riding in the execution of his
+duty. Offence committed at the township of Whitby on 1 April 1875.
+Whitby Strand - case heard at Whitby" -- defendant Peter Kilpatrick,
+victim Robert Needham (person 7012), constable, sex already correctly
+male. **Problem found and flagged**: this record's own raw_record
+states no home/occupation for Peter Kilpatrick, yet the person row
+(1157) had home=Whitby/occupation=iron worker filled in -- fabricated
+beyond this record's own source text, apparently carried over from
+the linked same-day conviction 1040 which does state it. Flagged to
+the user immediately.
+
+User's resolution: rather than stripping the fields, merge this
+cluster's Peter Kilpatrick person rows onto one canonical record, per
+the eventual goal of a deduplicated person table where one person
+connects to multiple offences -- when a related_conviction link
+already proves same-day/same-defendant (as here: 1040/1093/3286, all
+1 April 1875, all "same defendant and same offence date"), it's safe
+to consolidate now rather than waiting for a later dedup pass. Kept
+person 1104 (from 1040, whose own text states "of the township of
+Whitby iron worker") as canonical; repointed 1093 and 3286's
+`summary_conviction_person` rows to 1104; deleted the now-redundant
+duplicate person rows 1157 and 3436 (checked person_occupation and
+person_relationship first for orphaned FKs -- none besides
+person_occupation, also removed). Documented as a new standing
+principle in memory (`project_person_dedup_within_linked_clusters`) --
+narrow exception to the no-cross-conviction-merge default, only
+applies when a related_conviction link already proves same person.
+
+Location Whitby correct. Crime type "assaulting a police officer"
+matches.
+
+**FIXED — merged duplicate person rows 1157 (this record) and 3436
+(record 3286) into canonical person 1104 (record 1040); both
+`summary_conviction_person` rows repointed.**
+
+[Retroactive note, added at record 1093: records 1040 and 3286's
+earlier log entries referenced separate person ids (1104 and 3436
+respectively) for the same real Peter Kilpatrick; all three now
+correctly share person 1104.]
+
+---
+
+**Progress: records 1-1093 done.**
+
+---
+
+## Record 1094
+
+"Summary conviction of Andrew Harland of the township of Whitby
+labourer for assaulting Hannah Harland. Offence committed on 11
+August 1888 Whitby Strand Petty Sessional division - case heard at
+Whitby" -- defendant Andrew Harland (person 1158), home Whitby,
+occupation labourer, sex male; victim Hannah Harland (person 7013),
+sex female. Note: unlike most records, this one doesn't explicitly
+state an offence township ("Offence committed on 11 August 1888"
+with no "at the township of X"); location of offence is correctly
+inferred as Whitby given the defendant's own home is Whitby and no
+other township is named anywhere in the text -- consistent with the
+established unstated-home-town-inference precedent, judged reasonable
+here. Same surname for defendant and victim (possibly a family
+relationship) but nothing explicit stated in raw_record, so no
+relationship fabricated. Crime type assault matches. No
+related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1094 done.**
+
+---
+
+## Record 1095
+
+"Summary conviction of Mary Brown for being a common prostitute and
+behaving indecently in Sandgate. Offence committed at the township of
+Whitby on 30 January 1869. Whitby Strand - case heard at Whitby" --
+defendant Mary Brown (person 1159), sex female, occupation "common
+prostitute". Location Sandgate correct. Two crime types correctly
+applied (indecent behaviour, prostitution), same pattern as record
+1028. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1095 done.**
+
+---
+
+## Record 1096
+
+"Summary conviction of Moses Thompson of the township of Lythe
+labourer for being found drunk and disorderly in Lythe town street.
+Offence committed at the township of Lythe on 29 March 1875. Whitby
+Strand - case heard at Whitby" -- defendant Moses Thompson (person
+1160), home Lythe, occupation labourer, sex male. "Lythe town street"
+resolves to Lythe. Crime type "drunk and disorderly" matches. Same
+date/township as record 1090 (Margaret Elders) but a different
+specific charge (drunkenness vs drunk-and-disorderly) and no shared
+named party -- per the record 1000/1018 reasoning, not linked.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1096 done.**
+
+---
+
+## Record 1097
+
+"Summary conviction of Susan Backhouse of the township of Whitby
+widow for being drunk and disorderly on the New Quay. Offence
+committed at the township of Whitby on 13 August 1888. Whitby Strand
+Petty Sessional division - case heard at Whitby" -- defendant Susan
+Backhouse (person 1161), sex female; raw text states "widow" but
+`person_occupation` had no row -- confirmed instance of the tracked
+marital-status occupation gap. Location New Quay correct. Crime type
+matches. No related_conviction.
+
+**FIXED — added missing "widow" occupation (occupation_id 384) for
+person 1161.** Also housekeeping: before removing 1097 from the
+tracked-gap list, noticed ids 552, 577, 597, 626 were still listed
+even though the linear audit passed them long ago (they predate 1097
+by hundreds of records). Checked all four directly against the
+database: all already correctly fixed in an earlier pass (552's
+victim Isabella Jolly has "spinster"; 577's Emma Robinson has
+"singlewoman"; 597's Katherine McLaughlan has "widow"; 626's Ann
+Appleton has "widow", Annie Austin has "singlewoman", and Mary
+Austin's husband stub Robert Austin correctly holds "fisherman") --
+just stale list entries, not a real gap. Removed all five ids (552,
+577, 597, 626, 1097) from the tracked list in one edit.
+
+---
+
+**Progress: records 1-1097 done.**
+
+---
+
+## Record 1098
+
+"Summary conviction of John Pitts for wilfully wasting a pair of
+trousers committed to his care whilst he was being relieved in the
+workhouse of the Whitby Union as a destitute wayfarer. Offence
+committed at the township of Whitby on 2 February 1869. Whitby
+Strand - case heard at Whitby[Date endorsed as 3 February 1869]" --
+defendant John Pitts (person 1162), sex male, no home stated.
+Location Whitby correct. Already has an `anomalies` note documenting
+the archive's own date discrepancy (one of the two records the
+tracked-notes file said already had this handled). Crime type
+"workhouse offence" (47) checked against the "destroying own
+clothes" leaf (73, seed record 330: "wilfully destroying HIS OWN
+clothes while being relieved") -- this record's fact pattern is
+materially different: the trousers were "committed to his care" (i.e.
+workhouse-issued property, not his own personal clothing being
+destroyed), so "workhouse offence" is the correct fit, not the
+destroying-own-clothes leaf. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1098 done.**
+
+---
+
+## Record 1099
+
+"Summary conviction of William Weatherill of the township of Whitby
+for keeping a dog without a licence. Offence committed at Whitby on
+12 March 1875. Whitby Strand - case heard at Whitby" -- defendant
+William Weatherill (person 1163), home Whitby, sex male, no
+occupation stated. Location Whitby correct. Crime type "dog licence
+offence" matches. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1099 done.**
+
+---
+
+## Record 1100
+
+"Summary conviction of Frederick Garth of the township of Whitby cab
+driver for refusing to drive his hackney carriage (no 38) to
+Haggersgate when asked by Edwin Harrison. Offence committed at the
+township of Ruswarp on 9 August 1888. Whitby Strand Petty Sessional
+division - case heard at Whitby" -- defendant Frederick Garth (person
+1164), home Whitby, occupation cab driver, sex male; informant Edwin
+Harrison (person 7014), sex male. Location Ruswarp correct. Crime
+type "hackney carriage driver refusing service" is a precise existing
+leaf, correct fit. No related_conviction.
+
+**OK — no changes.**
+
+---
+
+**Progress: records 1-1100 done.**
+
+---
+
+## Record 1101
+
+"Summary conviction of James Matthews of the township of Whitby
+sailor for assaulting George Adams; on the oath of the said George
+Adams of the township of Whitby labourer. Offence committed at the
+township of Whitby on 30 January 1869. Whitby Strand - case heard at
+Whitby" -- defendant James Matthews (person 1165), home Whitby,
+occupation sailor, sex male; victim George Adams (person 7015), home
+Whitby, occupation labourer. George's sex was blank despite "George"
+being an unambiguous male first name -- gap found, matches the
+established name-inference convention used throughout the audit.
+
+**FIXED — set sex=male for person 7015 (George Adams).**
+
+---
+
+**Progress: records 1-1101 done.**
